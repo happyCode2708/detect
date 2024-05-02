@@ -38,5 +38,7 @@ next-env.d.ts
 
 /public/uploads/*
 /dist/*
+/src/uploads/*
+/src/results/*
 
 .env*

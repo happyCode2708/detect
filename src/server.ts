@@ -22,6 +22,7 @@ const openai = new OpenAI({
 });
 
 const uploadsDir = path.join(__dirname, 'uploads');
+const resultsDir = path.join(__dirname, 'results');
 
 const storage = multer.diskStorage({
   destination: (req: any, file: any, cb: any) => {
@@ -56,6 +57,13 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     const maxTokens = 4000;
     const base64Image = encodeImageToBase64(req.file.path);
     const imagePath = `data:image/jpeg;base64,${base64Image}`;
+    const resultFileName = req.file.filename + '.json';
+
+    console.log('resultFileName: ', resultFileName);
+    // res.json({ true: true });
+    // return;
+
+    res.json({ resultFileName, image: imagePath });
 
     const response = await openai.chat.completions.create({
       model: 'gpt-4-turbo',
@@ -96,14 +104,45 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
       presence_penalty: 0,
     });
 
-    const result = response.choices[0]?.message;
+    const result = response.choices[0]?.message?.content;
+
+    if (!result) return;
+
+    writeJsonToFile(resultsDir, resultFileName, JSON.stringify(result));
 
     // console.log('response', response.choices[0].message);
-    res.json({ result, image: imagePath });
+    // res.json({ result, image: imagePath });
   } catch (error) {
     console.error('Error calling OpenAI API:', error);
     res.status(500).send('Failed to generate text');
   }
+});
+
+app.get('/api/get-result/:filename', (req, res) => {
+  // Validate that the file extension is .json
+  if (!req.params.filename.endsWith('.json')) {
+    return res
+      .status(400)
+      .send('Invalid file type. Only JSON files are allowed.');
+  }
+
+  // Construct the full file path
+  const filePath = path.join(resultsDir, req.params.filename);
+
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Failed to read file:', err);
+      // Send a 404 error if the file is not found
+      return res.status(404).send('File not found.');
+    }
+    try {
+      const jsonData = JSON.parse(data);
+      res.json(jsonData);
+    } catch (parseError) {
+      console.error('Error parsing JSON:', parseError);
+      res.status(500).send('Error parsing data file.');
+    }
+  });
 });
 
 app.get('/api/upload', (req, res) => {
@@ -129,3 +168,25 @@ const encodeImageToBase64 = (filePath: string) => {
   const base64Image = fileBuffer.toString('base64');
   return base64Image;
 };
+
+function writeJsonToFile(directory: string, fileName: string, content: any) {
+  // Check if the directory exists
+  if (!fs.existsSync(directory)) {
+    // If it does not exist, create it
+    fs.mkdirSync(directory, { recursive: true });
+  }
+
+  // Define the complete file path
+  const filePath = path.join(directory, fileName);
+
+  // Write the JSON string to a file
+  fs.writeFile(filePath, content, (err) => {
+    if (err) {
+      console.log('Error writing file:', err);
+    } else {
+      console.log(
+        `JSON data is written to the file successfully at ${filePath}.`
+      );
+    }
+  });
+}
