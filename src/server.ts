@@ -4,7 +4,6 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import OpenAI from 'openai';
-// const { Configuration, OpenAIApi } = require('openai');
 
 require('dotenv').config();
 
