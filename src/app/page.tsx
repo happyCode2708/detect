@@ -105,7 +105,7 @@ export default function Home() {
           </div>
         )}
         {reply && (
-          <div className='whitespace-pre p-4 border rounded-md flex-1'>
+          <div className='whitespace-pre p-4 border rounded-md flex-1 overflow-auto max-h-[500px]'>
             {reply}
           </div>
         )}
