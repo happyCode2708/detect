@@ -7,7 +7,7 @@ export default function Home() {
   const [reply, setReply] = useState(null);
   const [image, setImage] = useState(null);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
 
     if (!file) {
