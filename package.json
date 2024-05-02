@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "start": "node dist/server.js",
+    "build": "cross-env NODE_ENV=production npm run build:next && npm run build:server",
+    "start": "NODE_ENV=production node dist/server.js",
+    "heroku-postbuild": "npm run build",
     "build:next": "next build",
     "lint": "next lint",
     "custom-dev": "nodemon",
     "build:server": "tsc --project tsconfig.server.json",
-    "build:custom-next": "cross-env NEXT_BUILD=true",
-    "build": "cross-env NODE_ENV=production npm run build:server && npm run build:next && npm run build:custom-next"
+    "build:custom-next": "cross-env NEXT_BUILD=true"
   },
   "dependencies": {
     "cross-env": "^7.0.3",
