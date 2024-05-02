@@ -21,10 +21,15 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const uploadsDir = path.join(__dirname, '../public/uploads');
+const uploadsDir = path.join(__dirname, 'uploads');
 
 const storage = multer.diskStorage({
   destination: (req: any, file: any, cb: any) => {
+    // Check if the directory exists, create it if not
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+      console.log(`Directory created: ${uploadsDir}`);
+    }
     cb(null, uploadsDir);
   },
   filename: (req: any, file: any, cb: any) => {
