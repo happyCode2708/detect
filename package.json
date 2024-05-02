@@ -5,11 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "node dist/server.js",
     "lint": "next lint",
     "custom-dev": "nodemon",
     "build:server": "tsc --project tsconfig.server.json",
-    "build:next": "cross-env NEXT_BUILD=true node dist/server.js",
+    "build:next": "cross-env NEXT_BUILD=true",
     "custom-build": "cross-env NODE_ENV=production npm run build:server &&  npm run build:next"
   },
   "dependencies": {
