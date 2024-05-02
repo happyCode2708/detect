@@ -60,8 +60,6 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     const resultFileName = req.file.filename + '.json';
 
     console.log('resultFileName: ', resultFileName);
-    // res.json({ true: true });
-    // return;
 
     res.json({ resultFileName, image: imagePath });
 
@@ -110,8 +108,8 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 
     writeJsonToFile(resultsDir, resultFileName, JSON.stringify(result));
 
-    // console.log('response', response.choices[0].message);
-    // res.json({ result, image: imagePath });
+    console.log('response', response.choices[0].message);
+    res.json({ result, image: imagePath });
   } catch (error) {
     console.error('Error calling OpenAI API:', error);
     res.status(500).send('Failed to generate text');
