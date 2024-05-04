@@ -42,3 +42,8 @@ next-env.d.ts
 /src/results/*
 
 .env*
+
+src/data
+
+output.txt
+service_account.json

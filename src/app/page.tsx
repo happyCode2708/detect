@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { RefreshCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import NutritionTable from '@/components/table/NutritionTable';
+import ExtractionHistory from '@/components/extract-history/ExtractionHitory';
 
 const mock =
   '[\n  {\n    "panelName": "Nutrition Facts",\n    "amountPerServing": {"value": 140, "uom": "Calories"},\n    "servingSize": {"value": "4 oz.", "uom": "(112g)"},\n    "servingPerContainer": {"value": null, "uom": "Varied servings per container"},\n    "nutrients": [\n      {"name": "Total Fat", "value": 4, "uom": "g", "percentDailyValue": 5},\n      {"name": "Saturated Fat", "value": 1.5, "uom": "g", "percentDailyValue": 8},\n      {"name": "Trans Fat", "value": 0, "uom": "g", "percentDailyValue": null},\n      {"name": "Polyunsaturated Fat", "value": 0.5, "uom": "g", "percentDailyValue": null},\n      {"name": "Monounsaturated Fat", "value": 2, "uom": "g", "percentDailyValue": null},\n      {"name": "Cholesterol", "value": 65, "uom": "mg", "percentDailyValue": 22},\n      {"name": "Sodium", "value": 40, "uom": "mg", "percentDailyValue": 2},\n      {"name": "Total Carbohydrate", "value": 0, "uom": "g", "percentDailyValue": 0},\n      {"name": "Dietary Fiber", "value": 0, "uom": "g", "percentDailyValue": 0},\n      {"name": "Total Sugars", "value": 0, "uom": "g", "percentDailyValue": null},\n      {"name": "Added Sugars", "value": 0, "uom": "g", "percentDailyValue": 0},\n      {"name": "Protein", "value": 25, "uom": "g", "percentDailyValue": 50},\n      {"name": "Vitamin D", "value": 0, "uom": "mcg", "percentDailyValue": 0},\n      {"name": "Calcium", "value": 0, "uom": "mg", "percentDailyValue": 0},\n      {"name": "Iron", "value": 0, "uom": "mg", "percentDailyValue": 0},\n      {"name": "Potassium", "value": 370, "uom": "mg", "percentDailyValue": 8}\n    ],\n    "note": "The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.",\n    "ingredients": ""\n  }\n]\n';
@@ -30,7 +31,7 @@ export default function Home() {
     try {
       setLoading(true);
       setReply([]);
-      const response = await fetch('/api/upload', {
+      const response = await fetch('/api/upload/gemini', {
         method: 'POST',
         body: formData, // No need to set content type; browser does it for you with FormData
       });
@@ -56,7 +57,6 @@ export default function Home() {
 
   useEffect(() => {
     let interval: any;
-
     if (resultFileName) {
       interval = setInterval(async () => {
         try {
@@ -67,9 +67,7 @@ export default function Home() {
             );
           }
           const data = await response.json();
-
           // console.log('test', { data, proc: JSON.parse(data) });
-
           setReply(JSON.parse(data));
           clearInterval(interval);
           setLoading(false);
@@ -80,7 +78,6 @@ export default function Home() {
         }
       }, 4500);
     }
-
     return () => clearInterval(interval);
   }, [resultFileName]);
 
@@ -125,6 +122,9 @@ export default function Home() {
             })}
           </div>
         ) : null}
+      </div>
+      <div>
+        <ExtractionHistory />
       </div>
     </div>
   );
