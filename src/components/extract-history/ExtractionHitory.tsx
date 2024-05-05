@@ -20,8 +20,6 @@ const ExtractionHistory = () => {
     queryFn: () => fetch('/api/fact/get-history').then((res) => res.json()),
   });
 
-  console.log('data', data);
-
   return (
     <div>
       <Button onClick={() => setShow((prev) => !prev)}>

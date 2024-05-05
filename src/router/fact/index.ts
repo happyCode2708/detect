@@ -20,7 +20,7 @@ router.get('/get-result/:filename', (req, res) => {
     if (err) {
       console.error('Failed to read file');
       // Send a 404 error if the file is not found
-      return res.status(404).send('File not found.');
+      return res.status(404).send('File are not ready.');
     }
     try {
       const jsonData = JSON.parse(data);

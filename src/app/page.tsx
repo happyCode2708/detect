@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { RefreshCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import NutritionTable from '@/components/table/NutritionTable';
 import ExtractionHistory from '@/components/extract-history/ExtractionHitory';
 import { useMutateUploadFile } from '@/queries/home';
 import { FluidContainer } from '@/components/container/FluidContainer';
+import { Result } from '@/components/result/Result';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function Home() {
   const [files, setFiles] = useState<any>([]);
@@ -20,6 +21,7 @@ export default function Home() {
   const refInterval = useRef<number | null>(null);
 
   const mutationUploadFile = useMutateUploadFile();
+  const queryClient = useQueryClient();
 
   const handleSubmit = async () => {
     if (!files.length) return;
@@ -40,6 +42,7 @@ export default function Home() {
         const { resultFileName, images } = res;
         setImages(images);
         setResultFileName(resultFileName);
+        queryClient.invalidateQueries({ queryKey: ['history'] });
       },
     });
   };
@@ -110,7 +113,7 @@ export default function Home() {
 
           setLoading(false);
         } catch (error) {
-          console.error('Failed to fetch data:', error);
+          console.error('Waiting for result', error);
         }
       }, 4500);
     }
@@ -178,13 +181,7 @@ export default function Home() {
             ) : null}
           </div>
 
-          {reply && reply?.length > 0 ? (
-            <div className='p-4 border rounded-md flex-1 overflow-auto max-h-[500px]'>
-              {reply.map((labelData: any, idx: number) => {
-                return <NutritionTable data={labelData} key={idx} />;
-              })}
-            </div>
-          ) : null}
+          <Result reply={reply} />
         </div>
       </div>
     </FluidContainer>
