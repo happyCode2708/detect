@@ -4,7 +4,9 @@
     "module": "CommonJS",
     "outDir": "dist",
     "noEmit": false,
-    "jsx": "react"
+    "types": ["express"],
+    "jsx": "react",
+    "typeRoots": ["./node_modules/@types", "./index.d.ts"]
   },
-  "include": ["src/server.ts"]
+  "include": ["src/server.ts", "./index.d.ts"]
 }

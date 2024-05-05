@@ -1,66 +1,105 @@
 'use client';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, MutableRefObject } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { RefreshCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import NutritionTable from '@/components/table/NutritionTable';
 import ExtractionHistory from '@/components/extract-history/ExtractionHitory';
-
-const mock =
-  '[\n  {\n    "panelName": "Nutrition Facts",\n    "amountPerServing": {"value": 140, "uom": "Calories"},\n    "servingSize": {"value": "4 oz.", "uom": "(112g)"},\n    "servingPerContainer": {"value": null, "uom": "Varied servings per container"},\n    "nutrients": [\n      {"name": "Total Fat", "value": 4, "uom": "g", "percentDailyValue": 5},\n      {"name": "Saturated Fat", "value": 1.5, "uom": "g", "percentDailyValue": 8},\n      {"name": "Trans Fat", "value": 0, "uom": "g", "percentDailyValue": null},\n      {"name": "Polyunsaturated Fat", "value": 0.5, "uom": "g", "percentDailyValue": null},\n      {"name": "Monounsaturated Fat", "value": 2, "uom": "g", "percentDailyValue": null},\n      {"name": "Cholesterol", "value": 65, "uom": "mg", "percentDailyValue": 22},\n      {"name": "Sodium", "value": 40, "uom": "mg", "percentDailyValue": 2},\n      {"name": "Total Carbohydrate", "value": 0, "uom": "g", "percentDailyValue": 0},\n      {"name": "Dietary Fiber", "value": 0, "uom": "g", "percentDailyValue": 0},\n      {"name": "Total Sugars", "value": 0, "uom": "g", "percentDailyValue": null},\n      {"name": "Added Sugars", "value": 0, "uom": "g", "percentDailyValue": 0},\n      {"name": "Protein", "value": 25, "uom": "g", "percentDailyValue": 50},\n      {"name": "Vitamin D", "value": 0, "uom": "mcg", "percentDailyValue": 0},\n      {"name": "Calcium", "value": 0, "uom": "mg", "percentDailyValue": 0},\n      {"name": "Iron", "value": 0, "uom": "mg", "percentDailyValue": 0},\n      {"name": "Potassium", "value": 370, "uom": "mg", "percentDailyValue": 8}\n    ],\n    "note": "The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.",\n    "ingredients": ""\n  }\n]\n';
-
-const data = JSON.parse(mock);
+import { useMutateUploadFile } from '@/queries/home';
 
 export default function Home() {
-  const [file, setFile] = useState<any>(null);
+  const [files, setFiles] = useState<any>([]);
   const [reply, setReply] = useState([]);
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState<any>([]);
   const [resultFileName, setResultFileName] = useState<any>();
   const [loading, setLoading] = useState(false);
 
+  const refInput = useRef() as React.RefObject<HTMLInputElement>;
+  const refInterval = useRef<number | null>(null);
+
+  const mutationUploadFile = useMutateUploadFile();
+
   const handleSubmit = async () => {
-    if (!file) {
-      alert('Please select a file.');
-      return;
-    }
+    if (!files.length) return;
 
     const formData = new FormData();
-    formData.append('file', file);
 
-    try {
-      setLoading(true);
-      setReply([]);
-      const response = await fetch('/api/upload/gemini', {
-        method: 'POST',
-        body: formData, // No need to set content type; browser does it for you with FormData
-      });
+    files.forEach((file: any) => {
+      formData.append('file', file);
+    });
 
-      const res = await response.json();
-      const { resultFileName, image } = res;
+    setLoading(true);
+    setReply([]);
+    mutationUploadFile.mutate(formData, {
+      onError: (e) => {
+        console.log(e);
+      },
+      onSuccess: (res) => {
+        const { resultFileName, images } = res;
+        setImages(images);
+        // setImages((prev: any) => [...prev, image]);
+        setResultFileName(resultFileName);
+      },
+    });
+  };
 
-      setImage(image);
-      setResultFileName(resultFileName);
-
-      // alert(result); // Displaying the response message
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error uploading file.');
-      setLoading(false);
+  const onCancel = () => {
+    setLoading(false);
+    setResultFileName('');
+    setReply([]);
+    if (refInterval.current) {
+      window.clearInterval(refInterval.current);
     }
   };
 
-  const handleSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    setFile(e.target.files[0]);
+  const onClearFile = () => {
+    setFiles([]);
+    if (!refInput.current) return;
+    refInput.current.value = '';
   };
 
+  const handleSelectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+
+    const files = Array.from(event.target.files);
+    setFiles(files);
+    const fileReaders = [];
+    let fileDataUrls: any = [];
+
+    if (files.length === 0) return;
+
+    files.forEach((file) => {
+      const fileReader = new FileReader();
+
+      fileReaders.push(fileReader);
+
+      fileReader.onload = (e) => {
+        if (!e?.target) return;
+
+        fileDataUrls.push(e.target.result);
+
+        // Only update state when all files are read
+        if (fileDataUrls.length === files.length) {
+          setImages(fileDataUrls);
+        }
+      };
+
+      fileReader.readAsDataURL(file);
+    });
+  };
+
+  console.log('files', files);
+  console.log('images', images);
+
   useEffect(() => {
-    let interval: any;
+    // let interval: any;
     if (resultFileName) {
-      interval = setInterval(async () => {
+      refInterval.current = window.setInterval(async () => {
         try {
-          const response = await fetch('/api/get-result/' + resultFileName);
+          const response = await fetch(
+            '/api/fact/get-result/' + resultFileName
+          );
           if (!response.ok) {
             throw new Error(
               'Network response was not ok ' + response.statusText
@@ -69,7 +108,10 @@ export default function Home() {
           const data = await response.json();
           // console.log('test', { data, proc: JSON.parse(data) });
           setReply(JSON.parse(data));
-          clearInterval(interval);
+          if (refInterval.current) {
+            clearInterval(refInterval.current);
+          }
+
           setLoading(false);
           // console.log('Data retrieved:', data);
           // return data; // Optionally return data for further processing
@@ -78,43 +120,69 @@ export default function Home() {
         }
       }, 4500);
     }
-    return () => clearInterval(interval);
+    return () => {
+      if (!refInterval.current) return;
+
+      window.clearInterval(refInterval.current);
+    };
   }, [resultFileName]);
 
   return (
     <div className='flex flex-col gap-10 p-10'>
-      <div className='flex flex-row items-center w-full'>
-        <div className='rounded-md p-4 border mr-6'>
-          <Input type='file' onChange={handleSelectFile} required />
+      <div className='flex flex-row items-center w-full gap-2'>
+        <div className='rounded-md p-4 border flex flex-row gap-2'>
+          <Input
+            ref={refInput}
+            type='file'
+            onChange={handleSelectFile}
+            required
+            multiple
+          />
+          <Button variant='destructive' onClick={onClearFile}>
+            Clear
+          </Button>
         </div>
-        <button
-          className={cn(
-            'rounded-md border px-4 py-2 bg-orange-500 text-white cursor-pointer h-[50px] w-[150px]',
-            loading ? 'bg-gray-300 text-muted-foreground' : ''
-          )}
-          disabled={loading}
-          onClick={handleSubmit}
-        >
+        <Button disabled={loading} onClick={handleSubmit}>
           {loading ? (
             <div className='flex flex-row items-center'>
-              <RefreshCcw className='mr-1' /> <span>Proccessing</span>
+              <RefreshCcw className='mr-1 animate-spin' />
+              <span>Proccessing</span>
             </div>
           ) : (
             'Extract'
           )}
-        </button>
-      </div>
-      <div className='flex flex-row gap-4'>
-        {image && (
-          <div className='w-[300px] min-w-[300px]'>
-            <img src={image} className='w-full aspect-auto' />
-          </div>
+        </Button>
+        {loading && (
+          <Button variant='secondary' onClick={onCancel}>
+            Cancel
+          </Button>
         )}
-        {/* {reply && (
-          <div className='whitespace-pre p-4 border rounded-md flex-1 overflow-auto max-h-[500px]'>
-            {reply}
-          </div>
-        )} */}
+      </div>
+
+      <ExtractionHistory />
+
+      <div className='flex flex-row gap-4'>
+        <div>
+          {images.length === 1 ? (
+            <div className='w-[300px] min-w-[300px] rounded-sm border p-2'>
+              <img src={images[0]} className='w-full aspect-auto' />
+            </div>
+          ) : images.length > 1 ? (
+            <div className='grid grid-cols-3 gap-2 rounded-sm border p-2'>
+              {images?.map((image: any) => {
+                return (
+                  <div className='w-[140px] h-[140px] border rounded-sm p-2 flex items-center justify-center'>
+                    <img
+                      src={image}
+                      className='max-w-full max-h-full object-contain object-center'
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          ) : null}
+        </div>
+
         {reply && reply?.length > 0 ? (
           <div className='p-4 border rounded-md flex-1 overflow-auto max-h-[500px]'>
             {reply.map((labelData: any, idx: number) => {
@@ -122,9 +190,6 @@ export default function Home() {
             })}
           </div>
         ) : null}
-      </div>
-      <div>
-        <ExtractionHistory />
       </div>
     </div>
   );

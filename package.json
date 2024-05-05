@@ -10,6 +10,7 @@
     "build:next": "next build",
     "lint": "next lint",
     "custom-dev": "nodemon",
+    "custom-dev-local": "source ~/.bash_python && nodemon",
     "build:server": "tsc --project tsconfig.server.json",
     "build:custom-next": "cross-env NEXT_BUILD=true",
     "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png}\" dist/"
@@ -18,6 +19,8 @@
     "@google-cloud/vertexai": "^1.1.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@tanstack/react-query": "^5.32.1",
+    "axios": "^1.6.8",
+    "cheerio": "^1.0.0-rc.12",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cross-env": "^7.0.3",
@@ -30,6 +33,7 @@
     "openai": "^4.40.0",
     "react": "^18",
     "react-dom": "^18",
+    "sharp": "^0.33.3",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^9.0.1"

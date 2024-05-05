@@ -1,67 +1,75 @@
 import React from 'react';
 
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+
 const NutritionTable = ({ data }: { data: any }) => {
   return (
     <div className='pb-4'>
       <div className='text-2xl font-bold mb-2'>{data.panelName}</div>
-      <table>
-        <thead>
-          <tr>
-            <th>Nutrient Name</th>
-            <th>Data</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className='px-2 w-[250px]'>Amount Per Serving</td>
-            <td className='px-2'>
-              {data?.amountPerServing?.value}
-              {data?.amountPerServing?.uom !== null && (
-                <span>{data?.amountPerServing?.uom}</span>
-              )}
-            </td>
-          </tr>
-          <tr>
-            <td className='px-2 w-[250px]'>Serving Size</td>
-            <td className='px-2 w-[400px]'>
-              {data?.servingSize?.value}
-              {data?.servingSize?.uom !== null && (
-                <span>{data?.servingSize?.uom}</span>
-              )}
-            </td>
-          </tr>
-          <tr>
-            <td className='px-2 w-[250px]'>Serving Per Container</td>
-            <td className='px-2 w-[400px]'>
-              {data?.servingPerContainer?.value}
-              {data?.servingPerContainer?.uom !== null && (
-                <span>{data?.servingPerContainer?.uom}</span>
-              )}
-            </td>
-          </tr>
-          <tr>
-            <td className='px-2 w-[250px]'>Amount Per Serving</td>
-            <td className='px-2 w-[400px]'>
-              {data?.amountPerServing?.value}
-              {data?.amountPerServing?.uom !== null && (
-                <span>{data?.amountPerServing?.uom}</span>
-              )}
-            </td>
-          </tr>
+      <div>
+        <span className='font-bold'>Calories:</span>
+        <span>{data?.amountPerServing?.value} </span>
+      </div>
+      <div>
+        <span className='font-bold'>Serving Size:</span>
+        <span>
+          {data?.servingSize?.value}
+          {data?.servingSize?.uom !== null && (
+            <span> {data?.servingSize?.uom}</span>
+          )}
+        </span>
+      </div>
+      <div>
+        <span className='font-bold'>Serving Per Container:</span>
+        <span>
+          {data?.servingPerContainer?.value}{' '}
+          {data?.servingPerContainer?.stringAfterValue}
+        </span>
+      </div>
+      <Table>
+        {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
+        <TableHeader>
+          <TableRow>
+            <TableHead className='w-[100px]'>NAME</TableHead>
+            <TableHead>INFO</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {data.nutrients.map((nutrient: any, index: number) => (
-            <tr key={index}>
-              <td className='px-2 w-[250px]'>{nutrient.name}</td>
-              <td className='px-2 w-[400px]' key={index}>
+            <TableRow key={index}>
+              <TableCell className='px-2 w-[250px]'>{nutrient.name}</TableCell>
+              <TableCell className='px-2 w-[400px]' key={index}>
                 {nutrient?.value}
-                {nutrient?.uom !== null && <span>{nutrient?.uom}</span>}
+                {nutrient?.uom ?? <span>{nutrient?.uom}</span>}
                 {nutrient.percentDailyValue !== null && (
-                  <span>({nutrient.percentDailyValue}%)</span>
+                  <span> ({nutrient.percentDailyValue}%)</span>
                 )}
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+        {/* <TableRow>
+          <TableCell className='px-2 w-[250px]'>Ingredients</TableCell>
+          <TableCell className='px-2 w-[400px]'>{data?.ingredients}</TableCell>
+        </TableRow> */}
+      </Table>
+      <div>
+        <div className='font-bold'>Note: </div>
+        <p>{data?.note} </p>
+      </div>
+      <div>
+        <div className='font-bold'>Ingredients: </div>
+        <p>{data?.ingredients} </p>
+      </div>
     </div>
   );
 };
