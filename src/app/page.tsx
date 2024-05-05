@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import NutritionTable from '@/components/table/NutritionTable';
 import ExtractionHistory from '@/components/extract-history/ExtractionHitory';
 import { useMutateUploadFile } from '@/queries/home';
+import { FluidContainer } from '@/components/container/FluidContainer';
 
 export default function Home() {
   const [files, setFiles] = useState<any>([]);
@@ -38,7 +39,6 @@ export default function Home() {
       onSuccess: (res) => {
         const { resultFileName, images } = res;
         setImages(images);
-        // setImages((prev: any) => [...prev, image]);
         setResultFileName(resultFileName);
       },
     });
@@ -89,9 +89,6 @@ export default function Home() {
     });
   };
 
-  console.log('files', files);
-  console.log('images', images);
-
   useEffect(() => {
     // let interval: any;
     if (resultFileName) {
@@ -106,15 +103,12 @@ export default function Home() {
             );
           }
           const data = await response.json();
-          // console.log('test', { data, proc: JSON.parse(data) });
           setReply(JSON.parse(data));
           if (refInterval.current) {
             clearInterval(refInterval.current);
           }
 
           setLoading(false);
-          // console.log('Data retrieved:', data);
-          // return data; // Optionally return data for further processing
         } catch (error) {
           console.error('Failed to fetch data:', error);
         }
@@ -128,69 +122,71 @@ export default function Home() {
   }, [resultFileName]);
 
   return (
-    <div className='flex flex-col gap-10 p-10'>
-      <div className='flex flex-row items-center w-full gap-2'>
-        <div className='rounded-md p-4 border flex flex-row gap-2'>
-          <Input
-            ref={refInput}
-            type='file'
-            onChange={handleSelectFile}
-            required
-            multiple
-          />
-          <Button variant='destructive' onClick={onClearFile}>
-            Clear
+    <FluidContainer>
+      <div className='flex flex-col gap-10 p-10'>
+        <div className='flex flex-row items-center w-full gap-2'>
+          <div className='rounded-md p-4 border flex flex-row gap-2'>
+            <Input
+              ref={refInput}
+              type='file'
+              onChange={handleSelectFile}
+              required
+              multiple
+            />
+            <Button variant='destructive' onClick={onClearFile}>
+              Clear
+            </Button>
+          </div>
+          <Button disabled={loading} onClick={handleSubmit}>
+            {loading ? (
+              <div className='flex flex-row items-center'>
+                <RefreshCcw className='mr-1 animate-spin' />
+                <span>Proccessing</span>
+              </div>
+            ) : (
+              'Extract'
+            )}
           </Button>
-        </div>
-        <Button disabled={loading} onClick={handleSubmit}>
-          {loading ? (
-            <div className='flex flex-row items-center'>
-              <RefreshCcw className='mr-1 animate-spin' />
-              <span>Proccessing</span>
-            </div>
-          ) : (
-            'Extract'
+          {loading && (
+            <Button variant='secondary' onClick={onCancel}>
+              Cancel
+            </Button>
           )}
-        </Button>
-        {loading && (
-          <Button variant='secondary' onClick={onCancel}>
-            Cancel
-          </Button>
-        )}
-      </div>
+        </div>
 
-      <ExtractionHistory />
+        <ExtractionHistory />
 
-      <div className='flex flex-row gap-4'>
-        <div>
-          {images.length === 1 ? (
-            <div className='w-[300px] min-w-[300px] rounded-sm border p-2'>
-              <img src={images[0]} className='w-full aspect-auto' />
-            </div>
-          ) : images.length > 1 ? (
-            <div className='grid grid-cols-3 gap-2 rounded-sm border p-2'>
-              {images?.map((image: any) => {
-                return (
-                  <div className='w-[140px] h-[140px] border rounded-sm p-2 flex items-center justify-center'>
-                    <img
-                      src={image}
-                      className='max-w-full max-h-full object-contain object-center'
-                    />
-                  </div>
-                );
+        <div className='flex flex-row gap-4'>
+          <div>
+            {images.length === 1 ? (
+              <div className='w-[300px] min-w-[300px] rounded-sm border p-2'>
+                <img src={images[0]} className='w-full aspect-auto' />
+              </div>
+            ) : images.length > 1 ? (
+              <div className='grid grid-cols-2 gap-2 rounded-sm border p-2'>
+                {images?.map((image: any) => {
+                  return (
+                    <div className='w-[140px] h-[140px] border rounded-sm p-2 flex items-center justify-center'>
+                      <img
+                        src={image}
+                        className='max-w-full max-h-full object-contain object-center'
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
+
+          {reply && reply?.length > 0 ? (
+            <div className='p-4 border rounded-md flex-1 overflow-auto max-h-[500px]'>
+              {reply.map((labelData: any, idx: number) => {
+                return <NutritionTable data={labelData} key={idx} />;
               })}
             </div>
           ) : null}
         </div>
-
-        {reply && reply?.length > 0 ? (
-          <div className='p-4 border rounded-md flex-1 overflow-auto max-h-[500px]'>
-            {reply.map((labelData: any, idx: number) => {
-              return <NutritionTable data={labelData} key={idx} />;
-            })}
-          </div>
-        ) : null}
       </div>
-    </div>
+    </FluidContainer>
   );
 }

@@ -3,15 +3,14 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
-import {
-  encodeImageToBase64,
-  addNewExtractionToHistory,
-  writeJsonToFile,
-  generateContent,
-  createCollage,
-} from '../../utils';
-import { uploadsDir, resultsDir, pythonPath } from '../../server';
-import { NEW_PROMPT, ORIGINAL_PROMPT } from './constants';
+import { onProcessGemini, createCollage } from '../../utils';
+import { uploadsDir, pythonPath } from '../../server';
+// import { NEW_PROMPT, ORIGINAL_PROMPT } from './constants';
+// import OpenAI from 'openai';
+
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY,
+// });
 
 const router = express.Router();
 
@@ -46,6 +45,7 @@ router.post(
   '/gemini',
   (req, res, next) => {
     const sessionId = uuidv4();
+
     // @ts-ignore
     req.customData = { sessionId };
     next();
@@ -57,17 +57,23 @@ router.post(
 
     const files = req.files as Express.Multer.File[];
 
-    const file_paths = files?.map((file: any) => file.path);
+    const filePaths = files?.map((file: any) => file.path);
 
     const collateImageName = `${sessionId}.jpeg`;
 
     const collatedOuputPath = path.join(uploadsDir, collateImageName);
     const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
 
-    //? collate images
-    await createCollage(file_paths, collatedOuputPath);
+    await createCollage(filePaths, collatedOuputPath);
 
-    onProcessGemini(req, res, sessionId, collateImageName, collatedOuputPath);
+    onProcessGemini({
+      req,
+      res,
+      sessionId,
+      collateImageName,
+      collatedOuputPath,
+      filePaths,
+    });
   }
 );
 
@@ -168,46 +174,3 @@ router.post(
 // });
 
 export default router;
-
-const onProcessGemini = async (
-  req: any,
-  res: any,
-  sessionId: string,
-  collateImageName: string,
-  imagePath: string
-) => {
-  // const base64Image = encodeImageToBase64(req.file.path);
-  const base64Image = encodeImageToBase64(imagePath);
-
-  const base64Full = `data:image/jpeg;base64,${base64Image}`;
-  const image1 = {
-    inlineData: {
-      mimeType: 'image/png',
-      data: base64Image,
-    },
-  };
-  const text1 = {
-    text: NEW_PROMPT,
-  };
-
-  const resultFileName = sessionId + '.json';
-
-  addNewExtractionToHistory(sessionId, {
-    images: [{ name: collateImageName, url: imagePath }],
-    result: {
-      name: resultFileName,
-      url: path.join(resultsDir, resultFileName),
-    },
-  });
-
-  res.json({ resultFileName, images: [base64Full] });
-
-  console.log('resultFileName: ', resultFileName);
-
-  const gemini_result = await generateContent(image1, text1);
-
-  if (!gemini_result) return;
-  const procResult = gemini_result.split('```json\n')[1].split('```')[0];
-
-  writeJsonToFile(resultsDir, resultFileName, JSON.stringify(procResult));
-};

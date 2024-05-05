@@ -6,7 +6,7 @@
     "noEmit": false,
     "types": ["express"],
     "jsx": "react",
-    "typeRoots": ["./node_modules/@types", "./index.d.ts"]
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
-  "include": ["src/server.ts", "./index.d.ts"]
+  "include": ["src/server.ts", "src/types"]
 }

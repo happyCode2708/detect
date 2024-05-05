@@ -1,7 +1,8 @@
 import path from 'path';
 import fs, { write } from 'fs';
-import { historyDir } from '../server';
+import { historyDir, resultsDir } from '../server';
 import sharp from 'sharp';
+import { NEW_PROMPT } from '../constants';
 
 // Function to encode image to Base64
 export const encodeImageToBase64 = (filePath: string) => {
@@ -22,7 +23,7 @@ export const addNewExtractionToHistory = async (
   try {
     fs.readFile(historyFilePath, 'utf8', (err: any, data) => {
       let history: any = []; // Initialize products as an empty array
-      console.log('data', data);
+
       if (data) {
         history = JSON.parse(data);
       }
@@ -146,8 +147,6 @@ export const createCollage = async (
     imageFilePaths.map((imagePath) => resizeAndCenterImage(imagePath, boxSize))
   );
 
-  console.log('count', images.length);
-
   const imagesCount = images?.length;
 
   //* size c x r (c_max = 2)
@@ -180,4 +179,55 @@ export const createCollage = async (
   collage.composite(composites);
 
   await collage.toFile(outputPath);
+};
+
+export const onProcessGemini = async ({
+  req,
+  res,
+  sessionId,
+  collateImageName,
+  collatedOuputPath,
+  filePaths,
+}: {
+  req: any;
+  res: any;
+  sessionId: string;
+  collateImageName: string;
+  collatedOuputPath: string;
+  filePaths: string[];
+}) => {
+  const base64Image = encodeImageToBase64(collatedOuputPath);
+
+  const base64Full = `data:image/jpeg;base64,${base64Image}`;
+  const image1 = {
+    inlineData: {
+      mimeType: 'image/png',
+      data: base64Image,
+    },
+  };
+  const text1 = {
+    text: NEW_PROMPT,
+  };
+
+  const resultFileName = sessionId + '.json';
+
+  addNewExtractionToHistory(sessionId, {
+    collateImage: { name: collateImageName, url: collatedOuputPath },
+    inputFilePaths: filePaths,
+    result: {
+      name: resultFileName,
+      url: path.join(resultsDir, resultFileName),
+    },
+  });
+
+  res.json({ resultFileName, images: [base64Full] });
+
+  console.log('resultFileName: ', resultFileName);
+
+  const gemini_result = await generateContent(image1, text1);
+
+  if (!gemini_result) return;
+  const procResult = gemini_result.split('```json\n')[1].split('```')[0];
+
+  writeJsonToFile(resultsDir, resultFileName, JSON.stringify(procResult));
 };
