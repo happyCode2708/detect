@@ -140,7 +140,10 @@ export default function Home() {
               Clear
             </Button>
           </div>
-          <Button disabled={loading} onClick={handleSubmit}>
+          <Button
+            disabled={loading || files?.length <= 0}
+            onClick={handleSubmit}
+          >
             {loading ? (
               <div className='flex flex-row items-center'>
                 <RefreshCcw className='mr-1 animate-spin' />
