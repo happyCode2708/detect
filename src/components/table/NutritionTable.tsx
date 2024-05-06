@@ -70,6 +70,10 @@ const NutritionTable = ({ data }: { data: any }) => {
         <div className='font-bold'>Ingredients: </div>
         <p>{data?.ingredients} </p>
       </div>
+      <div>
+        <div className='font-bold'>Contain: </div>
+        <p>{data?.contain} </p>
+      </div>
     </div>
   );
 };
