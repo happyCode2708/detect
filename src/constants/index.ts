@@ -48,11 +48,11 @@ json
 "nutrients": [{"name": string, "value": float?, "uom": string, "percentDailyValue": float}],
 "note": string,
 "ingredients": string
+'contain': string?,
 }
 ]
 
 Some rules for you:
-1) Notations like "10 serving per container" should be recorded as "name": "servingPerContainer", "value": 10, "stringAfterValue": "serving per container"
 
 1) panelName: if there is text on image contain "Nutrition Facts" or "Supplement Facts". If not it should be null
 
@@ -79,4 +79,8 @@ Some rules for you:
 12) The fact panel has two or more than two different nutrition info for two different sizes of serving. Please read the image carefully to check how many sizes of serving on the the fact panel
 
 13) if you do not detect the value please leave it null
+
+ 14) Notations like "10 serving per container" should be recorded as "name": "servingPerContainer", "value": 10, "stringAfterValue": "serving per container"
+
+15) Notations like "Contain" or "May Contain" or "contains: string."  should be recorded as "name": "contain", "value": string. For example: "May contain milk" should be recorded as "name": "contain", "value": "May contain milk". For Example: "Contain: Coconut, Milk." should be recorded as "name": "contain", "value": "Coconut, Milk."
 `;
