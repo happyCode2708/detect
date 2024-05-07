@@ -9,13 +9,18 @@ import { useMutateUploadFile } from '@/queries/home';
 import { FluidContainer } from '@/components/container/FluidContainer';
 import { Result } from '@/components/result/Result';
 import { useQueryClient } from '@tanstack/react-query';
+import { PreviewImage } from '@/components/preview-image/PreviewImage';
+import { ViewListImage } from '@/components/preview-image/ViewListImage';
 
 export default function Home() {
   const [files, setFiles] = useState<any>([]);
   const [reply, setReply] = useState([]);
-  const [images, setImages] = useState<any>([]);
+  const [inputImages, setInputImages] = useState<any>([]);
+  const [procImages, setProcImages] = useState<any>([]);
+
   const [resultFileName, setResultFileName] = useState<any>();
   const [loading, setLoading] = useState(false);
+  const [previewImage, setPreviewImage] = useState<null | string>(null);
 
   const refInput = useRef() as React.RefObject<HTMLInputElement>;
   const refInterval = useRef<number | null>(null);
@@ -40,7 +45,7 @@ export default function Home() {
       },
       onSuccess: (res) => {
         const { resultFileName, images } = res;
-        setImages(images);
+        setProcImages(images);
         setResultFileName(resultFileName);
         queryClient.invalidateQueries({ queryKey: ['history'] });
       },
@@ -84,12 +89,16 @@ export default function Home() {
 
         // Only update state when all files are read
         if (fileDataUrls.length === files.length) {
-          setImages(fileDataUrls);
+          setInputImages(fileDataUrls);
         }
       };
 
       fileReader.readAsDataURL(file);
     });
+  };
+
+  const onPreviewImage = (src: any) => {
+    setPreviewImage(src);
   };
 
   useEffect(() => {
@@ -128,7 +137,7 @@ export default function Home() {
     <FluidContainer>
       <div className='flex flex-col gap-10 p-10'>
         <div className='flex flex-row items-center w-full gap-2'>
-          <div className='rounded-md p-4 border flex flex-row gap-2'>
+          <div className='rounded-md p-4 border flex flex-row gap-2 flex-1'>
             <Input
               ref={refInput}
               type='file'
@@ -160,33 +169,58 @@ export default function Home() {
           )}
         </div>
 
-        <ExtractionHistory />
+        {/* <ExtractionHistory /> */}
 
         <div className='flex flex-row gap-4'>
           <div>
-            {images.length === 1 ? (
-              <div className='w-[300px] min-w-[300px] rounded-sm border p-2'>
-                <img src={images[0]} className='w-full aspect-auto' />
-              </div>
-            ) : images.length > 1 ? (
-              <div className='grid grid-cols-2 gap-2 rounded-sm border p-2'>
-                {images?.map((image: any) => {
-                  return (
-                    <div className='w-[140px] h-[140px] border rounded-sm p-2 flex items-center justify-center'>
-                      <img
-                        src={image}
-                        className='max-w-full max-h-full object-contain object-center'
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            ) : null}
+            {inputImages?.length > 0 && (
+              <SectionWrapper title='Input Images'>
+                <ViewListImage images={inputImages} />
+              </SectionWrapper>
+            )}
+            {procImages?.length > 0 && (
+              <SectionWrapper title='Processed Images'>
+                <ViewListImage images={procImages} />
+              </SectionWrapper>
+            )}
           </div>
 
-          <Result reply={reply} />
+          {reply?.length > 0 && (
+            <div className='flex-1 overflow-hidden'>
+              <SectionWrapper title='Result'>
+                <Result reply={reply} />
+              </SectionWrapper>
+            </div>
+          )}
         </div>
       </div>
+      <PreviewImage
+        visible={Boolean(previewImage)}
+        onClose={() => setPreviewImage(null)}
+        src={previewImage}
+        size={[1000, 1000]}
+      />
     </FluidContainer>
   );
 }
+
+const SectionWrapper = ({
+  title,
+  children,
+}: {
+  title?: string;
+  children: React.ReactNode;
+}) => {
+  return (
+    <div className='p-6 relative'>
+      <div className='border rounded-md p-[10px] pt-[20px]'>
+        {title && (
+          <div className='font-bold border rounded-lg px-[8px] py-[2px] absolute top-[8px] lef-[35px] bg-white'>
+            {title}
+          </div>
+        )}
+        {children && children}
+      </div>
+    </div>
+  );
+};
