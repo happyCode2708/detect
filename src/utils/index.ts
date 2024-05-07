@@ -65,7 +65,6 @@ export function writeJsonToFile(
 export const generateContent = async (image: any, text: any) => {
   if (!(global as any)?.generativeModel) return;
 
-  const text1 = { text: 'what is the largest country?' };
   const req = {
     contents: [{ role: 'user', parts: [image, text] }],
   };
@@ -109,14 +108,14 @@ const resizeAndCenterImage = async (
 
     // Calculate the scaling factor, preserving the aspect ratio
     let scale = Math.min(max_width / width, max_height / height);
-    let newWidth = Math.round(width * scale);
-    let newHeight = Math.round(height * scale);
+    let newWidth = Math.floor(width * scale);
+    let newHeight = Math.floor(height * scale);
 
     // Adjust size if the image is slightly larger than the box due to rounding
     if (newWidth > max_width - 50 || newHeight > max_height - 50) {
-      scale *= 0.93; // Reduce slightly
-      newWidth = Math.round(width * scale);
-      newHeight = Math.round(height * scale);
+      scale *= 0.9; // Reduce slightly
+      newWidth = Math.floor(width * scale);
+      newHeight = Math.floor(height * scale);
     }
 
     // Resize and pad the image
@@ -142,7 +141,7 @@ export const createCollage = async (
   imageFilePaths: string[],
   outputPath: string
 ): Promise<void> => {
-  const boxSize: [number, number] = [900, 900];
+  const boxSize: [number, number] = [1000, 1000];
   const images = await Promise.all(
     imageFilePaths.map((imagePath) => resizeAndCenterImage(imagePath, boxSize))
   );

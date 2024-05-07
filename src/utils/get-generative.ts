@@ -18,7 +18,7 @@ export const getGenerative = () => {
 
   const vertex_ai = new VertexAI({
     project: 'vibrant-abbey-421304',
-    location: 'us-central1',
+    location: 'asia-east1',
     googleAuthOptions: {
       credentials: googleCredential,
     },

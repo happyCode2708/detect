@@ -59,19 +59,25 @@ router.post(
 
     const filePaths = files?.map((file: any) => file.path);
 
+    const isSingleFileUpload = filePaths?.length <= 0;
+
     const collateImageName = `${sessionId}.jpeg`;
 
     const collatedOuputPath = path.join(uploadsDir, collateImageName);
-    const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
+    // const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
 
     await createCollage(filePaths, collatedOuputPath);
+
+    const inputGeminiImage = isSingleFileUpload
+      ? (files[0].path as string)
+      : collatedOuputPath;
 
     onProcessGemini({
       req,
       res,
       sessionId,
       collateImageName,
-      collatedOuputPath,
+      collatedOuputPath: inputGeminiImage,
       filePaths,
     });
   }

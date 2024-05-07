@@ -16,8 +16,10 @@ const NutritionTable = ({ data }: { data: any }) => {
     <div className='pb-4'>
       <div className='text-2xl font-bold mb-2'>{data.panelName}</div>
       <div>
-        <span className='font-bold'>Calories:</span>
-        <span>{data?.amountPerServing?.value} </span>
+        <span className='font-bold'>Serving Per Container:</span>
+        <span>
+          {data?.servingPerContainer?.value} {data?.servingPerContainer?.uom}
+        </span>
       </div>
       <div>
         <span className='font-bold'>Serving Size:</span>
@@ -28,39 +30,48 @@ const NutritionTable = ({ data }: { data: any }) => {
           )}
         </span>
       </div>
+      {data?.amountPerServing && (
+        <div>
+          <span className='font-bold'>Amout Per Serving:</span>
+          <span>{data?.amountPerServing?.name} </span>
+        </div>
+      )}
       <div>
-        <span className='font-bold'>Serving Per Container:</span>
-        <span>
-          {data?.servingPerContainer?.value}{' '}
-          {data?.servingPerContainer?.stringAfterValue}
-        </span>
+        <span className='font-bold'>Calories:</span>
+        <span>{data?.calories?.value} </span>
       </div>
       <Table>
         {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
         <TableHeader>
           <TableRow>
-            <TableHead className='w-[100px]'>NAME</TableHead>
-            <TableHead>INFO</TableHead>
+            <TableHead>NAME</TableHead>
+            <TableHead>VALUE</TableHead>
+            <TableHead>UOM</TableHead>
+            <TableHead>DAILY PERCENT</TableHead>
+            <TableHead>ADDITIONAL</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {data.nutrients.map((nutrient: any, index: number) => (
             <TableRow key={index}>
-              <TableCell className='px-2 w-[250px]'>{nutrient.name}</TableCell>
-              <TableCell className='px-2 w-[400px]' key={index}>
-                {nutrient?.value}
+              <TableCell>{nutrient.name}</TableCell>
+              <TableCell key={index}>{nutrient?.value}</TableCell>
+              <TableCell>
                 {nutrient?.uom ?? <span>{nutrient?.uom}</span>}
-                {nutrient.percentDailyValue !== null && (
+              </TableCell>
+              <TableCell>
+                {![null, undefined].includes(nutrient?.percentDailyValue) && (
                   <span> ({nutrient.percentDailyValue}%)</span>
+                )}
+              </TableCell>
+              <TableCell>
+                {nutrient.endSymbol !== null && (
+                  <span> {nutrient.endSymbol}</span>
                 )}
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
-        {/* <TableRow>
-          <TableCell className='px-2 w-[250px]'>Ingredients</TableCell>
-          <TableCell className='px-2 w-[400px]'>{data?.ingredients}</TableCell>
-        </TableRow> */}
       </Table>
       <div>
         <div className='font-bold'>Note: </div>
