@@ -103,10 +103,10 @@ const NutritionTable = ({ data }: { data: any }) => {
         <div className='font-bold'>Contain: </div>
         <p>{data?.contain} </p>
       </div>
-      <div>
+      {/* <div>
         <div className='font-bold'>OCR text: </div>
         <div className='whitespace-pre-line'>{data?.ocrText} </div>
-      </div>
+      </div> */}
     </div>
   );
 };

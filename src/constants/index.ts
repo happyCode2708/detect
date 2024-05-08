@@ -7,7 +7,7 @@ json
 "calories": {"value": float?, "uom": "calories"}
 "servingSize": {"description": string?, "value": string, "uom": string},
 "servingPerContainer": {"value": float? or number?, "uom": string},
-"nutrients": [{"name": string, "quantityComparisonOperator": string?, "value": float?, "uom": string, "quantityDescription": string?, "dailyPercentComparisonOperator": string?, "percentDailyValue": float,  "footnoteIndicator": string?, }],
+"nutrients": [{"name": string, "quantityComparisonOperator": string?, "value": float?, "uom": string, "quantityDescription": string?, "dailyPercentComparisonOperator": string?, "percentDailyValue": float,  "footnoteIndicator": string? }],
 "footnote": {
   value: string?,
   footnoteIndicatorList: string[],
@@ -15,7 +15,12 @@ json
 "ingredients": string?,
 "contain": string?,
 "totalSugars": string?,
-"ocrText": string,
+"ocrText":
+  {"ofactPanel": 
+    {
+      "oNutrient": [{"oName": string, "oCompletedPhrase": string}]
+    }
+  },
 }
 ]
 
@@ -55,7 +60,9 @@ Some rules for you:
 
 
 15) common rules:
-+ nutrient list usually start with some nutrient such as "Total Carbohydrate", "Vitamin A", ... Let's list nutrient from them first if possible
++ "nutrients" is an array that usually start with some nutrients such as "Total Carbohydrate", "Vitamin A", ... Let's list nutrient from them first if possible.
++ Read "Fact Panel" from left to right and from top to bottom.
++ content in prompt can be similar to typescript and nodejs syntax.
 
 16) "servingSize" rules:
 + "servingSize" content's first format = value + uom
@@ -104,9 +111,14 @@ Ex 1: "20mcg(800 IU)" should be recorded as "nutrient.quantityDescription": "800
 + "totalSugars" is the whole line of content in the fact panel
 Ex 1: "Total Sugars 1000mg 50%**" recorded as "totalSugars": "Total Sugars 1000mg 50%**"
 
-25) "ocrText" rules:
-+ "ocrText" is all text info in side fact panel (nutrition facts or supplement facts)
+25) "ocrText.ofactPanel.oNutrients" rules:
++ "ocrText.ofactPanel.oNutrients" is all text info of nutrients in side fact panel (nutrition facts or supplement facts)
++ "ocrText.ofactPanel.oNutrients[number].oCompletedPhrase" is a whole text info of a nutrient.
+Ex 1: "Total Sugars 1000mg <1%**" recorded as "ocrText.ofactPanel.oNutrients" = [{"oName":"Total Sugars",  "oCompletedPhrase": "Total Sugars 1000mg <1%**"},...] .
 `;
+// 26) Validation Process:
+// + Please compare "ocrText.factPanel.ocrNutrients[number].oCompletedPhrase" and "nutrients[number].concat" when they have the same field value of "name" to correct possible reading mistakes.
+// And Result from "ocrText.factPanel.ocrNutrients[number].oCompletedPhrase" is more reliable than "nutrients[number].concat".
 
 // Ex 3: "Total Sugars 1000mg 50%*" recorded as "totalSugars": "Total Sugars 1000mg 50%*"
 // 18) "nutrient.quantityComparisonOperator":
@@ -120,3 +132,19 @@ Ex 1: "Total Sugars 1000mg 50%**" recorded as "totalSugars": "Total Sugars 1000m
 
 // 19) "nutrient.dailyPercentComparisonOperator" rules:
 // Ex 1:"<1%" should be recoreded as "nutrient.dailyPercentComparisonOperator": "<".
+
+// + compare "ocrText.factPanel.ocrNutrients[number].completedPhrase" and "nutrients[number].completedPhrase" when they have the same field value of "name" to correct possible reading mistakes.
+// And Result from "ocrText.factPanel.ocrNutrients[number].completedPhrase" is more reliable than "nutrients[number].completedPhrase".
+
+// 15) "nutrients[number].concat" rules:
+// + "nutrients[number].contact" is the sum of all field's values in a nutrient item.
+// + "nutrients[number].concat" = String.concat("nutrients[number].name" ," ", "nutrients[number].quantityComparisonOperator", "nutrients[number].value", "nutrients[number].uom", " ", "nutrients[number].dailyPercentComparisonOperator", "nutrients[number].percentDailyValue", "nutrients[number].footnoteIndicator") with null = ""
+// Ex 1: "nutrients[number]" = {
+//     "name": "Vitamin F",
+//     "quantityComparisonOperator": null,
+//     "value": 20,
+//     "uom": "mg",
+//     "dailyPercentComparisonOperator": "<",
+//     "percentDailyValue": 10,
+//     "footnoteIndicator": "*"
+//   } will be changed to "nutrients[number] = {...nutrients[number], "concat": "Vitamin F  20mg  <10%*"},
