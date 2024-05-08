@@ -58,23 +58,22 @@ Some rules for you:
 15) common constants:
 + FOOTNOTE_INDICATORS = ["*", "**", "†"]
 
-
-15) common rules:
+16) common rules:
 + "nutrients" is an array that usually start with some nutrients such as "Total Carbohydrate", "Vitamin A", ... Let's list nutrient from them first if possible.
 + Read "Fact Panel" from left to right and from top to bottom.
 + content in prompt can be similar to typescript and nodejs syntax.
 
-16) "servingSize" rules:
+17) "servingSize" rules:
 + "servingSize" content's first format = value + uom
 + "servingSize" content's second format = description(value + uom)
 Ex 1: "10 tablespoons(80g)" should be recorded as "servingSize": {"description": "10 tablespoons", "value": "80", "uom": "g"}
 Ex 2: "10 tablespoons" should be recorded as "servingSize": {"value": 10, "uom": "tablespoons"}
 
-17) "amountPerServing.name" rules:
+18) "amountPerServing.name" rules:
 + is a text and usually stay above the "calories value number",
 Ex 1: "Per container", "Per serving"
 
-18) "nutrient.quantityComparisonOperator" and "nutrient.dailyPercentComparisonOperator" rules:
+19) "nutrient.quantityComparisonOperator" and "nutrient.dailyPercentComparisonOperator" rules:
 + "nutrient.quantityComparisonOperator" is a comparion operator at the left side of "nutrient.value" and "nutrient.uom"
 + "nutrient.dailyPercentComparisonOperator" is a comparion operator at the left side of "nutrient.percentDailyValue".
 + "nutrient.dailyPercentComparisonOperator" is not "nutrient.quantityComparisonOperator".
