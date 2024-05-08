@@ -1,4 +1,4 @@
-export const NEW_PROMPT = `Carefully examine the image provided and created a neatly formatted JSON output containing a list of objects only if info available on image and Each object should contain:
+Carefully examine the image provided and created a neatly formatted JSON output containing a list of objects only if info available on image and Each object should contain:
 json
 [
 {
@@ -12,17 +12,12 @@ json
   value: string?,
   footnoteIndicatorList: string[],
 }
-"ingredients": string?,
-"contain": string?,
-"totalSugars": string?,
-"ocrText": string,
-}
+"ingredients": string
+'contain': string?,pro
+}page
 ]
 
-
-
 Some rules for you:
-
 1) panelName: if there is text on image contain "Nutrition Facts" or "Supplement Facts". If not it should be null
 
 2) Extract exact numbers provided. No calculations or approximations are permitted.
@@ -50,73 +45,41 @@ Some rules for you:
 14) The fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information. Let's to break down and separate into two different fact panels one is for 'per serving'
  and other for 'per container' just if "amoutPerServing.name" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "ingredients" and "contain".
 
-15) common constants:
-+ FOOTNOTE_INDICATORS = ["*", "**", "†"]
-
-
-15) common rules:
-+ nutrient list usually start with some nutrient such as "Total Carbohydrate", "Vitamin A", ... Let's list nutrient from them first if possible
-
-16) "servingSize" rules:
+15) "servingSize" rules:
 + "servingSize" content's first format = value + uom
 + "servingSize" content's second format = description(value + uom)
 Ex 1: "10 tablespoons(80g)" should be recorded as "servingSize": {"description": "10 tablespoons", "value": "80", "uom": "g"}
 Ex 2: "10 tablespoons" should be recorded as "servingSize": {"value": 10, "uom": "tablespoons"}
 
-17) "amountPerServing.name" rules:
+15) "amountPerServing.name" rules:
 + is a text and usually stay above the "calories value number",
 Ex 1: "Per container", "Per serving"
 
-18) "nutrient.quantityComparisonOperator" and "nutrient.dailyPercentComparisonOperator" rules:
-+ "nutrient.quantityComparisonOperator" is a comparion operator at the left side of "nutrient.value" and "nutrient.uom"
-+ "nutrient.dailyPercentComparisonOperator" is a comparion operator at the left side of "nutrient.percentDailyValue".
-+ "nutrient.dailyPercentComparisonOperator" is not "nutrient.quantityComparisonOperator".
-Ex 1: "10g    <10%" should be recoreded as {"quantityComparisonOperator": null, "dailyPercentComparisonOperator": "<", ...}
-Ex 2: "<10g    10%" should be recoreded as {"quantityComparisonOperator": "<", "dailyPercentComparisonOperator": null, ...}
-Ex 3: "<10g    <10%" should be recoreded as {"quantityComparisonOperator": "<", "dailyPercentComparisonOperator": "<", ...}
+16) "nutrient.quantityComparisonOperator" rules:
++ "nutrient.quantityComparisonOperator" is a comparion operator at the left side of "nutrient.value".
+Ex: 1: "<1g" should be recoreded as "nutrient.quantityComparisonOperator": "<".
 
-20) "footnote" rules: 
+17) "nutrient.dailyPercentComparisonOperator" rules:
++ "nutrient.comparisonOperator" is a comparion operator at the left side of "nutrient.percentDailyValue".
+Ex: 1: "<1%" should be recoreded as "nutrient.dailyPercentComparisonOperator": "<".
+
+18) "footnote" rules: 
 + "footnote" section is in the bottom part of fact panel (the note may contain some special charactor "*", "+", "**"). 
 + "footnote.footnoteIndicatorList" is a list of special characters found in "footnote.value"
 + "footnote.value" contains all specials symbol from "footnote.footnoteIndicatorList"
-+ "footnote.footnoteIndicatorList" only contain character from FOOTNOTE_INDICATORS
 Ex 1: "**Percent Value *Based on" should be recorded as  "footnote.value":"**Percent Value *Based on", "footnote.footnoteIndicatorList": ["*", "**"].
 Ex 2: "*Daily Value not established." should be recorded as "footnote.value": "*Daily Value not established.", "footnote.footnoteIndicatorList": ["*"]. 
-Ex 3: "†Daily Value not established." should be recorded as "footnote.value": "†Daily Value not established.", "footnote.footnoteIndicatorList": ["†"].  
+Ex 2: "†Daily Value not established." should be recorded as "footnote.value": "†Daily Value not established.", "footnote.footnoteIndicatorList": ["†"].  
 
-21) "nutrient.footnodeIndicator" rules:
+19) "nutrient.footnodeIndicator" rules:
 + "footnote.footnoteIndicatorList" is a list of special character or a group of special characters such as "*", "**", "+"
 + "footnote.footnoteIndicatorList" must contain "nutrient.footnodeIndicator",
-+ "footnote.footnodeIndicator" is from FOOTNOTE_INDICATORS
-Ex 1: "10g <10%**" should be recorded as {"footnoteIndicator": "**", ...}
-Ex 2: "10mg ***" should be recorded as {"footnoteIndicator": "***", ...}
-Ex 3: "15mg 0%†" should be recorded as {"footnoteIndicator": "†", ...}
-Ex 4: "30mg(400 UI)  **" should be recorded as {"footnoteIndicator": "**", ...}
+Ex 1: "<10%**" should be recorded as "footnote.footnoteIndicatorList": "**"
+Ex 2: "***" should be recorded as "footnote.footnoteIndicatorList": "***"
 
-22) "nutrient.name" rules:
+20) "nutrient.name" rules:
 Ex 1: "Vitamin K2(as Naturally Derived MK-7 [Menaquinone-7)" should be recorded as "name": Vitamin K2(as Naturally Derived MK-7 [Menaquinone-7)
 
-23) "nutrient.quantityDescription" rules:
+21) "nutrient.quantityDescription" rules:
 + "nutrient.quantityDescription" is additional text right next to "nutrient.uom" and inside the parentheses, and does not include parentheses.
 Ex 1: "20mcg(800 IU)" should be recorded as "nutrient.quantityDescription": "800 IU".
-
-24) "totalSugars" rules:
-+ "totalSugars" is the whole line of content in the fact panel
-Ex 1: "Total Sugars 1000mg 50%**" recorded as "totalSugars": "Total Sugars 1000mg 50%**"
-
-25) "ocrText" rules:
-+ "ocrText" is all text info in side fact panel (nutrition facts or supplement facts)
-`;
-
-// Ex 3: "Total Sugars 1000mg 50%*" recorded as "totalSugars": "Total Sugars 1000mg 50%*"
-// 18) "nutrient.quantityComparisonOperator":
-// + "nutrient.quantityComparisonOperator" is a comparion operator at the left side of "nutrient.value" and "nutrient.uom"
-// Ex 1: "<1g" should be recoreded as "nutrient.quantityComparisonOperator": "<".
-
-// 19) "nutrient.dailyPercentComparisonOperator" rules:
-// + "nutrient.dailyPercentComparisonOperator" is a comparion operator at the left side of "nutrient.percentDailyValue".
-// + "nutrient.dailyPercentComparisonOperator" is not "nutrient.quantityComparisonOperator".
-// Ex 1:"<1%" should be recoreded as "nutrient.dailyPercentComparisonOperator": "<".
-
-// 19) "nutrient.dailyPercentComparisonOperator" rules:
-// Ex 1:"<1%" should be recoreded as "nutrient.dailyPercentComparisonOperator": "<".

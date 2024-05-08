@@ -113,7 +113,7 @@ const resizeAndCenterImage = async (
 
     // Adjust size if the image is slightly larger than the box due to rounding
     if (newWidth > max_width - 50 || newHeight > max_height - 50) {
-      scale *= 0.9; // Reduce slightly
+      scale *= 0.96; // Reduce slightly
       newWidth = Math.floor(width * scale);
       newHeight = Math.floor(height * scale);
     }
@@ -141,7 +141,7 @@ export const createCollage = async (
   imageFilePaths: string[],
   outputPath: string
 ): Promise<void> => {
-  const boxSize: [number, number] = [1000, 1000];
+  const boxSize: [number, number] = [1300, 1300];
   const images = await Promise.all(
     imageFilePaths.map((imagePath) => resizeAndCenterImage(imagePath, boxSize))
   );

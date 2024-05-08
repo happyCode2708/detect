@@ -28,7 +28,7 @@ export const getGenerative = () => {
     model,
     generationConfig: {
       maxOutputTokens: 8192,
-      temperature: 0.1,
+      temperature: 0.3,
       topP: 0.95,
     },
     safetySettings: [

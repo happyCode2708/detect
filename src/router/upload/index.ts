@@ -59,7 +59,7 @@ router.post(
 
     const filePaths = files?.map((file: any) => file.path);
 
-    const isSingleFileUpload = filePaths?.length <= 0;
+    const isSingleFileUpload = filePaths?.length === 1;
 
     const collateImageName = `${sessionId}.jpeg`;
 
