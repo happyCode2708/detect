@@ -11,7 +11,7 @@ json
     "primarySize": string?,
     "sizeUom": string?,
     "primarySizeText" string?,
-    "factPanels": [
+    "factPanels":[
       {
       "panelName": string ,
       "amountPerServing": {"name": string?},
@@ -27,7 +27,7 @@ json
       "contain": string?,
       "totalSugars": string?,
       }
-    ]
+    ]?
   }
 }
 
@@ -123,6 +123,7 @@ Ex 1: "20mcg(800 IU)" should be recorded as "nutrient.quantityDescription": "800
 
 26) "product.website" rules:
 + find website link
++ "product.website" exlcude "nongmoproject.org"
 
 27) "product.manufacturerName" rules:
 + find manufacturer name
@@ -142,6 +143,10 @@ Ex 1: "AUGUST/1990" should be recorded as "product.manufactureDate":"AUGUST/1990
 Ex 1: "Net 3 Qt. (96 fl. oz.) 2.835L" should be recorded as {"primarySize": 96, "sizeUom": "fl. oz.", "primarySizeText": "Net 3 Qt."}
 Ex 2: "64 FL OZ(2QTs) 1.89L should be recorded as {"primarySize": 64, "sizeUom": "FL OZ", "primarySizeText": "64 FL OZ"}
 Ex 3: "Net WT 5.25 OZ 150g should be recorded as {"primarySize": 5.25, "sizeUom": "OZ", "primarySizeText": "5.25 OZ"}
+
+31) "product.factPanels" rules:
++ if there is no "nutrition facts" or "supplement facts" read by ocr on provided image "product.factPanels" must be [](empty array)
++ if provided image does not contain "Nutrition Facts" or "Supplement Facts", so "product.factPanels" must be [](empty array)
 `;
 // 26) Validation Process:
 // + Please compare "ocrText.factPanel.ocrNutrients[number].oCompletedPhrase" and "nutrients[number].concat" when they have the same field value of "name" to correct possible reading mistakes.
