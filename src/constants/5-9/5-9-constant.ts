@@ -1,32 +1,22 @@
 export const NEW_PROMPT = `Carefully examine the image provided and created a neatly formatted JSON output containing a list of objects only if info available on image and Each object should contain:
 json
+[
 {
-  "product": {
-    "productName": string?,
-    "website": string?,
-    "upc12": string?,
-    "manufacturerName": string?,
-    "manufacturerAddress": string?,
-    "manufactureDate": string?,
-    "factPanels": [
-      {
-      "panelName": string ,
-      "amountPerServing": {"name": string?},
-      "calories": {"value": float?, "uom": "calories"}
-      "servingSize": {"description": string?, "value": string, "uom": string},
-      "servingPerContainer": {"value": float? or number?, "uom": string},
-      "nutrients": [{"name": string, "quantityComparisonOperator": string?, "value": float?, "uom": string, "quantityDescription": string?, "dailyPercentComparisonOperator": string?, "percentDailyValue": float,  "footnoteIndicator": string? }],
-      "footnote": {
-        "value": string?,
-        "footnoteIndicatorList": string[],
-      }
-      "ingredients": string?,
-      "contain": string?,
-      "totalSugars": string?,
-      }
-    ]
-  }
+"panelName": string ,
+"amountPerServing": {"name": string?},
+"calories": {"value": float?, "uom": "calories"}
+"servingSize": {"description": string?, "value": string, "uom": string},
+"servingPerContainer": {"value": float? or number?, "uom": string},
+"nutrients": [{"name": string, "quantityComparisonOperator": string?, "value": float?, "uom": string, "quantityDescription": string?, "dailyPercentComparisonOperator": string?, "percentDailyValue": float,  "footnoteIndicator": string? }],
+"footnote": {
+  value: string?,
+  footnoteIndicatorList: string[],
 }
+"ingredients": string?,
+"contain": string?,
+"totalSugars": string?,
+}
+]
 
 Some rules for you:
 
@@ -111,26 +101,6 @@ Ex 1: "Vitamin K2(as Naturally Derived MK-7 [Menaquinone-7)" should be recorded 
 23) "nutrient.quantityDescription" rules:
 + "nutrient.quantityDescription" is additional text right next to "nutrient.uom" and inside the parentheses, and does not include parentheses.
 Ex 1: "20mcg(800 IU)" should be recorded as "nutrient.quantityDescription": "800 IU".
-
-24) "product.productName" rules:
-+ extract possible name of product from given image.
-
-25) "product.upc12" rules:
-+ extract possible "upc12" or "UPC-A" 's barcode number (with 12 digit)  of product from given image.
-
-26) "product.website" rules:
-+ find website link
-
-27) "product.manufacturerName" rules:
-+ find manufacturer name
-
-28) "product.manufacturerAddress" rules:
-+ find manufacturer's address
-
-29) "product.manufactureDate" rules:
-+ find manufacture date of the product image
-+ "product.manufactureDate" is usually in date format
-Ex 1: "AUGUST/1990" should be recorded as "product.manufactureDate":"AUGUST/1990"
 `;
 // 26) Validation Process:
 // + Please compare "ocrText.factPanel.ocrNutrients[number].oCompletedPhrase" and "nutrients[number].concat" when they have the same field value of "name" to correct possible reading mistakes.

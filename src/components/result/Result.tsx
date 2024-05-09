@@ -2,8 +2,8 @@ import NutritionTable from '@/components/table/NutritionTable';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-export const Result = ({ reply }: { reply: any }) => {
-  if (!reply || reply?.length <= 0) return null;
+export const Result = ({ productInfo }: { productInfo: any }) => {
+  if (!productInfo) return null;
 
   return (
     <Tabs defaultValue='table' className='w-full overflow-hidden'>
@@ -12,21 +12,23 @@ export const Result = ({ reply }: { reply: any }) => {
         <TabsTrigger value='json'>Json</TabsTrigger>
       </TabsList>
       <TabsContent value='table'>
-        <TableResult reply={reply} />
+        <TableResult productInfo={productInfo} />
       </TabsContent>
       <TabsContent value='json'>
-        <JsonRender reply={reply} />
+        <JsonRender productInfo={productInfo} />
       </TabsContent>
     </Tabs>
   );
 };
 
-const TableResult = ({ reply }: { reply: any }) => {
+const TableResult = ({ productInfo }: { productInfo: any }) => {
   return (
     <>
-      {reply && reply?.length > 0 ? (
+      {productInfo ? (
         <div className='p-4 border rounded-md flex-1 overflow-auto max-h-[500px]'>
-          {reply.map((labelData: any, idx: number) => {
+          {/* {repla} */}
+          <MetaInfo productInfo={productInfo} />
+          {productInfo?.factPanels?.map((labelData: any, idx: number) => {
             return <NutritionTable data={labelData} key={idx} />;
           })}
         </div>
@@ -35,10 +37,22 @@ const TableResult = ({ reply }: { reply: any }) => {
   );
 };
 
-const JsonRender = ({ reply }: { reply: any }) => {
+const JsonRender = ({ productInfo }: { productInfo: any }) => {
   return (
     <pre className='bg-zinc-100 p-4 rounded-sm max-h-[500px] overflow-auto'>
-      {JSON.stringify(reply, null, 2)}
+      {JSON.stringify(productInfo, null, 2)}
     </pre>
   );
+};
+
+const MetaInfo = ({ productInfo }: { productInfo: any }) => {
+  const { factPanels, ...metaInfo } = productInfo;
+  return Object.entries(metaInfo)?.map(([key, value]) => {
+    return (
+      <div>
+        <div className='font-bold'>{key}: </div>
+        <div>{value as string} </div>
+      </div>
+    );
+  });
 };

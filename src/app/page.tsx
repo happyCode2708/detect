@@ -14,7 +14,7 @@ import { ViewListImage } from '@/components/preview-image/ViewListImage';
 
 export default function Home() {
   const [files, setFiles] = useState<any>([]);
-  const [reply, setReply] = useState([]);
+  const [productInfo, setProductInfo] = useState(null);
   const [inputImages, setInputImages] = useState<any>([]);
   const [procImages, setProcImages] = useState<any>([]);
 
@@ -38,7 +38,7 @@ export default function Home() {
     });
 
     setLoading(true);
-    setReply([]);
+    setProductInfo(null);
     mutationUploadFile.mutate(formData, {
       onError: (e) => {
         console.log(e);
@@ -55,7 +55,7 @@ export default function Home() {
   const onCancel = () => {
     setLoading(false);
     setResultFileName('');
-    setReply([]);
+    setProductInfo(null);
     if (refInterval.current) {
       window.clearInterval(refInterval.current);
     }
@@ -115,7 +115,7 @@ export default function Home() {
             );
           }
           const data = await response.json();
-          setReply(JSON.parse(data));
+          setProductInfo(JSON.parse(data)?.product);
           if (refInterval.current) {
             clearInterval(refInterval.current);
           }
@@ -185,10 +185,10 @@ export default function Home() {
             )}
           </div>
 
-          {reply?.length > 0 && (
+          {productInfo && (
             <div className='flex-1 overflow-hidden'>
               <SectionWrapper title='Result'>
-                <Result reply={reply} />
+                <Result productInfo={productInfo} />
               </SectionWrapper>
             </div>
           )}
