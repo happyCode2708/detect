@@ -8,6 +8,9 @@ json
     "manufacturerName": string?,
     "manufacturerAddress": string?,
     "manufactureDate": string?,
+    "primarySize": string?,
+    "sizeUom": string?,
+    "primarySizeText" string?,
     "factPanels": [
       {
       "panelName": string ,
@@ -131,6 +134,14 @@ Ex 1: "20mcg(800 IU)" should be recorded as "nutrient.quantityDescription": "800
 + find manufacture date of the product image
 + "product.manufactureDate" is usually in date format
 Ex 1: "AUGUST/1990" should be recorded as "product.manufactureDate":"AUGUST/1990"
+
+30) "product.primarySize" and "product.sizeUom" and "product.primarySizeText"
++ "product.primarySize" is size of a unit
++ "product.primarySize" is a quantity measurement of product
++ priority measurement for liquid is "fl. oz." or "fl oz".
+Ex 1: "Net 3 Qt. (96 fl. oz.) 2.835L" should be recorded as {"primarySize": 96, "sizeUom": "fl. oz.", "primarySizeText": "Net 3 Qt."}
+Ex 2: "64 FL OZ(2QTs) 1.89L should be recorded as {"primarySize": 64, "sizeUom": "FL OZ", "primarySizeText": "64 FL OZ"}
+Ex 3: "Net WT 5.25 OZ 150g should be recorded as {"primarySize": 5.25, "sizeUom": "OZ", "primarySizeText": "5.25 OZ"}
 `;
 // 26) Validation Process:
 // + Please compare "ocrText.factPanel.ocrNutrients[number].oCompletedPhrase" and "nutrients[number].concat" when they have the same field value of "name" to correct possible reading mistakes.
