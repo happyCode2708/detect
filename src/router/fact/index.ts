@@ -15,6 +15,10 @@ router.get('/get-result/:filename', (req, res) => {
 
   // Construct the full file path
   const filePath = path.join(resultsDir, req.params.filename);
+  const fullResultfilePath = path.join(
+    resultsDir,
+    'full-' + req.params.filename
+  );
 
   fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
