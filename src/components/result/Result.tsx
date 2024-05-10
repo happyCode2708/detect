@@ -46,13 +46,17 @@ const JsonRender = ({ productInfo }: { productInfo: any }) => {
 };
 
 const MetaInfo = ({ productInfo }: { productInfo: any }) => {
-  const { factPanels, ...metaInfo } = productInfo;
-  return Object.entries(metaInfo)?.map(([key, value]) => {
-    return (
-      <div>
-        <div className='font-bold'>{key}: </div>
-        <div>{value as string} </div>
-      </div>
-    );
-  });
+  const { factPanels, ocrText, isFactPanelLooked, ...metaInfo } = productInfo;
+  return Object.entries(metaInfo)?.map(
+    ([key, value]: [key: string, value: any]) => {
+      if (!value) return null;
+
+      return (
+        <div key={key}>
+          <span className='font-bold'>{key}: </span>
+          <span>{value}</span>
+        </div>
+      );
+    }
+  );
 };

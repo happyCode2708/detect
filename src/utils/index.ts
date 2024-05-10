@@ -227,6 +227,12 @@ export const onProcessGemini = async ({
 
   if (!gemini_result) return;
   const procResult = gemini_result.split('```json\n')[1].split('```')[0];
+  const fullResult = gemini_result;
 
   writeJsonToFile(resultsDir, resultFileName, JSON.stringify(procResult));
+  writeJsonToFile(
+    resultsDir,
+    'full-' + resultFileName,
+    JSON.stringify(fullResult)
+  );
 };
