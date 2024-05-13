@@ -3,7 +3,6 @@ json
 {
   "product": {
     "isFactPanelGoodToRead": [{"answer": string},...],
-    "factPanelsDebug": string,
     "factPanels": null or  [
       {
         "panelName": string ,

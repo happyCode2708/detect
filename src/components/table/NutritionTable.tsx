@@ -53,34 +53,45 @@ const NutritionTable = ({ data }: { data: any }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.nutrients.map((nutrient: any, index: number) => (
-            <TableRow key={index}>
-              <TableCell>{nutrient.name}</TableCell>
-              <TableCell key={index}>
-                {![null, undefined].includes(
-                  nutrient?.quantityComparisonOperator
-                ) && <span>{nutrient.quantityComparisonOperator}</span>}
-                {nutrient?.value}
-                {nutrient?.uom ?? <span>{nutrient?.uom}</span>}
-                {![null, undefined].includes(nutrient?.quantityDescription) && (
-                  <span>({nutrient?.quantityDescription})</span>
-                )}
-              </TableCell>
-              <TableCell>
-                {![null, undefined].includes(
-                  nutrient?.dailyPercentComparisonOperator
-                ) && <span>{nutrient.dailyPercentComparisonOperator}</span>}
-                {![null, undefined].includes(nutrient?.percentDailyValue) && (
-                  <span> {nutrient.percentDailyValue}%</span>
-                )}
-              </TableCell>
-              <TableCell>
-                {nutrient.footnoteIndicator !== null && (
-                  <span> {nutrient.footnoteIndicator}</span>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
+          {data.nutrients.map((nutrient: any, index: number) => {
+            return (
+              <>
+                <TableRow key={index}>
+                  <TableCell>
+                    <div>{nutrient.name}</div>
+                    {nutrient?.additionalRow?.length > 0 && (
+                      <div className='pl-10 pt-4'>
+                        {nutrient?.additionalRow.join('')}
+                      </div>
+                    )}
+                  </TableCell>
+                  <TableCell key={index}>
+                    {![null, undefined].includes(
+                      nutrient?.quantityComparisonOperator
+                    ) && <span>{nutrient.quantityComparisonOperator}</span>}
+                    {nutrient?.value}
+                    {nutrient?.uom ?? <span>{nutrient?.uom}</span>}
+                    {![null, undefined].includes(
+                      nutrient?.quantityDescription
+                    ) && <span>({nutrient?.quantityDescription})</span>}
+                  </TableCell>
+                  <TableCell>
+                    {![null, undefined].includes(
+                      nutrient?.dailyPercentComparisonOperator
+                    ) && <span>{nutrient.dailyPercentComparisonOperator}</span>}
+                    {![null, undefined].includes(
+                      nutrient?.percentDailyValue
+                    ) && <span> {nutrient.percentDailyValue}%</span>}
+                  </TableCell>
+                  <TableCell>
+                    {nutrient.footnoteIndicator !== null && (
+                      <span> {nutrient.footnoteIndicator}</span>
+                    )}
+                  </TableCell>
+                </TableRow>
+              </>
+            );
+          })}
         </TableBody>
       </Table>
       <div>
@@ -95,7 +106,14 @@ const NutritionTable = ({ data }: { data: any }) => {
           ))}
         </ul>
       </div>
-
+      <div>
+        <div className='font-bold'>Ingredients: </div>
+        <p>{data?.ingredients} </p>
+      </div>
+      <div>
+        <div className='font-bold'>Contain: </div>
+        <p>{data?.contain} </p>
+      </div>
       {/* <div>
         <div className='font-bold'>OCR text: </div>
         <div className='whitespace-pre-line'>{data?.ocrText} </div>
