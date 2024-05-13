@@ -23,10 +23,22 @@ json
             "footnoteIndicator": string?,
           }
         ],
+        "dietaryIngredients": [
+          {
+            "name": string, 
+            "ingredientDescriptor": string,
+            "quantityComparisonOperator": string?, value: float?, uom: string, 
+            "quantityDescription": string?,
+            "dailyPercentComparisonOperator": string?, 
+            "percentDailyValue": float,  
+            "footnoteIndicator": string?,
+          },
+        ],
         "footnote": {
           "value": string?,
           "footnoteIndicatorList": string[],
         },
+        "footnotedebug": "foot blend is a nutrient and you misread it as footnote. can you help me create a prompt sentences to tell yourself next time to know it not the footnote?,
       }
     ],
     "ingredientsGroup": [{"ingredients": string}],
@@ -57,6 +69,7 @@ Some common rules:
 + "nutrients" is an array that usually start with some nutrients such as "Total Carbohydrate", "Vitamin A", ... Let's list nutrient from them first if possible.
 + Read "Fact Panel" from left to right and from top to bottom.
 + content in prompt can be similar to typescript and nodejs syntax.
++ be careful the last "nutrient row" could be misread to be a part of "footnote". Remember "footnote" content ususally about "Daily value" or "percent daily value" note.
 
 Some rule for you:
 1) "product.isFactPanelGoodToRead" = array of answers of all below questions:
@@ -77,12 +90,15 @@ Ex 1: "10 tablespoons(80g)" = {servingSize: {"description": "10 tablespoons", "v
 Ex 2: "10 tablespoons" = {servingSize: {"value": 10, "uom": "tablespoons"}}
 
 5) "footnote":
-+ "footnote" section is in the bottom part of fact panel (the note may contain some special characters from FOOTNOTE_INDICATORS).
++ "footnote" must be the last part of fact panel (the note may contain some special characters from FOOTNOTE_INDICATORS),
+and must be a note contain "Daily Value....", or "Not a significant source...".
++ "footnote" is only one section, and is not multiple sections.
 + "footnote.footnoteIndicatorList" is a list of special characters found in "footnote.value"
 + "footnote.value" contains all specials symbol from "footnote.footnoteIndicatorList"
 + "footnote.footnoteIndicatorList" only contain character from FOOTNOTE_INDICATORS
-Ex 1: "**Percent Value *Based on" = {footnote: {value :"**Percent Value *Based on", footnoteIndicatorList: ["*", "**"]}}
-Ex 2: "*Daily Value not establnished." = {footnote: {value: "*Daily Value not established.", footnoteIndicatorList": ["*"]}}
+
+Ex 1: "**Not a significant source of saturated fat, trans fat. *Daily Value not established. = {footnote: {value :"**Not a significant source of saturated fat, trans fat. *Daily Value not established.", footnoteIndicatorList: ["*", "**"]}}
+Ex 2: "*Daily Value not established." = {footnote: {value: "*Daily Value not established.", footnoteIndicatorList": ["*"]}}
 Ex 3: "†Daily Value not established." = {footnote: {value: "†Daily Value not established.", footnoteIndicatorList": ["†"]}}
 Ex 4: "Not a significant source of saturated fat, trans fat." = {footnote:{value: "Not a significant source of saturated fat, trans fat.", footnoteIndicatorList: null}}
 
@@ -105,6 +121,15 @@ Ex 3: "<10g    <10%" ={quantityComparisonOperator: "<", dailyPercentComparisonOp
 + is additional text right next to "nutrient.uom" and inside the parentheses, and does not include parentheses.
 Ex 1: "20mcg(800 IU)" = {quantityDescription: "800 IU"}
 Ex 2: "20mcg DFE(800mcg L-5-MTHF) = {quantityDescription: "800mcg L-5-MTHF"}
+
+
+11) "dietaryIngredients" rules:
++ "dietaryIngredients" is a list of ingredients or a list of ingredient group usually that each "dietaryIngredient" item include "dietaryIngredients.name" and "dietaryIngredients.ingredientDescriptor".
++ and "dietaryIngredients.ingredientDescriptor" usually a text show a list of ingredients that make up an "dietaryIngredient" item.
+
+12) "dietaryIngredients.descriptor" rules:
++ "dietaryIngredients.descriptor" could be the text that is intended and appear on the row below a "dietaryIngredients" item.
++ "dietaryIngredients.descriptor" could also be the text inside the parentheses right next to "dietaryIngredients.name"
 
 11) "ingredients":
 + usually appear below or next to the nutrition panel and start with "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "Other Ingredients:".
@@ -144,11 +169,12 @@ Ex 2: "Contain: Coconut, Milk." should be recorded as {"contain": "Coconut, Milk
 
 
 20) "product.factPanels.nutrients.descriptor" rules:
-+ the text that is intended and appear on the next row at below of "nutrient name" is its "additionalRow" item for a nutrient should be added to "product.factPanels.nutrients.additionalRow" list.
-+ "nutrients.descriptor" is also the text inside the parentheses right next to "nutrients.name"
++ "nutrients.descriptor" could be the text that is intended and appear on the row below a nutrient.
++ "nutrients.descriptor" could also be the text inside the parentheses right next to "nutrients.name"
 
 21) "product.factPanels.nutrients.name" rule:
 + "nutrients.name" is a name of nutrient sometimes include the text closed inside the parentheses.
++ "nutrients.name" sometimes start with a special symbol or its name is bold and maybe a note just like name of an ingredient
 Ex 1: "Vitamin K2(as Naturally Derived MK-7 [Menaquinone-7)" should be recorded as {"name": "Vitamin K2", "descriptor": "as Naturally Derived MK-7 [Menaquinone-7": ,...}
 Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medium Chain Triglyceride (MCT) Oil", ...} 
 
