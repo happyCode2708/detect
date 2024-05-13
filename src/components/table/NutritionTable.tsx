@@ -90,6 +90,56 @@ const NutritionTable = ({ data }: { data: any }) => {
               </>
             );
           })}
+          {data.dietaryIngredients?.length > 0 && (
+            <>
+              <TableRow>
+                <TableCell className='h-[7px] w-full bg-black'></TableCell>
+                <TableCell className='h-[7px] w-full bg-black'></TableCell>
+                <TableCell className='h-[7px] w-full bg-black'></TableCell>
+                <TableCell className='h-[7px] w-full bg-black'></TableCell>
+              </TableRow>
+
+              {data.dietaryIngredients?.map((nutrient: any, index: number) => {
+                return (
+                  <>
+                    <TableRow key={index}>
+                      <TableCell>
+                        <span>{nutrient.name}</span>
+                        {nutrient?.ingredientDescriptor && (
+                          <span>({nutrient?.ingredientDescriptor})</span>
+                        )}
+                      </TableCell>
+                      <TableCell key={index}>
+                        {![null, undefined].includes(
+                          nutrient?.quantityComparisonOperator
+                        ) && <span>{nutrient.quantityComparisonOperator}</span>}
+                        {nutrient?.value}
+                        {nutrient?.uom ?? <span>{nutrient?.uom}</span>}
+                        {![null, undefined].includes(
+                          nutrient?.quantityDescription
+                        ) && <span>({nutrient?.quantityDescription})</span>}
+                      </TableCell>
+                      <TableCell>
+                        {![null, undefined].includes(
+                          nutrient?.dailyPercentComparisonOperator
+                        ) && (
+                          <span>{nutrient.dailyPercentComparisonOperator}</span>
+                        )}
+                        {![null, undefined].includes(
+                          nutrient?.percentDailyValue
+                        ) && <span> {nutrient.percentDailyValue}%</span>}
+                      </TableCell>
+                      <TableCell>
+                        {nutrient.footnoteIndicator !== null && (
+                          <span> {nutrient.footnoteIndicator}</span>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  </>
+                );
+              })}
+            </>
+          )}
         </TableBody>
       </Table>
       <div>
@@ -104,18 +154,6 @@ const NutritionTable = ({ data }: { data: any }) => {
           ))}
         </ul>
       </div>
-      <div>
-        <div className='font-bold'>Ingredients: </div>
-        <p>{data?.ingredients} </p>
-      </div>
-      <div>
-        <div className='font-bold'>Contain: </div>
-        <p>{data?.contain} </p>
-      </div>
-      {/* <div>
-        <div className='font-bold'>OCR text: </div>
-        <div className='whitespace-pre-line'>{data?.ocrText} </div>
-      </div> */}
     </div>
   );
 };

@@ -72,10 +72,9 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         }
       )}
       {ingredientsGroup?.map((ingredientItem: any, idx: number) => {
-        console.log('ingredient item', ingredientItem);
         return (
           <div>
-            <div className='font-bold'>Ingredients {idx}: </div>
+            <div className='font-bold'>Ingredient No.{idx + 1}: </div>
             <p>{ingredientItem?.ingredients} </p>
           </div>
         );

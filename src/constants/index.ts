@@ -70,12 +70,14 @@ Some common rules:
 + Read "Fact Panel" from left to right and from top to bottom.
 + content in prompt can be similar to typescript and nodejs syntax.
 + be careful the last "nutrient row" could be misread to be a part of "footnote". Remember "footnote" content ususally about "Daily value" or "percent daily value" note.
++ do not return json in format [{product: {...}}] since the result is only for one product
 
 Some rule for you:
 1) "product.isFactPanelGoodToRead" = array of answers of all below questions:
 + Carefully inspect the image and answer question Can you see the fact panel? return "yes" or "no" only
 + Can you see "serving size info" from fact panel? return "yes" or "no" only
 + is the exact text "Supplement Facts" or "Nutrition Facts" 100% visible on provided image. Carefully inspect the image and do not assume that text on the image ? return "yes" or "no" only
++ "dietaryIngredients" is completely separated with "nutrients" and "nutrients" does not include "dietaryIngredients" list.
 
 2) The fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information. Let's to break down and separate into two different fact panels one is for 'per serving'
 and other for 'per container' just if "amoutPerServing.name" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "ingredients" and "contain".
@@ -181,7 +183,3 @@ Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medi
 22) "nutrients.uom" rules
 + some possible "nutrients.uom" such as "MCG DFE"
 `;
-
-// 19) Notations like "Contain" or "May Contain" or "contains: string."  should be recorded as "name": "contain", "value": string. For example: "May contain milk" should be recorded as "name": "contain", "value": "May contain milk". For Example: "Contain: Coconut, Milk." should be recorded as "name": "contain", "value": "Coconut, Milk."
-
-// 2) Each nutritional line's values must stay unique. Do not interchange numbers between lines or make false inferences. For instance, "total sugar 18g, included 5g added sugar 4%," should create two objects: one as "name": "total sugar", "value": 18, "uom": "g", "percentDailyValue": null, and another as "name": "added sugar", "value": 5, "uom": "g", "percentDailyValue": 14%.

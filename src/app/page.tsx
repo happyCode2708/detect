@@ -99,6 +99,7 @@ export default function Home() {
 
   const onPreviewImage = (src: any) => {
     setPreviewImage(src);
+    console.log('test');
   };
 
   useEffect(() => {
