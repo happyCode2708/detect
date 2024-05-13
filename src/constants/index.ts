@@ -15,7 +15,7 @@ json
         "nutrients": [
           {
             "name": string, 
-            "additionalRow": string[],
+            "descriptor": string,
             "quantityComparisonOperator": string?, value: float?, uom: string, 
             "quantityDescription": string?,
             "dailyPercentComparisonOperator": string?, 
@@ -143,13 +143,13 @@ Ex 1: "May contain milk" should be recorded as {"contain": "milk"}
 Ex 2: "Contain: Coconut, Milk." should be recorded as {"contain": "Coconut, Milk"}
 
 
-20) "product.factPanels.nutrients.additionalRow" rules:
+20) "product.factPanels.nutrients.descriptor" rules:
 + the text that is intended and appear on the next row at below of "nutrient name" is its "additionalRow" item for a nutrient should be added to "product.factPanels.nutrients.additionalRow" list.
-+ "nutrients.additionalRow" is not the the text inside the parentheses right next to "nutrients.name"
++ "nutrients.descriptor" is also the text inside the parentheses right next to "nutrients.name"
 
 21) "product.factPanels.nutrients.name" rule:
 + "nutrients.name" is a name of nutrient sometimes include the text closed inside the parentheses.
-Ex 1: "Vitamin K2(as Naturally Derived MK-7 [Menaquinone-7)" should be recorded as {"name": "Vitamin K2(as Naturally Derived MK-7 [Menaquinone-7)", ...}
+Ex 1: "Vitamin K2(as Naturally Derived MK-7 [Menaquinone-7)" should be recorded as {"name": "Vitamin K2", "descriptor": "as Naturally Derived MK-7 [Menaquinone-7": ,...}
 Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medium Chain Triglyceride (MCT) Oil", ...} 
 
 22) "nutrients.uom" rules

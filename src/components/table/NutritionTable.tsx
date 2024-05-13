@@ -58,11 +58,11 @@ const NutritionTable = ({ data }: { data: any }) => {
               <>
                 <TableRow key={index}>
                   <TableCell>
-                    <div>{nutrient.name}</div>
-                    {nutrient?.additionalRow?.length > 0 && (
-                      <div className='pl-10 pt-4'>
-                        {nutrient?.additionalRow.join('')}
-                      </div>
+                    <span>{nutrient.name}</span>
+                    {nutrient?.desctiptor && (
+                      <span className='pl-10 pt-4'>
+                        ({nutrient?.descriptor})
+                      </span>
                     )}
                   </TableCell>
                   <TableCell key={index}>
