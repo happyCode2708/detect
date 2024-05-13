@@ -59,7 +59,7 @@ const NutritionTable = ({ data }: { data: any }) => {
                 <TableRow key={index}>
                   <TableCell>
                     <span>{nutrient.name}</span>
-                    {nutrient?.desctiptor && (
+                    {nutrient?.descriptor && (
                       <span className='pl-10 pt-4'>
                         ({nutrient?.descriptor})
                       </span>
