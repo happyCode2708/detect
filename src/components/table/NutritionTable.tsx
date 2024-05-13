@@ -95,14 +95,7 @@ const NutritionTable = ({ data }: { data: any }) => {
           ))}
         </ul>
       </div>
-      <div>
-        <div className='font-bold'>Ingredients: </div>
-        <p>{data?.ingredients} </p>
-      </div>
-      <div>
-        <div className='font-bold'>Contain: </div>
-        <p>{data?.contain} </p>
-      </div>
+
       {/* <div>
         <div className='font-bold'>OCR text: </div>
         <div className='whitespace-pre-line'>{data?.ocrText} </div>

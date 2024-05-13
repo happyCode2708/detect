@@ -1,0 +1,363 @@
+// json
+// {
+//   "doYouSee": {
+//     "question": "do you see the "nutrition panel" or "supplement panel"" visible on the provide image? and where is it ? give me some info on it.",
+//     "value": "your answer (gemini)"
+//   },
+// {
+// "isFactPanelHeaderSeen": {"question": "do you see the text "Nutrition facts" text or the text "supplement facts" visible on provided image? if not return false and else return true. And tell me why you answer yes or no? and where is the nutrition fact header?, "value": "your answer (gemini)" }
+// },
+//   "whatYouSee": {
+//     "question": "what you see in the provided image , please check if i have inserted image for you to check?",
+//     "value": "your answer (gemini)"
+//   },
+//   "doYouSeeFactPanel": {
+//     "question": "Do you see fact panel on inserted image? and where is it on the image? Do you see it clearly?",
+//     "value": "your answer (gemini)"
+//   },
+//   "canYouReadWholeFactPanel": {
+//     "question": "if you can't see the entire fact panels (the part contain nutrition for supplement info) just answer no, on the other hand you can answer yes (Remember that ingredients and manufacturing is different section from the fact panels ). And please tell me which part of fact panel you cannot see the whole",
+//     "value": "your answer (gemini)"
+//   },
+//   "isFactPanelGoodToRead": "your answer gemini",
+//   "isIngredientsGoodToRead: "your answer gemini",
+// }
+
+// Some definitions:
+// 1) about the "Fact Panel"
+// + is a list of nutrient or substance info
+// + must have a Big Text like a Header such as "Nutrition Facts" or "Supplement Facts" visible on it
+
+// Some rule for you:
+// 1) "isFactPanelGoodToRead"
+// + if you can't see the entire side fact panel due to the image crop answer no, on the other hand you can answer yes. And Tell me the reason why no or yes, and the possible missing part
+// + ingredients info, and manufacturing info is not required to answer "yes"
+// + "servingSize" info is compulsory requirement for answer 'yes'
+// + fact panel must have text of "Nutrition Facts", or "Supplement Facts" as a requirement for answer 'yes'.
+
+// 2) "isIngredientsGoodToRead":
+// +  if you can't see the entire ingredient list due to the image crop answer no, on the other hand you can answer yes. Return Yes Or No. And Tell me the reason why no or yes, and the possible missing part
+
+// json
+// {
+//   "doYouSee": {
+//     "question": "do you see the "nutrition panel" or "supplement panel"" visible on the provide image? and where is it ? give me some info on it.",
+//     "value": "your answer (gemini)"
+//   },
+// {
+// "isFactPanelHeaderSeen": {"question": "do you see the text "Nutrition facts" text or the text "supplement facts" visible on provided image? if not return false and else return true. And tell me why you answer yes or no? and where is the nutrition fact header?, "value": "your answer (gemini)" }
+// },
+//   "whatYouSee": {
+//     "question": "what you see in the provided image , please check if i have inserted image for you to check?",
+//     "value": "your answer (gemini)"
+//   },
+//   "doYouSeeFactPanel": {
+//     "question": "Do you see fact panel on inserted image? and where is it on the image? Do you see it clearly?",
+//     "value": "your answer (gemini)"
+//   },
+//   "canYouReadWholeFactPanel": {
+//     "question": "if you can't see the entire fact panels (the part contain nutrition for supplement info) just answer no, on the other hand you can answer yes (Remember that ingredients and manufacturing is different section from the fact panels ). And please tell me which part of fact panel you cannot see the whole",
+//     "value": "your answer (gemini)"
+//   },
+//   "isFactPanelGoodToRead": string[],
+//   "isIngredientsGoodToRead: "your answer gemini",
+// }
+
+// Some definitions:
+// 1) about the "Fact Panel"
+// + is a list of nutrient or substance info
+// + must have a Big Text like a Header such as "Nutrition Facts" or "Supplement Facts" visible on it
+
+// Some rule for you:
+// 1) "isFactPanelGoodToRead" is all answer of all questions below each by each:
+// + Can you  see the entire side fact panel due to the image crop?
+// + can you see serving size info on fact panel ?
+// + Can you see text "Nutrition Facts" or "Supplement Facts" visible on provided image?
+
+// 2) "isIngredientsGoodToRead":
+// +  if you can't see the entire ingredient list due to the image crop answer no, on the other hand you can answer yes. Return Yes Or No. And Tell me the reason why no or yes, and the possible missing part
+
+// json
+// {
+//   "doYouSee": {
+//     "question": "do you see the "nutrition panel" or "supplement panel"" visible on the provide image? and where is it ? give me some info on it.",
+//     "value": "your answer (gemini)"
+//   },
+// {
+// "isFactPanelHeaderSeen": {"question": "do you see the text "Nutrition facts" text or the text "supplement facts" visible on provided image? if not return false and else return true. And tell me why you answer yes or no? and where is the nutrition fact header?, "value": "your answer (gemini)" }
+// },
+//   "whatYouSee": {
+//     "question": "what you see in the provided image , please check if i have inserted image for you to check?",
+//     "value": "your answer (gemini)"
+//   },
+//   "doYouSeeFactPanel": {
+//     "question": "Do you see fact panel on inserted image? and where is it on the image? Do you see it clearly?",
+//     "value": "your answer (gemini)"
+//   },
+//   "canYouReadWholeFactPanel": {
+//     "question": "if you can't see the entire fact panels (the part contain nutrition for supplement info) just answer no, on the other hand you can answer yes (Remember that ingredients and manufacturing is different section from the fact panels ). And please tell me which part of fact panel you cannot see the whole",
+//     "value": "your answer (gemini)"
+//   },
+//   "isFactPanelGoodToRead": [{answer: string},...]
+//   "isIngredientsGoodToRead: "your answer gemini",
+// }
+
+// Some definitions:
+// 1) about the "Fact Panel"
+// + is a list of nutrient or substance info
+// + must have a Big Text like a Header such as "Nutrition Facts" or "Supplement Facts" visible on it
+
+// Some rule for you:
+// 1) "isFactPanelGoodToRead" is all answer of all questions below each by each:
+// + Can you  see the entire side fact panel due to the image crop?
+// + can you see serving size info on fact panel ?
+// + Can you see entire text "Nutrition Facts" or "Supplement Facts" visible on provided image without being hid by crop?
+
+// 2) "isIngredientsGoodToRead":
+// +  if you can't see the entire ingredient list due to the image crop answer no, on the other hand you can answer yes. Return Yes Or No. And Tell me the reason why no or yes, and the possible missing part
+
+//! best
+// json
+// {
+//   "doYouSee": {
+//     "question": "do you see the "nutrition panel" or "supplement panel"" visible on the provide image? and where is it ? give me some info on it.",
+//     "value": "your answer (gemini)"
+//   },
+// {
+// "isFactPanelHeaderSeen": {"question": "do you see the text "Nutrition facts" text or the text "supplement facts" visible on provided image? if not return false and else return true. And tell me why you answer yes or no? and where is the nutrition fact header?, "value": "your answer (gemini)" }
+// },
+//   "whatYouSee": {
+//     "question": "what you see in the provided image , please check if i have inserted image for you to check?",
+//     "value": "your answer (gemini)"
+//   },
+//   "doYouSeeFactPanel": {
+//     "question": "Do you see fact panel on inserted image? and where is it on the image? Do you see it clearly?",
+//     "value": "your answer (gemini)"
+//   },
+// "canYouReadWholeFactPanel": {
+//   "question": "if you can't see the entire fact panels (the part contain nutrition for supplement info) just answer no, on the other hand you can answer yes (Remember that ingredients and manufacturing is different section from the fact panels ). And please tell me which part of fact panel you cannot see the whole",
+//   "value": "your answer (gemini)"
+// },
+//   "isFactPanelGoodToRead": [{answer: string},...]
+//   "isIngredientsGoodToRead: "your answer gemini",
+// }
+
+// Some definitions:
+// 1) about the "Fact Panel"
+// + is a list of nutrient or substance info
+// + must have a Big Text like a Header such as "Nutrition Facts" or "Supplement Facts" visible on it
+
+// Some rule for you:
+// 1) "isFactPanelGoodToRead" is all answer of all questions below each by each:
+// + Can you  see the entire side fact panel ?
+// + Can you  see the entire side fact panel due to the image crop?
+// + can you see serving size info on fact panel ?
+// + Can you see entire text "Nutrition Facts" or "Supplement Facts" visible on provided image without being hid by crop?
+
+// 2) "isIngredientsGoodToRead":
+// +  if you can't see the entire ingredient list due to the image crop answer no, on the other hand you can answer yes. Return Yes Or No. And Tell me the reason why no or yes, and the possible missing part
+
+// + Can you  see the entire side fact panel due to the image crop?
+// +  if you can't see the entire ingredient list due to the image crop answer no, on the other hand you can answer yes. Return Yes Or No. And Tell me the reason why no or yes, and the possible missing part
+
+//! short
+
+// json
+// {
+//   "isFactPanelGoodToRead": [{answer: string},...]
+//   "isIngredientsGoodToRead: [{answer: string},...],
+// }
+
+// Some definitions:
+// 1) about the "Fact Panel"
+// + is a list of nutrient or substance info
+// + must have a Big Text like a Header such as "Nutrition Facts" or "Supplement Facts" visible on it
+
+// Some rule for you:
+// 1) "isFactPanelGoodToRead" is all answers:
+// + Can you  see the entire side fact panel ? return "yes" or "no" only
+// + can you see serving size info on fact panel ? return  "yes" or "no" only
+// + Can you see entire text "Nutrition Facts" or "Supplement Facts" visible on provided image without being hid by crop? return "yes" or "no" only
+
+// 2) "isIngredientsGoodToRead" is all answers:
+// + Can you see the entire ingredient list? return "yes" or "no" only
+
+//! test
+
+// json
+// {
+//   "isFactPanelGoodToRead": [{answer: string},...]
+//   "isIngredientsGoodToRead": [{answer: string},...],
+// }
+
+// Some definitions:
+// 1) about the "Fact Panel"
+// + is a list of nutrient or substance info
+// + must have a Big Text like a Header such as "Nutrition Facts" or "Supplement Facts" visible on it
+
+// Some rule for you:
+// 1) "isFactPanelGoodToRead" is all answers:
+// + Can you  see the entire side fact panel ? and why?
+// + can you see serving size info on fact panel ? and why?
+// + Can you see entire text "Nutrition Facts" or "Supplement Facts" visible on provided image without being hid by crop? and why?
+
+// 2) "isIngredientsGoodToRead" :
+// + if you can't see the entire ingredient list due to the image crop answer no, on the other hand you can answer yes. And Tell me the reason why no or yes, and the possible missing part
+
+// ? very important phrase
+// Yes, the ingredient list is visible at the bottom of the Nutrition Facts panel. It is slightly cut off at the very bottom, but most of the ingredients are readable
+
+//? may not need
+"doYouSee": {
+  "question": "do you see the "nutrition panel" or "supplement panel"" visible on the provide image? and where is it ? give me some info on it.",
+  "value": "your answer (gemini)"
+},
+{
+"isFactPanelHeaderSeen": {"question": "do you see the text "Nutrition facts" text or the text "supplement facts" visible on provided image? if not return false and else return true. And tell me why you answer yes or no? and where is the nutrition fact header?, "value": "your answer (gemini)" }
+},
+"whatYouSee": {
+  "question": "what you see in the provided image , please check if i have inserted image for you to check?",
+  "value": "your answer (gemini)"
+},
+
+
+//? test validation
+json
+{
+  "isFactPanelGoodToRead": string[],
+  "isIngredientsGoodToRead: string[],
+}
+
+Some definitions:
+1) about the "Fact Panel"
++ is a list of nutrient or substance info
++ must have a Big Text like a Header such as "Nutrition Facts" or "Supplement Facts" visible on it
+
+Some rule for you:
+1) "isFactPanelGoodToRead" = string array of answer
++ Can you  see the entire side fact panel  ?
++ Can you  see the entire side fact panel due to the image crop?
++ can you see serving size info on fact panel ?
++ Can you see entire text "Nutrition Facts" or "Supplement Facts" visible on provided image without being hid by crop?
+
+2) "isIngredientsGoodToRead" = string array of answer
++  if you can't see the entire ingredient list due to the image crop answer no, on the other hand you can answer yes. Return Yes Or No. And Tell me the reason why no or yes, and the possible missing part
+
+
+
+json
+{
+  "isFactPanelGoodToRead": string[],
+  "isIngredientsGoodToRead: string[],
+}
+
+Some definitions:
+1) about the "Fact Panel"
++ is a list of nutrient or substance info
++ must have a Big Text like a Header such as "Nutrition Facts" or "Supplement Facts" visible on it
+
+Some rule for you:
+1) "isFactPanelGoodToRead" rules:
++ "isFactPanelGoodToRead" is array of answers of below questions:
++ Can you  see the entire side fact panel  ?
+
+
+2) "isIngredientsGoodToRead" rules:
++"isIngredientsGoodToRead" is array of answers of below questions:
++ Can you  see the whole ingredient list?
++ Do you see any possible missing part of ingredient list?
+
+
+
+
+
+
+
+
++ can you see serving size info on fact panel ? why?
++ Can you see entire text "Nutrition Facts" or "Supplement Facts" visible on provided image without being hid by crop? why?
+
+
+1) "isFactPanelGoodToRead" = string array of answers of all questions below
++ Can you  see the entire side fact panel ? why  ?
++ Can you see the whole fact panel due to crop ? why?
++ can you see serving size info on fact panel ? why?
++ Can you see entire text "Nutrition Facts" or "Supplement Facts" visible on provided image without being hid by crop? why?
+
+
+//? SUPER TEST
+
+{
+  "answer": "No, because the right side of the fact panel is cropped out of the image."
+  },
+  {
+  "answer": "No, because the right side of the fact panel is cropped out of the image."
+
+  The image shows the right side of the product, where \"Nutrition Facts\" would be present. However, due to the curvature of the bottle, the text is partially obscured
+
+  json
+  {
+    "isFactPanelGoodToRead": [{"answer": string},...],
+    "isIngredientsGoodToRead: [{"answer": string},...],
+  }
+  
+  json
+{
+  "isFactPanelGoodToRead": [{"answer": string},...],
+  "isIngredientsGoodToRead: [{"answer": string},...],
+}
+
+Some definitions:
+1) about the "Fact Panel"
++ is a list of nutrient or substance info
++ must have a Big Text like a Header such as "Nutrition Facts" or "Supplement Facts" visible on it
+
+Some rule for you:
+1) "isFactPanelGoodToRead" = array of answers of all below questions:
++ Can you see the entire side fact panel.If right side of the fact panel is cropped out of the image the answer must be "No", tell me why?
++ Can you see "serving size info" from fact panel. If partially visible the answer must be "No", tell me why ?
++ is text "Supplement Facts" or "Nutrition Facts" 100% visible on provided image. If partial text cropped out of the image the answer must be "No", tell me why ?
+
+2) "isIngredientsGoodToRead" = array of answers of all below questions:
++ Can you  see the entire ingredient list? why?
++ Do you see missing part of ingredient list due to image crop? why?
+
+
+//* promising
+Carefully examine the image provided and created a neatly formatted JSON output containing a list of objects only if info available on image and Each object must have format:
+json
+
+{
+  "isFactPanelGoodToRead": [{"answer": string},...],
+  "isIngredientsGoodToRead": [{"answer": string},...],
+}
+
+Some definitions:
+1) about the "Fact Panel"
++ is a list of nutrient or substance info
++ must have a Big Text like a Header such as "Nutrition Facts" or "Supplement Facts" visible on it
++ be careful when you (gemini) confirm to see something since curvature of container or cropped image can make content obscured.
+
+Some rule for you:
+1) "isFactPanelGoodToRead" = array of answers of all below questions:
++ Can you see the entire side fact panel? why?
+If any part of fact panel are  partially obscured or invisible by normal eyes by curvature of container the answer must be "No ....".
+if any part of parts of fact panel are partially obscured or invisible by normal eyes  by image crop the answer must be "No ..."
+if any part of fact panel are partially obscured or invisible by normal eyes  by something the answer must be "No ..."
++ Can you see "serving size info" from fact panel? Why?
+If "serving size" is  partially obscured the answer must be "No .....".
++ is the exact text "Supplement Facts" or "Nutrition Facts" 100% visible on provided image ?
+If the text is  partially obscured  or invisible by normal eyes the answer must be "No ...".
+If the exact text "Supplement Facts" or "Nutrition Facts" is  partially obscured  or invisible by normal eyes by curvature of container the answer must be "No ....".
+
+2) "isIngredientsGoodToRead" = array of answers of all below questions:
++ Can you  see the entire ingredient list?
+If the text is  partially obscured  or invisible by normal eyes the answer must be "No ...".
++ is the exact text "ingredients:" or "other ingredients:" 100% visible on provided image?
+If the text is  partially obscured  or invisible by normal eyes the answer must be "No ...".
+
+
+
+Yes, The phrase \"Nutrition Facts\" is not visible on the image. It is assumed to be present as this is a standard food label.
+
+The image does not capture the top portion of the fact panel where these headers would typically be located.

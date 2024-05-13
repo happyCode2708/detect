@@ -115,7 +115,7 @@ export default function Home() {
             );
           }
           const data = await response.json();
-          setProductInfo(JSON.parse(data)?.product);
+          setProductInfo(JSON.parse(data));
           if (refInterval.current) {
             clearInterval(refInterval.current);
           }

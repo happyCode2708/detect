@@ -12,7 +12,7 @@ export const Result = ({ productInfo }: { productInfo: any }) => {
         <TabsTrigger value='json'>Json</TabsTrigger>
       </TabsList>
       <TabsContent value='table'>
-        <TableResult productInfo={productInfo} />
+        <TableResult productInfo={productInfo?.product} />
       </TabsContent>
       <TabsContent value='json'>
         <JsonRender productInfo={productInfo} />
@@ -46,17 +46,44 @@ const JsonRender = ({ productInfo }: { productInfo: any }) => {
 };
 
 const MetaInfo = ({ productInfo }: { productInfo: any }) => {
-  const { factPanels, ocrText, isFactPanelLooked, ...metaInfo } = productInfo;
-  return Object.entries(metaInfo)?.map(
-    ([key, value]: [key: string, value: any]) => {
-      if (!value) return null;
+  const {
+    factPanels,
+    ocrText,
+    isFactPanelLooked,
+    ingredientsGroup,
+    contain,
+    factPanelDebug,
+    isFactPanelGoodToRead,
+    ...metaInfo
+  } = productInfo;
+  return (
+    <>
+      {Object.entries(metaInfo)?.map(
+        ([key, value]: [key: string, value: any]) => {
+          if (!value) return null;
+          Result;
 
-      return (
-        <div key={key}>
-          <span className='font-bold'>{key}: </span>
-          <span>{value}</span>
-        </div>
-      );
-    }
+          return (
+            <div key={key}>
+              <span className='font-bold'>{key}: </span>
+              <span>{value}</span>
+            </div>
+          );
+        }
+      )}
+      {ingredientsGroup?.map((ingredientItem: any, idx: number) => {
+        console.log('ingredient item', ingredientItem);
+        return (
+          <div>
+            <div className='font-bold'>Ingredients {idx}: </div>
+            <p>{ingredientItem?.ingredients} </p>
+          </div>
+        );
+      })}
+      <div>
+        <div className='font-bold'>Contain: </div>
+        <p>{contain} </p>
+      </div>
+    </>
   );
 };
