@@ -1,7 +1,7 @@
-export const NEW_PROMPT = `
-Carefully examine the provided image and return only a json in neatly object format:
+Carefully examine the provided image and return only a neatly object format:
 json
-{
+[
+  {
   "product": {
     "isFactPanelGoodToRead": [{"answer": string},...],
     "factPanels": null or  [
@@ -29,55 +29,19 @@ json
       }
     ],
     "ingredientsGroup": [{"ingredients": string}],
-    "allergen: {
-      "contain": string,
-      "containOnEquipment": {"statement": string, "allergenList: string[] },
-    },
-    "header": {
-      
-      "productName": string,
-      "brandName": string,
-      "primarySize": {
-        "primarySizeValue": string,
-        "primarySizeUom": string,
-        "primarySizeText": string,
-      },
-      "secondarySize": {
-        "secondarySizeValue": string,
-        "secondarySizeUom": string,
-        "secondarySizeText": string,
-      }
-      "sizeTextDescription": string,
-    },
-    "attributes": {
-      "claims": [{"value": string, "isTextOnLogo": "Answer Question is claim text on a certification logo? return yes or no" }, ...],
-    },
-    "physical": {
-      "upc12": number,
-    },
-    "marketingAll": {
-      "marketingContents": string[],
-      "copyrightOrTradeMark": string,
-      "sologan": string,
-      "website": string,
-      "socialMedia": {
-        "socialList": string[],
-        "socialMediaText": string[],
-      },
-    },
-    "supplyChain": {
-      "distributorAddress": string,
-      "CountryOfOrigin": string,
-      "CountryOfOriginText": string,
-      "manufactureDate": string,
-      "manufacturePhoneNumber": number,
-      "manufactureStreetAddress": string,
-      "manufactureCity": string,
-      "manufactureState": string,
-      "manufactureZipcode": string,
-      "manufactureName": string,
-    }
+    "contain": string,
+    "productName": string,
+    "website": string,
+    "upc12": number,
+    "brandName": string,
+    "distributorAddress": string,
+    "manufactureDate": string,
+    "primarySize": string,
+    "sizeUom": string,
+    "primarySizeText": string,
+
   },
+  "certifications": "what certifications you can see in provided images?",
 }
 
 The Most Important rule:
@@ -113,7 +77,7 @@ Some rule for you:
 3) The fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information, or different "% Daily value" by age. Let's to break down and separate into two different fact panels one is for 'per serving'
 and other for 'per container' just if "amoutPerServing.name" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "ingredients", and "contain".
 
-4) "factPanels.panelName":
+4) "product.panelName":
 + if there is text on image contain "Nutrition Facts" or "Supplement Facts". If not it should be null
 
 5) "servingSize":
@@ -160,67 +124,43 @@ Ex 2: "20mcg DFE(800mcg L-5-MTHF) = {quantityDescription: "800mcg L-5-MTHF"}
 + "ingredientsGroup.ingredients" does not include that prefix
 Ex 1: "Ingredients: Flour, Eggs,"= {ingredients: "Flour, Eggs."}
 
-14) "header.productName" rules:
+14) "product.productName" rules:
 + extract possible name of product from given image.
 
-15) "physical.upc12" rules:
+15) "product.upc12" rules:
 + extract possible "upc12" or "UPC-A" 's barcode number (with 12 digits)  of product from given image.
-+ "physical.upc12" must have 12 digit number if you do not get enough 12 gigits just look around the nearest area you may find some missing digit number.
++ "product.upc12" must have 12 digit number if you do not get enough 12 gigits just look around the nearest area you may find some missing digit number.
 + upc12 could be easily detected at the bottom of the barcode
 Ex 1: "0    33445   44421    5" =  {"upc12": "033445444215"}
 
-16) "marketingAll" rules:
-a) "marketingAll.website":
+16) "product.website" rules:
 + find website link
 + website link exclude "nongmoproject.org"
 + be careful the content after slash could be phone number
 Ex 1: text "www.test.com/999.444.3344" should be recorded as {website: "www.test.com", ...} since the number after slash is phone number
 
-b) "marketingAll.socialMedia":
-+ "socialMedia.socailList" is the name list of all social media info provided on product image such as facebook, pinterest, instagram, twitter, threads,... carefully check the social media icon of social media link. 
-+ "socialMedia.socialMediaText" is a list of text usually start with "@" that can be used to search the product on social media. Hint, it is usually next to social media icons
-Ex: "@cocacola" 
-
-17) "supplychain.distributorAddress" rules:
-+ find distributor's address
-
-
-18) "header" rules:
-a) "header.brandName" rules:
+17) "product.brandName" rules:
 + find brand name
 
-b) "header.primarySize" and "header.secondarySize" rules:
-+ "header.primarySize" or "header.secondarySize" is a quantity measurement of product in two different unit of measurement
-+ "primarySizeUom" and "secondarySizeUom" is "Units of Liquid Measurement" (such as "Fl OZ", "L", ...) or "Weight Units of Measure" (such as "Gram", "Kg", ...)
-+ "primarySizeUom" and "secondarySizeUom" exclude "calories"
-Ex 1: "Net 3 Qt. (96 fl. oz.) 2.835L" should be recorded as 
-{
-  "primarySize": {"primarySizeValue": 96  , "primarySizeUom": "fl. oz." , "primarySizeText": "96 fl. oz." }, 
-  "secondarySize": {"secondarySizeValue": 2.835  , "secondarySizeUom": "L" , "secondarySizeText": "2.835L" }
-}
-Ex 2: "64 FL OZ(2QTs) 1.89L" should be recorded as 
-{
-  "primarySize": {"primarySizeValue": 64 , "primarySizeUom": "FL OZ" , "primarySizeText": "64 FL OZ"},
-  "secondarySize": {"secondarySizeValue": 1.89  , "secondarySizeUom": "L" , "secondarySizeText": "1.89L" }
-}
-Ex 3: "Net WT 5.25 OZ 150g" should be recorded as 
-{
-  "primarySize": {"primarySizeValue": 5.25 , "primarySizeUom": "OZ" , "primarySizeText": "5.25 OZ"},
-  "secondarySize": {"secondarySizeValue": 150  , "secondarySizeUom": "g" , "secondarySizeText": "150g" },
-}
-  
+18) "product.distributorAddress" rules:
++ find distributor's address
 
-c) "header.sizeTextDescription":
-+ is the whole quantity measurement description statement of the product on image. It is usually appear on the front face of product.
+19) "product.manufactureDate" rules:
++find manufacture date of the product image
++ "product.manufactureDate" is usually in date format
+Ex 1: "AUGUST/1990" should be recorded as "product.manufactureDate":"AUGUST/1990"
 
-21) "allergen.contain" rules:
-+ "contain" is a list of ingredient could make customer allergen.
+20) "product.primarySize" and "product.sizeUom" and "product.primarySizeText" rules:
++ "product.primarySize" is a quantity measurement of product
++ "product.sizeUom" is "Units of Liquid Measurement" (such as "Fl OZ", "L", ...) or "Weight Units of Measure" (such as "Gram", "Kg", ...)
++ "product.sizeUom" exclude "calories"
+Ex 1: "Net 3 Qt. (96 fl. oz.) 2.835L" should be recorded as {"primarySize": 96 , "sizeUom": "fl. oz." , "primarySizeText":  "value": "Net 3 Qt."}
+Ex 2: "64 FL OZ(2QTs) 1.89L" should be recorded as {"primarySize": 64 , "sizeUom": "FL OZ" , "primarySizeText": "64 FL OZ"}
+Ex 3: "Net WT 5.25 OZ 150g" should be recorded as {"primarySize": 5.25 , "sizeUom": "OZ" , "primarySizeText": "5.25 OZ"}
+
+21) "product.contain" rules: 
 Ex 1: "May contain milk" should be recorded as {"contain": "milk"} 
 Ex 2: "Contain: Coconut, Milk." should be recorded as {"contain": "Coconut, Milk"}
-
-21) "allergen.containOnEquipment" rules:
-+ "containOnEquipment.allergenList" is a list of allergen ingredients on manufacturing equipments.
-+ "containOnEquipment.statement" is the context about manufacturing equipment contain allergen ingredient list.
 
 22) "nutrients.descriptor" rules:
 + "nutrients.descriptor" could be the text that is intended and appear on the row below a nutrient.
@@ -240,50 +180,28 @@ Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medi
 + "amountPerServing.name" could be a text below "%Daily Value" Header such as "for children...", or "for aldults..."
 Ex 1: "Per container", "Per serving"
 
-
-26) "claims" rules:
-+ one "claims" item is only text wihtout certification logo.
-+ Ex: if "gluten free" text on a logo it should be recoreded as {claims: [{value: "gluten free", isTextOnLogo: true  }]}
-+ is a list of claims on provided image such as
-gluten free..
-vegan
-NON GMO
-kosher
-pareve
-+ some claims with logo such as
- U pareve ...
-
-27) "marketingContents" rules:
-+ "marketingContents" is texts to introduce or marketing features or benefits of product, and usually appear on the front face of product or some marketing pharagraph to appeal customer.
-+ there could be also marketing contents which are texts about nutrients appear on the main face of product to appeal customer to buy product
-
-28) "copyrightOrTradeMarkOrRegistration" rules:
-+ "copyrightOrTradeMarkOrRegistration" is trademark, copyright or registration text of product usually start with symbols below:
-™ - stands for a trademark;
-® - stands for a registered trademark;
-© - stands for copyright.
-
-29) "sologan" rules:
-+ "sologan" is a highlight text to praise product.
-
-30) "supplyChain":
-+  "supplyChain.countryOfOriginText" is the statement express country in where product was made. Ex: Made in USA
-+  "supplyChain.countryOfOrigin" is the country name in where product was made. Ex: "USA"
+28) "certifications" rules:
++ "certifications" is allowed to use external source from internet to get standard name of certifications.
++ "certifications" item format = "Certified" + "Certified Name" + "by" + "certification organization full name".
 `;
-
-//  27) "claimsWithNoLogo" rules:
-//  + "claimsWithNoLogo" all items from "product.claims" that have "isTextOnLogo" = "no"
-// "claimsWithNoLogo": [{"value": string}],
-
-// 28) "certifications" rules:
-// + "certifications" is the answer of question what certifications you can see in provided images? return the standard name of these certifications
-// + "certifications" field is allowed to use external source from internet to get stardard name of each certification
-
-// + certification standard format = "Certified" + "Certified Name" + "by" + "certification organization name".
-// certification = "Certified" + "Certified Name" + "by" + "certification organization full name".
 // Ex 1: Certified Vegan by Vegan.org, Certified Gluten-Free by the Gluten-Free Certification Organization (GF)
 // + Remind again if you see fact panel just give detail data that could be seen by human eyes.
 // + Only get ingredients data that visibly seen by normal eyes not from other sources on internet.
+
+// 26) "product.claims" rules:
+// + one "claims" item is only text wihtout certification logo.
+// + Ex: if "gluten free" text on a logo it should be recoreded as {claims: [{value: "gluten free", isTextOnLogo: true  }]}
+// + is a list of claims on provided image such as
+// gluten free..
+// vegan
+// NON GMO
+// kosher
+// pareve
+// + some claims with logo such as
+//  U pareve ...
+
+// 27) "product.claimsWithNoLogo" rules:
+// + "product.claimsWithNoLogo" all items from "product.claims" that have "isTextOnLogo" = "no"
 
 // "claims": [{"value": string, "isTextOnLogo": "Answer Question is claim text on a certification logo? return yes or no" }, ...],
 // "claimsWithNoLogo": [{"value": string}],
