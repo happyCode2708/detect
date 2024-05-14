@@ -93,10 +93,22 @@ const NutritionTable = ({ data }: { data: any }) => {
           {data.dietaryIngredients?.length > 0 && (
             <>
               <TableRow>
-                <TableCell className='h-[7px] w-full bg-black'></TableCell>
-                <TableCell className='h-[7px] w-full bg-black'></TableCell>
-                <TableCell className='h-[7px] w-full bg-black'></TableCell>
-                <TableCell className='h-[7px] w-full bg-black'></TableCell>
+                <TableCell
+                  className='h-[6px] w-full bg-black'
+                  style={{ padding: 0 }}
+                ></TableCell>
+                <TableCell
+                  className='h-[6px] w-full bg-black'
+                  style={{ padding: 0 }}
+                ></TableCell>
+                <TableCell
+                  className='h-[6px] w-full bg-black'
+                  style={{ padding: 0 }}
+                ></TableCell>
+                <TableCell
+                  className='h-[6px] w-full bg-black'
+                  style={{ padding: 0 }}
+                ></TableCell>
               </TableRow>
 
               {data.dietaryIngredients?.map((nutrient: any, index: number) => {
