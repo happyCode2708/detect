@@ -1,10 +1,9 @@
 export const NEW_PROMPT = `
-Carefully examine the image provided and created a neatly formatted JSON output containing a list of objects only if info available on image and Each object must have e format:
+Carefully examine the provided image and created a neatly object format:
 json
 {
   "product": {
     "isFactPanelGoodToRead": [{"answer": string},...],
-    "factPanelsDebug": string,
     "factPanels": null or  [
       {
         "panelName": string ,
@@ -38,7 +37,6 @@ json
           "value": string?,
           "footnoteIndicatorList": string[],
         },
-        "footnotedebug": "foot blend is a nutrient and you misread it as footnote. can you help me create a prompt sentences to tell yourself next time to know it not the footnote?,
       }
     ],
     "ingredientsGroup": [{"ingredients": string}],
@@ -46,14 +44,19 @@ json
     "productName": string,
     "website": string,
     "upc12": number,
-    "manufacturerName": string,
-    "manufacturerAddress": string,
+    "brandName": string,
+    "distributorAddress": string,
     "manufactureDate": string,
     "primarySize": string,
     "sizeUom": string,
     "primarySizeText": string,
   }
 }
+
+The Most Important rule:
++ Only get data that visibly seen by normal eyes not from other sources on internet
++ Remind you again only provide the data visibly on provided image, and must be detected by human eyes.
+
 Some common constants:
 + FOOTNOTE_INDICATORS = ["*", "**", "†", "★★", "★"]
 
@@ -71,13 +74,13 @@ Some common rules:
 + content in prompt can be similar to typescript and nodejs syntax.
 + be careful the last "nutrient row" could be misread to be a part of "footnote". Remember "footnote" content ususally about "Daily value" or "percent daily value" note.
 + do not return json in format [{product: {...}}] since the result is only for one product
++ "dietaryIngredients" is completely separated with "nutrients" and "nutrients" does not include "dietaryIngredients" list.
 
 Some rule for you:
 1) "product.isFactPanelGoodToRead" = array of answers of all below questions:
 + Carefully inspect the image and answer question Can you see the fact panel? return "yes" or "no" only
 + Can you see "serving size info" from fact panel? return "yes" or "no" only
 + is the exact text "Supplement Facts" or "Nutrition Facts" 100% visible on provided image. Carefully inspect the image and do not assume that text on the image ? return "yes" or "no" only
-+ "dietaryIngredients" is completely separated with "nutrients" and "nutrients" does not include "dietaryIngredients" list.
 
 2) The fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information, or different "% Daily value" by age. Let's to break down and separate into two different fact panels one is for 'per serving'
 and other for 'per container' just if "amoutPerServing.name" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "ingredients", "dietaryIngredients" and "contain".
@@ -140,16 +143,20 @@ Ex 1: "Ingredients: Flour, Eggs,"= {ingredients: "Flour, Eggs."}
 + extract possible name of product from given image.
 
 14) "product.upc12" rules:
-+ extract possible "upc12" or "UPC-A" 's barcode number (with 12 digit)  of product from given image.
++ extract possible "upc12" or "UPC-A" 's barcode number (with 12 digits)  of product from given image.
++ "product.upc12" must have 12 digit number if you do not get enough 12 gigits just look around the nearest area you may find some missing digit number.
++ upc12 could be easily detected at the bottom of the barcode
+Ex 1: "0    33445   44421    5" =  {"upc12": "033445444215"}
 
 15) "product.website" rules:
 + find website link
++ website link exclude "nongmoproject.org"
 
-16) "product.manufacturerName" rules:
-+ find manufacturer name
+16) "product.brandName" rules:
++ find brand name
 
-17) "product.manufacturerAddress" rules:
-+ find manufacturer's address
+17) "product.distributorAddress" rules:
++ find distributor's address
 
 18) "product.manufactureDate" rules:
 +find manufacture date of the product image
@@ -185,4 +192,49 @@ Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medi
 + is a text and usually stay above the "calories value number".
 + "amountPerServing.name" could be a text below "%Daily Value" Header such as "for children...", or "for aldults..."
 Ex 1: "Per container", "Per serving"
+
+25) "nutrients":
++ "nutrients" list exclude
+Vitamin K2
+Inositol
++ "nutrients" list only include
+Total carbohydrate
+Added sugars...
+Biotin
+Calcium
+Chloride
+Choline
+Cholesterol
+Chromium
+Copper
+Dietary Fiber
+Fat
+Folate or Folic Acid
+Iodine
+Iron
+Magnesium
+Manganese
+Molybdenum
+Niacin
+Pantothenic Acid
+Phosphorus
+Potassium
+Protein
+Riboflavin
+Saturated fat
+Selenium
+Sodium
+Thiamin
+Vitamin A
+Vitamin B6
+Vitamin B12
+Vitamin C
+Vitamin D
+Vitamin E
+Vitamin K
+Zinc.
+the others are considered as "dietaryIngredient"
 `;
+
+// + Remind again if you see fact panel just give detail data that could be seen by human eyes.
+// + Only get ingredients data that visibly seen by normal eyes not from other sources on internet.
