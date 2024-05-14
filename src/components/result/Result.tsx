@@ -26,7 +26,6 @@ const TableResult = ({ productInfo }: { productInfo: any }) => {
     <>
       {productInfo ? (
         <div className='p-4 border rounded-md flex-1 overflow-auto max-h-[500px]'>
-          {/* {repla} */}
           <MetaInfo productInfo={productInfo} />
           {productInfo?.factPanels?.map((labelData: any, idx: number) => {
             return <NutritionTable data={labelData} key={idx} />;
@@ -56,16 +55,30 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     isFactPanelGoodToRead,
     ...metaInfo
   } = productInfo;
+
+  const camelCaseToSeparated = (name: string) => {
+    // Split the camelCase string based on capital letters
+    const words = name.match(/[A-Z]?[a-z]+|[A-Z]+|[0-9]+/g);
+
+    // Capitalize the first letter of each word and join them with spaces
+    const separatedName = words
+      ?.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+
+    return separatedName;
+  };
+
   return (
     <>
       {Object.entries(metaInfo)?.map(
         ([key, value]: [key: string, value: any]) => {
           if (!value) return null;
-          Result;
 
           return (
             <div key={key}>
-              <span className='font-bold'>{key}: </span>
+              <span className='font-bold'>
+                {camelCaseToSeparated(key) ?? 'N/A'}:
+              </span>
               <span>{value}</span>
             </div>
           );

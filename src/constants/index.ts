@@ -1,5 +1,5 @@
 export const NEW_PROMPT = `
-Carefully examine the provided image and created a neatly object format:
+Carefully examine the provided image and return only a neatly object format:
 json
 {
   "product": {
@@ -55,7 +55,9 @@ json
 
 The Most Important rule:
 + Only get data that visibly seen by normal eyes not from other sources on internet
-+ Remind you again only provide the data visibly on provided image, and must be detected by human eyes.
++ Remind again if you see fact panel just give detail data that could be seen by human eyes not from other source like internet.
++ Only get ingredients data that visibly seen by normal eyes not from other sources on internet.
++ Remind you again only provide the data visibly on provided image, and must be detected by human eyes not from other source on internet.
 
 Some common constants:
 + FOOTNOTE_INDICATORS = ["*", "**", "†", "★★", "★"]
