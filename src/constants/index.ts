@@ -60,7 +60,7 @@ Some common constants:
 Some definitions:
 1) Notations like 'Includes 7g of Added Sugars' should be recorded as "name": "Added Sugars", "value": 7, "uom": "g".
 
-1) about the "Fact Panel"
+2) about the "Fact Panel"
 + is a list of nutrient or substance info
 + must have a Big Text like a Header such as "Nutrition Facts" or "Supplement Facts" visible on it
 + be careful when you (gemini) confirm to see something since curvature of container or cropped image can make content obscured.
@@ -79,8 +79,8 @@ Some rule for you:
 + is the exact text "Supplement Facts" or "Nutrition Facts" 100% visible on provided image. Carefully inspect the image and do not assume that text on the image ? return "yes" or "no" only
 + "dietaryIngredients" is completely separated with "nutrients" and "nutrients" does not include "dietaryIngredients" list.
 
-2) The fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information. Let's to break down and separate into two different fact panels one is for 'per serving'
-and other for 'per container' just if "amoutPerServing.name" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "ingredients" and "contain".
+2) The fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information, or different "% Daily value" by age. Let's to break down and separate into two different fact panels one is for 'per serving'
+and other for 'per container' just if "amoutPerServing.name" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "ingredients", "dietaryIngredients" and "contain".
 
 3) "product.panelName":
 + if there is text on image contain "Nutrition Facts" or "Supplement Facts". If not it should be null
@@ -132,7 +132,8 @@ Ex 2: "20mcg DFE(800mcg L-5-MTHF) = {quantityDescription: "800mcg L-5-MTHF"}
 + "dietaryIngredients.descriptor" could also be the text inside the parentheses right next to "dietaryIngredients.name"
 
 12) "ingredientsGroup.ingredients":
-+ usually appear below or next to the nutrition panel and start with "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "Other Ingredients:".
++ usually appear below or next to the nutrition panel and start with a prefix of "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "Other Ingredients:".
++ "ingredientsGroup.ingredients" does not include that prefix
 Ex 1: "Ingredients: Flour, Eggs,"= {ingredients: "Flour, Eggs."}
 
 13) "product.productName" rules:
@@ -179,4 +180,9 @@ Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medi
 
 23) "nutrients.uom" rules:
 + some possible "nutrients.uom" such as "MCG DFE"
+
+24) "amountPerServing.name" rules:
++ is a text and usually stay above the "calories value number".
++ "amountPerServing.name" could be a text below "%Daily Value" Header such as "for children...", or "for aldults..."
+Ex 1: "Per container", "Per serving"
 `;

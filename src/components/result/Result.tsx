@@ -79,10 +79,12 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
           </div>
         );
       })}
-      <div>
-        <div className='font-bold'>Contain: </div>
-        <p>{contain} </p>
-      </div>
+      {contain && (
+        <div>
+          <div className='font-bold'>Contain: </div>
+          <p>{contain} </p>
+        </div>
+      )}
     </>
   );
 };

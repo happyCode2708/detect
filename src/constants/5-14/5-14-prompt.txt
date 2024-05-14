@@ -59,7 +59,7 @@ Some common constants:
 Some definitions:
 1) Notations like 'Includes 7g of Added Sugars' should be recorded as "name": "Added Sugars", "value": 7, "uom": "g".
 
-1) about the "Fact Panel"
+2) about the "Fact Panel"
 + is a list of nutrient or substance info
 + must have a Big Text like a Header such as "Nutrition Facts" or "Supplement Facts" visible on it
 + be careful when you (gemini) confirm to see something since curvature of container or cropped image can make content obscured.
@@ -78,8 +78,8 @@ Some rule for you:
 + is the exact text "Supplement Facts" or "Nutrition Facts" 100% visible on provided image. Carefully inspect the image and do not assume that text on the image ? return "yes" or "no" only
 + "dietaryIngredients" is completely separated with "nutrients" and "nutrients" does not include "dietaryIngredients" list.
 
-2) The fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information. Let's to break down and separate into two different fact panels one is for 'per serving'
-and other for 'per container' just if "amoutPerServing.name" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "ingredients" and "contain".
+2) The fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information, or different "% Daily value" by age. Let's to break down and separate into two different fact panels one is for 'per serving'
+and other for 'per container' just if "amoutPerServing.name" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "ingredients", "dietaryIngredients" and "contain".
 
 3) "product.panelName":
 + if there is text on image contain "Nutrition Facts" or "Supplement Facts". If not it should be null
@@ -130,8 +130,9 @@ Ex 2: "20mcg DFE(800mcg L-5-MTHF) = {quantityDescription: "800mcg L-5-MTHF"}
 + "dietaryIngredients.descriptor" could be the text that is intended and appear on the row below a "dietaryIngredients" item.
 + "dietaryIngredients.descriptor" could also be the text inside the parentheses right next to "dietaryIngredients.name"
 
-12) "ingredients":
-+ usually appear below or next to the nutrition panel and start with "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "Other Ingredients:".
+12) "ingredientsGroup.ingredients":
++ usually appear below or next to the nutrition panel and start with a prefix of "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "Other Ingredients:".
++ "ingredientsGroup.ingredients" does not include that prefix
 Ex 1: "Ingredients: Flour, Eggs,"= {ingredients: "Flour, Eggs."}
 
 13) "product.productName" rules:
@@ -166,12 +167,11 @@ Ex 3: "Net WT 5.25 OZ 150g" should be recorded as {"primarySize": 5.25 , "sizeUo
 Ex 1: "May contain milk" should be recorded as {"contain": "milk"} 
 Ex 2: "Contain: Coconut, Milk." should be recorded as {"contain": "Coconut, Milk"}
 
-
-21) "product.factPanels.nutrients.descriptor" rules:
+21) "nutrients.descriptor" rules:
 + "nutrients.descriptor" could be the text that is intended and appear on the row below a nutrient.
 + "nutrients.descriptor" could also be the text inside the parentheses right next to "nutrients.name"
 
-22) "product.factPanels.nutrients.name" rule:
+22) "nutrients.name" rule:
 + "nutrients.name" is a name of nutrient sometimes include the text closed inside the parentheses.
 + "nutrients.name" sometimes start with a special symbol or its name is bold and maybe a note just like name of an ingredient
 Ex 1: "Vitamin K2(as Naturally Derived MK-7 [Menaquinone-7)" should be recorded as {"name": "Vitamin K2", "descriptor": "as Naturally Derived MK-7 [Menaquinone-7": ,...}
@@ -179,3 +179,8 @@ Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medi
 
 23) "nutrients.uom" rules:
 + some possible "nutrients.uom" such as "MCG DFE"
+
+24) "amountPerServing.name" rules:
++ is a text and usually stay above the "calories value number".
++ "amountPerServing.name" could be a text below "%Daily Value" Header such as "for children...", or "for aldults..."
+Ex 1: "Per container", "Per serving"
