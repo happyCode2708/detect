@@ -1,4 +1,3 @@
-export const NEW_PROMPT = `
 Carefully examine the image provided and created a neatly formatted JSON output containing a list of objects only if info available on image and Each object must have e format:
 json
 {
@@ -131,7 +130,7 @@ Ex 2: "20mcg DFE(800mcg L-5-MTHF) = {quantityDescription: "800mcg L-5-MTHF"}
 + "dietaryIngredients.descriptor" could be the text that is intended and appear on the row below a "dietaryIngredients" item.
 + "dietaryIngredients.descriptor" could also be the text inside the parentheses right next to "dietaryIngredients.name"
 
-12) "ingredientsGroup.ingredients":
+12) "ingredients":
 + usually appear below or next to the nutrition panel and start with "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "Other Ingredients:".
 Ex 1: "Ingredients: Flour, Eggs,"= {ingredients: "Flour, Eggs."}
 
@@ -167,11 +166,12 @@ Ex 3: "Net WT 5.25 OZ 150g" should be recorded as {"primarySize": 5.25 , "sizeUo
 Ex 1: "May contain milk" should be recorded as {"contain": "milk"} 
 Ex 2: "Contain: Coconut, Milk." should be recorded as {"contain": "Coconut, Milk"}
 
-21) "nutrients.descriptor" rules:
+
+21) "product.factPanels.nutrients.descriptor" rules:
 + "nutrients.descriptor" could be the text that is intended and appear on the row below a nutrient.
 + "nutrients.descriptor" could also be the text inside the parentheses right next to "nutrients.name"
 
-22) "nutrients.name" rule:
+22) "product.factPanels.nutrients.name" rule:
 + "nutrients.name" is a name of nutrient sometimes include the text closed inside the parentheses.
 + "nutrients.name" sometimes start with a special symbol or its name is bold and maybe a note just like name of an ingredient
 Ex 1: "Vitamin K2(as Naturally Derived MK-7 [Menaquinone-7)" should be recorded as {"name": "Vitamin K2", "descriptor": "as Naturally Derived MK-7 [Menaquinone-7": ,...}
@@ -179,4 +179,3 @@ Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medi
 
 23) "nutrients.uom" rules:
 + some possible "nutrients.uom" such as "MCG DFE"
-`;
