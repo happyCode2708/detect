@@ -44,6 +44,7 @@ next-env.d.ts
 .env*
 
 src/data
+src/docs
 
 output.txt
 service_account.json
