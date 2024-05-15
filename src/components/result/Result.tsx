@@ -69,7 +69,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
   const { claims, restAttributes } = attributesAndCertifiers || {};
   const { marketingContents, socialMedia, ...marketingRest } =
     marketingAll || {};
-  const { primarySize, secondarySize, ...headerRest } = header || {};
+  const { primarySize, secondarySize, thirdSize, ...headerRest } = header || {};
 
   return (
     <>
@@ -91,6 +91,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
       <SectionWrapper name='Header'>
         <CamelFieldStringRender objectValues={primarySize} />
         <CamelFieldStringRender objectValues={secondarySize} />
+        <CamelFieldStringRender objectValues={thirdSize} />
         <CamelFieldStringRender objectValues={headerRest} />
       </SectionWrapper>
 
@@ -208,6 +209,8 @@ const SectionWrapper = ({
 };
 
 const CamelFieldStringRender = ({ objectValues }: { objectValues: Object }) => {
+  if (!objectValues) return;
+
   return (
     <>
       {Object.entries(objectValues)?.map(

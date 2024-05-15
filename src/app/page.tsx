@@ -45,7 +45,9 @@ export default function Home() {
       },
       onSuccess: (res) => {
         const { resultFileName, images } = res;
-        setProcImages(images);
+        if (images?.length > 0) {
+          setProcImages(images);
+        }
         setResultFileName(resultFileName);
         queryClient.invalidateQueries({ queryKey: ['history'] });
       },

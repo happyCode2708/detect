@@ -62,11 +62,11 @@ export function writeJsonToFile(
   });
 }
 
-export const generateContent = async (image: any, text: any) => {
+export const generateContent = async (images: any[], text: any) => {
   if (!(global as any)?.generativeModel) return;
 
   const req = {
-    contents: [{ role: 'user', parts: [image, text] }],
+    contents: [{ role: 'user', parts: [...images, text] }],
   };
 
   const streamingResp = await (
@@ -141,7 +141,7 @@ export const createCollage = async (
   imageFilePaths: string[],
   outputPath: string
 ): Promise<void> => {
-  const boxSize: [number, number] = [1500, 1500];
+  const boxSize: [number, number] = [3600, 3600];
   const images = await Promise.all(
     imageFilePaths.map((imagePath) => resizeAndCenterImage(imagePath, boxSize))
   );
@@ -192,18 +192,28 @@ export const onProcessGemini = async ({
   res: any;
   sessionId: string;
   collateImageName: string;
-  collatedOuputPath: string;
+  collatedOuputPath: string[];
   filePaths: string[];
 }) => {
-  const base64Image = encodeImageToBase64(collatedOuputPath);
+  // const base64Image = encodeImageToBase64(collatedOuputPath);
 
-  const base64Full = `data:image/jpeg;base64,${base64Image}`;
-  const image1 = {
-    inlineData: {
-      mimeType: 'image/png',
-      data: base64Image,
-    },
-  };
+  // const base64Full = `data:image/jpeg;base64,${base64Image}`;
+  // const image1 = {
+  //   inlineData: {
+  //     mimeType: 'image/png',
+  //     data: base64Image,
+  //   },
+  // };
+  const images = collatedOuputPath.map((path) => {
+    const base64Image = encodeImageToBase64(path);
+    return {
+      inlineData: {
+        mimeType: 'image/png',
+        data: base64Image,
+      },
+    };
+  });
+
   const text1 = {
     text: NEW_PROMPT,
   };
@@ -219,11 +229,11 @@ export const onProcessGemini = async ({
     },
   });
 
-  res.json({ resultFileName, images: [base64Full] });
+  res.json({ resultFileName, images: [] });
 
   console.log('resultFileName: ', resultFileName);
 
-  const gemini_result = await generateContent(image1, text1);
+  const gemini_result = await generateContent(images, text1);
 
   if (!gemini_result) return;
   const procResult = gemini_result.split('```json\n')[1].split('```')[0];

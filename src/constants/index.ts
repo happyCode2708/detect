@@ -46,6 +46,11 @@ json
         "secondarySizeValue": string,
         "secondarySizeUom": string,
         "secondarySizeText": string,
+      },
+      "thirdSize": {
+        "thirdSizeValue": string,
+        "thirdSizeUom": string,
+        "thirdSizeText": string,
       }
       "sizeTextDescription": string,
       "count": number
@@ -75,7 +80,7 @@ json
         },
         "glutenFree": {
           "glutenFree__Certifier": string,
-          "glutenFreeClaim": boolean
+          "glutenFreeClaim": boolean,
         },
         "italCertifiedSeal": {
           "italCertifiedSeal__Certifier": string,
@@ -128,7 +133,7 @@ json
     "marketingAll": {
       "marketingContents": string[],
       "copyrightOrTradeMark": string,
-      "sologan": string,
+      "slogan": string,
       "website": string,
       "socialMedia": {
         "socialList": string[],
@@ -263,8 +268,8 @@ c) "marketingContents" rules:
 + "marketingContents" is texts to introduce or marketing features or benefits of product, and usually appear on the front face of product or some marketing pharagraph to appeal customer.
 + there could be also marketing contents which are texts about nutrients appear on the main face of product to appeal customer to buy product
 
-d) "sologan" rules:
-+ "sologan" is a highlight text to praise product.
+d) "slogan" rules:
++ "slogan" is a highlight text to praise product.
 
 e) "copyrightOrTradeMarkOrRegistration" rules:
 + "copyrightOrTradeMarkOrRegistration" is trademark, copyright or registration statement of product could start with symbols below or contain symbol below:
@@ -280,19 +285,21 @@ a) "header.productName" :
 b) "header.brandName":
 + find brand name
 
-c) "header.primarySize" and "header.secondarySize" rules:
-+ "header.primarySize" or "header.secondarySize" is a quantity measurement of product in two different unit of measurement
-+ "primarySizeUom" and "secondarySizeUom" is "Units of Liquid Measurement" (such as "Fl OZ", "L", ...) or "Weight Units of Measure" (such as "Gram", "Kg", ...)
-+ "primarySizeUom" and "secondarySizeUom" exclude "calories"
+c) "header.primarySize" and "header.secondarySize" and "header.thirdSize" rules:
++ "header.primarySize" and "header.secondarySize" and "header.thirdSize" is a quantity measurement of product in two different unit of measurement
++ "primarySizeUom" and "secondarySizeUom" and "thirdSizeUom" is "Units of Liquid Measurement" (such as "Fl OZ", "L", ...) or "Weight Units of Measure" (such as "Gram", "Kg", ...)
++ "primarySizeUom" and "secondarySizeUom" and "thirdSizeUom" exclude "calories"
 Ex 1: "Net 3 Qt. (96 fl. oz.) 2.835L" should be recorded as 
 {
-  "primarySize": {"primarySizeValue": 96  , "primarySizeUom": "fl. oz." , "primarySizeText": "96 fl. oz." }, 
-  "secondarySize": {"secondarySizeValue": 2.835  , "secondarySizeUom": "L" , "secondarySizeText": "2.835L" }
+  "primarySize": {"primarySizeValue": 3, "primarySizeUom": "Qt." , "primarySizeText": "3 Qt." }, 
+  "secondarySize": {"secondarySizeValue": 96, "secondarySizeUom": "fl. oz." , "secondarySizeText": "96 fl. oz." },
+  "thirdSize": {"thirdSizeValue": 2.835, "thirdSizeUom": "L", "thirdSizeText": "2.835L" }
 }
 Ex 2: "64 FL OZ(2QTs) 1.89L" should be recorded as 
 {
   "primarySize": {"primarySizeValue": 64 , "primarySizeUom": "FL OZ" , "primarySizeText": "64 FL OZ"},
-  "secondarySize": {"secondarySizeValue": 1.89  , "secondarySizeUom": "L" , "secondarySizeText": "1.89L" }
+  "secondarySize": {"secondarySizeValue": 2  , "secondarySizeUom": "QTs" , "secondarySizeText": "2QTs" }
+  "thirdSize": {"thirdSizeValue": 1.89  , "thirdSizeUom": "L" , "thirdSizeText": "1.89L" }
 }
 Ex 3: "Net WT 5.25 OZ 150g" should be recorded as 
 {
@@ -445,3 +452,5 @@ Ex 1: "high protein" should be recored as
 // CBD hemp
 // kosher (u pareve)
 // ...
+
+// "glutenFreeDebug: "gemini answer question do you see gluten free certification?"

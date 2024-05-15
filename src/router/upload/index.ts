@@ -77,7 +77,7 @@ router.post(
       res,
       sessionId,
       collateImageName,
-      collatedOuputPath: inputGeminiImage,
+      collatedOuputPath: filePaths,
       filePaths,
     });
   }
