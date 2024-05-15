@@ -32,6 +32,7 @@ json
     "allergen: {
       "contain": string,
       "containOnEquipment": {"statement": string, "allergenList: string[] },
+      "freeOf": string[],
     },
     "header": {
       "productName": string,
@@ -54,8 +55,72 @@ json
       "containerType": string,
       "packagingDescriptors": string[],
     },
-    "attributes": {
-      "claimsOrCertifications": [{"value": string, "isClaimGetFromLogo": "Answer Question is claim statement info is from a certification logo? return yes or no" }, ...],
+    "attributesAndCertifiers": {
+      "claims": {
+        "beeFriendly": {
+          "beeFriendly__Certifier": string,
+          "beeFriendlyClaim": boolean,
+        },
+        "bioBased": {
+          "bioBased__Certifier": string,
+          "bioBasedClaim": boolean,
+        },
+        "bioDynamic": {
+          "bioDynamic__Certifier": string,
+          "bioDynamicClaim": boolean
+        },
+        "gmp": {
+          "gmp__Certifier": string,
+          "gmpClaim": boolean
+        },
+        "glutenFree": {
+          "glutenFree__Certifier": string,
+          "glutenFreeClaim": boolean
+        },
+        "italCertifiedSeal": {
+          "italCertifiedSeal__Certifier": string,
+          "italCertifiedSealClaim": boolean,
+        },
+        "italCertifiedConsious": {
+          "italCertifiedConsious__Certifier": string,
+          "italCertifiedConsiousClaim": boolean,
+        },
+        "kosher": {
+          "kosher__Certifier": string,
+          "kosherClaim": boolean,
+        },
+        "liveAndActiveCulture": {
+          "liveAndActiveCulture__Certifier": string,
+          "liveAndActiveCultureClaim": boolean,
+        },
+        "lowGlycemic": {
+          "lowGlycemic__Certifier": string,
+          "lowGlycemicClaim": boolean,
+        },
+        "npa": {
+          "npa__Certifier": string,
+          "npaClaim": boolean,
+        },
+        "newYorkStateGrownAndCertified": {
+          "newYorkStateGrownAndCertified__Certifier": string,
+          "newYorkStateGrownAndCertifiedClaim": boolean,
+        },
+        "nonGmo": {
+          "nonGmo__Certifider": string,
+          "nonGmoClaim": boolean
+        },
+        "organic": {
+          "organic__Certifier": string,
+          "organicClaim": boolean,
+        },
+        "glyphosateResidueFree": {
+          "glyphosateResidueFree__Certifier": string,
+          "glyphosateResidueFreeClaim": boolean,
+        },
+      },
+      "restAttributes": {
+        "highOrRichInOrExcellenSourceOf": string[],
+      }
     },
     "physical": {
       "upc12": number,
@@ -254,11 +319,34 @@ c) "packaging.packagingDescriptors"
 
 17) "allergen" rules:
 a) "allergen.contain" rules:
-+ "contain" is a list of ingredient could make customer allergen.
-Ex 1: "May contain milk" should be recorded as {"contain": "milk"} 
-Ex 2: "Contain: Coconut, Milk." should be recorded as {"contain": "Coconut, Milk"}
++ "allergen.contain" is a list of allergen ingredients could make customer allergen.
++ "allergen.contain" list usually start after text "contain:", or "contain".
+Ex 1: "May contain milk" should be recorded as {"contain": ["milk"]} 
+Ex 2: "Contain: Corn, Milk." should be recorded as {"contain": ["Corn", "Milk"]}
 
-b) "allergen.containOnEquipment" rules:
+b) "allergen.freeOf" rules:
++ "allergen.freeOf" is a list of allergen ingredients could make customer allergen that is stated as free from product.
++ "allergen.freeOf" list usually start after text "free of ..."
+Ex 1: "free of soy" should be recorded as {"freeOf": ["soy"]} 
+Ex 2: "No Milk, Corn" should be recorded as {"freeOf": ["Milk", "Corn"]}
+
+c) "allergen.contain" and "allergen.freeof" common rules:
+Allergen ingredient list only include
+Eggs
+Soy
+Wheat
+Milk
+Fish
+Crustaceans
+Sesame
+Peanuts
+Tree Nuts
+Oats
+Seeds
+Corn
+Shellfish
+
+d) "allergen.containOnEquipment" rules:
 + "containOnEquipment.allergenList" is a list of allergen ingredients on manufacturing equipments.
 + "containOnEquipment.statement" is the context about manufacturing equipment contain allergen ingredient list.
 
@@ -281,21 +369,33 @@ c) "nutrients.uom" rules:
 + "amountPerServing.name" could be a text below "%Daily Value" Header such as "for children...", or "for aldults..."
 Ex 1: "Per container", "Per serving"
 
-20) "attributes" rules:
-a) "atributes.claimsOrCertifications" rules:
-+ for "atributes.claimsOrCertifications" gemini you are allowed to access the external source from internet to verfiy if detected "certified logo" is valid. Some product may use a logo for a claim but it could be invalid "certified logo"
-+ one "claims" item could be the statement text wihtout certified logo or it also could be from a "certified logo" or is near a "certified logo".
-+ is a list of "claimsOrCertification" on provided image could be about
-ADA
-Authen Product by Amerian indians
-bee better
-bio dynamic
-bioengineered
-business owner
-Carbon Footprint
-CBD hemp
-kosher
-...
+20) "attributesAndCertifiers" rules:
+a) "attributesAndCertifiers.claims" rules:
++ for "attributesAndCertifiers.claims" gemini you are allowed to access the external source from internet to verfiy if detected "certified logo" is valid. Some product may use a logo for a claim but it could be invalid "certified logo"
++ field name with format string__Certifier such as  "nonGmo__Certifier", "npa__Certifier",... please give these field the name of certifier from detected "certifier logo" which is visibly seen by human eye on provided image.
+Ex 1: The Non-GMO valid certifier is visibly seen by human eyes on the provided image so it should be recorded as 
+{
+  "nonGmo": {
+    "nonGmo__Certifider": "gemini return the name of Certifier",
+    "nonGmoClaim": true
+  }
+}
+Ex 2: If you see statement like "Non-gmo" but do not found the "Non-GMO" certifier logo on the image so it should be recorded as
+{
+  "nonGmo": {
+    "nonGmo__Certifider": null,
+    "nonGmoClaim": true
+  }
+}
+
+b)"attributesAndCertifiers.restAttributes.highOrRichInOrExcellentSourceOf":
++ is the list of the text such as "Rich in Vitamin D", "Excellent Source of Vitamin D", "High Vitamin D",.. the text that emphasize that product have something in high amount and found on provided image even it could be found in "marketingContents"
+Ex 1: "high protein" should be recored as 
+{
+  "restAttributes:{
+    "highOrRichInOrExcellentSourceOf": ["high protein"]
+  }
+}
 
 21) "supplyChain":
 +  "supplyChain.countryOfOriginText" is the statement express country in where product was made. Ex: Made in USA
@@ -328,3 +428,20 @@ kosher
 
 // "claims": [{"value": string, "isTextOnLogo": "Answer Question is claim text on a certification logo? return yes or no" }, ...],
 // "claimsWithNoLogo": [{"value": string}],
+
+// 20) "attributes" rules:
+// a) "atributes.claimsOrCertifications" rules:
+// + for "atributes.claimsOrCertifications" gemini you are allowed to access the external source from internet to verfiy if detected "certified logo" is valid. Some product may use a logo for a claim but it could be invalid "certified logo"
+// + one "claims" item could be the statement text wihtout certified logo or it also could be from a "certified logo" or is near a "certified logo".
+// + please check carefully all possible symbols or icons on provided image to get possible "certified logo"
+// + is a list of "claimsOrCertification" on provided image could be about
+// ADA
+// Authen Product by Amerian indians
+// bee better
+// bio dynamic
+// bioengineered
+// business owner
+// Carbon Footprint
+// CBD hemp
+// kosher (u pareve)
+// ...

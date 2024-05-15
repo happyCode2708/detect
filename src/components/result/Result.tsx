@@ -54,7 +54,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     ingredientsGroup,
     factPanelDebug,
     isFactPanelGoodToRead,
-    attributes,
+    attributesAndCertifiers,
     allergen,
     supplyChain,
     header,
@@ -65,8 +65,8 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     ...metaInfo
   } = productInfo;
 
-  const { containOnEquipment, contain } = allergen || {};
-  const { claimsOrCertifications } = attributes || {};
+  const { containOnEquipment, contain, freeOf } = allergen || {};
+  const { claims, restAttributes } = attributesAndCertifiers || {};
   const { marketingContents, socialMedia, ...marketingRest } =
     marketingAll || {};
   const { primarySize, secondarySize, ...headerRest } = header || {};
@@ -114,7 +114,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
       </SectionWrapper>
 
       <SectionWrapper name='Attributes'>
-        {claimsOrCertifications?.length > 0 && (
+        {/* {claimsOrCertifications?.length > 0 && (
           <div>
             <div className='font-bold'>Attributes Claims: </div>
             {claimsOrCertifications?.map((claimItem: any, idx: number) => {
@@ -126,7 +126,22 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
               );
             })}
           </div>
+        )} */}
+        {Object.entries(claims)?.map(
+          ([key, attributeGroup]: [key: string, value: any]) => {
+            return (
+              <div key={key}>
+                <div className='font-bold'>
+                  {camelCaseToSeparated(key) ?? 'N/A'}:
+                </div>
+                <div className='pl-6'>
+                  <CamelFieldStringRender objectValues={attributeGroup} />
+                </div>
+              </div>
+            );
+          }
         )}
+        <CamelFieldStringRender objectValues={restAttributes} />
       </SectionWrapper>
 
       <SectionWrapper name='Marketing'>
@@ -155,6 +170,12 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
           <div>
             <div className='font-bold'>Contain: </div>
             <p>{contain} </p>
+          </div>
+        )}
+        {freeOf && (
+          <div>
+            <div className='font-bold'>Free of: </div>
+            <p>{freeOf?.join(',')} </p>
           </div>
         )}
       </SectionWrapper>
@@ -198,7 +219,13 @@ const CamelFieldStringRender = ({ objectValues }: { objectValues: Object }) => {
               <span className='font-bold'>
                 {camelCaseToSeparated(key) ?? 'N/A'}:
               </span>
-              <span>{Array.isArray(value) ? value.join(', ') : value}</span>
+              <span>
+                {Array.isArray(value)
+                  ? value.join(', ')
+                  : typeof value === 'boolean'
+                  ? `${value}`
+                  : value}
+              </span>
             </div>
           );
         }
