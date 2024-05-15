@@ -141,7 +141,7 @@ export const createCollage = async (
   imageFilePaths: string[],
   outputPath: string
 ): Promise<void> => {
-  const boxSize: [number, number] = [1300, 1300];
+  const boxSize: [number, number] = [1500, 1500];
   const images = await Promise.all(
     imageFilePaths.map((imagePath) => resizeAndCenterImage(imagePath, boxSize))
   );

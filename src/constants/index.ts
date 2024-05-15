@@ -28,13 +28,12 @@ json
         },
       }
     ],
-    "ingredientsGroup": [{"ingredients": string}],
+    "ingredientsGroup": [{"ingredients": string[]}],
     "allergen: {
       "contain": string,
       "containOnEquipment": {"statement": string, "allergenList: string[] },
     },
     "header": {
-      
       "productName": string,
       "brandName": string,
       "primarySize": {
@@ -48,9 +47,15 @@ json
         "secondarySizeText": string,
       }
       "sizeTextDescription": string,
+      "count": number
+    },
+    "packaging": {
+      "containerMaterialType": string,
+      "containerType": string,
+      "packagingDescriptors": string[],
     },
     "attributes": {
-      "claims": [{"value": string, "isTextOnLogo": "Answer Question is claim text on a certification logo? return yes or no" }, ...],
+      "claimsOrCertifications": [{"value": string, "isClaimGetFromLogo": "Answer Question is claim statement info is from a certification logo? return yes or no" }, ...],
     },
     "physical": {
       "upc12": number,
@@ -66,7 +71,6 @@ json
       },
     },
     "supplyChain": {
-      "distributorAddress": string,
       "CountryOfOrigin": string,
       "CountryOfOriginText": string,
       "manufactureDate": string,
@@ -77,6 +81,17 @@ json
       "manufactureZipcode": string,
       "manufactureName": string,
     }
+    "instructions": {
+      "otherInstruction": string[],
+      "consumerStorageInstructions": string[],
+      "cookingInstructions": string[],
+      "usageInstructions": string[],
+    },
+    "certifications: [{
+      "cetificationName": string,
+      "certificationOriginCountry": string,
+      "certificationProvider": string,
+    },...]
   },
 }
 
@@ -155,21 +170,18 @@ Ex 1: "20mcg(800 IU)" = {quantityDescription: "800 IU"}
 Ex 2: "20mcg DFE(800mcg L-5-MTHF) = {quantityDescription: "800mcg L-5-MTHF"}
 
 
-13) "ingredientsGroup.ingredients":
+11) "ingredientsGroup.ingredients":
 + usually appear below or next to the nutrition panel and start with a prefix of "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "Other Ingredients:".
 + "ingredientsGroup.ingredients" does not include that prefix
 Ex 1: "Ingredients: Flour, Eggs,"= {ingredients: "Flour, Eggs."}
 
-14) "header.productName" rules:
-+ extract possible name of product from given image.
-
-15) "physical.upc12" rules:
+12) "physical.upc12" rules:
 + extract possible "upc12" or "UPC-A" 's barcode number (with 12 digits)  of product from given image.
 + "physical.upc12" must have 12 digit number if you do not get enough 12 gigits just look around the nearest area you may find some missing digit number.
 + upc12 could be easily detected at the bottom of the barcode
 Ex 1: "0    33445   44421    5" =  {"upc12": "033445444215"}
 
-16) "marketingAll" rules:
+13) "marketingAll" rules:
 a) "marketingAll.website":
 + find website link
 + website link exclude "nongmoproject.org"
@@ -177,19 +189,33 @@ a) "marketingAll.website":
 Ex 1: text "www.test.com/999.444.3344" should be recorded as {website: "www.test.com", ...} since the number after slash is phone number
 
 b) "marketingAll.socialMedia":
-+ "socialMedia.socailList" is the name list of all social media info provided on product image such as facebook, pinterest, instagram, twitter, threads,... carefully check the social media icon of social media link. 
++ "socialMedia.socailList" is the name list of all social media info provided on product image such as facebook, pinterest, instagram, twitter, threads,... carefully check the social media logo/icon or social media link.
+keep asking yourself question like "Do I see Pinterest logo?" to find all social media methods and add to "socialMedia.socailList"
 + "socialMedia.socialMediaText" is a list of text usually start with "@" that can be used to search the product on social media. Hint, it is usually next to social media icons
 Ex: "@cocacola" 
 
-17) "supplychain.distributorAddress" rules:
-+ find distributor's address
+c) "marketingContents" rules:
++ "marketingContents" is texts to introduce or marketing features or benefits of product, and usually appear on the front face of product or some marketing pharagraph to appeal customer.
++ there could be also marketing contents which are texts about nutrients appear on the main face of product to appeal customer to buy product
 
+d) "sologan" rules:
++ "sologan" is a highlight text to praise product.
 
-18) "header" rules:
-a) "header.brandName" rules:
+e) "copyrightOrTradeMarkOrRegistration" rules:
++ "copyrightOrTradeMarkOrRegistration" is trademark, copyright or registration statement of product could start with symbols below or contain symbol below:
+™ - stands for a trademark;
+® - stands for a registered trademark;
+© - stands for copyright.
++ the "copyrightOrTradeMarkOrRegistration" usually contain strings such as "registered trademark"
+
+15) "header" rules:
+a) "header.productName" :
++ extract possible name of product from given image.
+
+b) "header.brandName":
 + find brand name
 
-b) "header.primarySize" and "header.secondarySize" rules:
+c) "header.primarySize" and "header.secondarySize" rules:
 + "header.primarySize" or "header.secondarySize" is a quantity measurement of product in two different unit of measurement
 + "primarySizeUom" and "secondarySizeUom" is "Units of Liquid Measurement" (such as "Fl OZ", "L", ...) or "Weight Units of Measure" (such as "Gram", "Kg", ...)
 + "primarySizeUom" and "secondarySizeUom" exclude "calories"
@@ -208,68 +234,83 @@ Ex 3: "Net WT 5.25 OZ 150g" should be recorded as
   "primarySize": {"primarySizeValue": 5.25 , "primarySizeUom": "OZ" , "primarySizeText": "5.25 OZ"},
   "secondarySize": {"secondarySizeValue": 150  , "secondarySizeUom": "g" , "secondarySizeText": "150g" },
 }
-  
 
-c) "header.sizeTextDescription":
+d) "header.count":
++ is the count number of smaller unit inside a packagge, or a display shipper, or a case, or a box.
+Ex: there are 15 cookies in the packages so {"count": 15}
+
+e) "header.sizeTextDescription":
 + is the whole quantity measurement description statement of the product on image. It is usually appear on the front face of product.
 
-21) "allergen.contain" rules:
+16) "packaging" rules:
+a) "packaging.containerMaterialType":
++ is the type of material is used to make the package such as "paper", "plastic", or "metal", ...
+
+b) "packaging.containerType":
++ is the type of package such as "box", "bottle", "bag", "tube", or "shrink wrapped"
+
+c) "packaging.packagingDescriptors"
++ is a list statement of packaing materials.
+
+17) "allergen" rules:
+a) "allergen.contain" rules:
 + "contain" is a list of ingredient could make customer allergen.
 Ex 1: "May contain milk" should be recorded as {"contain": "milk"} 
 Ex 2: "Contain: Coconut, Milk." should be recorded as {"contain": "Coconut, Milk"}
 
-21) "allergen.containOnEquipment" rules:
+b) "allergen.containOnEquipment" rules:
 + "containOnEquipment.allergenList" is a list of allergen ingredients on manufacturing equipments.
 + "containOnEquipment.statement" is the context about manufacturing equipment contain allergen ingredient list.
 
-22) "nutrients.descriptor" rules:
+18) "nutrients" rules:
+a) "nutrients.descriptor" rules:
 + "nutrients.descriptor" could be the text that is intended and appear on the row below a nutrient.
 + "nutrients.descriptor" could also be the text inside the parentheses right next to "nutrients.name"
 
-23) "nutrients.name" rule:
+b) "nutrients.name" rule:
 + "nutrients.name" is a name of nutrient sometimes include the text closed inside the parentheses.
 + "nutrients.name" sometimes start with a special symbol or its name is bold and maybe a note just like name of an ingredient
 Ex 1: "Vitamin K2(as Naturally Derived MK-7 [Menaquinone-7)" should be recorded as {"name": "Vitamin K2", "descriptor": "as Naturally Derived MK-7 [Menaquinone-7": ,...}
 Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medium Chain Triglyceride (MCT) Oil", ...} 
 
-24) "nutrients.uom" rules:
+c) "nutrients.uom" rules:
 + some possible "nutrients.uom" such as "MCG DFE"
 
-25) "amountPerServing.name" rules:
+19) "amountPerServing.name" rules:
 + is a text and usually stay above the "calories value number".
 + "amountPerServing.name" could be a text below "%Daily Value" Header such as "for children...", or "for aldults..."
 Ex 1: "Per container", "Per serving"
 
-
-26) "claims" rules:
-+ one "claims" item is only text wihtout certification logo.
-+ Ex: if "gluten free" text on a logo it should be recoreded as {claims: [{value: "gluten free", isTextOnLogo: true  }]}
-+ is a list of claims on provided image such as
-gluten free..
-vegan
-NON GMO
+20) "attributes" rules:
+a) "atributes.claimsOrCertifications" rules:
++ for "atributes.claimsOrCertifications" gemini you are allowed to access the external source from internet to verfiy if detected "certified logo" is valid. Some product may use a logo for a claim but it could be invalid "certified logo"
++ one "claims" item could be the statement text wihtout certified logo or it also could be from a "certified logo" or is near a "certified logo".
++ is a list of "claimsOrCertification" on provided image could be about
+ADA
+Authen Product by Amerian indians
+bee better
+bio dynamic
+bioengineered
+business owner
+Carbon Footprint
+CBD hemp
 kosher
-pareve
-+ some claims with logo such as
- U pareve ...
+...
 
-27) "marketingContents" rules:
-+ "marketingContents" is texts to introduce or marketing features or benefits of product, and usually appear on the front face of product or some marketing pharagraph to appeal customer.
-+ there could be also marketing contents which are texts about nutrients appear on the main face of product to appeal customer to buy product
-
-28) "copyrightOrTradeMarkOrRegistration" rules:
-+ "copyrightOrTradeMarkOrRegistration" is trademark, copyright or registration text of product usually start with symbols below:
-™ - stands for a trademark;
-® - stands for a registered trademark;
-© - stands for copyright.
-
-29) "sologan" rules:
-+ "sologan" is a highlight text to praise product.
-
-30) "supplyChain":
+21) "supplyChain":
 +  "supplyChain.countryOfOriginText" is the statement express country in where product was made. Ex: Made in USA
 +  "supplyChain.countryOfOrigin" is the country name in where product was made. Ex: "USA"
+
+22) "instructions" rules:
 `;
+
+// 23) "certifications" rules:
+// + "certifications" is the list of certifcation infos
+// + "cetificationName" is the full name of certification.
+// + "certificationOriginCountry" is the country that certification come from.
+// + "certificationProvider" is the name of organization or any one that certify the product to provide the certification.
+// + some certification could be "gluten free...", "Glyphosate Residue Free", ...
+// + it is normal if "attributes.claims" item info is similar to "certifications" item info.
 
 //  27) "claimsWithNoLogo" rules:
 //  + "claimsWithNoLogo" all items from "product.claims" that have "isTextOnLogo" = "no"

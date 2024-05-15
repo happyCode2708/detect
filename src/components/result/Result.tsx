@@ -60,11 +60,13 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     header,
     marketingAll,
     physical,
+    instructions,
+    packaging,
     ...metaInfo
   } = productInfo;
 
   const { containOnEquipment, contain } = allergen || {};
-  const { claims } = attributes || {};
+  const { claimsOrCertifications } = attributes || {};
   const { marketingContents, socialMedia, ...marketingRest } =
     marketingAll || {};
   const { primarySize, secondarySize, ...headerRest } = header || {};
@@ -96,6 +98,10 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         <CamelFieldStringRender objectValues={physical} />
       </SectionWrapper>
 
+      <SectionWrapper name='Packaging'>
+        <CamelFieldStringRender objectValues={packaging} />
+      </SectionWrapper>
+
       <SectionWrapper name='Ingredients'>
         {ingredientsGroup?.map((ingredientItem: any, idx: number) => {
           return (
@@ -108,11 +114,16 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
       </SectionWrapper>
 
       <SectionWrapper name='Attributes'>
-        {claims?.length > 0 && (
+        {claimsOrCertifications?.length > 0 && (
           <div>
             <div className='font-bold'>Attributes Claims: </div>
-            {claims?.map((claimItem: any, idx: number) => {
-              return <div className='mb-[3px]'>{claimItem?.value} </div>;
+            {claimsOrCertifications?.map((claimItem: any, idx: number) => {
+              return (
+                <div className='mb-[3px]'>
+                  {claimItem?.value} (certified: {claimItem?.isClaimGetFromLogo}
+                  ){' '}
+                </div>
+              );
             })}
           </div>
         )}
@@ -150,6 +161,9 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
 
       <SectionWrapper name='Supply Chain'>
         <CamelFieldStringRender objectValues={supplyChain} />
+      </SectionWrapper>
+      <SectionWrapper name='Instructions'>
+        <CamelFieldStringRender objectValues={instructions} />
       </SectionWrapper>
     </>
   );
