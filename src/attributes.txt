@@ -1,0 +1,20 @@
+SNL709473-I1
+fatContentClaims - ZERO GRAMS TRANS FAT PER SERVING - 0g tran fat
+consumerStorageInstructions - store in cool
+saltOrSodiumClaims - low sodium
+sugarAndSweetenerClaims - no sugar alcohol
+recyclingAdvice - recycle this carton
+Forest Stewardship Council - boolean
+packaging - Ancillary Information -  42199-00-C0235 (near upc12)
+
+SNL741024-I1
+usdaStatement - INSPECTED FOR WHOLESOMENESS BY U.S. DEPARTMENT OF AGRICULTURE P-46069
+does not contain - antibiotics
+ancillaryInfomantion - antibiotic free **
+marketing - enlarged to show texture - boolean
+packaging - Ancillary Information - PKG-3102.01
+non-certified claims - BAKED
+packaging - packaging descriptors - paperboard packaging recylable
+
+SNL744265-I1
+Attributes - Juice Percent/Concentrate - 15 (contain 15% juice)
