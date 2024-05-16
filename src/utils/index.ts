@@ -231,18 +231,27 @@ export const onProcessGemini = async ({
 
   res.json({ resultFileName, images: [] });
 
-  console.log('resultFileName: ', resultFileName);
-
   const gemini_result = await generateContent(images, text1);
 
   if (!gemini_result) return;
-  const procResult = gemini_result.split('```json\n')[1].split('```')[0];
   const fullResult = gemini_result;
+  // writeJsonToFile(
+  //   resultsDir,
+  //   'full-' + resultFileName,
+  //   JSON.stringify(fullResult)
+  // );
 
-  writeJsonToFile(resultsDir, resultFileName, JSON.stringify(procResult));
   writeJsonToFile(
     resultsDir,
-    'full-' + resultFileName,
-    JSON.stringify(fullResult)
+    resultFileName,
+    JSON.stringify(fullResult?.trim())
   );
+
+  // try {
+  //   const procResult = gemini_result?.split('```json\n')[1].split('```')[0];
+
+  //   writeJsonToFile(resultsDir, resultFileName, JSON.stringify(procResult));
+  // } catch (e) {
+  //   console.log('some thing went wrong', e);
+  // }
 };
