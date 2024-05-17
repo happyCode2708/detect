@@ -1,9 +1,20 @@
-Carefully examine the provided image and and created a neatly exact formatted JSON output:
+Some common constants:
++ FOOTNOTE_INDICATORS = ["*", "**", "†", "★★", "★"]
++ FAT_CONTAIN_CLAIM = ["zero grams trans fat per serving", "fat free"]
++ SALT_OR_SODIUM_CLAIMS = ["low sodium", "low salt"]
++ SUGAR_AND_SWEET_CLAIMS = ["no sugar alcohol"]
++ ATTRIBUTE_CONTAIN_LIST = ["1,4-dioxane", "active yeast", "added antibiotics", "added colors", "added dyes", "added flavors", "added fragrances", "added hormones", "added nitrates", "added nitrites", "added preservatives", "additives", "alcohol", "allergen", "aluminum", "amino acids", "ammonia", "animal by-products", "animal derivatives", "animal ingredients", "animal products", "animal rennet", "antibiotics", "artificial additives", "artificial colors", "artificial dyes", "artificial flavors", "artificial fragrance", "artificial ingredients", "artificial preservatives", "binders and/or fillers", "bleach", "bpa (bisphenol-a)", "butylene glycol", "by-products", "caffeine", "carrageenan", "casein", "cbd / cannabidiol", "chemical additives", "chemical colors", "chemical dyes", "chemical flavors", "chemical fragrances", "chemical ingredients", "chemical preservatives", "chemical sunscreens", "chemicals", "chlorine", "cholesterol", "coatings", "corn fillers", "cottonseed oil", "dyes", "edta", "emulsifiers", "erythorbates", "expeller-pressed oils", "fillers", "fluoride", "formaldehyde", "fragrances", "grain", "hexane", "hormones", "hydrogenated oils", "kitniyos / kitniyot (legumes)", "lactose", "latex", "msg", "natural additives", "natural colors", "natural dyes", "natural flavors", "natural ingredients", "natural preservatives", "nitrates/nitrites", "omega fatty acids", "paba", "palm oil", "parabens", "pesticides", "petro chemical", "petrolatum", "petroleum byproducts", "phosphates", "phosphorus", "phthalates", "pits", "preservatives", "rbgh/bst", "rennet", "salicylates", "sea salt", "shells/ shell pieces", "silicone", "sles ( sodium laureth sulfate)", "sls ( sodium lauryl sulfate )", "stabilizers", "probiotics", "starch", "sulfates", "sulfides", "sulfites / sulphites", "sulfur dioxide", "synthetic additives", "synthetic colors", "synthetic dyes", "synthetic flavors", "synthetic fragrance", "synthetic ingredients", "synthetic preservatives", "synthetics", "thc / tetrahydrocannabinol", "toxic pesticides", "triclosan", "vegan ingredients", "vegetarian ingredients", "yeast", "yolks"]
++ NON_CERTIFIED_CLAIMS = ["100% natural", "100% natural ingredients", "100% pure", "acid free", "aeroponic grown", "all natural", "all natural ingredients", "aquaponic/aquaculture grown", "baked", "biodegradable", "cage free", "cold-pressed", "direct trade", "dolphin safe", "dry roasted", "eco-friendly", "farm raised", "filtered", "free range", "freeze-dried", "from concentrate", "grade a", "greenhouse grown", "heat treated", "heirloom", "homeopathic", "homogenized", "hydroponic grown", "hypo-allergenic", "irradiated", "live food", "low acid", "low carbohydrate", "low cholesterol", "macrobiotic", "minimally processed", "natural", "natural botanicals", "natural fragrances", "natural ingredients", "no animal testing", "no sulfites added", "non gebrokts", "non-alcoholic", "non-irradiated", "non-toxic", "not fried", "not from concentrate", "pasteurized", "pasture raised", "prairie raised", "raw", "responsibly sourced palm oil", "sprouted", "un-filtered", "un-pasteurized", "unscented", "vegetarian or vegan diet/feed", "wild", "wild caught"]
++ ALLERGEN_LIST=["corn", "crustacean shellfish", "dairy", "egg", "fish", "milk", "oats", "peanuts / peanut oil", "phenylalanine", "seeds", "sesame", "soy / soybeans", "tree nuts", "wheat"]
+
+Carefully examine the provided image and and created JSON output in given format:
 
 json
 {
   "product": {
     "isFactPanelGoodToRead": [{"answer": string},...],
+    "certificationOrLogo": "gemini help me list all certifiers logo/usda inspection marks on provided image?",
+    "readAllConstants": "gemini please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?",
     "factPanels": null or  [
       {
         "panelName": string ,
@@ -127,7 +138,7 @@ json
         },
         "vegan": {
           "vegan__Certifier": string,
-          "veganClaim": boolean,
+          "veganClaim": boolean, //hint - plant-based is not vegan claim
         },
         "plantBasedOrPlantDerived": {
           "plantBasedOrPlantDerived__Certifier": string,
@@ -143,6 +154,7 @@ json
         "saltOrSodiumClaims": string[],
         "sugarAndSweetenerClaims": string[],
         "highOrRichInOrExcellentSourceOf": string[],
+        "usdaInspectionMark": string,
       },
     },
     "physical": {
@@ -157,6 +169,7 @@ json
         "socialList": string[],
         "socialMediaText": string[],
       },
+      "enlaredToShow": boolean,
     },
     "supplyChain": {
       "CountryOfOrigin": string,
@@ -183,14 +196,6 @@ The Most Important rule:
 + Remind again if you see fact panel just give detail data that could be seen by human eyes not from other source like internet.
 + Only get ingredients data that visibly seen by normal eyes not from other sources on internet.
 + Remind you again only provide the data visibly on provided image, and must be detected by human eyes not from other source on internet.
-
-Some common constants:
-+ FOOTNOTE_INDICATORS = ["*", "**", "†", "★★", "★"]
-+ FAT_CONTAIN_CLAIM = ["zero grams trans fat per serving", "fat free"]
-+ SALT_OR_SODIUM_CLAIMS = ["low sodium", "low salt"]
-+ SUGAR_AND_SWEET_CLAIMS = ["no sugar alcohol"]
-+ ATTRIBUTE_DOES_NOT_CONTAIN = ["antibiotic"]
-+ NON_CERTIFIED_CLAIMS = ["Baked"]
 
 Some definitions:
 1) about the "Fact Panel"
@@ -290,11 +295,14 @@ d) "slogan" rules:
 + "slogan" is a highlight text to praise product.
 
 e) "copyrightOrTradeMarkOrRegistration" rules:
-+ "copyrightOrTradeMarkOrRegistration" is trademark, copyright or registration statement of product could start with symbols below or contain symbol below:
++ "copyrightOrTradeMarkOrRegistration" is trademark, copyright or registration statement of product may contain some symbols below:
 ™ - stands for a trademark;
 ® - stands for a registered trademark;
 © - stands for copyright.
-+ the "copyrightOrTradeMarkOrRegistration" usually contain strings such as "registered trademark"
++ the "copyrightOrTradeMarkOrRegistration" usually contain strings such as "...is/are registered trademark...", "copyright..."
+
+f) "enlargedToShow" rules:
+Ex: if statement such as "enlarged to show..." = {"enlargedToShowTexture": true}
 
 15) "header" rules:
 a) "header.productName" :
@@ -367,33 +375,19 @@ Ex: "22222-22-A4433"
 17) "allergen" rules:
 a) "allergen.contain" rules:
 + "allergen.contain" is a list of allergen ingredients could make customer allergen.
++ the list from enum ALLERGEN_LIST
 + "allergen.contain" list usually start after text "contain:", or "contain".
 Ex 1: "May contain milk" should be recorded as {"contain": ["milk"]} 
 Ex 2: "Contain: Corn, Milk." should be recorded as {"contain": ["Corn", "Milk"]}
 
 b) "allergen.freeOf" rules:
 + "allergen.freeOf" is a list of allergen ingredients could make customer allergen that is stated as free from product.
++ the list only from enum ALLERGEN_LIST
 + "allergen.freeOf" list usually start after text "free of ..."
 Ex 1: "free of soy" should be recorded as {"freeOf": ["soy"]} 
 Ex 2: "No Milk, Corn" should be recorded as {"freeOf": ["Milk", "Corn"]}
 
-c) "allergen.contain" and "allergen.freeof" common rules:
-Allergen ingredient list only include
-Eggs
-Soy
-Wheat
-Milk
-Fish
-Crustaceans
-Sesame
-Peanuts
-Tree Nuts
-Oats
-Seeds
-Corn
-Shellfish
-
-d) "allergen.containOnEquipment" rules:
+c) "allergen.containOnEquipment" rules:
 + "containOnEquipment.allergenList" is a list of allergen ingredients on manufacturing equipments.
 + "containOnEquipment.statement" is the context about manufacturing equipment contain allergen ingredient list.
 
@@ -442,22 +436,30 @@ Ex 2: If you see statement like "Non-gmo" but do not found the "Non-GMO" certifi
     "nonGmoClaim": true
   }  
 }
-b) "attributesAndCertifiers.containInfo.attribute__doesNotContain":
-+ is a list thing that does not cotain in product
-+ the list from enum ATTRIBUTE_DOES_NOT_CONTAIN
 
-c)"attributesAndCertifiers.otherClaims.highOrRichInOrExcellentSourceOf":
+b) "attributesAndCertifiers.containInfo.attribute__contain":
++ is a list thing that cotain in product
++ the list from enum ATTRIBUTE_CONTAIN_LIST
+
+c) "attributesAndCertifiers.containInfo.attribute__doesNotContain":
++ is a list thing that does not cotain in product
++ the list from enum ATTRIBUTE_CONTAIN_LIST
+
+d)"attributesAndCertifiers.otherClaims.highOrRichInOrExcellentSourceOf":
 + is the list of the text such as "Rich in Vitamin D", "Excellent Source of Vitamin D", "High Vitamin D",.. the text that emphasize that product have something in high amount and found on provided image even it could be found in "marketingContents"
 Ex 1: texts "high protein" and "rich in vitamin D" found should be recorded as {"highOrRichInOrExcellentSourceOf": ["high protein", "rich in vitamin D"]}
 
-d) "attributesAndCertifiers.otherClaims.fatContentClaims":
+e) "attributesAndCertifiers.otherClaims.fatContentClaims":
 + is string array from enum FAT_CONTAIN_CLAIM
 + text "0g trans fat", or "0 Gram trans fat" found so recorded as {"fatContentClaims": ["zero gram trans fat per serving"]},
 
-e) "attributesAndCertifiers.otherClaims.saltOrSodiumClaims":
+f) "attributesAndCertifiers.otherClaims.saltOrSodiumClaims":
 + is string array from enum SALT_OR_SODIUM_CLAIMS
 + text "low sodium" found so recorded as {"saltOrSodiumClaims": ["low sodium"]}
 
-f) "attributesAndCertifiers.otherClaims.sugarAndSweetenerClaims" rules:
+g) "attributesAndCertifiers.otherClaims.sugarAndSweetenerClaims" rules:
 + is string array from enum SUGAR_AND_SWEET_CLAIMS
 + text "no sugar alcohol" found so recorded as {"sugarAndSweetenerClaims": ["no sugar alcohol"]}
+
+h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
++ if USDA inspection mark found on provided image, return full words on that inspection mark
