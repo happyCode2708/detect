@@ -235,23 +235,23 @@ export const onProcessGemini = async ({
 
   if (!gemini_result) return;
   const fullResult = gemini_result;
-  // writeJsonToFile(
-  //   resultsDir,
-  //   'full-' + resultFileName,
-  //   JSON.stringify(fullResult)
-  // );
-
   writeJsonToFile(
     resultsDir,
-    resultFileName,
-    JSON.stringify(fullResult?.trim())
+    'full-' + resultFileName,
+    JSON.stringify(fullResult)
   );
 
-  // try {
-  //   const procResult = gemini_result?.split('```json\n')[1].split('```')[0];
+  // writeJsonToFile(
+  //   resultsDir,
+  //   resultFileName,
+  //   JSON.stringify(fullResult?.trim())
+  // );
 
-  //   writeJsonToFile(resultsDir, resultFileName, JSON.stringify(procResult));
-  // } catch (e) {
-  //   console.log('some thing went wrong', e);
-  // }
+  try {
+    const procResult = gemini_result?.split('```json\n')[1].split('```')[0];
+
+    writeJsonToFile(resultsDir, resultFileName, JSON.stringify(procResult));
+  } catch (e) {
+    console.log('some thing went wrong', e);
+  }
 };

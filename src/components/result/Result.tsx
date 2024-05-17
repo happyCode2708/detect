@@ -66,7 +66,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
   } = productInfo;
 
   const { containOnEquipment, contain, freeOf } = allergen || {};
-  const { claims, restAttributes } = attributesAndCertifiers || {};
+  const { claims, otherClaims, containInfo } = attributesAndCertifiers || {};
   const { marketingContents, socialMedia, ...marketingRest } =
     marketingAll || {};
   const { primarySize, secondarySize, thirdSize, ...headerRest } = header || {};
@@ -142,7 +142,8 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
             );
           }
         )}
-        <CamelFieldStringRender objectValues={restAttributes} />
+        <CamelFieldStringRender objectValues={otherClaims} />
+        <CamelFieldStringRender objectValues={containInfo} />
       </SectionWrapper>
 
       <SectionWrapper name='Marketing'>
@@ -209,7 +210,7 @@ const SectionWrapper = ({
 };
 
 const CamelFieldStringRender = ({ objectValues }: { objectValues: Object }) => {
-  if (!objectValues) return;
+  if (!objectValues) return null;
 
   return (
     <>
@@ -238,8 +239,10 @@ const CamelFieldStringRender = ({ objectValues }: { objectValues: Object }) => {
 };
 
 const camelCaseToSeparated = (name: string) => {
+  // Split the camelCase string based on capital letters
   const words = name.match(/[A-Z]?[a-z]+|[A-Z]+|[0-9]+/g);
 
+  // Capitalize the first letter of each word and join them with spaces
   const separatedName = words
     ?.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
