@@ -163,7 +163,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         {containOnEquipment?.statement && (
           <div>
             <div className='font-bold'>Contain on equipments list</div>
-            <div>{containOnEquipment?.allergenList?.join(',')}</div>
+            <div>{containOnEquipment?.allergenList?.join(', ')}</div>
             <div className='font-bold'>Contain on equipment statement</div>
             <div>{containOnEquipment?.statement}</div>
           </div>
@@ -171,13 +171,13 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         {contain && (
           <div>
             <div className='font-bold'>Contain: </div>
-            <p>{contain} </p>
+            <p>{contain?.join(', ')} </p>
           </div>
         )}
         {freeOf && (
           <div>
             <div className='font-bold'>Free of: </div>
-            <p>{freeOf?.join(',')} </p>
+            <p>{freeOf?.join(', ')} </p>
           </div>
         )}
       </SectionWrapper>
