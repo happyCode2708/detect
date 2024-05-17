@@ -105,14 +105,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const toastError = () => {
-      toast({
-        title: 'Something went wrong',
-        description: 'Failed to process. Please try again',
-        variant: 'destructive',
-      });
-    };
-
     if (resultFileName) {
       refInterval.current = window.setInterval(async () => {
         try {
@@ -136,13 +128,13 @@ export default function Home() {
               title: 'Something went wrong',
               description: 'Failed to process. Please try again',
               variant: 'destructive',
+              duration: 7000,
             });
-            console.log('come here');
+            if (refInterval.current) {
+              clearInterval(refInterval.current);
+            }
             return;
           }
-          removeFieldByPath(result, 'product.isFactPanelGoodToRead');
-          removeFieldByPath(result, 'product.certificationOrLogo');
-          removeFieldByPath(result, 'product.readAllConstants');
 
           setProductInfo(result);
 
@@ -253,21 +245,4 @@ const SectionWrapper = ({
       </div>
     </div>
   );
-};
-
-type AnyObject = { [key: string]: any };
-
-const removeFieldByPath = (obj: AnyObject, path: string): AnyObject => {
-  const keys = path.split('.');
-  let current: AnyObject = obj;
-
-  for (let i = 0; i < keys.length - 1; i++) {
-    if (current[keys[i]] === undefined) {
-      return obj; // Path does not exist
-    }
-    current = current[keys[i]] as AnyObject;
-  }
-
-  delete current[keys[keys.length - 1]];
-  return obj;
 };
