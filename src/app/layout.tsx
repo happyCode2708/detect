@@ -6,8 +6,8 @@ import Provider from '@/provider/Provider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Rivir Fact Panel',
-  description: 'Get Info',
+  title: 'product',
+  description: 'info',
 };
 
 export default function RootLayout({

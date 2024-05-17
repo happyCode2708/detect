@@ -1,5 +1,3 @@
-// export const NEW_PROMPT = `return your answer gemini for questions here. Do you see any usda from provided image?`;
-
 export const NEW_PROMPT = `
 Some common constants:
 + FOOTNOTE_INDICATORS = ["*", "**", "†", "★★", "★"]
