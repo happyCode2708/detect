@@ -257,7 +257,7 @@ const SectionWrapper = ({
 
 type AnyObject = { [key: string]: any };
 
-export const removeFieldByPath = (obj: AnyObject, path: string): AnyObject => {
+const removeFieldByPath = (obj: AnyObject, path: string): AnyObject => {
   const keys = path.split('.');
   let current: AnyObject = obj;
 
