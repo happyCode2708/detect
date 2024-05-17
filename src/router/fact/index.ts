@@ -22,12 +22,20 @@ router.get('/get-result/:filename', (req, res) => {
 
   fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
-      console.error('Failed to read file');
+      console.error('Processing images. Please wait');
       // Send a 404 error if the file is not found
-      return res.status(404).send('File are not ready.');
+      return res.status(200).send('Image is processing. Please wait');
     }
     try {
       const jsonData = JSON.parse(data);
+
+      const { isSuccess } = jsonData;
+
+      if (isSuccess !== false) {
+        removeFieldByPath(jsonData, 'product.isFactPanelGoodToRead');
+        removeFieldByPath(jsonData, 'product.certificationOrLogo');
+        removeFieldByPath(jsonData, 'product.readAllConstants');
+      }
 
       res.json(jsonData);
     } catch (parseError) {
@@ -54,3 +62,20 @@ router.get('/get-history', (req, res) => {
 });
 
 export default router;
+
+type AnyObject = { [key: string]: any };
+
+const removeFieldByPath = (obj: AnyObject, path: string): AnyObject => {
+  const keys = path.split('.');
+  let current: AnyObject = obj;
+
+  for (let i = 0; i < keys.length - 1; i++) {
+    if (current[keys[i]] === undefined) {
+      return obj; // Path does not exist
+    }
+    current = current[keys[i]] as AnyObject;
+  }
+
+  delete current[keys[keys.length - 1]];
+  return obj;
+};
