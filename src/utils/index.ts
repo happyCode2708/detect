@@ -1,8 +1,8 @@
 import path from 'path';
 import fs, { write } from 'fs';
 import { historyDir, resultsDir } from '../server';
-import sharp from 'sharp';
 import { NEW_PROMPT } from '../constants';
+import sharp from 'sharp';
 
 // Function to encode image to Base64
 export const encodeImageToBase64 = (filePath: string) => {
@@ -231,27 +231,27 @@ export const onProcessGemini = async ({
 
   res.json({ resultFileName, images: [] });
 
-  const gemini_result = await generateContent(images, text1);
-
-  if (!gemini_result) return;
-  const fullResult = gemini_result;
-  writeJsonToFile(
-    resultsDir,
-    'full-' + resultFileName,
-    JSON.stringify(fullResult)
-  );
-
-  // writeJsonToFile(
-  //   resultsDir,
-  //   resultFileName,
-  //   JSON.stringify(fullResult?.trim())
-  // );
-
   try {
-    const procResult = gemini_result?.split('```json\n')[1].split('```')[0];
+    const gemini_result = await generateContent(images, text1);
 
-    writeJsonToFile(resultsDir, resultFileName, JSON.stringify(procResult));
+    if (!gemini_result) return;
+    //! try to parse
+    const fullResult = gemini_result;
+    writeJsonToFile(
+      resultsDir,
+      'full-' + resultFileName,
+      JSON.stringify(fullResult)
+    );
+
+    const procResult = gemini_result?.split('```json\n')[1].split('```')[0];
+    const testParse = JSON.parse(procResult);
+    writeJsonToFile(resultsDir, resultFileName, procResult);
   } catch (e) {
+    writeJsonToFile(
+      resultsDir,
+      resultFileName,
+      JSON.stringify({ isSuccess: false })
+    );
     console.log('some thing went wrong', e);
   }
 };

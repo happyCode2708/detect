@@ -11,6 +11,7 @@ import { Result } from '@/components/result/Result';
 import { useQueryClient } from '@tanstack/react-query';
 import { PreviewImage } from '@/components/preview-image/PreviewImage';
 import { ViewListImage } from '@/components/preview-image/ViewListImage';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function Home() {
   const [files, setFiles] = useState<any>([]);
@@ -27,6 +28,8 @@ export default function Home() {
 
   const mutationUploadFile = useMutateUploadFile();
   const queryClient = useQueryClient();
+
+  const { toast } = useToast();
 
   const handleSubmit = async () => {
     if (!files.length) return;
@@ -65,6 +68,8 @@ export default function Home() {
 
   const onClearFile = () => {
     setFiles([]);
+    setInputImages([]);
+    setProcImages([]);
     if (!refInput.current) return;
     refInput.current.value = '';
   };
@@ -99,13 +104,15 @@ export default function Home() {
     });
   };
 
-  const onPreviewImage = (src: any) => {
-    setPreviewImage(src);
-    console.log('test');
-  };
-
   useEffect(() => {
-    // let interval: any;
+    const toastError = () => {
+      toast({
+        title: 'Something went wrong',
+        description: 'Failed to process. Please try again',
+        variant: 'destructive',
+      });
+    };
+
     if (resultFileName) {
       refInterval.current = window.setInterval(async () => {
         try {
@@ -118,7 +125,27 @@ export default function Home() {
             );
           }
           const data = await response.json();
-          setProductInfo(JSON.parse(data));
+
+          const result = data;
+
+          const { isSuccess } = result || {};
+
+          if (isSuccess === false) {
+            setLoading(false);
+            toast({
+              title: 'Something went wrong',
+              description: 'Failed to process. Please try again',
+              variant: 'destructive',
+            });
+            console.log('come here');
+            return;
+          }
+          removeFieldByPath(result, 'product.isFactPanelGoodToRead');
+          removeFieldByPath(result, 'product.certificationOrLogo');
+          removeFieldByPath(result, 'product.readAllConstants');
+
+          setProductInfo(result);
+
           if (refInterval.current) {
             clearInterval(refInterval.current);
           }
@@ -215,7 +242,7 @@ const SectionWrapper = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className='p-6 relative'>
+    <div className='pt-6 relative'>
       <div className='border rounded-md p-[10px] pt-[20px]'>
         {title && (
           <div className='font-bold border rounded-lg px-[8px] py-[2px] absolute top-[8px] lef-[35px] bg-white'>
@@ -226,4 +253,21 @@ const SectionWrapper = ({
       </div>
     </div>
   );
+};
+
+type AnyObject = { [key: string]: any };
+
+export const removeFieldByPath = (obj: AnyObject, path: string): AnyObject => {
+  const keys = path.split('.');
+  let current: AnyObject = obj;
+
+  for (let i = 0; i < keys.length - 1; i++) {
+    if (current[keys[i]] === undefined) {
+      return obj; // Path does not exist
+    }
+    current = current[keys[i]] as AnyObject;
+  }
+
+  delete current[keys[keys.length - 1]];
+  return obj;
 };

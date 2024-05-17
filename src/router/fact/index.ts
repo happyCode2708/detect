@@ -28,6 +28,7 @@ router.get('/get-result/:filename', (req, res) => {
     }
     try {
       const jsonData = JSON.parse(data);
+
       res.json(jsonData);
     } catch (parseError) {
       console.error('Error parsing JSON:', parseError);
@@ -41,7 +42,7 @@ router.get('/get-history', (req, res) => {
 
   fs.readFile(historyPath, 'utf8', (err, data) => {
     if (err) {
-      console.error('Failed to read file');
+      console.error('Wating for result');
       // Send a 404 error if the file is not found
       return res.status(404).send('history not found.');
     }

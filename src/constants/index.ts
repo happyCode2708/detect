@@ -1,3 +1,5 @@
+export const NEW_PROMPT_1 = `you you know me?`;
+
 export const NEW_PROMPT = `
 Some common constants:
 + FOOTNOTE_INDICATORS = ["*", "**", "†", "★★", "★"]
@@ -52,7 +54,7 @@ json
       "primarySize": {
         "primarySizeValue": string,
         "primarySizeUom": string,
-        "primarySizeText": string,
+        "primarySizeText": string,json
       },
       "secondarySize": {
         "secondarySizeValue": string,
