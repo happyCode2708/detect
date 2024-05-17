@@ -128,7 +128,7 @@ json
           "newYorkStateGrownAndCertifiedClaim": boolean,
         },
         "nonGmo": {
-          "nonGmo__Certifider": string,
+          "nonGmo__Certifier": string,
           "nonGmoClaim": boolean
         },
         "organic": {
@@ -428,14 +428,14 @@ a) "attributesAndCertifiers.claims" rules:
 Ex 1: The Non-GMO valid certifier is visibly seen by human eyes on the provided image so it should be recorded as 
 {
   "nonGmo": {
-    "nonGmo__Certifider": "gemini return the name of Certifier",
+    "nonGmo__Certifier": "gemini return the name of Certifier",
     "nonGmoClaim": true
   }  
 }  
 Ex 2: If you see statement like "Non-gmo" but do not found the "Non-GMO" certifier logo on the image so it should be recorded as
 {
   "nonGmo": {
-    "nonGmo__Certifider": null,
+    "nonGmo__Certifier": null,
     "nonGmoClaim": true
   }  
 }
