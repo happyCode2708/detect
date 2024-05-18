@@ -47,7 +47,7 @@ jobs:
           chmod 600 private_key
 
           # Run rsync to copy files
-          # rsync -avz -e "ssh -i private_key -o StrictHostKeyChecking=no" ./ $VPS_USER@$VPS_IP:$APP_DIR
+          rsync -avz -e "ssh -i private_key -o StrictHostKeyChecking=no" ./ $VPS_USER@$VPS_IP:$APP_DIR
 
           # SSH into the server to run commands
           ssh -i private_key -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP << 'EOF'
@@ -58,8 +58,8 @@ jobs:
             #   nvm alias default 18.17
             # fi
 
-            nvm list
-            node -v
+            # nvm list
+            # node -v
 
             # cd $APP_DIR
             # npm install
