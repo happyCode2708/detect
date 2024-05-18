@@ -31,9 +31,25 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
           APP_DIR: /root/source/product_ocr
         run: |
+          # Debugging: Print environment variables
+          echo "VPS_USER: $VPS_USER"
+          echo "VPS_IP: $VPS_IP"
+          echo "APP_DIR: $APP_DIR"
+
+          # Check if the SSH_PRIVATE_KEY variable is not empty
+          if [ -z "$SSH_PRIVATE_KEY" ]; then
+            echo "SSH_PRIVATE_KEY is not set"
+            exit 1
+          fi
+
+          # Save the SSH private key to a file
           echo "$SSH_PRIVATE_KEY" > private_key
           chmod 600 private_key
+
+          # Run rsync to copy files
           rsync -avz -e "ssh -i private_key -o StrictHostKeyChecking=no" ./ $VPS_USER@$VPS_IP:$APP_DIR
+
+          # SSH into the server to run commands
           ssh -i private_key -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP << 'EOF'
             cd $APP_DIR
             npm install
