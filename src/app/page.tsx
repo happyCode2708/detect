@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef, MutableRefObject } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { RefreshCcw } from 'lucide-react';
+import { Loader, RefreshCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ExtractionHistory from '@/components/extract-history/ExtractionHitory';
 import { useMutateUploadFile } from '@/queries/home';
@@ -12,6 +12,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { PreviewImage } from '@/components/preview-image/PreviewImage';
 import { ViewListImage } from '@/components/preview-image/ViewListImage';
 import { useToast } from '@/components/ui/use-toast';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export default function Home() {
   const [files, setFiles] = useState<any>([]);
@@ -42,6 +43,7 @@ export default function Home() {
 
     setLoading(true);
     setProductInfo(null);
+
     mutationUploadFile.mutate(formData, {
       onError: (e) => {
         console.log(e);
@@ -138,6 +140,13 @@ export default function Home() {
 
           setProductInfo(result);
 
+          toast({
+            title: 'Successfully',
+            description: 'Images processing is complete',
+            variant: 'success',
+            duration: 5000,
+          });
+
           if (refInterval.current) {
             clearInterval(refInterval.current);
           }
@@ -212,6 +221,18 @@ export default function Home() {
               <SectionWrapper title='Result'>
                 <Result productInfo={productInfo} />
               </SectionWrapper>
+            </div>
+          )}
+          {loading && (
+            <div className='flex-1 overflow-hidden pt-6'>
+              <Alert>
+                <Loader className='h-4 w-4' />
+                <AlertTitle>Processing!</AlertTitle>
+                <AlertDescription>
+                  Your images are currently being processed in a background
+                  task. You will be notified once the processing is complete.
+                </AlertDescription>
+              </Alert>
             </div>
           )}
         </div>
