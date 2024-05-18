@@ -29,7 +29,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           VPS_IP: ${{ secrets.VPS_IP }}
           VPS_USER: ${{ secrets.VPS_USER }}
-          APP_DIR: /path/to/your/app/on/vps
+          APP_DIR: /root/source/product_ocr
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key
           chmod 600 private_key
