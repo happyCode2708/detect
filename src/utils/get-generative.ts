@@ -7,7 +7,7 @@ import {
 export const getGenerative = () => {
   require('dotenv').config();
 
-  const model = 'gemini-1.5-pro-preview-0409';
+  const model = 'gemini-1.5-pro-preview-0514';
   // const model = 'gemini-1.5-flash-preview-0514';
 
   const googleCredentialString = Buffer.from(

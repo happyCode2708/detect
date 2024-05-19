@@ -32,7 +32,11 @@ router.get('/get-result/:filename', (req, res) => {
       const { isSuccess } = jsonData;
 
       if (isSuccess !== false) {
-        removeFieldByPath(jsonData, 'product.isFactPanelGoodToRead');
+        //! production only
+        removeFieldByPath(jsonData, 'answerOfQuestionsAboutNutritionFact');
+        removeFieldByPath(jsonData, 'answerOfQuestionAboutNutritionFactTitle');
+        removeFieldByPath(jsonData, 'simpleOCRResult');
+        removeFieldByPath(jsonData, 'answer');
         removeFieldByPath(jsonData, 'product.certificationOrLogo');
         removeFieldByPath(jsonData, 'product.readAllConstants');
       }
