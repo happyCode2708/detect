@@ -20,9 +20,8 @@ Carefully examine the provided image and and created JSON output in given format
 json
 {
   "answerOfQuestionsAboutNutritionFact": "your answer gemini" (Do you see the whole nutrition fact panel on provided image? why? where is it on product?"),
-"answerOfQuestionAboutNutritionFactTitle": "your answer gemini" (Do you see fully "Supplement Fact" title or "Nutrition Fact" title  on provided image ? ),
-"simpleOCRResult":  "your answer gemini" (Can you please help me return only text on images not text on product?),
-"answer": "answer me gemini - why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please do OCR text and check if your info add to JSON is correct",
+  "answerOfQuestionAboutNutritionFactTitle": "your answer gemini" (Do you see fully "Supplement Fact" title or "Nutrition Fact" title  on provided image ? ),
+  "answer": "answer me gemini - why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please do OCR text and check if your info add to JSON is correct",
   "product": {
     "certificationOrLogo":"your answer gemini" (help me list all certifiers logo/usda inspection marks on provided image),
     "readAllConstants": "your answer gemini"(please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?"),
@@ -470,3 +469,6 @@ g) "attributesAndCertifiers.otherClaims.sugarAndSweetenerClaims" rules:
 h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 + if USDA inspection mark found on provided image, return full words on that inspection mark
 `;
+
+// "simpleOCRResult":  "your answer gemini" (Can you please help me return only text on images not text on product?),
+// "simpleOCRResult":  "your answer gemini" (Can you please help me return only text on images not text on product?),
