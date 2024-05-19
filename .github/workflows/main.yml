@@ -50,5 +50,5 @@ jobs:
           ssh -i private_key -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP <<EOF
             # git config --global --add safe.directory $APP_DIR_MAIN
             cd $APP_DIR_MAIN 
-            rm -rf detect & git clone https://github.com/happyCode2708/detect.git && cd detect && echo "GOOGLE_CREDENTIALS=$GOOGLE_CREDENTIALS" > .env
+            rm -rf detect && git clone https://github.com/happyCode2708/detect.git && cd detect && echo "GOOGLE_CREDENTIALS=$GOOGLE_CREDENTIALS" > .env
           EOF
