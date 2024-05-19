@@ -48,5 +48,6 @@ jobs:
           # set up env
           ssh -i private_key -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP <<EOF
             cd $APP_DIR
+            git config --global --add safe.directory $APP_DIR
             git pull origin main
           EOF
