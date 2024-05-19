@@ -43,4 +43,5 @@ jobs:
           # SSH into the server to run commands
           ssh -i private_key -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP << 'EOF'
             pwd
+            sudo npm -v
           EOF

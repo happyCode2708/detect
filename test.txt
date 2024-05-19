@@ -3,3 +3,17 @@
 
       - name: Build project
         run: npm run build
+
+
+            source ~/.bashrc
+            cd $APP_DIR
+            npm install
+            npm run build
+            pm2 restart example1 || pm2 start npm --name "example1" -- start custom-dev -- -p 3000
+            pm2 save
+
+            /bin/bash -c "cd $APP_DIR && npm install && npm run build & pm2 restart 1 & pm2 save"
+
+
+          # Run rsync to copy files
+          rsync -avz -e "ssh -i private_key -o StrictHostKeyChecking=no" ./ $VPS_USER@$VPS_IP:$APP_DIR
