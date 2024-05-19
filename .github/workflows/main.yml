@@ -40,8 +40,14 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > private_key
           chmod 600 private_key
 
+          rsync -avz -e "ssh -i private_key -o StrictHostKeyChecking=no" ./ $VPS_USER@$VPS_IP:$APP_DIR
+
           # SSH into the server to run commands
-          ssh -i private_key -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP << 'EOF
+          ssh -i private_key -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP << EOF
             cd $APP_DIR
-            pwd
+            npm install
+            npm run build
+            pm2 restart 1
+            pm2 save
+          # Run rsync to copy files
           EOF
