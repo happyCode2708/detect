@@ -29,6 +29,6 @@ app.use((req, res) => nextHandler(req, res));
 
 nextApp.prepare().then(() => {
   app.listen(port, async () => {
-    console.log(`Next.js App running on port ${process.env.PORT}`);
+    console.log(`Next.js App running on port ${port}`);
   });
 });

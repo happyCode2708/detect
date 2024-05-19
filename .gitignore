@@ -48,3 +48,4 @@ src/docs
 
 output.txt
 service_account.json
+reference/*
