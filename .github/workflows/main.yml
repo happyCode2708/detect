@@ -52,5 +52,6 @@ jobs:
             cd ..
             rm -rf detect
             git clone https://github.com/happyCode2708/detect.git
+            cd detect
             echo $GOOGLE_CREDENTIALS > .env
           EOF

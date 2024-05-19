@@ -153,7 +153,7 @@ export default function Home() {
 
           setLoading(false);
         } catch (error) {
-          console.error('Wait for result', error);
+          console.error('Waiting for result', error);
         }
       }, 4500);
     }
