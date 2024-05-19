@@ -17,3 +17,26 @@
 
           # Run rsync to copy files
           rsync -avz -e "ssh -i private_key -o StrictHostKeyChecking=no" ./ $VPS_USER@$VPS_IP:$APP_DIR
+
+          ssh -i private_key -o StrictHostKeyChecking=no root@156.67.214.14 <<EOF
+            ls -a
+            pwd
+            whoami
+            npm install
+            npm run build
+            pm2 restart 1
+            pm2 save
+          EOF
+
+
+
+          # SSH into the server to run commands
+          ssh -i private_key -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP <<EOF
+            ls -a
+            pwd
+            whoami
+            npm install
+            npm run build
+            pm2 restart 1
+            pm2 save
+          EOF
