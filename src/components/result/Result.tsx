@@ -201,7 +201,7 @@ const SectionWrapper = ({
 }) => {
   return (
     <div>
-      <div className='font-bold bg-blue-500 p-2 rounded-md text-white'>
+      <div className='font-bold bg-blue-500 p-2 rounded-md text-white mb-2'>
         {name}
       </div>
       <div className='pl-8'>{children && children}</div>
