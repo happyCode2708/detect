@@ -23,7 +23,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           VPS_IP: ${{ secrets.VPS_IP }}
           VPS_USER: ${{ secrets.VPS_USER }}
-          APP_DIR: /root/source/product_ocr
+          APP_DIR: /root/source/product_ocr/detect
           PORT: ${{ secrets.PORT }}
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         run: |
