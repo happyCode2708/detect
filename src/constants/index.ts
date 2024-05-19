@@ -236,12 +236,11 @@ Ex 1: "10 tablespoons(80g)" = {servingSize: {"description": "10 tablespoons", "v
 Ex 2: "10 tablespoons" = {servingSize: {"value": 10, "uom": "tablespoons"}}
 
 6) "footnote":
-+ "footnote" must be the last part of fact panel (the note may contain some special characters from FOOTNOTE_INDICATORS),
-and must be a note contain "Daily Value....", or "Not a significant source...".
++ "footnote" is usually the last part of fact panel (the note may contain some special characters from FOOTNOTE_INDICATORS),
+and must be a note contain "% Daily Value....", or "Not a significant source...", "% D.value".
 + "footnote" is only one section, and is not multiple sections.
 + "footnote.footnoteIndicatorList" is a list of special characters found in "footnote.value"
-+ "footnote.value" contains all specials symbol from "footnote.footnoteIndicatorList"
-+ "footnote.footnoteIndicatorList" only contain character from FOOTNOTE_INDICATORS
++ "footnote.footnoteIndicatorList" is from list of FOOTNOTE_INDICATORS
 Ex 1: "**Not a significant source of saturated fat, trans fat. *Daily Value not established. = {footnote: {value :"**Not a significant source of saturated fat, trans fat. *Daily Value not established.", footnoteIndicatorList: ["*", "**"]}}
 Ex 2: "*Daily Value not established." = {footnote: {value: "*Daily Value not established.", footnoteIndicatorList": ["*"]}}
 Ex 3: "†Daily Value not established." = {footnote: {value: "†Daily Value not established.", footnoteIndicatorList": ["†"]}}
@@ -472,3 +471,4 @@ h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 
 // "simpleOCRResult":  "your answer gemini" (Can you please help me return only text on images not text on product?),
 // "simpleOCRResult":  "your answer gemini" (Can you please help me return only text on images not text on product?),
+// + "footnote.value" contains all specials symbol from "footnote.footnoteIndicatorList"
