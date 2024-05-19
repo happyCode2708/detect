@@ -190,7 +190,7 @@ export default function Home() {
                 <span>Proccessing</span>
               </div>
             ) : (
-              'Process'
+              'Extract'
             )}
           </Button>
           {loading && (
