@@ -23,7 +23,9 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           VPS_IP: ${{ secrets.VPS_IP }}
           VPS_USER: ${{ secrets.VPS_USER }}
-          APP_DIR: /root/source/product_ocr
+          APP_DIR: /root/source/product_ocr/detect
+          PORT: ${{ secrets.PORT }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         run: |
           # Debugging: Print environment variables
           echo "VPS_USER: $VPS_USER"
@@ -42,3 +44,9 @@ jobs:
 
           # Run rsync to copy files
           rsync -avz -e "ssh -i private_key -o StrictHostKeyChecking=no" ./ $VPS_USER@$VPS_IP:$APP_DIR
+
+          # set up env
+          ssh -i private_key -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP <<EOF
+            cd $APP_DIR
+            git pull origin main
+          EOF
