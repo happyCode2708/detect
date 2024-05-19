@@ -42,10 +42,8 @@ jobs:
 
           # SSH into the server to run commands
           ssh -i private_key -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP <<EOF
-            cd $APP_DIR
-            pwd
-            source ~/.bashrc
             ls -a
+            pwd
             whoami
             npm install
             npm run build
