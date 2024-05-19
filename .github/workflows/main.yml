@@ -18,12 +18,6 @@ jobs:
         with:
           node-version: '18.17'
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build project
-        run: npm run build
-
       - name: Deploy to VPS
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -51,19 +45,10 @@ jobs:
 
           # SSH into the server to run commands
           ssh -i private_key -o StrictHostKeyChecking=no $VPS_USER@$VPS_IP << 'EOF'
-            # Check if Node.js is installed, if not, install it
-            # if ! command -v node &> /dev/null; then
-            #   nvm install 18.17
-            #   nvm use 18.17
-            #   nvm alias default 18.17
-            # fi
 
-            # nvm list
-            # node -v
-
-            # cd $APP_DIR
-            # npm install
-            # npm run build
-            # pm2 restart nextjs-app || pm2 start npm --name "nextjs-app" -- start
-            # pm2 save
+            cd $APP_DIR
+            npm install
+            npm run build
+            pm2 restart example1 || pm2 start npm --name "example1" -- start custom-dev -- -p 3000
+            pm2 save
           EOF
