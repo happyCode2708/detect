@@ -52,7 +52,7 @@ json
     ],
     "ingredientsGroup": [{"ingredients": string[]}],
     "allergen": {
-      "contain": string,
+      "contain": string[],
       "containOnEquipment": {"statement": string, "allergenList: string[] },
       "freeOf": string[],
     },
