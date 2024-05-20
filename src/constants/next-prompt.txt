@@ -1,6 +1,3 @@
-export const NEW_PROMPT_1 = `you you know me?`;
-
-export const NEW_PROMPT = `
 Some common constants:
 + FOOTNOTE_INDICATORS = ["*", "**", "†", "★★", "★"]
 + FAT_CONTAIN_CLAIM = ["zero grams trans fat per serving", "fat free"]
@@ -10,7 +7,7 @@ Some common constants:
 + NON_CERTIFIED_CLAIMS = ["100% natural", "100% natural ingredients", "100% pure", "acid free", "aeroponic grown", "all natural", "all natural ingredients", "aquaponic/aquaculture grown", "baked", "biodegradable", "cage free", "cold-pressed", "direct trade", "dolphin safe", "dry roasted", "eco-friendly", "farm raised", "filtered", "free range", "freeze-dried", "from concentrate", "grade a", "greenhouse grown", "heat treated", "heirloom", "homeopathic", "homogenized", "hydroponic grown", "hypo-allergenic", "irradiated", "live food", "low acid", "low carbohydrate", "low cholesterol", "macrobiotic", "minimally processed", "natural", "natural botanicals", "natural fragrances", "natural ingredients", "no animal testing", "no sulfites added", "non gebrokts", "non-alcoholic", "non-irradiated", "non-toxic", "not fried", "not from concentrate", "pasteurized", "pasture raised", "prairie raised", "raw", "responsibly sourced palm oil", "sprouted", "un-filtered", "un-pasteurized", "unscented", "vegetarian or vegan diet/feed", "wild", "wild caught"]
 + ALLERGEN_LIST=["corn", "crustacean shellfish", "dairy", "egg", "fish", "milk", "oats", "peanuts / peanut oil", "phenylalanine", "seeds", "sesame", "soy / soybeans", "tree nuts", "wheat"]
 
-Remember (important):
+Remember:
 + the provided images could contain or could not contain nutrition fact/supplement fact.
 + nutrition info must be visibly seen by human eyes not from other source data
 + do not provide data that you cannot see it by human eyes on provided images.
@@ -21,10 +18,10 @@ json
 {
   "answerOfQuestionsAboutNutritionFact": "your answer gemini" (Do you see the whole nutrition fact panel on provided image? why? where is it on product?"),
   "answerOfQuestionAboutNutritionFactTitle": "your answer gemini" (Do you see fully "Supplement Fact" title or "Nutrition Fact" title  on provided image ? ),
-  "answerOfQuestion": "your answer gemini" ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please do OCR text and check if your info add to JSON is correct),
-  "answerOfRemindQuestion": "your answer gemini"(The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish?) 
+  "simpleOCRResult":  "your answer gemini" (Can you please help me return only text on images not text on product, remember to ignore  all "\n"  in your answer?),
+  "answer": "answer me gemini - why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please do OCR text and check if your info add to JSON is correct",
   "product": {
-    "certifierAndLogo":"your answer gemini" (help me list all certifiers logo(such as kosher U pareve, ...) and usda inspection marks on provided image),
+    "certificationOrLogo":"your answer gemini" (help me list all certifiers logo/usda inspection marks on provided image),
     "readAllConstants": "your answer gemini"(please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?"),
     "factPanels": null or  [
       {
@@ -51,7 +48,7 @@ json
       }
     ],
     "ingredientsGroup": [{"ingredients": string[]}],
-    "allergen": {
+    "allergen: {
       "contain": string,
       "containOnEquipment": {"statement": string, "allergenList: string[] },
       "freeOf": string[],
@@ -184,6 +181,7 @@ json
     },
     "supplyChain": {
       "CountryOfOrigin": string,
+      "CountryOfOriginText": string,
       "manufactureDate": string,
       "manufacturePhoneNumber": number,
       "manufactureStreetAddress": string,
@@ -194,12 +192,11 @@ json
     }
     "instructions": {
       "otherInstruction": string[],
-      "consumerStorageInstructions": string[], // only use content in english
+      "consumerStorageInstructions": string[],
       "cookingInstructions": string[],
-      "usageInstructions": string[], 
+      "usageInstructions": string[],
     },
   },
-  "remindAgain": "hey gemini - only provide information in english"
 }
 
 The Most Important rule:
@@ -417,10 +414,11 @@ c) "nutrients.uom" rules:
 Ex 1: "Per container", "Per serving"
 
 20) "supplyChain":
-+  "supplyChain.countryOfOrigin" is the country name in where product was made. Ex: "USA".
++  "supplyChain.countryOfOriginText" is the statement express country in where product was made. Ex: Made in USA
++  "supplyChain.countryOfOrigin" is the country name in where product was made. Ex: "USA"
 
 21) "instructions" rules:
-a) "instructions.otherInstruction" is a list of text that guide user to do something.
+a) "instructions.otherInstruction" is a list of text that guide user to do something
 Ex: "read instruction for...", "see nutrition fact for..." 
 
 22) "attributesAndCertifiers" rules:
@@ -468,10 +466,3 @@ g) "attributesAndCertifiers.otherClaims.sugarAndSweetenerClaims" rules:
 
 h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 + if USDA inspection mark found on provided image, return full words on that inspection mark
-`;
-
-// "simpleOCRResult":  "your answer gemini" (Can you please help me return only text on images not text on product?),
-// "simpleOCRResult":  "your answer gemini" (Can you please help me return only text on images not text on product?),
-// + "footnote.value" contains all specials symbol from "footnote.footnoteIndicatorList"
-
-// "simpleOCRResult":  Can you please help me return only text on images not text on product, remember to ignore  all "\n"  in your answer?,
