@@ -73,17 +73,18 @@ export const generateContent = async (images: any[], text: any) => {
     global as any
   ).generativeModel.generateContentStream(req);
 
-  let chunk_response = [];
+  let chunkResponse = [];
 
   let finalResponse = '';
 
   for await (const item of streamingResp.stream) {
-    chunk_response.push(item);
+    chunkResponse.push(item);
     if (!item?.candidates) return;
-    finalResponse = finalResponse + item?.candidates[0]?.content.parts[0].text;
+    finalResponse =
+      finalResponse + (item?.candidates[0]?.content?.parts?.[0]?.text || '');
   }
 
-  return finalResponse;
+  return { chunkResponse, finalResponse };
 };
 
 const resizeAndCenterImage = async (
@@ -232,7 +233,8 @@ export const onProcessGemini = async ({
   res.json({ resultFileName, images: [] });
 
   try {
-    const gemini_result = await generateContent(images, text1);
+    const { chunkResponse, finalResponse: gemini_result } =
+      (await generateContent(images, text1)) || {};
 
     if (!gemini_result) return;
     //! try to parse
@@ -241,6 +243,11 @@ export const onProcessGemini = async ({
       resultsDir,
       'full-' + resultFileName,
       JSON.stringify(fullResult)
+    );
+    writeJsonToFile(
+      resultsDir,
+      'chunk-' + resultFileName,
+      JSON.stringify(chunkResponse)
     );
 
     const procResult = gemini_result?.split('```json\n')[1].split('```')[0];

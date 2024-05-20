@@ -35,10 +35,12 @@ router.get('/get-result/:filename', (req, res) => {
         //! production only
         removeFieldByPath(jsonData, 'answerOfQuestionsAboutNutritionFact');
         removeFieldByPath(jsonData, 'answerOfQuestionAboutNutritionFactTitle');
-        removeFieldByPath(jsonData, 'simpleOCRResult');
-        removeFieldByPath(jsonData, 'answer');
-        removeFieldByPath(jsonData, 'product.certificationOrLogo');
+        removeFieldByPath(jsonData, 'answerOfQuestion');
+        removeFieldByPath(jsonData, 'answerOfRemindQuestion');
+        removeFieldByPath(jsonData, 'product.certifierAndLogo');
         removeFieldByPath(jsonData, 'product.readAllConstants');
+        removeFieldByPath(jsonData, 'remindAgain');
+        // removeFieldByPath(jsonData, 'simpleOCRResult');
       }
 
       res.json(jsonData);
