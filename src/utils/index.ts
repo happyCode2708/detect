@@ -1,8 +1,9 @@
-import path from 'path';
+import path, { resolve } from 'path';
 import fs, { write } from 'fs';
 import { historyDir, resultsDir } from '../server';
 import { NEW_PROMPT } from '../constants';
 import sharp from 'sharp';
+import vision, { ImageAnnotatorClient } from '@google-cloud/vision';
 
 // Function to encode image to Base64
 export const encodeImageToBase64 = (filePath: string) => {
@@ -81,7 +82,7 @@ export const generateContent = async (images: any[], text: any) => {
     chunkResponse.push(item);
     if (!item?.candidates) return;
     finalResponse =
-      finalResponse + (item?.candidates[0]?.content?.parts?.[0]?.text || '');
+      finalResponse + item?.candidates[0]?.content?.parts?.[0]?.text;
   }
 
   return { chunkResponse, finalResponse };
@@ -188,6 +189,7 @@ export const onProcessGemini = async ({
   collateImageName,
   collatedOuputPath,
   filePaths,
+  ocrText,
 }: {
   req: any;
   res: any;
@@ -195,6 +197,7 @@ export const onProcessGemini = async ({
   collateImageName: string;
   collatedOuputPath: string[];
   filePaths: string[];
+  ocrText?: string;
 }) => {
   // const base64Image = encodeImageToBase64(collatedOuputPath);
 
@@ -261,4 +264,41 @@ export const onProcessGemini = async ({
     );
     console.log('some thing went wrong', e);
   }
+};
+
+export const getOcrText = async (imagePath: string): Promise<string> => {
+  const ggVision: ImageAnnotatorClient = (global as any).ggVision;
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const results = await ggVision.textDetection(imagePath);
+      const detections = results[0].textAnnotations;
+      if (!detections) return;
+      if (detections.length > 0) {
+        let arrayText: any[] = [];
+        let wholeText: string = '';
+        detections.forEach((text) => {
+          // console.log(`"${text.description}"`);
+          arrayText.push(text.description);
+          wholeText = wholeText + ' ' + text.description;
+          if (!text.boundingPoly) return;
+          if (!text.boundingPoly.vertices) return;
+
+          // console.log(JSON.stringify(text));
+
+          const vertices = text.boundingPoly.vertices.map(
+            (vertex) => `(${vertex.x},${vertex.y})`
+          );
+          // console.log('Bounds: ' + vertices.join(', '));
+        });
+        return resolve(wholeText);
+      } else {
+        console.log('No text detected.');
+        return resolve('');
+      }
+    } catch (e) {
+      console.log('Error', e);
+      return resolve('');
+    }
+  });
 };

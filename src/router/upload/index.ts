@@ -3,7 +3,7 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
-import { onProcessGemini, createCollage } from '../../utils';
+import { onProcessGemini, createCollage, getOcrText } from '../../utils';
 import { uploadsDir, pythonPath } from '../../server';
 // import { NEW_PROMPT, ORIGINAL_PROMPT } from './constants';
 // import OpenAI from 'openai';
@@ -43,7 +43,7 @@ const upload = multer({ storage: Storage });
 
 router.post(
   '/gemini',
-  (req, res, next) => {
+  async (req, res, next) => {
     const sessionId = uuidv4();
 
     // @ts-ignore
@@ -66,11 +66,9 @@ router.post(
     const collatedOuputPath = path.join(uploadsDir, collateImageName);
     // const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
 
-    await createCollage(filePaths, collatedOuputPath);
+    // const ocrText = await getOcrText(filePaths[0]);
 
-    const inputGeminiImage = isSingleFileUpload
-      ? (files[0].path as string)
-      : collatedOuputPath;
+    // await createCollage(filePaths, collatedOuputPath);
 
     onProcessGemini({
       req,
@@ -79,6 +77,7 @@ router.post(
       collateImageName,
       collatedOuputPath: filePaths,
       filePaths,
+      ocrText: '',
     });
   }
 );
