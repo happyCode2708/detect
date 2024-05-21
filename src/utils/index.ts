@@ -1,9 +1,16 @@
 import path, { resolve } from 'path';
 import fs, { write } from 'fs';
 import { historyDir, resultsDir } from '../server';
-import { NEW_PROMPT } from '../constants';
+import { NEW_PROMPT, makePrompt, make_nut_prompt } from '../constants';
 import sharp from 'sharp';
 import vision, { ImageAnnotatorClient } from '@google-cloud/vision';
+import { Result } from 'postcss';
+
+// const express = require('express');
+// const multer = require('multer');
+const { execFile } = require('child_process');
+// const path = require('path');
+// const fs = require('fs');
 
 // Function to encode image to Base64
 export const encodeImageToBase64 = (filePath: string) => {
@@ -188,16 +195,16 @@ export const onProcessGemini = async ({
   sessionId,
   collateImageName,
   collatedOuputPath,
-  filePaths,
-  ocrText,
+  prefix = '',
+  prompt,
 }: {
   req: any;
   res: any;
   sessionId: string;
   collateImageName: string;
   collatedOuputPath: string[];
-  filePaths: string[];
-  ocrText?: string;
+  prefix?: string;
+  prompt: string;
 }) => {
   // const base64Image = encodeImageToBase64(collatedOuputPath);
 
@@ -218,22 +225,27 @@ export const onProcessGemini = async ({
     };
   });
 
+  // make_nut_prompt({
+  //   ocrText: JSON.stringify(ocrText),
+  //   imageCount: collatedOuputPath?.length,
+  // })
+
   const text1 = {
-    text: NEW_PROMPT,
+    text: prompt,
   };
 
-  const resultFileName = sessionId + '.json';
+  const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
 
-  addNewExtractionToHistory(sessionId, {
-    collateImage: { name: collateImageName, url: collatedOuputPath },
-    inputFilePaths: filePaths,
-    result: {
-      name: resultFileName,
-      url: path.join(resultsDir, resultFileName),
-    },
-  });
+  // addNewExtractionToHistory(sessionId, {
+  //   collateImage: { name: collateImageName, url: collatedOuputPath },
+  //   inputFilePaths: collatedOuputPath,
+  //   result: {
+  //     name: resultFileName,
+  //     url: path.join(resultsDir, resultFileName),
+  //   },
+  // });
 
-  res.json({ resultFileName, images: [] });
+  writeJsonToFile(resultsDir, 'prompt-' + resultFileName, text1.text);
 
   try {
     const { chunkResponse, finalResponse: gemini_result } =
@@ -278,20 +290,17 @@ export const getOcrText = async (imagePath: string): Promise<string> => {
         let arrayText: any[] = [];
         let wholeText: string = '';
         detections.forEach((text) => {
-          // console.log(`"${text.description}"`);
           arrayText.push(text.description);
           wholeText = wholeText + ' ' + text.description;
           if (!text.boundingPoly) return;
           if (!text.boundingPoly.vertices) return;
-
-          // console.log(JSON.stringify(text));
 
           const vertices = text.boundingPoly.vertices.map(
             (vertex) => `(${vertex.x},${vertex.y})`
           );
           // console.log('Bounds: ' + vertices.join(', '));
         });
-        return resolve(wholeText);
+        return resolve(JSON.stringify(wholeText));
       } else {
         console.log('No text detected.');
         return resolve('');
@@ -301,4 +310,68 @@ export const getOcrText = async (imagePath: string): Promise<string> => {
       return resolve('');
     }
   });
+};
+
+export const getOcrTextAllImages = async (filePaths: string[]) => {
+  return Promise.all(filePaths.map((path) => getOcrText(path)));
+};
+
+export const isImageHaveNutFact = (filePath: string) => {
+  const imagePath = filePath;
+
+  return new Promise((resolve, reject) => {
+    execFile(
+      'python',
+      ['detect.py', imagePath],
+      (error: any, stdout: any, stderr: any) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+          // return res.status(500).send(error);
+        }
+        if (stderr) {
+          console.error(`stderr: ${stderr}`);
+          // return res.status(500).send(stderr);
+        }
+        console.log(stdout);
+        console.log(typeof stdout);
+        console.log('result', stdout.split('```')?.[1]);
+
+        const stringResult = stdout.split('```')?.[1];
+        return resolve(stringResult === 'true');
+
+        // const detections = JSON.parse(stdout);
+        // console.log('detection')
+        // res.json(detections);
+        // return resolve(detections);
+        // fs.unlinkSync(imagePath); // Delete the uploaded file after processing
+      }
+    );
+  });
+};
+
+export const findImagesContainNutFact = async (filePaths: string[]) => {
+  const detects = await Promise.all(
+    filePaths.map((path: string) => isImageHaveNutFact(path))
+  );
+
+  let validateImages: any = {
+    nutIncluded: [],
+    nutExcluded: [],
+  };
+
+  detects.forEach((isNutFactFound, idx) => {
+    if (isNutFactFound) {
+      validateImages.nutIncluded = [
+        ...validateImages.nutIncluded,
+        filePaths[idx],
+      ];
+    } else {
+      validateImages.nutExcluded = [
+        ...validateImages.nutExcluded,
+        filePaths[idx],
+      ];
+    }
+  });
+
+  return validateImages;
 };

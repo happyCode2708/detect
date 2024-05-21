@@ -128,20 +128,21 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
             })}
           </div>
         )} */}
-        {Object.entries(claims)?.map(
-          ([key, attributeGroup]: [key: string, value: any]) => {
-            return (
-              <div key={key}>
-                <div className='font-bold'>
-                  {camelCaseToSeparated(key) ?? 'N/A'}:
+        {claims &&
+          Object.entries(claims)?.map(
+            ([key, attributeGroup]: [key: string, value: any]) => {
+              return (
+                <div key={key}>
+                  <div className='font-bold'>
+                    {camelCaseToSeparated(key) ?? 'N/A'}:
+                  </div>
+                  <div className='pl-6'>
+                    <CamelFieldStringRender objectValues={attributeGroup} />
+                  </div>
                 </div>
-                <div className='pl-6'>
-                  <CamelFieldStringRender objectValues={attributeGroup} />
-                </div>
-              </div>
-            );
-          }
-        )}
+              );
+            }
+          )}
         <CamelFieldStringRender objectValues={otherClaims} />
         <CamelFieldStringRender objectValues={containInfo} />
       </SectionWrapper>

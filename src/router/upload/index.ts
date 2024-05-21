@@ -3,8 +3,15 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
-import { onProcessGemini, createCollage, getOcrText } from '../../utils';
+import {
+  onProcessGemini,
+  createCollage,
+  getOcrText,
+  getOcrTextAllImages,
+  findImagesContainNutFact,
+} from '../../utils';
 import { uploadsDir, pythonPath } from '../../server';
+import { makePrompt, make_nut_prompt } from '../../constants';
 // import { NEW_PROMPT, ORIGINAL_PROMPT } from './constants';
 // import OpenAI from 'openai';
 
@@ -68,17 +75,69 @@ router.post(
 
     // const ocrText = await getOcrText(filePaths[0]);
 
+    const invalidatedInput = await findImagesContainNutFact(filePaths);
+
+    console.log('result', JSON.stringify(invalidatedInput));
+
+    // console.log('ocrText', JSON.stringify(procOCRtext));
+
     // await createCollage(filePaths, collatedOuputPath);
+
+    const nutImagesOCRresult = await getOcrTextAllImages(
+      invalidatedInput.nutIncluded
+    );
+
+    const nutText = nutImagesOCRresult.reduce(
+      (accumulator, currentValue) =>
+        accumulator +
+        `
+      
+        ${currentValue}
+        `,
+      ''
+    );
+
+    const resultFileName = sessionId + '.json';
+
+    res.json({ resultFileName, images: [] });
 
     onProcessGemini({
       req,
       res,
       sessionId,
       collateImageName,
-      collatedOuputPath: filePaths,
-      filePaths,
-      ocrText: '',
+      collatedOuputPath: invalidatedInput.nutIncluded,
+      prompt: make_nut_prompt({
+        ocrText: JSON.stringify(nutText),
+        imageCount: collatedOuputPath?.length,
+      }),
+      prefix: 'nut',
     });
+
+    onProcessGemini({
+      req,
+      res,
+      sessionId,
+      collateImageName,
+      collatedOuputPath: [
+        ...invalidatedInput.nutIncluded,
+        ...invalidatedInput.nutExcluded,
+      ],
+      prompt: makePrompt({}),
+      prefix: 'all',
+    });
+
+    return;
+
+    // onProcessGemini({
+    //   req,
+    //   res,
+    //   sessionId,
+    //   collateImageName,
+    //   collatedOuputPath: filePaths,
+    //   filePaths,
+    //   ocrText: procOCRtext,
+    // });
   }
 );
 

@@ -15,12 +15,45 @@ router.get('/get-result/:filename', (req, res) => {
 
   // Construct the full file path
   const filePath = path.join(resultsDir, req.params.filename);
-  const fullResultfilePath = path.join(
-    resultsDir,
-    'full-' + req.params.filename
-  );
+  const allFilePath = path.join(resultsDir, 'all-' + req.params.filename);
+  const nutFilePath = path.join(resultsDir, 'nut-' + req.params.filename);
 
-  fs.readFile(filePath, 'utf8', (err, data) => {
+  let result = {
+    nut: null,
+    all: null,
+  };
+
+  fs.readFile(nutFilePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Processing images. Please wait');
+      // Send a 404 error if the file is not found
+      // return res.status(200).send('Image is processing. Please wait');
+    }
+    try {
+      const jsonData = JSON.parse(data);
+
+      const { isSuccess } = jsonData;
+
+      if (isSuccess !== false) {
+        //! production only
+        // removeFieldByPath(jsonData, 'answerOfQuestionsAboutNutritionFact');
+        // removeFieldByPath(jsonData, 'answerOfQuestionAboutNutritionFactTitle');
+        // removeFieldByPath(jsonData, 'answerOfQuestion');
+        // removeFieldByPath(jsonData, 'answerOfRemindQuestion');
+        // removeFieldByPath(jsonData, 'product.certifierAndLogo');
+        // removeFieldByPath(jsonData, 'product.readAllConstants');
+        // removeFieldByPath(jsonData, 'simpleOCRresult');
+      }
+
+      // res.json(jsonData);
+      result.nut = jsonData;
+    } catch (parseError) {
+      console.error('Error parsing JSON:', parseError);
+      res.status(500).send('Error parsing data file.');
+    }
+  });
+
+  fs.readFile(allFilePath, 'utf8', (err, data) => {
     if (err) {
       console.error('Processing images. Please wait');
       // Send a 404 error if the file is not found
@@ -33,21 +66,52 @@ router.get('/get-result/:filename', (req, res) => {
 
       if (isSuccess !== false) {
         //! production only
-        removeFieldByPath(jsonData, 'answerOfQuestionsAboutNutritionFact');
-        removeFieldByPath(jsonData, 'answerOfQuestionAboutNutritionFactTitle');
-        removeFieldByPath(jsonData, 'answerOfQuestion');
-        removeFieldByPath(jsonData, 'answerOfRemindQuestion');
-        removeFieldByPath(jsonData, 'product.certifierAndLogo');
-        removeFieldByPath(jsonData, 'product.readAllConstants');
-        removeFieldByPath(jsonData, 'simpleOCRresult');
+        // removeFieldByPath(jsonData, 'answerOfQuestionsAboutNutritionFact');
+        // removeFieldByPath(jsonData, 'answerOfQuestionAboutNutritionFactTitle');
+        // removeFieldByPath(jsonData, 'answerOfQuestion');
+        // removeFieldByPath(jsonData, 'answerOfRemindQuestion');
+        // removeFieldByPath(jsonData, 'product.certifierAndLogo');
+        // removeFieldByPath(jsonData, 'product.readAllConstants');
+        // removeFieldByPath(jsonData, 'simpleOCRresult');
       }
 
-      res.json(jsonData);
+      // res.json(jsonData);
+      result.all = jsonData;
+      res.json(result.all);
     } catch (parseError) {
       console.error('Error parsing JSON:', parseError);
       res.status(500).send('Error parsing data file.');
     }
   });
+
+  // fs.readFile(filePath, 'utf8', (err, data) => {
+  //   if (err) {
+  //     console.error('Processing images. Please wait');
+  //     // Send a 404 error if the file is not found
+  //     return res.status(200).send('Image is processing. Please wait');
+  //   }
+  //   try {
+  //     const jsonData = JSON.parse(data);
+
+  //     const { isSuccess } = jsonData;
+
+  //     if (isSuccess !== false) {
+  //       //! production only
+  //       // removeFieldByPath(jsonData, 'answerOfQuestionsAboutNutritionFact');
+  //       // removeFieldByPath(jsonData, 'answerOfQuestionAboutNutritionFactTitle');
+  //       // removeFieldByPath(jsonData, 'answerOfQuestion');
+  //       // removeFieldByPath(jsonData, 'answerOfRemindQuestion');
+  //       // removeFieldByPath(jsonData, 'product.certifierAndLogo');
+  //       // removeFieldByPath(jsonData, 'product.readAllConstants');
+  //       // removeFieldByPath(jsonData, 'simpleOCRresult');
+  //     }
+
+  //     res.json(jsonData);
+  //   } catch (parseError) {
+  //     console.error('Error parsing JSON:', parseError);
+  //     res.status(500).send('Error parsing data file.');
+  //   }
+  // });
 });
 
 router.get('/get-history', (req, res) => {
