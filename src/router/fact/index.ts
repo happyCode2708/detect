@@ -28,6 +28,7 @@ router.get('/get-result/:filename', (req, res) => {
       console.error('Processing images. Please wait');
       // Send a 404 error if the file is not found
       // return res.status(200).send('Image is processing. Please wait');
+      return;
     }
     try {
       const jsonData = JSON.parse(data);
@@ -47,6 +48,10 @@ router.get('/get-result/:filename', (req, res) => {
 
       // res.json(jsonData);
       result.nut = jsonData;
+      const procRes = combineResult(result);
+      if (res) {
+        res.json(procRes);
+      }
     } catch (parseError) {
       console.error('Error parsing JSON:', parseError);
       res.status(500).send('Error parsing data file.');
@@ -57,7 +62,8 @@ router.get('/get-result/:filename', (req, res) => {
     if (err) {
       console.error('Processing images. Please wait');
       // Send a 404 error if the file is not found
-      return res.status(200).send('Image is processing. Please wait');
+      // return res.status(200).send('Image is processing. Please wait');
+      return;
     }
     try {
       const jsonData = JSON.parse(data);
@@ -77,7 +83,10 @@ router.get('/get-result/:filename', (req, res) => {
 
       // res.json(jsonData);
       result.all = jsonData;
-      res.json(result.all);
+      const procRes = combineResult(result);
+      if (res) {
+        res.json(procRes);
+      }
     } catch (parseError) {
       console.error('Error parsing JSON:', parseError);
       res.status(500).send('Error parsing data file.');
@@ -147,4 +156,17 @@ const removeFieldByPath = (obj: AnyObject, path: string): AnyObject => {
 
   delete current[keys[keys.length - 1]];
   return obj;
+};
+
+const combineResult = (result: any) => {
+  if (result.nut && result.all) {
+    return {
+      product: {
+        ...result.all.product,
+        factPanels: result.nut.product.factPanels,
+      },
+    };
+  }
+
+  return false;
 };
