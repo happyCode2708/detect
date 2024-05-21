@@ -3,13 +3,12 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
+import { onProcessGemini, createCollage } from '../../utils';
 import {
-  onProcessGemini,
-  createCollage,
   getOcrText,
   getOcrTextAllImages,
   findImagesContainNutFact,
-} from '../../utils';
+} from '../../lib/server_utils';
 import { uploadsDir, pythonPath } from '../../server';
 import { makePrompt, make_nut_prompt } from '../../constants';
 // import { NEW_PROMPT, ORIGINAL_PROMPT } from './constants';
@@ -88,7 +87,7 @@ router.post(
     );
 
     const nutText = nutImagesOCRresult.reduce(
-      (accumulator, currentValue) =>
+      (accumulator: any, currentValue: any) =>
         accumulator +
         `
       
@@ -101,18 +100,18 @@ router.post(
 
     res.json({ resultFileName, images: [] });
 
-    onProcessGemini({
-      req,
-      res,
-      sessionId,
-      collateImageName,
-      collatedOuputPath: invalidatedInput.nutIncluded,
-      prompt: make_nut_prompt({
-        ocrText: JSON.stringify(nutText),
-        imageCount: collatedOuputPath?.length,
-      }),
-      prefix: 'nut',
-    });
+    // onProcessGemini({
+    //   req,
+    //   res,
+    //   sessionId,
+    //   collateImageName,
+    //   collatedOuputPath: invalidatedInput.nutIncluded,
+    //   prompt: make_nut_prompt({
+    //     ocrText: JSON.stringify(nutText),
+    //     imageCount: collatedOuputPath?.length,
+    //   }),
+    //   prefix: 'nut',
+    // });
 
     onProcessGemini({
       req,

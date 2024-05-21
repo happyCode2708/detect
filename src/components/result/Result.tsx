@@ -1,6 +1,7 @@
 import NutritionTable from '@/components/table/NutritionTable';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { removeDuplicates } from '@/lib/utils';
 
 export const Result = ({ productInfo }: { productInfo: any }) => {
   if (!productInfo) return null;
@@ -70,6 +71,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
   const { marketingContents, socialMedia, ...marketingRest } =
     marketingAll || {};
   const { primarySize, secondarySize, thirdSize, ...headerRest } = header || {};
+  const { recyclingInfo, recyclable, ...restPackaging } = packaging;
 
   return (
     <>
@@ -100,7 +102,29 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
       </SectionWrapper>
 
       <SectionWrapper name='Packaging'>
-        <CamelFieldStringRender objectValues={packaging} />
+        <CamelFieldStringRender objectValues={restPackaging} />
+        {typeof recyclingInfo === 'object' && recyclingInfo ? (
+          <div>
+            <div className='font-bold'>Recycling info: </div>
+            <div className='pl-6'>
+              <CamelFieldStringRender objectValues={recyclingInfo} />
+            </div>
+          </div>
+        ) : null}
+        {recyclable && recyclable?.length > 0 ? (
+          <div>
+            <div className='font-bold'>Recyclable: </div>
+            <div className='pl-6'>
+              {recyclable?.map((recyclableItem: any, idx: number) => {
+                return (
+                  <div className='mb-2'>
+                    <CamelFieldStringRender objectValues={recyclableItem} />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
       </SectionWrapper>
 
       <SectionWrapper name='Ingredients'>
@@ -217,7 +241,7 @@ const CamelFieldStringRender = ({ objectValues }: { objectValues: Object }) => {
     <>
       {Object.entries(objectValues)?.map(
         ([key, value]: [key: string, value: any]) => {
-          if (!value) return null;
+          if (value === null || value === undefined) return null;
 
           return (
             <div key={key}>
@@ -226,7 +250,7 @@ const CamelFieldStringRender = ({ objectValues }: { objectValues: Object }) => {
               </span>
               <span>
                 {Array.isArray(value)
-                  ? value.join(', ')
+                  ? removeDuplicates(value)?.join(', ')
                   : typeof value === 'boolean'
                   ? `${value}`
                   : value}
@@ -238,6 +262,15 @@ const CamelFieldStringRender = ({ objectValues }: { objectValues: Object }) => {
     </>
   );
 };
+
+// {Array.isArray(value)
+//   ? removeDuplicates(value)?.join(', ')
+//   : typeof value === 'boolean' ||
+//     value === 'false' ||
+//     value === 'true'
+//   ? `${value}`
+//   : value}
+// </span>
 
 const camelCaseToSeparated = (name: string) => {
   // Split the camelCase string based on capital letters
