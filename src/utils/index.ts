@@ -1,7 +1,7 @@
 import path, { resolve } from 'path';
 import fs, { write } from 'fs';
 import { historyDir, resultsDir } from '../server';
-import { NEW_PROMPT, makePrompt } from '../constants';
+import { NEW_PROMPT } from '../constants';
 import sharp from 'sharp';
 import vision, { ImageAnnotatorClient } from '@google-cloud/vision';
 
@@ -197,7 +197,7 @@ export const onProcessGemini = async ({
   collateImageName: string;
   collatedOuputPath: string[];
   filePaths: string[];
-  ocrText: string;
+  ocrText?: string;
 }) => {
   // const base64Image = encodeImageToBase64(collatedOuputPath);
 
@@ -277,7 +277,6 @@ export const getOcrText = async (imagePath: string): Promise<string> => {
       if (detections.length > 0) {
         let arrayText: any[] = [];
         let wholeText: string = '';
-        console.log('Detected text:');
         detections.forEach((text) => {
           // console.log(`"${text.description}"`);
           arrayText.push(text.description);

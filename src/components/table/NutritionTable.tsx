@@ -158,14 +158,6 @@ const NutritionTable = ({ data }: { data: any }) => {
         <div className='font-bold'>Footnote: </div>
         <p>{data?.footnote?.value} </p>
       </div>
-      <div>
-        <div className='font-bold'>Footnote Indicator: </div>
-        <ul>
-          {data?.footnote?.footnoteIndicatorList?.map((indicator: string) => (
-            <li key={indicator}> {indicator} </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 };

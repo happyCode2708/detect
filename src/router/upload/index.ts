@@ -66,8 +66,7 @@ router.post(
     const collatedOuputPath = path.join(uploadsDir, collateImageName);
     // const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
 
-    const ocrText = await getOcrText(filePaths[0]);
-    // console.log('result', result);
+    // const ocrText = await getOcrText(filePaths[0]);
 
     // await createCollage(filePaths, collatedOuputPath);
 
@@ -78,7 +77,7 @@ router.post(
       collateImageName,
       collatedOuputPath: filePaths,
       filePaths,
-      ocrText,
+      ocrText: '',
     });
   }
 );

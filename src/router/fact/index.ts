@@ -39,8 +39,7 @@ router.get('/get-result/:filename', (req, res) => {
         removeFieldByPath(jsonData, 'answerOfRemindQuestion');
         removeFieldByPath(jsonData, 'product.certifierAndLogo');
         removeFieldByPath(jsonData, 'product.readAllConstants');
-        removeFieldByPath(jsonData, 'remindAgain');
-        // removeFieldByPath(jsonData, 'simpleOCRResult');
+        removeFieldByPath(jsonData, 'simpleOCRresult');
       }
 
       res.json(jsonData);
