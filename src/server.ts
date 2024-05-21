@@ -4,10 +4,12 @@ import path from 'path';
 
 import apiRouter from './router';
 import { getGenerative } from './utils/get-generative';
+import { getGoogleApiOcr } from './utils/get-gg-api-ocr';
 
 require('dotenv').config();
 
 getGenerative();
+getGoogleApiOcr();
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
