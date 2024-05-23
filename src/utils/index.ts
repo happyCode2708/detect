@@ -1,9 +1,15 @@
 import path, { resolve } from 'path';
-import fs, { write } from 'fs';
+import fs from 'fs';
 import { historyDir, resultsDir } from '../server';
-import { NEW_PROMPT } from '../constants';
+// import { makePrompt, make_nut_prompt } from '../constants';
 import sharp from 'sharp';
-import vision, { ImageAnnotatorClient } from '@google-cloud/vision';
+import { ImageAnnotatorClient } from '@google-cloud/vision';
+
+// const express = require('express');
+// const multer = require('multer');
+const { execFile } = require('child_process');
+// const path = require('path');
+// const fs = require('fs');
 
 // Function to encode image to Base64
 export const encodeImageToBase64 = (filePath: string) => {
@@ -188,16 +194,16 @@ export const onProcessGemini = async ({
   sessionId,
   collateImageName,
   collatedOuputPath,
-  filePaths,
-  ocrText,
+  prefix = '',
+  prompt,
 }: {
   req: any;
   res: any;
   sessionId: string;
   collateImageName: string;
   collatedOuputPath: string[];
-  filePaths: string[];
-  ocrText?: string;
+  prefix?: string;
+  prompt: string;
 }) => {
   // const base64Image = encodeImageToBase64(collatedOuputPath);
 
@@ -218,22 +224,31 @@ export const onProcessGemini = async ({
     };
   });
 
+  // make_nut_prompt({
+  //   ocrText: JSON.stringify(ocrText),
+  //   imageCount: collatedOuputPath?.length,
+  // })
+
   const text1 = {
-    text: NEW_PROMPT,
+    text: prompt,
   };
 
-  const resultFileName = sessionId + '.json';
+  const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
 
-  addNewExtractionToHistory(sessionId, {
-    collateImage: { name: collateImageName, url: collatedOuputPath },
-    inputFilePaths: filePaths,
-    result: {
-      name: resultFileName,
-      url: path.join(resultsDir, resultFileName),
-    },
-  });
+  // addNewExtractionToHistory(sessionId, {
+  //   collateImage: { name: collateImageName, url: collatedOuputPath },
+  //   inputFilePaths: collatedOuputPath,
+  //   result: {
+  //     name: resultFileName,
+  //     url: path.join(resultsDir, resultFileName),
+  //   },
+  // });
 
-  res.json({ resultFileName, images: [] });
+  writeJsonToFile(
+    resultsDir + `/${sessionId}`,
+    'prompt-' + resultFileName,
+    text1.text
+  );
 
   try {
     const { chunkResponse, finalResponse: gemini_result } =
@@ -243,62 +258,25 @@ export const onProcessGemini = async ({
     //! try to parse
     const fullResult = gemini_result;
     writeJsonToFile(
-      resultsDir,
+      resultsDir + `/${sessionId}`,
       'full-' + resultFileName,
       JSON.stringify(fullResult)
     );
     writeJsonToFile(
-      resultsDir,
+      resultsDir + `/${sessionId}`,
       'chunk-' + resultFileName,
       JSON.stringify(chunkResponse)
     );
 
     const procResult = gemini_result?.split('```json\n')[1].split('```')[0];
     const testParse = JSON.parse(procResult);
-    writeJsonToFile(resultsDir, resultFileName, procResult);
+    writeJsonToFile(resultsDir + `/${sessionId}`, resultFileName, procResult);
   } catch (e) {
     writeJsonToFile(
-      resultsDir,
+      resultsDir + `/${sessionId}`,
       resultFileName,
       JSON.stringify({ isSuccess: false })
     );
     console.log('some thing went wrong', e);
   }
-};
-
-export const getOcrText = async (imagePath: string): Promise<string> => {
-  const ggVision: ImageAnnotatorClient = (global as any).ggVision;
-
-  return new Promise(async (resolve, reject) => {
-    try {
-      const results = await ggVision.textDetection(imagePath);
-      const detections = results[0].textAnnotations;
-      if (!detections) return;
-      if (detections.length > 0) {
-        let arrayText: any[] = [];
-        let wholeText: string = '';
-        detections.forEach((text) => {
-          // console.log(`"${text.description}"`);
-          arrayText.push(text.description);
-          wholeText = wholeText + ' ' + text.description;
-          if (!text.boundingPoly) return;
-          if (!text.boundingPoly.vertices) return;
-
-          // console.log(JSON.stringify(text));
-
-          const vertices = text.boundingPoly.vertices.map(
-            (vertex) => `(${vertex.x},${vertex.y})`
-          );
-          // console.log('Bounds: ' + vertices.join(', '));
-        });
-        return resolve(wholeText);
-      } else {
-        console.log('No text detected.');
-        return resolve('');
-      }
-    } catch (e) {
-      console.log('Error', e);
-      return resolve('');
-    }
-  });
 };
