@@ -86,16 +86,6 @@ router.post(
       invalidatedInput.nutIncluded
     );
 
-    // const nutText = nutImagesOCRresult.reduce(
-    //   (accumulator: any, currentValue: any, idx: number) =>
-    //     accumulator +
-    //     `
-
-    //     ${currentValue}
-    //     `,
-    //   ''
-    // );
-
     const nutText = nutImagesOCRresult.reduce(
       (accumulator: any, currentValue: any, idx: number) => {
         return {
@@ -121,18 +111,18 @@ router.post(
       prefix: 'nut',
     });
 
-    // onProcessGemini({
-    //   req,
-    //   res,
-    //   sessionId,
-    //   collateImageName,
-    //   collatedOuputPath: [
-    //     ...invalidatedInput.nutIncluded,
-    //     ...invalidatedInput.nutExcluded,
-    //   ],
-    //   prompt: makePrompt({}),
-    //   prefix: 'all',
-    // });
+    onProcessGemini({
+      req,
+      res,
+      sessionId,
+      collateImageName,
+      collatedOuputPath: [
+        ...invalidatedInput.nutIncluded,
+        ...invalidatedInput.nutExcluded,
+      ],
+      prompt: makePrompt({}),
+      prefix: 'all',
+    });
 
     return;
 
