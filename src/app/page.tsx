@@ -267,3 +267,256 @@ const SectionWrapper = ({
     </div>
   );
 };
+
+const test = {
+  answerOfQuestionsAboutNutritionFact:
+    'No, I do not see the whole nutrition fact panel on the provided image. The image provided does not show the entire panel, making it difficult to gather all the necessary details.',
+  answerOfQuestionAboutNutritionFactTitle:
+    "No, I do not see a fully visible 'Supplement Fact' or 'Nutrition Fact' title on the provided image.",
+  answerOfQuestion:
+    'I will only provide information that is visibly seen on the provided image. I will not include information that is not observable.',
+  answerOfRemindQuestion:
+    'I will only provide information in English and will exclude any information in Spanish or other languages.',
+  answerOfusingEnum:
+    'I will ensure that the values added to the fields are from the provided enums. If a value is not from the enum, it will be considered invalid and will not be added.',
+  product: {
+    certifierAndLogo: 'kosher U pareve, USDA organic',
+    readAllConstants:
+      'Yes, I have read all the constants carefully and will use them to create the JSON output.',
+    factPanels: [
+      {
+        panelName: 'Nutrition Facts',
+        amountPerServing: { name: 'Amount per serving' },
+        calories: { value: 100, uom: 'calories' },
+        servingSize: { description: 'Serving Size', value: '1', uom: 'cup' },
+        servingPerContainer: { value: 4, uom: 'servings' },
+        nutrients: [
+          {
+            name: 'Total Fat',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0.5,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 1,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Sodium',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 10,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 0,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Total Carbohydrate',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 22,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 8,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Protein',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 2,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 4,
+            footnoteIndicator: null,
+          },
+        ],
+        footnote: {
+          value: '* Percent Daily Values are based on a 2,000 calorie diet.',
+        },
+      },
+    ],
+    ingredientsGroup: [
+      {
+        ingredients: [
+          'whole grain oats',
+          'sugar',
+          'corn starch',
+          'salt',
+          'tripotassium phosphate',
+          'wheat starch',
+          'vitamin E',
+        ],
+      },
+    ],
+    allergen: {
+      contain: ['oats', 'wheat'],
+      containOnEquipment: {
+        statement: 'Processed in a facility that also processes peanuts.',
+        allergenList: ['peanuts'],
+      },
+      freeOf: [
+        'crustacean shellfish',
+        'dairy',
+        'egg',
+        'fish',
+        'milk',
+        'peanuts / peanut oil',
+        'phenylalanine',
+        'sesame',
+        'soy / soybeans',
+        'tree nuts',
+      ],
+    },
+    header: {
+      productName: 'Oat Cereal',
+      brandName: 'Healthy Brand',
+      primarySize: {
+        primarySizeValue: '12',
+        primarySizeUom: 'oz',
+        primarySizeText: '12 oz',
+      },
+      secondarySize: {
+        secondarySizeValue: '340',
+        secondarySizeUom: 'g',
+        secondarySizeText: '340g',
+      },
+      thirdSize: {
+        thirdSizeValue: null,
+        thirdSizeUom: null,
+        thirdSizeText: null,
+      },
+      sizeTextDescription: 'Net Wt. 12 oz (340g)',
+      count: 1,
+    },
+    packaging: {
+      containerMaterialType: 'cardboard',
+      containerType: 'box',
+      recyclingAdvice: ['recyclable'],
+      forestStewardshipCouncilClaim: false,
+      packaging_ancillaryInformation: [],
+    },
+    attributesAndCertifiers: {
+      claims: {
+        beeFriendly: {
+          beeFriendly_Certifier: null,
+          beeFriendly_claim: false,
+        },
+        bioBased: {
+          bioBased_certifier: null,
+          bioBased_claim: false,
+        },
+        bioDynamic: {
+          bioDynamic_certifier: null,
+          bioDynamic_claim: false,
+        },
+        gmp: {
+          gmp_certifier: null,
+          gmp_claim: false,
+        },
+        glutenFree: {
+          glutenFree_certifier: null,
+          glutenFree_claim: false,
+        },
+        italCertifiedSeal: {
+          italCertifiedSeal_certifier: null,
+          italCertifiedSeal_claim: false,
+        },
+        italCertifiedConsious: {
+          italCertifiedConsious_certifier: null,
+          italCertifiedConsious_claim: false,
+        },
+        kosher: {
+          kosher_certifier: 'Kosher U',
+          kosher_claim: true,
+        },
+        liveAndActiveCulture: {
+          liveAndActiveCulture_certifier: null,
+          liveAndActiveCulture_claim: false,
+        },
+        lowGlycemic: {
+          lowGlycemic_certifier: null,
+          lowGlycemic_claim: false,
+        },
+        npa: {
+          npa_certifier: null,
+          npa_claim: false,
+        },
+        newYorkStateGrownAndCertified: {
+          newYorkStateGrownAndCertified_certifier: null,
+          newYorkStateGrownAndCertified_claim: false,
+        },
+        nonGmo: {
+          nonGmo_certifier: null,
+          nonGmo_claim: false,
+        },
+        organic: {
+          organic_Certifier: 'USDA',
+          organic_claim: true,
+        },
+        glyphosateResidueFree: {
+          glyphosateResidueFree_certifier: null,
+          glyphosateResidueFree_claim: false,
+        },
+        vegan: {
+          vegan_certifier: null,
+          vegan_claim: false,
+        },
+        plantBasedOrPlantDerived: {
+          plantBasedOrPlantDerived_certifier: null,
+          plantBasedOrPlantDerived_claim: false,
+        },
+      },
+      containInfo: {
+        attribute_contain: ['natural ingredients', 'whole grain oats'],
+        attribute_doesNotContain: ['artificial colors', 'artificial flavors'],
+      },
+      otherClaims: {
+        fatContentClaims: ['low fat'],
+        saltOrSodiumClaims: ['low sodium'],
+        sugarAndSweetenerClaims: ['no added sugar'],
+        highOrRichInOrExcellentSourceOf: ['rich in fiber'],
+        usdaInspectionMark: 'USDA organic',
+      },
+    },
+    physical: {
+      upc12: '123456789012',
+    },
+    marketingAll: {
+      marketingContents: [
+        'Made with whole grain oats',
+        'Good source of fiber',
+        'No artificial colors or flavors',
+      ],
+      copyrightOrTradeMark: '© 2024 Healthy Brand',
+      slogan: 'Healthy and Delicious',
+      website: 'www.healthybrand.com',
+      socialMedia: {
+        socialList: ['facebook', 'twitter', 'instagram'],
+        socialMediaText: ['@healthybrand'],
+      },
+      enlaredToShow: false,
+    },
+    supplyChain: {
+      CountryOfOrigin: 'USA',
+      manufactureDate: '2024-01-01',
+      manufacturePhoneNumber: '1234567890',
+      manufactureStreetAddress: '123 Healthy Way',
+      manufactureCity: 'Healthville',
+      manufactureState: 'CA',
+      manufactureZipcode: '12345',
+      manufactureName: 'Healthy Brand Inc.',
+    },
+    instructions: {
+      consumerStorageInstructions: ['Store in a cool, dry place'],
+      otherInstruction: ['Do not freeze'],
+      cookingInstructions: ['Add milk and enjoy'],
+      usageInstructions: ['Perfect for breakfast'],
+    },
+  },
+};

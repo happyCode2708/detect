@@ -20,21 +20,29 @@ router.get('/get-result/:filename', async (req, res) => {
 
   try {
     const [
-      allData,
-      // nutData
+      // allData,
+      nutData,
     ] = await Promise.all([
-      fs.readFileSync(allFilePath, 'utf8'),
-      // fs.readFileSync(nutFilePath, 'utf8'),
+      // fs.readFileSync(allFilePath, 'utf8'),
+      fs.readFileSync(nutFilePath, 'utf8'),
     ]);
 
-    const allRes = JSON.parse(allData);
-    // const nutRes = JSON.parse(nutData);
+    // const allRes = JSON.parse(allData);
+    const nutRes = JSON.parse(nutData);
+
+    const { isSuccess: nutSuccess } = nutRes || {};
+    // const {isSuccess: allSuccess} = allRes || {};
+
+    if (nutSuccess === false) {
+      res.json({ isSuccess: false });
+    }
 
     res.json({
-      ...allRes,
+      // ...allRes,
+      ...nutRes,
       product: {
-        ...allRes.product,
-        // factPanels: nutRes.product.factPanels,
+        // ...allRes.product,
+        factPanels: nutRes.product.factPanels,
       },
     });
   } catch (error) {

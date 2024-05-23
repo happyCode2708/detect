@@ -71,7 +71,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
   const { marketingContents, socialMedia, ...marketingRest } =
     marketingAll || {};
   const { primarySize, secondarySize, thirdSize, ...headerRest } = header || {};
-  const { recyclingInfo, recyclable, ...restPackaging } = packaging;
+  const { recyclingInfo, recyclable, ...restPackaging } = packaging || {};
 
   return (
     <>

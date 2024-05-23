@@ -841,6 +841,12 @@ h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 `;
 };
 
+// "answerOfValidator": "your answer gemini" (
+//   Can you tell me what you see from provided image?
+//   What is the first three nutrients in the nutrition fact panel exclude "calories"?
+//   the nutrient list order should be start from these item try to read from top to bottom and left to right of the nutrition fact.
+//   Is the nutrient list in the nutrition fact panel too long so it split to left and right side?),
+
 export const make_nut_prompt = ({
   ocrText,
   imageCount,
@@ -856,6 +862,7 @@ OCR texts from ${imageCount} provided images:
 ${ocrText}
 
 Remember (important):
++ the provided images could contain or could not contain nutrition fact/supplement fact.
 + nutrition info must be visibly seen by human eyes not from other source data
 + do not provide data that you cannot see it by human eyes on provided images.
 
@@ -863,11 +870,16 @@ Carefully examine the provided image and and created JSON output in given format
 
 json
 {
-  "answerOfQuestion": "your answer gemini" ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please compare with OCR texts and check if your info add to JSON is correct),
-  "answerOfRemindQuestion": "your answer gemini"(The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish?) 
+  "answerOfQuestionsAboutNutritionFact": "your answer gemini" (Do you see the whole nutrition fact panel on provided image? why? where is it on product?"),
+  "answerOfQuestionAboutNutritionFactTitle": "your answer gemini" (Do you see fully "Supplement Fact" title or "Nutrition Fact" title  on provided image ? ),
+  "answerOfQuestionAboutValidator": "your answer gemini" ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please compare with OCR texts and check if your info add to JSON is correct),
+  "answerOfQuestionAboutLanguage": "your answer gemini"(The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish?),
+  "answerOfDebug": "your answer gemini" (could you help me list all footnote indicator of total sugars?),
+  "answerOfDebug2":"your answer gemini" (i see two nutrition fact panel on iamges. Could you tell me total sugars info of two panel (include quantity and daily percent value) ?"),
+  ),
   "product": {
     "readAllConstants": "your answer gemini"(please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?"),
-    "factPanels": [
+    "factPanels": null or [
       {
         "panelName": string ,
         "amountPerServing": {"name": string?},
@@ -882,7 +894,7 @@ json
             "quantityDescription": string?,
             "dailyPercentComparisonOperator": string?, 
             "percentDailyValue": float,  
-            "footnoteIndicator": string?,
+            "footnoteIndicator": string?, // value must be choosen from FOOTNOTE_INDICATORS 
           }
         ],
         "footnote": {
@@ -906,30 +918,34 @@ Some definitions:
 + be careful when you (gemini) confirm to see something since curvature of container or cropped image can make content obscured.
 
 Some common rules:
-+ "nutrients" is an array that usually start with some nutrients such as "Total Carbohydrate", "Vitamin A", ... Let's list nutrient from them first if possible.
++ "nutrients" is an array that usually start with some nutrients such as "Total Carbohydrate", "Sugar", "Vitamin A", ... Let's list nutrient from them first if possible.
 + Read "Fact Panel" from left to right and from top to bottom.
 + content in prompt can be similar to typescript and nodejs syntax.
 + be careful the last "nutrient row" could be misread to be a part of "footnote". Remember "footnote" content ususally about "Daily value" or "percent daily value" note.
 + do not return json in format [{product: {...}}] since the result is only for one product
 
 Nutrient rule:
-1) sometimes nutrients could be put vertically and separated by • symbol and • symbol is not the 'nutrients.footnoteIndicator' 
+1) sometimes nutrients could be put vertically and separated by • symbol and • symbol is not the 'nutrients.footnoteIndicator'
 
-2) Notations like 'Includes 7g of Added Sugars' should be recorded as "name": "Added Sugars", "value": 7, "uom": "g".
+2) some nutrients such as ("Total Carbohydrate", "total sugar", "Includes... Added Sugars", ...) and they are must be separated nutrients
 
-3) The fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information, or different "% Daily value" by age. Let's to break down and separate into two different fact panels one is for 'per serving'
-and other for 'per container' just if "amoutPerServing.name" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "ingredients", and "contain".
+2) Each nutritional line's values must stay unique. Do not interchange numbers between lines or make false inferences. For instance, "total sugar 18g, included 5g added sugar 4%," should create two objects: one as "name": "total sugar", "value": 18, "uom": "g", "percentDailyValue": null, and another as "name": "added sugar", "value": 5, "uom": "g", "percentDailyValue": 14%.
 
-4) "factPanels.panelName":
+3) Notations like 'Includes 7g of Added Sugars' should be recorded as "name": "Added Sugars", "value": 7, "uom": "g".
+
+4) The nutrition fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information, or different "% Daily value" by age. Let's to break down and separate into two different fact panels one is for 'per serving'
+and other for 'per container' just if "amoutPerServing.name" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "nutrients" but each "nutrients" could have different "footnoteIndicator".
+
+5) "factPanels.panelName":
 + if there is text on image contain "Nutrition Facts" or "Supplement Facts". If not it should be null
 
-5) "servingSize":
+6) "servingSize":
 + if "servingSize" content contains the parentheses so "servingSize" format = servingSize.description + "("+ servingSize.value + servingSize.uom ")" 
 + else "servingSize" format = servingSize.value + servingSize.uom
 Ex 1: "10 tablespoons(80g)" = {servingSize: {"description": "10 tablespoons", "value": "80", "uom": "g"}}
 Ex 2: "10 tablespoons" = {servingSize: {"value": 10, "uom": "tablespoons"}}
 
-6) "footnote":
+7) "footnote":
 + "footnote" must be the last part of fact panel (the note may contain some special characters from FOOTNOTE_INDICATORS),
 and usually start with "%Daily Value....", "Not a significant source...", or "the % daily value...".
 + "footnote" is only one section, and is not multiple sections.
@@ -939,14 +955,14 @@ Ex 2: "*Daily Value not established." = {footnote: {value: "*Daily Value not est
 Ex 3: "†Daily Value not established." = {footnote: {value: "†Daily Value not established."}}
 Ex 4: "Not a significant source of saturated fat, trans fat." = {footnote:{value: "Not a significant source of saturated fat, trans fat."}}
 
-7) "nutrients.footnoteIndicator":
+8) "nutrients.footnoteIndicator":
 + "nutrients.footnoteIndicator" is a special symbol such as "*", "†" or is a group of special symbol such as "**" beside the nutrient percent value. Sometimes nutrient percent value is left empty but still have footnoteIndicator right there.
 
-8) "amountPerServing.name":
+9) "amountPerServing.name":
 + is a text and usually stay above the "calories value number",
 Ex 1: "Per container", "Per serving"
 
-9) "nutrient.quantityComparisonOperator" and "nutrient.dailyPercentComparisonOperator" rules:
+10) "nutrient.quantityComparisonOperator" and "nutrient.dailyPercentComparisonOperator" rules:
 + "nutrient.quantityComparisonOperator" is a comparison operator at the left side of "nutrient.value" and "nutrient.uom"
 + "nutrient.dailyPercentComparisonOperator" is a comparison operator at the left side of "nutrient.percentDailyValue".
 + "nutrient.dailyPercentComparisonOperator" is not "nutrient.quantityComparisonOperator".
@@ -954,28 +970,31 @@ Ex 1: "10g    <10%" = {quantityComparisonOperator: null, dailyPercentComparisonO
 Ex 2: "<10g    10%" = {quantityComparisonOperator: "<", dailyPercentComparisonOperator: null, ...}
 Ex 3: "<10g    <10%" ={quantityComparisonOperator: "<", dailyPercentComparisonOperator: "<", ...}
 
-10) "nutrients.quantityDescription":
+11) "nutrients.quantityDescription":
 + is additional text right next to "nutrient.uom" and inside the parentheses, and does not include parentheses.
 Ex 1: "20mcg(800 IU)" = {quantityDescription: "800 IU"}
 Ex 2: "20mcg DFE(800mcg L-5-MTHF) = {quantityDescription: "800mcg L-5-MTHF"}
 
-11) "nutrients.descriptor" rules:
+12) "nutrients.descriptor" rules:
 + "nutrients.descriptor" could be the text that is intended and appear on the row below a nutrient.
 + "nutrients.descriptor" could also be the text inside the parentheses right next to "nutrients.name"
 
-12) "nutrients.name" rule:
+13) "nutrients.name" rule:
 + "nutrients.name" is a name of nutrient sometimes include the text closed inside the parentheses.
 + "nutrients.name" sometimes start with a special symbol or its name is bold and maybe a note just like name of an ingredient
 Ex 1: "Vitamin K2(as Naturally Derived MK-7 [Menaquinone-7)" should be recorded as {"name": "Vitamin K2", "descriptor": "as Naturally Derived MK-7 [Menaquinone-7": ,...}
 Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medium Chain Triglyceride (MCT) Oil", ...} 
 
-13) "nutrients.uom" rules:
+14) "nutrients.uom" rules:
 + some possible "nutrients.uom" such as "MCG DFE"
 
-14) "amountPerServing.name" rules:
+15) "amountPerServing.name" rules:
 + is a text and usually stay above the "calories value number".
 + "amountPerServing.name" could be a text below "%Daily Value" Header such as "for children...", or "for aldults..."
 Ex 1: "Per container", "Per serving"
+
+16) "nutrients.dailyPercentValue"
++ could be null or empty. if its value is empty or null just left it value "null"
 `;
 };
 

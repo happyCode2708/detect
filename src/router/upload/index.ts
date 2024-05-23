@@ -86,45 +86,55 @@ router.post(
       invalidatedInput.nutIncluded
     );
 
+    // const nutText = nutImagesOCRresult.reduce(
+    //   (accumulator: any, currentValue: any, idx: number) =>
+    //     accumulator +
+    //     `
+
+    //     ${currentValue}
+    //     `,
+    //   ''
+    // );
+
     const nutText = nutImagesOCRresult.reduce(
-      (accumulator: any, currentValue: any) =>
-        accumulator +
-        `
-      
-        ${currentValue}
-        `,
-      ''
+      (accumulator: any, currentValue: any, idx: number) => {
+        return {
+          ...accumulator,
+          [`ocrImage_${idx}`]: currentValue,
+        };
+      },
+      {}
     );
 
     const resultFileName = sessionId + '.json';
 
     res.json({ resultFileName, images: [] });
 
-    // onProcessGemini({
-    //   req,
-    //   res,
-    //   sessionId,
-    //   collateImageName,
-    //   collatedOuputPath: invalidatedInput.nutIncluded,
-    //   prompt: make_nut_prompt({
-    //     ocrText: JSON.stringify(nutText),
-    //     imageCount: collatedOuputPath?.length,
-    //   }),
-    //   prefix: 'nut',
-    // });
-
     onProcessGemini({
       req,
       res,
       sessionId,
       collateImageName,
-      collatedOuputPath: [
-        ...invalidatedInput.nutIncluded,
-        ...invalidatedInput.nutExcluded,
-      ],
-      prompt: makePrompt({}),
-      prefix: 'all',
+      collatedOuputPath: invalidatedInput.nutIncluded,
+      prompt: make_nut_prompt({
+        ocrText: JSON.stringify(nutText),
+        imageCount: invalidatedInput.nutIncluded?.length,
+      }),
+      prefix: 'nut',
     });
+
+    // onProcessGemini({
+    //   req,
+    //   res,
+    //   sessionId,
+    //   collateImageName,
+    //   collatedOuputPath: [
+    //     ...invalidatedInput.nutIncluded,
+    //     ...invalidatedInput.nutExcluded,
+    //   ],
+    //   prompt: makePrompt({}),
+    //   prefix: 'all',
+    // });
 
     return;
 

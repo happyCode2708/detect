@@ -2,7 +2,9 @@ import vision, { ImageAnnotatorClient } from '@google-cloud/vision';
 import { makePrompt, make_nut_prompt } from '../constants';
 const { execFile } = require('child_process');
 
-export const getOcrText = async (imagePath: string): Promise<string> => {
+export const getOcrText = async (
+  imagePath: string
+): Promise<string | any[]> => {
   const ggVision: ImageAnnotatorClient = (global as any).ggVision;
 
   return new Promise(async (resolve, reject) => {
@@ -24,13 +26,17 @@ export const getOcrText = async (imagePath: string): Promise<string> => {
           );
           // console.log('Bounds: ' + vertices.join(', '));
         });
+        return resolve(arrayText);
+
         return resolve(JSON.stringify(wholeText));
       } else {
         console.log('No text detected.');
+        return resolve([]);
         return resolve('');
       }
     } catch (e) {
       console.log('Error', e);
+      return resolve([]);
       return resolve('');
     }
   });
