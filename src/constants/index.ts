@@ -877,7 +877,8 @@ json
   "answerOfQuestionAboutValidator": "your answer gemini" ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please compare with OCR texts and check if your info add to JSON is correct),
   "answerOfQuestionAboutLanguage": "your answer gemini"(The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish? The OCR text result could contain spanish so do not provide me those information in spanish),
   "answerOfDebug": "your answer gemini" (why i see you keep adding spanish to "footnote.value" field?),
-  "answerOfDebug_2": "your answer gemini" (why i see you keep adding 0% of percent daily value to "trans fat" or"total sugars"? "trans fat", and "Total Sugars" do not have percent daily value),
+  "answerOfDebug_2": "your answer gemini" (why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value),
+
   "product": {
     "readAllConstants": "your answer gemini"(please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?"),
     "factPanels":null or [
@@ -885,7 +886,11 @@ json
         "panelName": string ,
         "amountPerServing": {"name": string?},
         "calories": {"value": float?, "uom": "calories"}
-        "servingSize": {"description": string?, "value": string, "uom": string,},
+        "servingSize": {
+          "description": string?, 
+          "value": number, 
+          "uom": string,
+        },
         "servingPerContainer":" {"value": float? or number?, "uom": string},
         "nutrients": [
           {
@@ -941,11 +946,12 @@ and other for 'per container' just if "amoutPerServing.name" of them are differe
 5) "factPanels.panelName":
 + if there is text on image contain "Nutrition Facts" or "Supplement Facts". If not it should be null
 
-6) "servingSize":
-+ if "servingSize" content contains the parentheses so "servingSize" format = servingSize.description + "("+ servingSize.value + servingSize.uom ")" 
-+ else "servingSize" format = servingSize.value + servingSize.uom
-Ex 1: "10 tablespoons(80g)" = {servingSize: {"description": "10 tablespoons", "value": "80", "uom": "g"}}
+6) "nutrients.servingSize":
++ if "nutrients.servingSize" content contains the parentheses so "servingSize" format = servingSize.description + "("+ servingSize.value + servingSize.uom ")" 
++ else "nutrients.servingSize" format = servingSize.value + servingSize.uom
+Ex 1: "10 tablespoons(80g)" = {servingSize: {"description": "10 tablespoons", "value": 80, "uom": "g"}}
 Ex 2: "10 tablespoons" = {servingSize: {"value": 10, "uom": "tablespoons"}}
+Ex 3: "10 bars(200g)" = {servingSize: {"description": "10 bars", "value": 200, "uom": "g"}}
 
 7) "footnote":
 + "footnote" must be the last part of fact panel (the note may contain some special characters from FOOTNOTE_INDICATORS),
