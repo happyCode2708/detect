@@ -40,14 +40,29 @@ router.get('/get-result/:sessionId', async (req, res) => {
       res.json({ isSuccess: false });
     }
 
-    res.json({
+    let response = {
       ...allRes,
       ...nutRes,
       product: {
         ...allRes.product,
         factPanels: nutRes.product.factPanels,
       },
-    });
+    };
+
+    removeFieldByPath(response, 'answerOfQuestion');
+    removeFieldByPath(response, 'answerOfRemindQuestion');
+    removeFieldByPath(response, 'answerOfFoundBug');
+    removeFieldByPath(response, 'answerOfFoundBug');
+    removeFieldByPath(response, 'product.certifierAndLogo');
+    removeFieldByPath(response, 'product.readAllConstants');
+    removeFieldByPath(response, 'answerOfQuestionsAboutNutritionFact');
+    removeFieldByPath(response, 'answerOfQuestionAboutNutritionFactTitle');
+    removeFieldByPath(response, 'answerOfQuestionAboutValidator');
+    removeFieldByPath(response, 'answerOfQuestionAboutLanguage');
+    removeFieldByPath(response, 'answerOfDebug');
+    removeFieldByPath(response, 'answerOfDebug_2');
+
+    res.json(response);
   } catch (error) {
     // console.log('error', error);
     return res.status(200).send('Image is processing. Please wait');
