@@ -847,6 +847,8 @@ h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 //   the nutrient list order should be start from these item try to read from top to bottom and left to right of the nutrition fact.
 //   Is the nutrient list in the nutrition fact panel too long so it split to left and right side?),
 
+// "answerOfDebug": "your answer gemini" (could you help me list all footnote indicator of total sugars?),
+// "answerOfDebug2":"your answer gemini" (i see two nutrition fact panel on iamges. Could you tell me total sugars info of two panel (include quantity and daily percent value) ?"),
 export const make_nut_prompt = ({
   ocrText,
   imageCount,
@@ -873,13 +875,12 @@ json
   "answerOfQuestionsAboutNutritionFact": "your answer gemini" (Do you see the whole nutrition fact panel on provided image? why? where is it on product?"),
   "answerOfQuestionAboutNutritionFactTitle": "your answer gemini" (Do you see fully "Supplement Fact" title or "Nutrition Fact" title  on provided image ? ),
   "answerOfQuestionAboutValidator": "your answer gemini" ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please compare with OCR texts and check if your info add to JSON is correct),
-  "answerOfQuestionAboutLanguage": "your answer gemini"(The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish?),
-  "answerOfDebug": "your answer gemini" (could you help me list all footnote indicator of total sugars?),
-  "answerOfDebug2":"your answer gemini" (i see two nutrition fact panel on iamges. Could you tell me total sugars info of two panel (include quantity and daily percent value) ?"),
-  ),
+  "answerOfQuestionAboutLanguage": "your answer gemini"(The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish? The OCR text result could contain spanish so do not provide me those information in spanish),
+  "answerOfDebug": "your answer gemini" (why i see you keep adding spanish to "footnote.value" field?),
+  "answerOfDebug_2": "your answer gemini" (why i see you keep adding 0% of percent daily value to "trans fat" or"total sugars"? "trans fat", and "Total Sugars" do not have percent daily value),
   "product": {
     "readAllConstants": "your answer gemini"(please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?"),
-    "factPanels": null or [
+    "factPanels":null or [
       {
         "panelName": string ,
         "amountPerServing": {"name": string?},
@@ -919,6 +920,7 @@ Some definitions:
 
 Some common rules:
 + "nutrients" is an array that usually start with some nutrients such as "Total Carbohydrate", "Sugar", "Vitamin A", ... Let's list nutrient from them first if possible.
++ each "nutrients" is separated by a thin line on nutrition fact panel.
 + Read "Fact Panel" from left to right and from top to bottom.
 + content in prompt can be similar to typescript and nodejs syntax.
 + be careful the last "nutrient row" could be misread to be a part of "footnote". Remember "footnote" content ususally about "Daily value" or "percent daily value" note.
@@ -949,6 +951,7 @@ Ex 2: "10 tablespoons" = {servingSize: {"value": 10, "uom": "tablespoons"}}
 + "footnote" must be the last part of fact panel (the note may contain some special characters from FOOTNOTE_INDICATORS),
 and usually start with "%Daily Value....", "Not a significant source...", or "the % daily value...".
 + "footnote" is only one section, and is not multiple sections.
++ "footnote" may contain multiple languages. Please only provide "footnote" in english only. Do not include spanish text on footnote 
 
 Ex 1: "**Not a significant source of saturated fat, trans fat. *Daily Value not established. = {footnote: {value :"**Not a significant source of saturated fat, trans fat. *Daily Value not established."}}
 Ex 2: "*Daily Value not established." = {footnote: {value: "*Daily Value not established."}}
@@ -993,8 +996,9 @@ Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medi
 + "amountPerServing.name" could be a text below "%Daily Value" Header such as "for children...", or "for aldults..."
 Ex 1: "Per container", "Per serving"
 
-16) "nutrients.dailyPercentValue"
+16) "nutrients.percentDailyValue"
 + could be null or empty. if its value is empty or null just left it value "null"
++ nutrient "trans fat" do not have "percent daily value" and its "nutrients.percentDailyValue" must be null 
 `;
 };
 

@@ -244,7 +244,11 @@ export const onProcessGemini = async ({
   //   },
   // });
 
-  writeJsonToFile(resultsDir, 'prompt-' + resultFileName, text1.text);
+  writeJsonToFile(
+    resultsDir + `/${sessionId}`,
+    'prompt-' + resultFileName,
+    text1.text
+  );
 
   try {
     const { chunkResponse, finalResponse: gemini_result } =
@@ -254,22 +258,22 @@ export const onProcessGemini = async ({
     //! try to parse
     const fullResult = gemini_result;
     writeJsonToFile(
-      resultsDir,
+      resultsDir + `/${sessionId}`,
       'full-' + resultFileName,
       JSON.stringify(fullResult)
     );
     writeJsonToFile(
-      resultsDir,
+      resultsDir + `/${sessionId}`,
       'chunk-' + resultFileName,
       JSON.stringify(chunkResponse)
     );
 
     const procResult = gemini_result?.split('```json\n')[1].split('```')[0];
     const testParse = JSON.parse(procResult);
-    writeJsonToFile(resultsDir, resultFileName, procResult);
+    writeJsonToFile(resultsDir + `/${sessionId}`, resultFileName, procResult);
   } catch (e) {
     writeJsonToFile(
-      resultsDir,
+      resultsDir + `/${sessionId}`,
       resultFileName,
       JSON.stringify({ isSuccess: false })
     );

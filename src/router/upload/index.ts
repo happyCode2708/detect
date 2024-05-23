@@ -106,9 +106,7 @@ router.post(
       {}
     );
 
-    const resultFileName = sessionId + '.json';
-
-    res.json({ resultFileName, images: [] });
+    res.json({ sessionId, images: [] });
 
     onProcessGemini({
       req,

@@ -21,6 +21,8 @@ export default function Home() {
   const [procImages, setProcImages] = useState<any>([]);
 
   const [resultFileName, setResultFileName] = useState<any>();
+  const [sessionId, setSessionId] = useState<any>();
+
   const [loading, setLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState<null | string>(null);
 
@@ -49,11 +51,11 @@ export default function Home() {
         console.log(e);
       },
       onSuccess: (res) => {
-        const { resultFileName, images } = res;
+        const { sessionId, images } = res;
         if (images?.length > 0) {
           setProcImages(images);
         }
-        setResultFileName(resultFileName);
+        setSessionId(sessionId);
         queryClient.invalidateQueries({ queryKey: ['history'] });
       },
     });
@@ -61,7 +63,8 @@ export default function Home() {
 
   const onCancel = () => {
     setLoading(false);
-    setResultFileName('');
+    // setResultFileName('');
+    setSessionId('');
     setProductInfo(null);
     if (refInterval.current) {
       window.clearInterval(refInterval.current);
@@ -107,12 +110,10 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (resultFileName) {
+    if (sessionId) {
       refInterval.current = window.setInterval(async () => {
         try {
-          const response = await fetch(
-            '/api/fact/get-result/' + resultFileName
-          );
+          const response = await fetch('/api/fact/get-result/' + sessionId);
           if (!response.ok) {
             throw new Error(
               'Network response was not ok ' + response.statusText
@@ -162,7 +163,7 @@ export default function Home() {
 
       window.clearInterval(refInterval.current);
     };
-  }, [resultFileName]);
+  }, [sessionId]);
 
   return (
     <FluidContainer>
@@ -187,7 +188,7 @@ export default function Home() {
             {loading ? (
               <div className='flex flex-row items-center'>
                 <RefreshCcw className='mr-1 animate-spin' />
-                <span>Proccessing</span>
+                <span>Processing</span>
               </div>
             ) : (
               'Extract'
@@ -518,5 +519,494 @@ const test = {
       cookingInstructions: ['Add milk and enjoy'],
       usageInstructions: ['Perfect for breakfast'],
     },
+  },
+};
+
+const check = {
+  answerOfQuestionsAboutNutritionFact:
+    'I see the whole nutrition fact panel on the provided image.',
+  answerOfQuestionAboutNutritionFactTitle:
+    'I see the "Nutrition Facts" title on the provided image.',
+  answerOfQuestionAboutValidator:
+    'I apologize for the errors in my previous responses. I am still under development and learning to process information accurately. I will try my best to provide information based only on the image and the OCR text.',
+  answerOfQuestionAboutLanguage:
+    'I understand. I will only provide information in English from now on.',
+  answerOfDebug:
+    'I apologize for including Spanish in the "footnote.value" field. I am still learning to differentiate languages accurately.',
+  answerOfDebug2:
+    'I apologize, I cannot see the percent daily value of trans fat on the provided image.',
+  product: {
+    readAllConstants:
+      'I have read all the constants you provided. I understand their importance in creating the JSON output.',
+    factPanels: [
+      {
+        panelName: 'Nutrition Facts',
+        amountPerServing: {
+          name: 'Per 1 oz/28g',
+        },
+        calories: {
+          value: 70,
+          uom: 'calories',
+        },
+        servingSize: {
+          description: '1 package',
+          value: '57',
+          uom: 'g',
+        },
+        servingPerContainer: {
+          value: null,
+          uom: null,
+        },
+        nutrients: [
+          {
+            name: 'Total Fat',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 2.5,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 3,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Saturated Fat',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 0,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Trans Fat',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 0,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Cholesterol',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 0,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Sodium',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 330,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 14,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Total Carb.',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 14,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 5,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Dietary Fiber',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 1,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 4,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Total Sugars',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 8,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: null,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Incl. Added Sugars',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 6,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 12,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Protein',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 3,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: null,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Vitamin D',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0.1,
+            uom: 'mcg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 0,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Calcium',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 30,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 2,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Iron',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0.7,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 4,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Potassium',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 460,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 10,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Thiamin',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0.12,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 10,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Riboflavin (Vitamin B₂)',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0.55,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 40,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Niacin (Vitamin B₃)',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 4.7,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 30,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Vitamin B₆',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0.12,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 8,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Vitamin B₁₂',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0.09,
+            uom: 'mcg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 4,
+            footnoteIndicator: null,
+          },
+        ],
+        footnote: {
+          value:
+            '*The % Daily Value (DV) tells you how much a nutrient in a serving\nof food contributes to a daily diet. 2,000 calories a day is used for\ngeneral nutrition advice.',
+        },
+      },
+      {
+        panelName: 'Nutrition Facts',
+        amountPerServing: {
+          name: 'Per container',
+        },
+        calories: {
+          value: 150,
+          uom: 'calories',
+        },
+        servingSize: {
+          description: '1 package',
+          value: '57',
+          uom: 'g',
+        },
+        servingPerContainer: {
+          value: null,
+          uom: null,
+        },
+        nutrients: [
+          {
+            name: 'Total Fat',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 5,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 6,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Saturated Fat',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 0,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Trans Fat',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 0,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Cholesterol',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 0,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Sodium',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 660,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 29,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Total Carb.',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 29,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 11,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Dietary Fiber',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 2,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 7,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Total Sugars',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 16,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: null,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Incl. Added Sugars',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 12,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 24,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Protein',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 6,
+            uom: 'g',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: null,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Vitamin D',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0.2,
+            uom: 'mcg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 2,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Calcium',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 60,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 4,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Iron',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 1.5,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 8,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Potassium',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 940,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 20,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Thiamin',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0.24,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 20,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Riboflavin (Vitamin B₂)',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 1.11,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 90,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Niacin (Vitamin B₃)',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 9.5,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 60,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Vitamin B₆',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0.24,
+            uom: 'mg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 15,
+            footnoteIndicator: null,
+          },
+          {
+            name: 'Vitamin B₁₂',
+            descriptor: null,
+            quantityComparisonOperator: null,
+            value: 0.19,
+            uom: 'mcg',
+            quantityDescription: null,
+            dailyPercentComparisonOperator: null,
+            percentDailyValue: 8,
+            footnoteIndicator: null,
+          },
+        ],
+        footnote: {
+          value:
+            '*The % Daily Value (DV) tells you how much a nutrient in a serving\nof food contributes to a daily diet. 2,000 calories a day is used for\ngeneral nutrition advice.',
+        },
+      },
+    ],
   },
 };

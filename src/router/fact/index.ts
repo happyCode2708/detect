@@ -5,18 +5,24 @@ import path from 'path';
 
 const router = express.Router();
 
-router.get('/get-result/:filename', async (req, res) => {
+router.get('/get-result/:sessionId', async (req, res) => {
   // Validate that the file extension is .json
-  if (!req.params.filename.endsWith('.json')) {
-    return res
-      .status(400)
-      .send('Invalid file type. Only JSON files are allowed.');
+  const sessionId = req.params.sessionId;
+
+  if (!sessionId) {
+    return res.json({ isSuccess: false });
   }
 
   // Construct the full file path
-  const filePath = path.join(resultsDir, req.params.filename);
-  const allFilePath = path.join(resultsDir, 'all-' + req.params.filename);
-  const nutFilePath = path.join(resultsDir, 'nut-' + req.params.filename);
+  const filePath = path.join(resultsDir + `/${sessionId}`, sessionId);
+  const allFilePath = path.join(
+    resultsDir + `/${sessionId}`,
+    'all-' + sessionId + '.json'
+  );
+  const nutFilePath = path.join(
+    resultsDir + `/${sessionId}`,
+    'nut-' + sessionId + '.json'
+  );
 
   try {
     const [
@@ -46,6 +52,7 @@ router.get('/get-result/:filename', async (req, res) => {
       },
     });
   } catch (error) {
+    // console.log('error', error);
     return res.status(200).send('Image is processing. Please wait');
   }
 });
