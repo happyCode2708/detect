@@ -51,7 +51,7 @@ export const isImageHaveNutFact = (filePath: string) => {
 
   return new Promise((resolve, reject) => {
     execFile(
-      'python',
+      process.env.pythonV || 'python',
       ['detect.py', imagePath],
       (error: any, stdout: any, stderr: any) => {
         if (error) {

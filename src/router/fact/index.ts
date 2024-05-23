@@ -25,29 +25,26 @@ router.get('/get-result/:sessionId', async (req, res) => {
   );
 
   try {
-    const [
-      // allData,
-      nutData,
-    ] = await Promise.all([
-      // fs.readFileSync(allFilePath, 'utf8'),
+    const [allData, nutData] = await Promise.all([
+      fs.readFileSync(allFilePath, 'utf8'),
       fs.readFileSync(nutFilePath, 'utf8'),
     ]);
 
-    // const allRes = JSON.parse(allData);
+    const allRes = JSON.parse(allData);
     const nutRes = JSON.parse(nutData);
 
+    const { isSuccess: allSuccess } = allRes || {};
     const { isSuccess: nutSuccess } = nutRes || {};
-    // const {isSuccess: allSuccess} = allRes || {};
 
-    if (nutSuccess === false) {
+    if (nutSuccess === false || allSuccess === false) {
       res.json({ isSuccess: false });
     }
 
     res.json({
-      // ...allRes,
+      ...allRes,
       ...nutRes,
       product: {
-        // ...allRes.product,
+        ...allRes.product,
         factPanels: nutRes.product.factPanels,
       },
     });
