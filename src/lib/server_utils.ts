@@ -105,3 +105,10 @@ export const findImagesContainNutFact = async (filePaths: string[]) => {
 
   return validateImages;
 };
+
+export const addUniqueString = (array: string[], item: string) => {
+  if (!array.includes(item)) {
+    array.push(item);
+  }
+  return array;
+};

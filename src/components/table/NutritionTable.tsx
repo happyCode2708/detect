@@ -156,7 +156,7 @@ const NutritionTable = ({ data }: { data: any }) => {
       </Table>
       <div>
         <div className='font-bold'>Footnote: </div>
-        <p>{data?.footnote?.value} </p>
+        <p>{data?.footnote} </p>
       </div>
     </div>
   );

@@ -490,6 +490,7 @@ Remember (important):
 + The product images may include multiple languages. Please ignore non-english content.
 Ex: Saturated Fat/Grasa Saturada (english/spanish) we should only record english content only and ignore spanish part. Do not translate spanish part to english and add it to JSON result
 + sometimes a content could appears twice on the image, once in English and once in Spanish. Please do not include spanish content
++ be careful that all images are from only one product. You may see the same nutrition fact from different images those are captured from diffrent angles of product.
 
 Carefully examine the provided image and and created JSON output in given format:
 
@@ -849,6 +850,10 @@ h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 
 // "answerOfDebug": "your answer gemini" (could you help me list all footnote indicator of total sugars?),
 // "answerOfDebug2":"your answer gemini" (i see two nutrition fact panel on iamges. Could you tell me total sugars info of two panel (include quantity and daily percent value) ?"),
+// "answerOfDebug_4": "your answer gemini" (Do you think food blend is nutrient? and why?),
+// "answerOfDebug_3": "your answer gemini" (why i see you keep adding last nutrient to "footnote" field? remember "footnote" does not contain specific information about quantiy in weight or amout (ex: 400g, or 250ml,..)),
+// "answerOfDebug_6": "your answer gemini" (Are you sure you see that total fat have percent daily value of 0%?),
+
 export const make_nut_prompt = ({
   ocrText,
   imageCount,
@@ -858,27 +863,31 @@ export const make_nut_prompt = ({
 }) => {
   return `
   Some common constants:
-+ FOOTNOTE_INDICATORS = ["*", "**", "†", "★★", "★"]
-
-OCR texts from ${imageCount} provided images:
-${ocrText}
-
-Remember (important):
-+ the provided images could contain or could not contain nutrition fact/supplement fact.
-+ nutrition info must be visibly seen by human eyes not from other source data
-+ do not provide data that you cannot see it by human eyes on provided images.
-
-Carefully examine the provided image and and created JSON output in given format:
-
-json
-{
-  "answerOfQuestionsAboutNutritionFact": "your answer gemini" (Do you see the whole nutrition fact panel on provided image? why? where is it on product?"),
-  "answerOfQuestionAboutNutritionFactTitle": "your answer gemini" (Do you see fully "Supplement Fact" title or "Nutrition Fact" title  on provided image ? ),
-  "answerOfQuestionAboutValidator": "your answer gemini" ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please compare with OCR texts and check if your info add to JSON is correct),
-  "answerOfQuestionAboutLanguage": "your answer gemini"(The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish? The OCR text result could contain spanish so do not provide me those information in spanish),
-  "answerOfDebug": "your answer gemini" (why i see you keep adding spanish to "footnote.value" field?),
-  "answerOfDebug_2": "your answer gemini" (why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value),
-
+  + FOOTNOTE_INDICATORS = ["*", "**", "†", "★★", "★"]
+  
+  OCR texts from ${imageCount} provided images:
+  ${ocrText}
+  
+  Remember (important):
+  + the provided images could contain or could not contain nutrition fact/supplement fact.
+  + nutrition info must be visibly seen by human eyes not from other source data
+  + do not provide data that you cannot see it by human eyes on provided images.
+  
+  Carefully examine the provided image and and created JSON output in given format:
+  
+  json
+  {
+    "validatorAndFixBug": {
+      "answerOfQuestionsAboutNutritionFact": "your answer gemini" (Do you see nutrition facts panel on provided images? why? where is it on product?"),
+      "answerOfQuestionAboutNutritionFactTitle": "your answer gemini" (Do you see fully "Supplement Fact" title or "Nutrition Fact" title  on provided images ? ),
+      "answerOfQuestionAboutValidator": "your answer gemini" ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please compare with OCR texts and check if your info add to JSON is correct),
+      "answerOfQuestionAboutLanguage": "your answer gemini"(The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish? The OCR text result could contain spanish so do not provide me those information in spanish),
+      "answerOfDebug": "your answer gemini" (why i see you keep adding spanish to "footnote" field?),
+      "answerOfDebug_2": "your answer gemini" (why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value),
+      "answerOfDebug_3": "your answer gemini" (why i see you keep removeing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something)),
+      "answerOfDebug_4": "your answer gemini" (help me list all nutrients with their quantity and oum, and percent daily value as well as a long string here at this field "answerOfDebug_4". Please combine the given OCR text and what you see to make sure the result is correct),
+      "end": true,
+  },
   "product": {
     "readAllConstants": "your answer gemini"(please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?"),
     "factPanels":null or [
@@ -899,13 +908,11 @@ json
             "quantityComparisonOperator": string?, value: float?, uom: string, 
             "quantityDescription": string?,
             "dailyPercentComparisonOperator": string?, 
-            "percentDailyValue": float,  
-            "footnoteIndicator": string?, // value must be choosen from FOOTNOTE_INDICATORS 
+            "percentDailyValue": float?,  
+            "footnoteIndicator": string?, // value must be choosen from FOOTNOTE_INDICATORS,
           }
         ],
-        "footnote": {
-          "value": string?,
-        },
+        "footnote": string
       }
     ],
   },
@@ -926,6 +933,7 @@ Some definitions:
 Some common rules:
 + "nutrients" is an array that usually start with some nutrients such as "Total Carbohydrate", "Sugar", "Vitamin A", ... Let's list nutrient from them first if possible.
 + each "nutrients" is separated by a thin line on nutrition fact panel.
++ "nutrients" and "footnote" are also separated by a line on nutrition fact panel.
 + Read "Fact Panel" from left to right and from top to bottom.
 + content in prompt can be similar to typescript and nodejs syntax.
 + be careful the last "nutrient row" could be misread to be a part of "footnote". Remember "footnote" content ususally about "Daily value" or "percent daily value" note.
@@ -960,9 +968,9 @@ and usually start with "%Daily Value....", "Not a significant source...", or "th
 + "footnote" may contain multiple languages. Please only provide "footnote" in english only. Do not include spanish text on footnote 
 
 Ex 1: "**Not a significant source of saturated fat, trans fat. *Daily Value not established. = {footnote: {value :"**Not a significant source of saturated fat, trans fat. *Daily Value not established."}}
-Ex 2: "*Daily Value not established." = {footnote: {value: "*Daily Value not established."}}
-Ex 3: "†Daily Value not established." = {footnote: {value: "†Daily Value not established."}}
-Ex 4: "Not a significant source of saturated fat, trans fat." = {footnote:{value: "Not a significant source of saturated fat, trans fat."}}
+Ex 2: "*Daily Value not established." = {footnote: "*Daily Value not established."}
+Ex 3: "†Daily Value not established." = {footnote: "†Daily Value not established."}
+Ex 4: "Not a significant source of saturated fat, trans fat." = {footnote: "Not a significant source of saturated fat, trans fat."}
 
 8) "nutrients.footnoteIndicator":
 + "nutrients.footnoteIndicator" is a special symbol such as "*", "†" or is a group of special symbol such as "**" beside the nutrient percent value. Sometimes nutrient percent value is left empty but still have footnoteIndicator right there.
@@ -987,6 +995,7 @@ Ex 2: "20mcg DFE(800mcg L-5-MTHF) = {quantityDescription: "800mcg L-5-MTHF"}
 12) "nutrients.descriptor" rules:
 + "nutrients.descriptor" could be the text that is intended and appear on the row below a nutrient.
 + "nutrients.descriptor" could also be the text inside the parentheses right next to "nutrients.name"
++ "nutrients.descriptor" could be the list of ingredients in blend or mix.
 
 13) "nutrients.name" rule:
 + "nutrients.name" is a name of nutrient sometimes include the text closed inside the parentheses.
@@ -1005,6 +1014,9 @@ Ex 1: "Per container", "Per serving"
 16) "nutrients.percentDailyValue"
 + could be null or empty. if its value is empty or null just left it value "null"
 + nutrient "trans fat" do not have "percent daily value" and its "nutrients.percentDailyValue" must be null 
+Ex 1: "100g 10%" should be recorded as {"percentDailyValue": 10, ...}
+Ex 2: "100g    " should be recorded as {"percentDailyValue": null, ...}
+Ex 2: "1g  <1%" should be recorded as {"percentDailyValue": 1, ...}
 `;
 };
 

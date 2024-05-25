@@ -25,42 +25,48 @@ router.get('/get-result/:sessionId', async (req, res) => {
   );
 
   try {
-    const [allData, nutData] = await Promise.all([
-      fs.readFileSync(allFilePath, 'utf8'),
+    const [
+      // allData,
+      nutData,
+    ] = await Promise.all([
+      // fs.readFileSync(allFilePath, 'utf8'),
       fs.readFileSync(nutFilePath, 'utf8'),
     ]);
 
-    const allRes = JSON.parse(allData);
+    // const allRes = JSON.parse(allData);
     const nutRes = JSON.parse(nutData);
 
-    const { isSuccess: allSuccess } = allRes || {};
+    // const { isSuccess: allSuccess } = allRes || {};
     const { isSuccess: nutSuccess } = nutRes || {};
 
-    if (nutSuccess === false || allSuccess === false) {
+    if (
+      nutSuccess === false
+      // || allSuccess === false
+    ) {
       res.json({ isSuccess: false });
     }
 
     let response = {
-      ...allRes,
+      // ...allRes,
       ...nutRes,
       product: {
-        ...allRes.product,
+        // ...allRes.product,
         factPanels: nutRes.product.factPanels,
       },
     };
 
-    removeFieldByPath(response, 'answerOfQuestion');
-    removeFieldByPath(response, 'answerOfRemindQuestion');
-    removeFieldByPath(response, 'answerOfFoundBug');
-    removeFieldByPath(response, 'answerOfFoundBug');
-    removeFieldByPath(response, 'product.certifierAndLogo');
-    removeFieldByPath(response, 'product.readAllConstants');
-    removeFieldByPath(response, 'answerOfQuestionsAboutNutritionFact');
-    removeFieldByPath(response, 'answerOfQuestionAboutNutritionFactTitle');
-    removeFieldByPath(response, 'answerOfQuestionAboutValidator');
-    removeFieldByPath(response, 'answerOfQuestionAboutLanguage');
-    removeFieldByPath(response, 'answerOfDebug');
-    removeFieldByPath(response, 'answerOfDebug_2');
+    // removeFieldByPath(response, 'answerOfQuestion');
+    // removeFieldByPath(response, 'answerOfRemindQuestion');
+    // removeFieldByPath(response, 'answerOfFoundBug');
+    // removeFieldByPath(response, 'answerOfFoundBug');
+    // removeFieldByPath(response, 'product.certifierAndLogo');
+    // removeFieldByPath(response, 'product.readAllConstants');
+    // removeFieldByPath(response, 'answerOfQuestionsAboutNutritionFact');
+    // removeFieldByPath(response, 'answerOfQuestionAboutNutritionFactTitle');
+    // removeFieldByPath(response, 'answerOfQuestionAboutValidator');
+    // removeFieldByPath(response, 'answerOfQuestionAboutLanguage');
+    // removeFieldByPath(response, 'answerOfDebug');
+    // removeFieldByPath(response, 'answerOfDebug_2');
 
     res.json(response);
   } catch (error) {

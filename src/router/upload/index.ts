@@ -8,6 +8,7 @@ import {
   getOcrText,
   getOcrTextAllImages,
   findImagesContainNutFact,
+  addUniqueString,
 } from '../../lib/server_utils';
 import { uploadsDir, pythonPath } from '../../server';
 import { makePrompt, make_nut_prompt } from '../../constants';
@@ -25,7 +26,7 @@ const Storage = multer.diskStorage({
     // Check if the directory exists, create it if not
     if (!fs.existsSync(uploadsDir)) {
       fs.mkdirSync(uploadsDir, { recursive: true });
-      console.log(`Directory created: ${uploadsDir}`);
+      console.log(`Directory created: c p${uploadsDir}`);
     }
     cb(null, uploadsDir);
   },
@@ -74,13 +75,26 @@ router.post(
 
     // const ocrText = await getOcrText(filePaths[0]);
 
-    const invalidatedInput = await findImagesContainNutFact(filePaths);
+    const biasForm = JSON.parse(req.body?.biasForm);
 
-    console.log('result', JSON.stringify(invalidatedInput));
+    let invalidatedInput = await findImagesContainNutFact(filePaths);
 
     // console.log('ocrText', JSON.stringify(procOCRtext));
 
     // await createCollage(filePaths, collatedOuputPath);
+
+    Object.entries(biasForm).forEach(([key, value]: any) => {
+      if (value?.haveNutFact === true) {
+        let newNutIncluded = addUniqueString(
+          invalidatedInput.nutIncluded,
+          filePaths[key]
+        );
+
+        invalidatedInput.nutIncluded = newNutIncluded;
+      }
+    });
+
+    console.log('result', JSON.stringify(invalidatedInput));
 
     const nutImagesOCRresult = await getOcrTextAllImages(
       invalidatedInput.nutIncluded
@@ -96,7 +110,15 @@ router.post(
       {}
     );
 
-    res.json({ sessionId, images: [] });
+    res.json({
+      sessionId,
+      images: [],
+      messages: [
+        invalidatedInput.nutIncluded?.length === 0
+          ? 'There is no nut/supp facts panel detected by nut/supp fact panel detector module. If nut/supp fact panels are on provided image. Please set up bias of nut/supp for image to extract info. (Nutrition and Supplement Panel detector is on development state)'
+          : null,
+      ],
+    });
 
     onProcessGemini({
       req,
@@ -111,18 +133,18 @@ router.post(
       prefix: 'nut',
     });
 
-    onProcessGemini({
-      req,
-      res,
-      sessionId,
-      collateImageName,
-      collatedOuputPath: [
-        ...invalidatedInput.nutIncluded,
-        ...invalidatedInput.nutExcluded,
-      ],
-      prompt: makePrompt({}),
-      prefix: 'all',
-    });
+    // onProcessGemini({
+    //   req,
+    //   res,
+    //   sessionId,
+    //   collateImageName,
+    //   collatedOuputPath: [
+    //     ...invalidatedInput.nutIncluded,
+    //     ...invalidatedInput.nutExcluded,
+    //   ],
+    //   prompt: makePrompt({}),
+    //   prefix: 'all',
+    // });
 
     return;
 
