@@ -3,7 +3,11 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
-import { onProcessGemini, createCollage } from '../../utils';
+import {
+  onProcessGemini,
+  createCollage,
+  encodeImageToBase64,
+} from '../../utils';
 import {
   getOcrText,
   getOcrTextAllImages,
@@ -65,6 +69,7 @@ router.post(
     const files = req.files as Express.Multer.File[];
 
     const filePaths = files?.map((file: any) => file.path);
+    const fileNames = files?.map((file: any) => file.filename);
 
     const isSingleFileUpload = filePaths?.length === 1;
 
@@ -74,6 +79,8 @@ router.post(
     // const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
 
     // const ocrText = await getOcrText(filePaths[0]);
+
+    console.log('filePath', JSON.stringify(filePaths));
 
     const biasForm = JSON.parse(req.body?.biasForm);
 
@@ -113,6 +120,7 @@ router.post(
     res.json({
       sessionId,
       images: [],
+      nutIncludedIdx: invalidatedInput?.nutIncludedIdx,
       messages: [
         invalidatedInput.nutIncluded?.length === 0
           ? 'There is no nut/supp facts panel detected by nut/supp fact panel detector module. If nut/supp fact panels are on provided image. Please set up bias of nut/supp for image to extract info. (Nutrition and Supplement Panel detector is on development state)'

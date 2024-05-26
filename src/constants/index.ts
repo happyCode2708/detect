@@ -853,6 +853,7 @@ h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 // "answerOfDebug_4": "your answer gemini" (Do you think food blend is nutrient? and why?),
 // "answerOfDebug_3": "your answer gemini" (why i see you keep adding last nutrient to "footnote" field? remember "footnote" does not contain specific information about quantiy in weight or amout (ex: 400g, or 250ml,..)),
 // "answerOfDebug_6": "your answer gemini" (Are you sure you see that total fat have percent daily value of 0%?),
+// "answerOfDebug_5": "your answer gemini" (tell me amount per serving name you see?),
 
 export const make_nut_prompt = ({
   ocrText,
@@ -893,7 +894,7 @@ export const make_nut_prompt = ({
     "factPanels":null or [
       {
         "panelName": string ,
-        "amountPerServing": {"name": string?},
+        "amountPerServing": {"percentDailyValueFor": string?},
         "calories": {"value": float?, "uom": "calories"}
         "servingSize": {
           "description": string?, 
@@ -949,7 +950,7 @@ Nutrient rule:
 3) Notations like 'Includes 7g of Added Sugars' should be recorded as "name": "Added Sugars", "value": 7, "uom": "g".
 
 4) The nutrition fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information, or different "% Daily value" by age. Let's to break down and separate into two different fact panels one is for 'per serving'
-and other for 'per container' just if "amoutPerServing.name" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "nutrients" but each "nutrients" could have different "footnoteIndicator".
+and other for 'per container' just if "amoutPerServing.percentDailyValueFor" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "nutrients" but each "nutrients" could have different "footnoteIndicator".
 
 5) "factPanels.panelName":
 + if there is text on image contain "Nutrition Facts" or "Supplement Facts". If not it should be null
@@ -975,9 +976,13 @@ Ex 4: "Not a significant source of saturated fat, trans fat." = {footnote: "Not 
 8) "nutrients.footnoteIndicator":
 + "nutrients.footnoteIndicator" is a special symbol such as "*", "†" or is a group of special symbol such as "**" beside the nutrient percent value. Sometimes nutrient percent value is left empty but still have footnoteIndicator right there.
 
-9) "amountPerServing.name":
-+ is a text and usually stay above the "calories value number",
-Ex 1: "Per container", "Per serving"
+9) "amountPerServing.percentDailyValueFor" rules:
++ "amountPerServing.percentDailyValueFor" is a text and usually stay above the "calories value number".
++ "amountPerServing.percentDailyValueFor" could be also a text below "%Daily Value" title or below "%DV" title such as "for children...", or "for aldults..."
+Ex 1: "Per container" = {amountPerServing: {percentDailyValueFor: "Per container"}}
+Ex 2: "Per serving" = {amountPerServing: {percentDailyValueFor: "Per serving"}}
+Ex 3: "%dv for children > 18 years" = {amountPerServing: {percentDailyValueFor: "for children > 18 years"}}
+Ex 4: "%dv for adults" = {amountPerServing: {percentDailyValueFor: "for adults"}}
 
 10) "nutrient.quantityComparisonOperator" and "nutrient.dailyPercentComparisonOperator" rules:
 + "nutrient.quantityComparisonOperator" is a comparison operator at the left side of "nutrient.value" and "nutrient.uom"
@@ -1006,12 +1011,7 @@ Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medi
 14) "nutrients.uom" rules:
 + some possible "nutrients.uom" such as "MCG DFE"
 
-15) "amountPerServing.name" rules:
-+ is a text and usually stay above the "calories value number".
-+ "amountPerServing.name" could be a text below "%Daily Value" Header such as "for children...", or "for aldults..."
-Ex 1: "Per container", "Per serving"
-
-16) "nutrients.percentDailyValue"
+15) "nutrients.percentDailyValue"
 + could be null or empty. if its value is empty or null just left it value "null"
 + nutrient "trans fat" do not have "percent daily value" and its "nutrients.percentDailyValue" must be null 
 Ex 1: "100g 10%" should be recorded as {"percentDailyValue": 10, ...}

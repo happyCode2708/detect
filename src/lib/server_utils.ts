@@ -86,7 +86,9 @@ export const findImagesContainNutFact = async (filePaths: string[]) => {
 
   let validateImages: any = {
     nutIncluded: [],
+    nutIncludedIdx: [],
     nutExcluded: [],
+    nutExcludedIdx: [],
   };
 
   detects.forEach((isNutFactFound, idx) => {
@@ -95,11 +97,13 @@ export const findImagesContainNutFact = async (filePaths: string[]) => {
         ...validateImages.nutIncluded,
         filePaths[idx],
       ];
+      validateImages.nutIncludedIdx = [...validateImages.nutIncludedIdx, idx];
     } else {
       validateImages.nutExcluded = [
         ...validateImages.nutExcluded,
         filePaths[idx],
       ];
+      validateImages.nutExcludedIdx = [...validateImages.nutExcludedIdx, idx];
     }
   });
 
