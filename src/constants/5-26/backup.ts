@@ -879,52 +879,49 @@ export const make_nut_prompt = ({
   json
   {
     "validatorAndFixBug": {
-      "answerOfQuestionsAboutNutritionFact": your answer gemini (Do you see nutrition facts panel on provided images? why? where is it on product?"),
-      "answerOfQuestionAboutNutritionFactTitle": your answer gemini (Do you see fully "Supplement Fact" title or "Nutrition Fact" title  on provided images ? ),
-      "answerOfQuestionAboutValidator": your answer gemini ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please compare with OCR texts and check if your info add to JSON is correct),
-      "answerOfQuestionAboutLanguage": your answer gemini (The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish? The OCR text result could contain spanish so do not provide me those information in spanish),
-      "answerOfDebug": your answer gemini (why i see you keep adding spanish to "footnote" field?),
-      "answerOfDebug_2": your answer gemini (why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value),
-      "answerOfDebug_3": your answer gemini (why i see you keep removeing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something)),
-      "answerOfDebug_4": your answer gemini (help me list all nutrients with their quantity and oum, and percent daily value as well as a long string here at this field "answerOfDebug_4". Please combine the given OCR text and what you see to make sure the result is correct),
-      "answerOfDebug_5": your answer gemini (Why you put content like "(as ...)" beside nutrient name to nutrient_sub_ingredients? They are only considered as "nutrients.descriptor"),
-      "answerOfDebug_6": your answer gemini (Why you keep add multiple sub-ingredients into one "nutrient_sub_ingredients.info"? Please record as an array of "nutrient_sub_ingredients" for sub-ingredients those separated by comma?),
-      "answerOfDebug_7": your answer gemini (why you do not recognize sub-ingredients? some nutrients with intended ingredients rows below obviously have sub-ingredients, sometimes multiple sub-ingredients could be written in the same row but should be recorded separately.),
+      "answerOfQuestionsAboutNutritionFact": "your answer gemini" (Do you see nutrition facts panel on provided images? why? where is it on product?"),
+      "answerOfQuestionAboutNutritionFactTitle": "your answer gemini" (Do you see fully "Supplement Fact" title or "Nutrition Fact" title  on provided images ? ),
+      "answerOfQuestionAboutValidator": "your answer gemini" ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please compare with OCR texts and check if your info add to JSON is correct),
+      "answerOfQuestionAboutLanguage": "your answer gemini"(The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish? The OCR text result could contain spanish so do not provide me those information in spanish),
+      "answerOfDebug": "your answer gemini" (why i see you keep adding spanish to "footnote" field?),
+      "answerOfDebug_2": "your answer gemini" (why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value),
+      "answerOfDebug_3": "your answer gemini" (why i see you keep removeing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something)),
+      "answerOfDebug_4": "your answer gemini" (help me list all nutrients with their quantity and oum, and percent daily value as well as a long string here at this field "answerOfDebug_4". Please combine the given OCR text and what you see to make sure the result is correct),
       "end": true,
-    },
-    "product": {
-      "readAllConstants": your answer gemini (please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?),
-      "factPanels":null or [
-        {
-          "panelName": string ,
-          "amountPerServing": {"percentDailyValueFor": string?},
-          "calories": {"value": float?, "uom": "calories"}
-          "servingSize": {
-            "description": string?, 
-            "value": number, 
-            "uom": string,
-          },
-          "servingPerContainer":" {"value": float? or number?, "uom": string},
-          "nutrients": [
-            {
-              "name": string, 
-              "descriptor": string,
-              "nutrient_sub_ingredients": [{
-                "info": string,
-                "sub_ingredients_footNoteIndicator": string,
-              },...],
-              "quantityComparisonOperator": string?, value: float?, uom: string, 
-              "quantityDescription": string?,
-              "dailyPercentComparisonOperator": string?, 
-              "percentDailyValue": float?,  
-              "footnoteIndicator": string?, // value must be choosen from FOOTNOTE_INDICATORS,
-            }
-          ],
-          "footnote": string
-        }
-      ],
-    },
-  }
+  },
+  "product": {
+    "readAllConstants": "your answer gemini"(please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?"),
+    "factPanels":null or [
+      {
+        "panelName": string ,
+        "amountPerServing": {"percentDailyValueFor": string?},
+        "calories": {"value": float?, "uom": "calories"}
+        "servingSize": {
+          "description": string?, 
+          "value": number, 
+          "uom": string,
+        },
+        "servingPerContainer":" {"value": float? or number?, "uom": string},
+        "nutrients": [
+          {
+            "name": string, 
+            "descriptor": string,
+            "nutrient_sub_ingredients": [{
+              "name": string,
+              "footNoteIndicator": string,
+            },...],
+            "quantityComparisonOperator": string?, value: float?, uom: string, 
+            "quantityDescription": string?,
+            "dailyPercentComparisonOperator": string?, 
+            "percentDailyValue": float?,  
+            "footnoteIndicator": string?, // value must be choosen from FOOTNOTE_INDICATORS,
+          }
+        ],
+        "footnote": string
+      }
+    ],
+  },
+}
 
 The Most Important rule:
 + Only get data that visibly seen by normal eyes not from other sources on internet
@@ -1005,28 +1002,22 @@ Ex 1: "20mcg(800 IU)" = {quantityDescription: "800 IU"}
 Ex 2: "20mcg DFE(800mcg L-5-MTHF) = {quantityDescription: "800mcg L-5-MTHF"}
 
 12) "nutrients.descriptor" rules:
-+ "nutrients.descriptor" is the text inside the parentheses right next to "nutrients.name"
++ "nutrients.descriptor" could be the text that is intended and appear on the row below a nutrient.
++ "nutrients.descriptor" could also be the text inside the parentheses right next to "nutrients.name"
++ "nutrients.descriptor" could be the list of ingredients in blend or mix.
++ be carefull "nutrients.descriptor" could also be row list of ingredients (not intended) below the blend name. It can be recognized as consecutive rows below blend name without being separated by line.
++ be carefull "nutrients.descriptor" could also be row list of ingredients (intended) below the blend name, or below a substance name, or below a main ingredient name. It can be recognized as consecutive rows below nutrient name being separated by line or not being separated by line;
 
-13) "nutrients.nutrient_sub_ingredients" rules:
-+ "nutrients.nutrient_sub_ingredients" could be the list of ingredients in blend or mix.
-+ be carefull "nutrients.nutrient_sub_ingredients" is many rows of ingredients below the nutrient name (the nutrient such as a blend, or a substance, or a main ingredient, or a complex,...). It can be recognized as consecutive indented rows of ingredients below nutrient names (sometimes they might not be intended).
-Ex 1: "150mg cucumin(curcuma longa)" = {"info": "150mg cucumin(curcuma longa)",...}
-
-+ be carefull "nutrients.nutrient_sub_ingredients" could also be list of ingredients below the nutrient. It can be recognized as consecutive ingredients below the nutrient name and separated by comma.
-Ex1 :  "Banana, Grape(from juice), Apple" = [{"info": "Banana",...}, {"info": "Grape(from juice)",...}, {"info"": "Apple",...}]
-
-+ "nutrients.nutrient_sub_ingredients.sub_ingredients_footNoteIndicator" is a special symbol such as "*", "†" or is a group of special symbol such as "**" on the right side of "nutrients.nutrient_sub_ingredients.name".
-
-15) "nutrients.name" rule:
+13) "nutrients.name" rule:
 + "nutrients.name" is a name of nutrient sometimes include the text closed inside the parentheses.
 + "nutrients.name" sometimes start with a special symbol or its name is bold and maybe a note just like name of an ingredient
 Ex 1: "Vitamin K2(as Naturally Derived MK-7 [Menaquinone-7)" should be recorded as {"name": "Vitamin K2", "descriptor": "as Naturally Derived MK-7 [Menaquinone-7": ,...}
 Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medium Chain Triglyceride (MCT) Oil", ...} 
 
-16) "nutrients.uom" rules:
+14) "nutrients.uom" rules:
 + some possible "nutrients.uom" such as "MCG DFE"
 
-17) "nutrients.percentDailyValue"
+15) "nutrients.percentDailyValue"
 + could be null or empty. if its value is empty or null just left it value "null"
 + nutrient "trans fat" do not have "percent daily value" and its "nutrients.percentDailyValue" must be null 
 Ex 1: "100g 10%" should be recorded as {"percentDailyValue": 10, ...}
@@ -1042,5 +1033,3 @@ Ex 2: "1g  <1%" should be recorded as {"percentDailyValue": 1, ...}
 
 // 2) "physical.upc12" rules:
 // + find UPC12 in the provided image
-
-// + "nutrients.descriptor" could be the text that is intended and appear on the row below a nutrient.

@@ -54,9 +54,15 @@ const NutritionTable = ({ data }: { data: any }) => {
         </TableHeader>
         <TableBody>
           {data.nutrients.map((nutrient: any, index: number) => {
+            const isHaveSubIngredient =
+              nutrient?.nutrient_sub_ingredients?.length > 0;
+
             return (
               <>
-                <TableRow key={index}>
+                <TableRow
+                  key={index}
+                  className={isHaveSubIngredient ? 'border-none' : ''}
+                >
                   <TableCell>
                     <span>{nutrient.name}</span>
                     {nutrient?.descriptor && (
@@ -87,10 +93,33 @@ const NutritionTable = ({ data }: { data: any }) => {
                     )}
                   </TableCell>
                 </TableRow>
+
+                {nutrient?.nutrient_sub_ingredients?.map(
+                  (subIngredient: any, idx: number) => {
+                    return (
+                      <TableRow
+                        className={
+                          idx === nutrient?.nutrient_sub_ingredients?.length - 1
+                            ? ''
+                            : 'border-none'
+                        }
+                      >
+                        <TableCell className='pl-10'>
+                          {subIngredient?.info}
+                        </TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                        <TableCell>
+                          {subIngredient?.sub_ingredients_footNoteIndicator}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  }
+                )}
               </>
             );
           })}
-          {data.dietaryIngredients?.length > 0 && (
+          {/* {data.dietaryIngredients?.length > 0 && (
             <>
               <TableRow>
                 <TableCell
@@ -151,7 +180,7 @@ const NutritionTable = ({ data }: { data: any }) => {
                 );
               })}
             </>
-          )}
+          )} */}
         </TableBody>
       </Table>
       <div>
