@@ -855,6 +855,8 @@ h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 // "answerOfDebug_6": "your answer gemini" (Are you sure you see that total fat have percent daily value of 0%?),
 // "answerOfDebug_5": "your answer gemini" (tell me amount per serving name you see?),
 
+// "answerOfDebug_4": your answer gemini (help me list all nutrients with their quantity and oum, and percent daily value as well as a long string here at this field "answerOfDebug_4". Please combine the given OCR text and what you see to make sure the result is correct),
+
 export const make_nut_prompt = ({
   ocrText,
   imageCount,
@@ -886,7 +888,6 @@ export const make_nut_prompt = ({
       "answerOfDebug": your answer gemini (why i see you keep adding spanish to "footnote" field?),
       "answerOfDebug_2": your answer gemini (why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value),
       "answerOfDebug_3": your answer gemini (why i see you keep removeing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something)),
-      "answerOfDebug_4": your answer gemini (help me list all nutrients with their quantity and oum, and percent daily value as well as a long string here at this field "answerOfDebug_4". Please combine the given OCR text and what you see to make sure the result is correct),
       "answerOfDebug_5": your answer gemini (Why you put content like "(as ...)" beside nutrient name to nutrient_sub_ingredients? They are only considered as "nutrients.descriptor"),
       "answerOfDebug_6": your answer gemini (Why you keep add multiple sub-ingredients into one "nutrient_sub_ingredients.info"? Please record as an array of "nutrient_sub_ingredients" for sub-ingredients those separated by comma?),
       "answerOfDebug_7": your answer gemini (why you do not recognize sub-ingredients? some nutrients with intended ingredients rows below obviously have sub-ingredients, sometimes multiple sub-ingredients could be written in the same row but should be recorded separately.),
@@ -1031,3 +1032,8 @@ Ex 1: 'Includes 7g of Added Sugars' = {"name": "Added Sugars", "value": 7, "uom"
 
 `;
 };
+
+// NAME	QUANTITY	DAILY PERCENT	FOOTNOTE
+// Total Carbohydrate	6g	2%	+
+// Total Sugars	4g		**
+// Includes 4 g Added Sugars
