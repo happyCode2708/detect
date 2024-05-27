@@ -911,6 +911,7 @@ export const make_nut_prompt = ({
               "descriptor": string,
               "nutrient_sub_ingredients": [{
                 "info": string,
+                "sub_ingredients_footNoteIndicator": string,
               },...],
               "quantityComparisonOperator": string?, value: float?, uom: string, 
               "quantityDescription": string?,
@@ -952,6 +953,8 @@ Nutrient rule:
 2) some nutrients such as ("Total Carbohydrate", "total sugar", "Includes... Added Sugars", ...) and they are must be separated nutrients
 
 2) Each nutritional line's values must stay unique. Do not interchange numbers between lines or make false inferences. For instance, "total sugar 18g, included 5g added sugar 4%," should create two objects: one as "name": "total sugar", "value": 18, "uom": "g", "percentDailyValue": null, and another as "name": "added sugar", "value": 5, "uom": "g", "percentDailyValue": 14%.
+
+3) Notations like 'Includes 7g of Added Sugars' should be recorded as "name": "Added Sugars", "value": 7, "uom": "g".
 
 4) The nutrition fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information, or different "% Daily value" by age. Let's to break down and separate into two different fact panels one is for 'per serving'
 and other for 'per container' just if "amoutPerServing.percentDailyValueFor" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "nutrients" but each "nutrients" could have different "footnoteIndicator".
@@ -1005,9 +1008,14 @@ Ex 2: "20mcg DFE(800mcg L-5-MTHF) = {quantityDescription: "800mcg L-5-MTHF"}
 + "nutrients.descriptor" is the text inside the parentheses right next to "nutrients.name"
 
 13) "nutrients.nutrient_sub_ingredients" rules:
-+ "nutrients.nutrient_sub_ingredients" is the list of sub-ingredient below nutrient name (nutrient is usually blend, mix, compled, or a complex substance)
++ "nutrients.nutrient_sub_ingredients" could be the list of ingredients in blend or mix.
++ be carefull "nutrients.nutrient_sub_ingredients" is many rows of ingredients below the nutrient name (the nutrient such as a blend, or a substance, or a main ingredient, or a complex,...). It can be recognized as consecutive indented rows of ingredients below nutrient names (sometimes they might not be intended).
+Ex 1: "150mg cucumin(curcuma longa)" = {"info": "150mg cucumin(curcuma longa)",...}
+
++ be carefull "nutrients.nutrient_sub_ingredients" could also be list of ingredients below the nutrient (indented or not intended). It can be recognized as consecutive ingredients below the nutrient name and separated by comma (",").
 Ex1 :  "Banana, Grape(from juice), Apple" = [{"info": "Banana",...}, {"info": "Grape(from juice)",...}, {"info"": "Apple",...}]
 
++ "nutrients.nutrient_sub_ingredients.sub_ingredients_footNoteIndicator" is a special symbol such as "*", "†" or is a group of special symbol such as "**" on the right side of "nutrients.nutrient_sub_ingredients.name".
 
 15) "nutrients.name" rule:
 + "nutrients.name" is a name of nutrient sometimes include the text closed inside the parentheses.
@@ -1024,10 +1032,6 @@ Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medi
 Ex 1: "100g 10%" should be recorded as {"percentDailyValue": 10, ...}
 Ex 2: "100g    " should be recorded as {"percentDailyValue": null, ...}
 Ex 2: "1g  <1%" should be recorded as {"percentDailyValue": 1, ...}
-
-18) nutrient of "added sugars" rules": 
-Ex 1: 'Includes 7g of Added Sugars' = {"name": "Added Sugars", "value": 7, "uom": "g",...}
-
 `;
 };
 
@@ -1040,7 +1044,3 @@ Ex 1: 'Includes 7g of Added Sugars' = {"name": "Added Sugars", "value": 7, "uom"
 // + find UPC12 in the provided image
 
 // + "nutrients.descriptor" could be the text that is intended and appear on the row below a nutrient.
-
-// + "nutrients.nutrient_sub_ingredients" is many rows of ingredients below the nutrient name (the nutrient such as a blend, or a substance, or a main ingredient, or a complex,...). It can be recognized as consecutive indented rows of ingredients below nutrient names (sometimes they might not be intended).
-// Ex 1: "150mg cucumin(curcuma longa)" = {"info": "150mg cucumin(curcuma longa)",...}
-// + "nutrients.nutrient_sub_ingredients.sub_ingredients_footNoteIndicator" is a special symbol such as "*", "†" or is a group of special symbol such as "**" on the right side of "nutrients.nutrient_sub_ingredients.name".
