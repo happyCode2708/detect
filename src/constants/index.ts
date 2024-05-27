@@ -965,6 +965,7 @@ and other for 'per container' just if "amoutPerServing.percentDailyValueFor" of 
 Ex 1: "10 tablespoons(80g)" = {servingSize: {"description": "10 tablespoons", "value": 80, "uom": "g"}}
 Ex 2: "10 tablespoons" = {servingSize: {"value": 10, "uom": "tablespoons"}}
 Ex 3: "10 bars(200g)" = {servingSize: {"description": "10 bars", "value": 200, "uom": "g"}}
+Ex 4: "10 cups(10 ml)" = {servingSize: {"description": "10 cups", "value": 10, "uom": "ml"}}
 
 7) "footnote":
 + "footnote" must be the last part of fact panel (the note may contain some special characters from FOOTNOTE_INDICATORS),
@@ -1030,17 +1031,3 @@ Ex 1: 'Includes 7g of Added Sugars' = {"name": "Added Sugars", "value": 7, "uom"
 
 `;
 };
-
-// c) "consumerStorageInstructions_debug": tell me why you give the value? where is the value? why you put translated content from spanish to value ? is see "KEEP IN A COOL, DRY PLACE" twice. Do you see it twice in english? tell me where you found them ?
-
-// I apologize for the error. The value "KEEP IN A COOL, DRY PLACE" appears only once in English on the image. I incorrectly included the translated content from Spanish, which also states "MANTENER EN LUGAR FRESCO Y SECO." I am still under development and learning to differentiate between languages and avoid unnecessary translations.
-// "consumerStorageInstructions_debug": string,
-
-// 2) "physical.upc12" rules:
-// + find UPC12 in the provided image
-
-// + "nutrients.descriptor" could be the text that is intended and appear on the row below a nutrient.
-
-// + "nutrients.nutrient_sub_ingredients" is many rows of ingredients below the nutrient name (the nutrient such as a blend, or a substance, or a main ingredient, or a complex,...). It can be recognized as consecutive indented rows of ingredients below nutrient names (sometimes they might not be intended).
-// Ex 1: "150mg cucumin(curcuma longa)" = {"info": "150mg cucumin(curcuma longa)",...}
-// + "nutrients.nutrient_sub_ingredients.sub_ingredients_footNoteIndicator" is a special symbol such as "*", "†" or is a group of special symbol such as "**" on the right side of "nutrients.nutrient_sub_ingredients.name".
