@@ -54,19 +54,19 @@ const NutritionTable = ({ data }: { data: any }) => {
         </TableHeader>
         <TableBody>
           {data.nutrients.map((nutrient: any, index: number) => {
-            const isHaveSubIngredient =
-              nutrient?.nutrient_sub_ingredients?.length > 0;
+            // const isHaveSubIngredient =
+            //   nutrient?.nutrient_sub_ingredients?.length > 0;
 
             return (
               <>
                 <TableRow
                   key={index}
-                  className={isHaveSubIngredient ? 'border-none' : ''}
+                  // className={isHaveSubIngredient ? 'border-none' : ''}
                 >
                   <TableCell>
                     <span>{nutrient.name}</span>
-                    {nutrient?.descriptor && (
-                      <span>({nutrient?.descriptor})</span>
+                    {nutrient?.descriptor_or_subIngredientList && (
+                      <span>({nutrient?.descriptor_or_subIngredientList})</span>
                     )}
                   </TableCell>
                   <TableCell key={index}>
@@ -76,8 +76,8 @@ const NutritionTable = ({ data }: { data: any }) => {
                     {nutrient?.value}
                     {nutrient?.uom ?? <span>{nutrient?.uom}</span>}
                     {![null, undefined].includes(
-                      nutrient?.quantityDescription
-                    ) && <span>({nutrient?.quantityDescription})</span>}
+                      nutrient?.quantityEquivalent
+                    ) && <span>({nutrient?.quantityEquivalent})</span>}
                   </TableCell>
                   <TableCell>
                     {![null, undefined].includes(
@@ -94,7 +94,7 @@ const NutritionTable = ({ data }: { data: any }) => {
                   </TableCell>
                 </TableRow>
 
-                {nutrient?.nutrient_sub_ingredients?.map(
+                {/* {nutrient?.nutrient_sub_ingredients?.map(
                   (subIngredient: any, idx: number) => {
                     return (
                       <TableRow
@@ -115,7 +115,7 @@ const NutritionTable = ({ data }: { data: any }) => {
                       </TableRow>
                     );
                   }
-                )}
+                )} */}
               </>
             );
           })}

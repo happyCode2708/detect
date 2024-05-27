@@ -51,7 +51,7 @@ router.get('/get-result/:sessionId', async (req, res) => {
       ...nutRes,
       product: {
         // ...allRes.product,
-        factPanels: nutRes.product.factPanels,
+        factPanels: transformFactPanels(nutRes.product.factPanels),
       },
     };
 
@@ -121,4 +121,8 @@ const combineResult = (result: any) => {
   }
 
   return false;
+};
+
+const transformFactPanels = (factPanels: any) => {
+  return factPanels;
 };

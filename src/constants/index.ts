@@ -856,6 +856,8 @@ h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 // "answerOfDebug_5": "your answer gemini" (tell me amount per serving name you see?),
 
 // "answerOfDebug_4": your answer gemini (help me list all nutrients with their quantity and oum, and percent daily value as well as a long string here at this field "answerOfDebug_4". Please combine the given OCR text and what you see to make sure the result is correct),
+// "answerOfDebug_4": your answer gemini (Lis?),
+// "answerOfDebug_4": your answer gemini (what is  "(240 mcg Folic Acid)" in the fact panel?),
 
 export const make_nut_prompt = ({
   ocrText,
@@ -887,10 +889,8 @@ export const make_nut_prompt = ({
       "answerOfQuestionAboutLanguage": your answer gemini (The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish? The OCR text result could contain spanish so do not provide me those information in spanish),
       "answerOfDebug": your answer gemini (why i see you keep adding spanish to "footnote" field?),
       "answerOfDebug_2": your answer gemini (why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value),
-      "answerOfDebug_3": your answer gemini (why i see you keep removeing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something)),
-      "answerOfDebug_5": your answer gemini (Why you put content like "(as ...)" beside nutrient name to nutrient_sub_ingredients? They are only considered as "nutrients.descriptor"),
-      "answerOfDebug_6": your answer gemini (Why you keep add multiple sub-ingredients into one "nutrient_sub_ingredients.info"? Please record as an array of "nutrient_sub_ingredients" for sub-ingredients those separated by comma?),
-      "answerOfDebug_7": your answer gemini (why you do not recognize sub-ingredients? some nutrients with intended ingredients rows below obviously have sub-ingredients, sometimes multiple sub-ingredients could be written in the same row but should be recorded separately.),
+      "answerOfDebug_3": your answer gemini (why i see you keep removeing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something),
+      "answerOfDebug_4": your answer gemini (be carefull sometimes you can see the "nutrients.quantityDescription" in the parentheses at the bottom of "nutrients.quantity"),
       "end": true,
     },
     "product": {
@@ -909,15 +909,13 @@ export const make_nut_prompt = ({
           "nutrients": [
             {
               "name": string, 
-              "descriptor": string,
-              "nutrient_sub_ingredients": [{
-                "info": string,
-              },...],
+              "descriptor_or_subIngredientList": string,
               "quantityComparisonOperator": string?, value: float?, uom: string, 
-              "quantityDescription": string?,
+              "quantityEquivalent": string?,
               "dailyPercentComparisonOperator": string?, 
               "percentDailyValue": float?,  
               "footnoteIndicator": string?, // value must be choosen from FOOTNOTE_INDICATORS,
+              "intended_level": number, // from 0 to 3
             }
           ],
           "footnote": string
@@ -942,7 +940,7 @@ Some common rules:
 + "nutrients" is an array that usually start with some nutrients such as "Total Carbohydrate", "Sugar", "Vitamin A", ... Let's list nutrient from them first if possible.
 + each "nutrients" is separated by a thin line on nutrition fact panel.
 + "nutrients" and "footnote" are also separated by a line on nutrition fact panel.
-+ Read "Fact Panel" from left to right and from top to bottom.
++ Read "Fact Panel" from left to right and from top to bottom. If the nutrient in vertical layout just start to read with the first nutrient which is at below the header of "Nutrition Facts" or "Supplement Facts".
 + content in prompt can be similar to typescript and nodejs syntax.
 + be careful the last "nutrient row" could be misread to be a part of "footnote". Remember "footnote" content ususally about "Daily value" or "percent daily value" note.
 + do not return json in format [{product: {...}}] since the result is only for one product
@@ -998,24 +996,27 @@ Ex 1: "10g    <10%" = {quantityComparisonOperator: null, dailyPercentComparisonO
 Ex 2: "<10g    10%" = {quantityComparisonOperator: "<", dailyPercentComparisonOperator: null, ...}
 Ex 3: "<10g    <10%" ={quantityComparisonOperator: "<", dailyPercentComparisonOperator: "<", ...}
 
-11) "nutrients.quantityDescription":
-+ is additional text right next to "nutrient.uom" and inside the parentheses, and does not include parentheses.
-Ex 1: "20mcg(800 IU)" = {quantityDescription: "800 IU"}
-Ex 2: "20mcg DFE(800mcg L-5-MTHF) = {quantityDescription: "800mcg L-5-MTHF"}
+11) "nutrients.quantityEquivalent":
++ "nutrients.quantityEquivalent" is usually additional text right next to "nutrient.uom" and inside the parentheses.
++ "nutrients.quantityEquivalent" is sometimes additional text below "nutrient.quantity" to perform equivalent meaning.
+Ex 1: "20mcg(800 IU)" = {quantityEquivalent: "800 IU", ...}
+Ex 2: "20mcg DFE(800mcg L-5-MTHF) = {quantityEquivalent: "800mcg L-5-MTHF", ...}
+Ex 3: Found Content:
+  "20mcg DFE   10%
+(800mcg L-5-MTHF)"
+should be recorded as {quantityEquivalent: "800mcg L-5-MTHF", ...} since the "800mcg L-5-MTHF" is description about amount of L-5-MTHF in "20mcg DFE" of a nutrient.
 
-12) "nutrients.descriptor" rules:
-+ "nutrients.descriptor" is the text inside the parentheses right next to "nutrients.name"
-
-13) "nutrients.nutrient_sub_ingredients" rules:
-+ "nutrients.nutrient_sub_ingredients" is the list of sub-ingredient below nutrient name (nutrient is usually blend, mix, compled, or a complex substance)
-Ex1 :  "Banana, Grape(from juice), Apple" = [{"info": "Banana",...}, {"info": "Grape(from juice)",...}, {"info"": "Apple",...}]
+12) "nutrients.descriptor_or_subIngredientList" rules:
++ "nutrients.descriptor_or_subIngredientList" could be the text inside the parentheses right next to "nutrients.name"
++ "nutrients.descriptor_or_subIngredientList" could be also the text that is intended and appear on the row below a nutrient. (the text is usually the ingredient list of the blend, mixture, a subtance or complex,...)
 
 
 15) "nutrients.name" rule:
 + "nutrients.name" is a name of nutrient sometimes include the text closed inside the parentheses.
 + "nutrients.name" sometimes start with a special symbol or its name is bold and maybe a note just like name of an ingredient
-Ex 1: "Vitamin K2(as Naturally Derived MK-7 [Menaquinone-7)" should be recorded as {"name": "Vitamin K2", "descriptor": "as Naturally Derived MK-7 [Menaquinone-7": ,...}
-Ex 2: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medium Chain Triglyceride (MCT) Oil", ...} 
+Ex 1: "Vitamin K2(as Naturally Derived MK-7 [Menaquinone-7])" should be recorded as {"name": "Vitamin K2", "descriptor_or_subIngredientList": "as Naturally Derived MK-7 [Menaquinone-7]" ,...}
+Ex 2: "Molybdenum(as fermented molybdenum bisglycinate)" should be recorded as {"name": "Molybdenum", "descriptor_or_subIngredientList": "as fermented molybdenum bisglycinate" ,...}
+Ex 3: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medium Chain Triglyceride (MCT) Oil", descriptor_or_subIngredientList: null, ...} 
 
 16) "nutrients.uom" rules:
 + some possible "nutrients.uom" such as "MCG DFE"
@@ -1028,12 +1029,27 @@ Ex 2: "100g    " should be recorded as {"percentDailyValue": null, ...}
 Ex 2: "1g  <1%" should be recorded as {"percentDailyValue": 1, ...}
 
 18) nutrient of "added sugars" rules": 
-Ex 1: 'Includes 7g of Added Sugars' = {"name": "Added Sugars", "value": 7, "uom": "g",...}
+if you see a nutrient text like 'Includes Xg of Added Sugars  10%' this is the nutrient name = "added sugar" and "X" is its "value" and "g" is its "uom".
+and it should be recorded as a nutrient =  {"name": "Added Sugars", "value": 7, "uom": "g", "percentDailyValue": 10,...}
 
 `;
 };
+
+// 13) "nutrients.nutrient_sub_ingredients" rules:
+// + "nutrients.nutrient_sub_ingredients" is the list of sub-ingredient below nutrient name (nutrient is usually blend, mix, compled, or a complex substance)
+// Ex1 :  "Banana, Grape(from juice), Apple" = [{"info": "Banana",...}, {"info": "Grape(from juice)",...}, {"info"": "Apple",...}]
 
 // NAME	QUANTITY	DAILY PERCENT	FOOTNOTE
 // Total Carbohydrate	6g	2%	+
 // Total Sugars	4g		**
 // Includes 4 g Added Sugars
+
+// "nutrient_sub_ingredients": [{
+//   "info": string,
+// },...],
+
+// "answerOfDebug_5": your answer gemini (Why you put content like "(as ...)" beside nutrient name to nutrient_sub_ingredients? They are only considered as "nutrients.descriptor"),
+
+// "answerOfDebug_6": your answer gemini (Why you keep add multiple sub-ingredients into one "nutrient_sub_ingredients.info"? Please record as an array of "nutrient_sub_ingredients" for sub-ingredients those separated by comma?),
+
+// "answerOfDebug_7": your answer gemini (why you do not recognize sub-ingredients? some nutrients with intended ingredients rows below obviously have sub-ingredients, sometimes multiple sub-ingredients could be written in the same row but should be recorded separately.),
