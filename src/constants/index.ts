@@ -902,10 +902,10 @@ export const make_nut_prompt = ({
           "amountPerServing": {"percentDailyValueFor": string?},
           "calories": {"value": float?, "uom": "calories"}
           "servingSize": {
-            "value": number, 
+            "value": string, 
             "uom": string,
             "equivalent": {
-              "value": number, 
+              "value": string, 
               "uom": string,
             }, 
           },
