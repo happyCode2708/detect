@@ -858,6 +858,7 @@ h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 // "answerOfDebug_4": your answer gemini (help me list all nutrients with their quantity and oum, and percent daily value as well as a long string here at this field "answerOfDebug_4". Please combine the given OCR text and what you see to make sure the result is correct),
 // "answerOfDebug_4": your answer gemini (Lis?),
 // "answerOfDebug_4": your answer gemini (what is  "(240 mcg Folic Acid)" in the fact panel?),
+// "answerOfDebug_4": your answer gemini (be careful sometimes you can see the "nutrients.quantityDescription" in the parentheses at the bottom of "nutrients.quantity"),
 
 export const make_nut_prompt = ({
   ocrText,
@@ -868,7 +869,7 @@ export const make_nut_prompt = ({
 }) => {
   return `
   Some common constants:
-  + FOOTNOTE_INDICATORS = ["*", "**", "†", "★★", "★"]
+  + FOOTNOTE_INDICATORS = ["*", "**", "†", "★★", "★", "¥"]
   
   OCR texts from ${imageCount} provided images:
   ${ocrText}
@@ -889,8 +890,8 @@ export const make_nut_prompt = ({
       "answerOfQuestionAboutLanguage": your answer gemini (The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish? The OCR text result could contain spanish so do not provide me those information in spanish),
       "answerOfDebug": your answer gemini (why i see you keep adding spanish to "footnote" field?),
       "answerOfDebug_2": your answer gemini (why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value),
-      "answerOfDebug_3": your answer gemini (why i see you keep removeing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something),
-      "answerOfDebug_4": your answer gemini (be carefull sometimes you can see the "nutrients.quantityDescription" in the parentheses at the bottom of "nutrients.quantity"),
+      "answerOfDebug_3": your answer gemini (why i see you keep removing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something),
+      "answerOfDebug_4": your answer gemini (Are you sure you see percent daily value of Protein is 0%?),
       "end": true,
     },
     "product": {
@@ -901,9 +902,12 @@ export const make_nut_prompt = ({
           "amountPerServing": {"percentDailyValueFor": string?},
           "calories": {"value": float?, "uom": "calories"}
           "servingSize": {
-            "description": string?, 
             "value": number, 
             "uom": string,
+            "equivalent": {
+              "value": number, 
+              "uom": string,
+            }, 
           },
           "servingPerContainer":" {"value": float? or number?, "uom": string},
           "nutrients": [
@@ -959,12 +963,13 @@ and other for 'per container' just if "amoutPerServing.percentDailyValueFor" of 
 + if there is text on image contain "Nutrition Facts" or "Supplement Facts". If not it should be null
 
 6) "nutrients.servingSize":
-+ if "nutrients.servingSize" content contains the parentheses so "servingSize" format = servingSize.description + "("+ servingSize.value + servingSize.uom ")" 
-+ else "nutrients.servingSize" format = servingSize.value + servingSize.uom
-Ex 1: "10 tablespoons(80g)" = {servingSize: {"description": "10 tablespoons", "value": 80, "uom": "g"}}
++ is info about serving size on nutrition fact panel. if serving size info have the parentheses the "servingsize.value" and "servingSize.uom" will be between the parentheses
+Ex 1: "10 tablespoons(80g)" = {servingSize: { "value": 10, "uom": "tablespoons", equivalent: {"value": 80, "uom": "g"}}}
 Ex 2: "10 tablespoons" = {servingSize: {"value": 10, "uom": "tablespoons"}}
-Ex 3: "10 bars(200g)" = {servingSize: {"description": "10 bars", "value": 200, "uom": "g"}}
-Ex 4: "10 cups(10 ml)" = {servingSize: {"description": "10 cups", "value": 10, "uom": "ml"}}
+Ex 3: "10 bars(200g)" = {servingSize: { "value": 10, "uom": "bars"}, equivalent: {"value": 200, "uom": "g"}}
+Ex 4: "10 cups(10 ml)" = {servingSize: {"value": 10, "uom": "cups"}, equivalent: {"value": 10, "uom": "ml"}}
+Ex 5: "1 cup(4 fl oz/120ml)" = {servingSize: {"value": 1, "uom": "cup"}, equivalent: {"value": 4, "uom": "fl oz"}}
+Ex 6: "3 tbsp(60ml)" = {servingSize: {"value": 3, "uom": "tbsp"}, equivalent: {"value": 60, "uom": "ml"}}
 
 7) "footnote":
 + "footnote" must be the last part of fact panel (the note may contain some special characters from FOOTNOTE_INDICATORS),

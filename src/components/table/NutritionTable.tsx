@@ -27,14 +27,23 @@ const NutritionTable = ({ data }: { data: any }) => {
         <span>
           {data?.servingSize?.value}
           {data?.servingSize?.uom !== null && (
-            <span> {data?.servingSize?.uom}</span>
+            <>
+              <span> {data?.servingSize?.uom}</span>
+            </>
           )}
         </span>
+        {data?.servingSize?.equivalent && (
+          <>
+            <span> __ </span>
+            <span>{data?.servingSize?.equivalent?.value}</span>
+            <span>{data?.servingSize?.equivalent?.uom}</span>
+          </>
+        )}
       </div>
-      {data?.amountPerServing && (
+      {data?.amountPerServing?.percentDailyValueFor && (
         <div>
           <span className='font-bold'>Amout Per Serving:</span>
-          <span>{data?.amountPerServing?.name} </span>
+          <span>{data?.amountPerServing?.percentDailyValueFor} </span>
         </div>
       )}
       <div>
