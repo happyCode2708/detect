@@ -1,5 +1,4 @@
 import vision, { ImageAnnotatorClient } from '@google-cloud/vision';
-import { makePrompt, make_nut_prompt } from '../constants';
 const { execFile } = require('child_process');
 
 export const getOcrText = async (
@@ -86,7 +85,9 @@ export const findImagesContainNutFact = async (filePaths: string[]) => {
 
   let validateImages: any = {
     nutIncluded: [],
+    nutIncludedIdx: [],
     nutExcluded: [],
+    nutExcludedIdx: [],
   };
 
   detects.forEach((isNutFactFound, idx) => {
@@ -95,13 +96,22 @@ export const findImagesContainNutFact = async (filePaths: string[]) => {
         ...validateImages.nutIncluded,
         filePaths[idx],
       ];
+      validateImages.nutIncludedIdx = [...validateImages.nutIncludedIdx, idx];
     } else {
       validateImages.nutExcluded = [
         ...validateImages.nutExcluded,
         filePaths[idx],
       ];
+      validateImages.nutExcludedIdx = [...validateImages.nutExcludedIdx, idx];
     }
   });
 
   return validateImages;
+};
+
+export const addUniqueString = (array: string[], item: string) => {
+  if (!array.includes(item)) {
+    array.push(item);
+  }
+  return array;
 };

@@ -1,5 +1,11 @@
 {
-  "watch": ["server.ts", "src/router/*", "src/utils/*", "src/constants/*"],
+  "watch": [
+    "server.ts",
+    "src/router/*",
+    "src/utils/*",
+    "src/constants/*",
+    "src/lib/*"
+  ],
   "exec": "ts-node --project tsconfig.server.json src/server.ts -- -I",
   "ext": "js ts",
   "stdin": false

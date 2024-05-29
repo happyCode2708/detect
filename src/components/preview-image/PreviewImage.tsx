@@ -7,6 +7,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 export const PreviewImage = (props: {
   visible: boolean;
@@ -27,7 +35,7 @@ export const PreviewImage = (props: {
       {/* <DialogTrigger asChild>
         <Button variant='outline'>Edit Profile</Button>
       </DialogTrigger> */}
-      <DialogContent className='w-[1000px] h-[700px] max-h-screen overflow-hidden'>
+      <DialogContent className='w-[1000px] max-h-screen h-screen overflow-hidden flex flex-col'>
         <div className='flex-1 flex items-center justify-center relative overflow-hidden p-[10px]'>
           {src && (
             <img
@@ -36,9 +44,9 @@ export const PreviewImage = (props: {
             />
           )}
         </div>
-        {/* <DialogFooter>
-        <Button type='submit'>Close</Button>
-      </DialogFooter> */}
+        <DialogFooter className='h-[50px]'>
+          <Button type='submit'>Close</Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

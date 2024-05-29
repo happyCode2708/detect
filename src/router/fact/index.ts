@@ -2,6 +2,7 @@ import express from 'express';
 import fs from 'fs';
 import { resultsDir, historyDir } from '../../server';
 import path from 'path';
+import { writeJsonToFile } from '../../utils';
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ router.get('/get-result/:sessionId', async (req, res) => {
   }
 
   // Construct the full file path
-  const filePath = path.join(resultsDir + `/${sessionId}`, sessionId);
+  // const filePath = path.join(resultsDir + `/${sessionId}`, sessionId);
   const allFilePath = path.join(
     resultsDir + `/${sessionId}`,
     'all-' + sessionId + '.json'
@@ -45,22 +46,29 @@ router.get('/get-result/:sessionId', async (req, res) => {
       ...nutRes,
       product: {
         ...allRes.product,
-        factPanels: nutRes.product.factPanels,
+        factPanels: transformFactPanels(nutRes.product.factPanels),
       },
     };
 
-    removeFieldByPath(response, 'answerOfQuestion');
-    removeFieldByPath(response, 'answerOfRemindQuestion');
-    removeFieldByPath(response, 'answerOfFoundBug');
-    removeFieldByPath(response, 'answerOfFoundBug');
-    removeFieldByPath(response, 'product.certifierAndLogo');
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      'validated-output-' + sessionId + '.json',
+      JSON.stringify(response)
+    );
+
+    // removeFieldByPath(response, 'answerOfQuestion');
+    // removeFieldByPath(response, 'answerOfRemindQuestion');
+    // removeFieldByPath(response, 'answerOfFoundBug');
+    // removeFieldByPath(response, 'answerOfFoundBug');
+    removeFieldByPath(response, 'product.is_product_supplement');
     removeFieldByPath(response, 'product.readAllConstants');
-    removeFieldByPath(response, 'answerOfQuestionsAboutNutritionFact');
-    removeFieldByPath(response, 'answerOfQuestionAboutNutritionFactTitle');
-    removeFieldByPath(response, 'answerOfQuestionAboutValidator');
-    removeFieldByPath(response, 'answerOfQuestionAboutLanguage');
-    removeFieldByPath(response, 'answerOfDebug');
-    removeFieldByPath(response, 'answerOfDebug_2');
+    removeFieldByPath(response, 'product.certifierAndLogo');
+    // removeFieldByPath(response, 'answerOfQuestionsAboutNutritionFact');
+    // removeFieldByPath(response, 'answerOfQuestionAboutNutritionFactTitle');
+    // removeFieldByPath(response, 'answerOfQuestionAboutValidator');
+    // removeFieldByPath(response, 'answerOfQuestionAboutLanguage');
+    // removeFieldByPath(response, 'answerOfDebug');
+    removeFieldByPath(response, 'validatorAndFixBug');
 
     res.json(response);
   } catch (error) {
@@ -115,4 +123,43 @@ const combineResult = (result: any) => {
   }
 
   return false;
+};
+
+const transformFactPanels = (factPanels: any) => {
+  if (!factPanels) return factPanels;
+
+  let cloneFactPanels = [...factPanels];
+
+  cloneFactPanels = cloneFactPanels.map((factPanelItem: any) => {
+    return transformOneFactPanel(factPanelItem);
+  });
+
+  return cloneFactPanels;
+};
+
+const transformOneFactPanel = (factPanelItem: any) => {
+  let cloneFactPanelItem = { ...factPanelItem };
+
+  cloneFactPanelItem.nutrients = cloneFactPanelItem.nutrients.map(
+    (nutrientItem: any) => {
+      let modifiedNutrient = { ...nutrientItem };
+
+      const logicExtractedDescriptor = getDescriptor(nutrientItem?.name);
+      if (logicExtractedDescriptor && !nutrientItem?.['descriptor']) {
+        modifiedNutrient['descriptor'] = logicExtractedDescriptor;
+        modifiedNutrient['name'] = modifiedNutrient['name']?.split(
+          logicExtractedDescriptor
+        )?.[0];
+      }
+
+      return modifiedNutrient;
+    }
+  );
+  return cloneFactPanelItem;
+};
+
+const getDescriptor = (nutrientName: string) => {
+  const pattern = /(\s*\([^()]*\))+$/;
+  const match = nutrientName.match(pattern);
+  return match ? match[0] : null;
 };

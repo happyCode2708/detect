@@ -27,14 +27,23 @@ const NutritionTable = ({ data }: { data: any }) => {
         <span>
           {data?.servingSize?.value}
           {data?.servingSize?.uom !== null && (
-            <span> {data?.servingSize?.uom}</span>
+            <>
+              <span> {data?.servingSize?.uom}</span>
+            </>
           )}
         </span>
+        {data?.servingSize?.equivalent && (
+          <>
+            <span> __ </span>
+            <span>{data?.servingSize?.equivalent?.value}</span>
+            <span>{data?.servingSize?.equivalent?.uom}</span>
+          </>
+        )}
       </div>
-      {data?.amountPerServing && (
+      {data?.amountPerServing?.percentDailyValueFor && (
         <div>
           <span className='font-bold'>Amout Per Serving:</span>
-          <span>{data?.amountPerServing?.name} </span>
+          <span>{data?.amountPerServing?.percentDailyValueFor} </span>
         </div>
       )}
       <div>
@@ -46,8 +55,8 @@ const NutritionTable = ({ data }: { data: any }) => {
         <TableHeader>
           <TableRow>
             <TableHead>NAME</TableHead>
+            <TableHead>ANCILARRRY INFO</TableHead>
             <TableHead>QUANTITY</TableHead>
-            {/* <TableHead>UOM</TableHead> */}
             <TableHead>DAILY PERCENT</TableHead>
             <TableHead>FOOTNOTE</TableHead>
           </TableRow>
@@ -56,11 +65,24 @@ const NutritionTable = ({ data }: { data: any }) => {
           {data.nutrients.map((nutrient: any, index: number) => {
             return (
               <>
-                <TableRow key={index}>
+                <TableRow>
                   <TableCell>
-                    <span>{nutrient.name}</span>
+                    <div>{nutrient.name}</div>
+                  </TableCell>
+                  <TableCell>
                     {nutrient?.descriptor && (
-                      <span>({nutrient?.descriptor})</span>
+                      <div className='mt-6'>
+                        <div className='pl-[8px]'>{nutrient?.descriptor}</div>
+                      </div>
+                    )}
+                    {nutrient?.contain_sub_ingredients?.length > 0 && (
+                      <div className='mt-6'>
+                        <div className='pl-[8px]'>
+                          {nutrient?.contain_sub_ingredients
+                            ?.map((item: any) => item?.full_name)
+                            ?.join(', ')}
+                        </div>
+                      </div>
                     )}
                   </TableCell>
                   <TableCell key={index}>
@@ -70,8 +92,8 @@ const NutritionTable = ({ data }: { data: any }) => {
                     {nutrient?.value}
                     {nutrient?.uom ?? <span>{nutrient?.uom}</span>}
                     {![null, undefined].includes(
-                      nutrient?.quantityDescription
-                    ) && <span>({nutrient?.quantityDescription})</span>}
+                      nutrient?.quantityEquivalent
+                    ) && <span>({nutrient?.quantityEquivalent})</span>}
                   </TableCell>
                   <TableCell>
                     {![null, undefined].includes(
@@ -87,10 +109,33 @@ const NutritionTable = ({ data }: { data: any }) => {
                     )}
                   </TableCell>
                 </TableRow>
+
+                {/* {nutrient?.nutrient_sub_ingredients?.map(
+                  (subIngredient: any, idx: number) => {
+                    return (
+                      <TableRow
+                        className={
+                          idx === nutrient?.nutrient_sub_ingredients?.length - 1
+                            ? ''
+                            : 'border-none'
+                        }
+                      >
+                        <TableCell className='pl-10'>
+                          {subIngredient?.info}
+                        </TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                        <TableCell>
+                          {subIngredient?.sub_ingredients_footNoteIndicator}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  }
+                )} */}
               </>
             );
           })}
-          {data.dietaryIngredients?.length > 0 && (
+          {/* {data.dietaryIngredients?.length > 0 && (
             <>
               <TableRow>
                 <TableCell
@@ -151,12 +196,12 @@ const NutritionTable = ({ data }: { data: any }) => {
                 );
               })}
             </>
-          )}
+          )} */}
         </TableBody>
       </Table>
       <div>
         <div className='font-bold'>Footnote: </div>
-        <p>{data?.footnote?.value} </p>
+        <p>{data?.footnote} </p>
       </div>
     </div>
   );

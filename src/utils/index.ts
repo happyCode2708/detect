@@ -272,11 +272,17 @@ export const onProcessGemini = async ({
     const testParse = JSON.parse(procResult);
     writeJsonToFile(resultsDir + `/${sessionId}`, resultFileName, procResult);
   } catch (e) {
+    // writeJsonToFile(
+    //   resultsDir + `/${sessionId}`,
+    //   errorFileName,
+    //   JSON.stringify({ isSuccess: false })
+    // );
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
       resultFileName,
       JSON.stringify({ isSuccess: false })
     );
+
     console.log('some thing went wrong', e);
   }
 };

@@ -13,12 +13,20 @@ import { PreviewImage } from '@/components/preview-image/PreviewImage';
 import { ViewListImage } from '@/components/preview-image/ViewListImage';
 import { useToast } from '@/components/ui/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { isEqual } from 'lodash';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export default function Home() {
   const [files, setFiles] = useState<any>([]);
   const [productInfo, setProductInfo] = useState(null);
   const [inputImages, setInputImages] = useState<any>([]);
   const [procImages, setProcImages] = useState<any>([]);
+  const [biasForm, setBiasForm] = useState<any>({});
+  const [outputConfig, setOutputConfig] = useState<any>({
+    nut: true,
+    other: true,
+  });
 
   const [resultFileName, setResultFileName] = useState<any>();
   const [sessionId, setSessionId] = useState<any>();
@@ -42,6 +50,8 @@ export default function Home() {
     files.forEach((file: any) => {
       formData.append('file', file);
     });
+    formData.append('biasForm', JSON.stringify(biasForm));
+    formData.append('outputConfig', JSON.stringify(outputConfig));
 
     setLoading(true);
     setProductInfo(null);
@@ -51,9 +61,30 @@ export default function Home() {
         console.log(e);
       },
       onSuccess: (res) => {
-        const { sessionId, images } = res;
+        const { sessionId, images, messages } = res;
         if (images?.length > 0) {
           setProcImages(images);
+        }
+
+        if (
+          messages?.length > 0 &&
+          !!messages.find((item: string | null) => item !== null)
+        ) {
+          toast({
+            title: 'Info',
+            description: (
+              <div>
+                {messages?.map((messageItem: string | null) => {
+                  if (messageItem) {
+                    return <div className='mb-2'>{messageItem} </div>;
+                  }
+                  return null;
+                })}
+              </div>
+            ),
+            variant: 'destructive',
+            duration: 7000,
+          });
         }
         setSessionId(sessionId);
         queryClient.invalidateQueries({ queryKey: ['history'] });
@@ -84,10 +115,10 @@ export default function Home() {
 
     const files = Array.from(event.target.files);
     setFiles(files);
+    setBiasForm({});
+    if (files.length === 0) return;
     const fileReaders = [];
     let fileDataUrls: any = [];
-
-    if (files.length === 0) return;
 
     files.forEach((file) => {
       const fileReader = new FileReader();
@@ -106,6 +137,22 @@ export default function Home() {
       };
 
       fileReader.readAsDataURL(file);
+    });
+  };
+
+  const onSelectBias = (imgIdx: number, updateFormState: any) => {
+    setBiasForm((prev: any) => {
+      let newBiasForm = { ...prev };
+
+      newBiasForm = {
+        ...newBiasForm,
+        [imgIdx]: {
+          ...(newBiasForm?.[imgIdx] || {}),
+          ...updateFormState,
+        },
+      };
+
+      return newBiasForm;
     });
   };
 
@@ -167,9 +214,31 @@ export default function Home() {
 
   return (
     <FluidContainer>
-      <div className='flex flex-col gap-10 p-10'>
-        <div className='flex flex-row items-center w-full gap-2'>
-          <div className='rounded-md p-4 border flex flex-row gap-2 flex-1'>
+      <div className='flex flex-col gap-4 p-10'>
+        <SectionWrapper title='Output Config'>
+          <div className='flex flex-row gap-4'>
+            <div className='flex flex-row gap-2'>
+              <Label className='col-span-3'> Nutrition/Supplement Facts </Label>
+              <Checkbox
+                checked={outputConfig?.nut}
+                onCheckedChange={(checked: boolean) => {
+                  setOutputConfig((prev: any) => ({ ...prev, nut: checked }));
+                }}
+              />
+            </div>
+            <div className='flex flex-row gap-2'>
+              <Label className='col-span-3'>Other </Label>
+              <Checkbox
+                checked={outputConfig?.other}
+                onCheckedChange={(checked: boolean) => {
+                  setOutputConfig((prev: any) => ({ ...prev, other: checked }));
+                }}
+              />
+            </div>
+          </div>
+        </SectionWrapper>
+        <SectionWrapper title='input image'>
+          <div className='flex flex-row gap-2 flex-1'>
             <Input
               ref={refInput}
               type='file'
@@ -180,26 +249,26 @@ export default function Home() {
             <Button variant='destructive' onClick={onClearFile}>
               Clear
             </Button>
-          </div>
-          <Button
-            disabled={loading || files?.length <= 0}
-            onClick={handleSubmit}
-          >
-            {loading ? (
-              <div className='flex flex-row items-center'>
-                <RefreshCcw className='mr-1 animate-spin' />
-                <span>Processing</span>
-              </div>
-            ) : (
-              'Extract'
-            )}
-          </Button>
-          {loading && (
-            <Button variant='secondary' onClick={onCancel}>
-              Cancel
+            <Button
+              disabled={loading || files?.length <= 0}
+              onClick={handleSubmit}
+            >
+              {loading ? (
+                <div className='flex flex-row items-center'>
+                  <RefreshCcw className='mr-1 animate-spin' />
+                  <span>Processing</span>
+                </div>
+              ) : (
+                'Extract'
+              )}
             </Button>
-          )}
-        </div>
+            {loading && (
+              <Button variant='secondary' onClick={onCancel}>
+                Cancel
+              </Button>
+            )}
+          </div>
+        </SectionWrapper>
 
         {/* <ExtractionHistory /> */}
 
@@ -207,12 +276,52 @@ export default function Home() {
           <div>
             {inputImages?.length > 0 && (
               <SectionWrapper title='Input Images'>
-                <ViewListImage images={inputImages} />
+                <ViewListImage
+                  images={inputImages}
+                  onSelectBias={onSelectBias}
+                  biasForm={biasForm}
+                />
               </SectionWrapper>
             )}
             {procImages?.length > 0 && (
               <SectionWrapper title='Processed Images'>
-                <ViewListImage images={procImages} />
+                <ViewListImage
+                  images={procImages}
+                  onSelectBias={onSelectBias}
+                  biasForm={biasForm}
+                />
+              </SectionWrapper>
+            )}
+            {!isEqual(biasForm, {}) && (
+              <SectionWrapper title='Bias Configuration'>
+                {Object.entries(biasForm).map(
+                  (biasImage: [key: string, value: any]) => {
+                    const [key, value] = biasImage;
+
+                    const isShow = value?.haveNutFact === true;
+
+                    if (isShow === false) return null;
+
+                    return (
+                      <div className='flex flex-row mb-2'>
+                        <div className='w-[100px] h-[100px] border rounded-sm p-2 flex items-center justify-center relative'>
+                          <img
+                            src={inputImages[key]}
+                            className='max-w-full max-h-full object-contain object-center'
+                          />
+                        </div>
+                        <div className='p-2'>
+                          {value?.haveNutFact === true && (
+                            <div className='space-x-2 flex flex-row align-middle'>
+                              <Checkbox checked={true}></Checkbox>
+                              <Label>Nut/Supple Facts</Label>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  }
+                )}
               </SectionWrapper>
             )}
           </div>
@@ -257,7 +366,7 @@ const SectionWrapper = ({
 }) => {
   return (
     <div className='pt-6 relative'>
-      <div className='border rounded-md p-[10px] pt-[20px]'>
+      <div className='border rounded-md px-[10px] py-[20px]'>
         {title && (
           <div className='font-bold border rounded-lg px-[8px] py-[2px] absolute top-[8px] lef-[35px] bg-white'>
             {title}
@@ -267,746 +376,4 @@ const SectionWrapper = ({
       </div>
     </div>
   );
-};
-
-const test = {
-  answerOfQuestionsAboutNutritionFact:
-    'No, I do not see the whole nutrition fact panel on the provided image. The image provided does not show the entire panel, making it difficult to gather all the necessary details.',
-  answerOfQuestionAboutNutritionFactTitle:
-    "No, I do not see a fully visible 'Supplement Fact' or 'Nutrition Fact' title on the provided image.",
-  answerOfQuestion:
-    'I will only provide information that is visibly seen on the provided image. I will not include information that is not observable.',
-  answerOfRemindQuestion:
-    'I will only provide information in English and will exclude any information in Spanish or other languages.',
-  answerOfusingEnum:
-    'I will ensure that the values added to the fields are from the provided enums. If a value is not from the enum, it will be considered invalid and will not be added.',
-  product: {
-    certifierAndLogo: 'kosher U pareve, USDA organic',
-    readAllConstants:
-      'Yes, I have read all the constants carefully and will use them to create the JSON output.',
-    factPanels: [
-      {
-        panelName: 'Nutrition Facts',
-        amountPerServing: { name: 'Amount per serving' },
-        calories: { value: 100, uom: 'calories' },
-        servingSize: { description: 'Serving Size', value: '1', uom: 'cup' },
-        servingPerContainer: { value: 4, uom: 'servings' },
-        nutrients: [
-          {
-            name: 'Total Fat',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0.5,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 1,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Sodium',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 10,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 0,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Total Carbohydrate',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 22,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 8,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Protein',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 2,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 4,
-            footnoteIndicator: null,
-          },
-        ],
-        footnote: {
-          value: '* Percent Daily Values are based on a 2,000 calorie diet.',
-        },
-      },
-    ],
-    ingredientsGroup: [
-      {
-        ingredients: [
-          'whole grain oats',
-          'sugar',
-          'corn starch',
-          'salt',
-          'tripotassium phosphate',
-          'wheat starch',
-          'vitamin E',
-        ],
-      },
-    ],
-    allergen: {
-      contain: ['oats', 'wheat'],
-      containOnEquipment: {
-        statement: 'Processed in a facility that also processes peanuts.',
-        allergenList: ['peanuts'],
-      },
-      freeOf: [
-        'crustacean shellfish',
-        'dairy',
-        'egg',
-        'fish',
-        'milk',
-        'peanuts / peanut oil',
-        'phenylalanine',
-        'sesame',
-        'soy / soybeans',
-        'tree nuts',
-      ],
-    },
-    header: {
-      productName: 'Oat Cereal',
-      brandName: 'Healthy Brand',
-      primarySize: {
-        primarySizeValue: '12',
-        primarySizeUom: 'oz',
-        primarySizeText: '12 oz',
-      },
-      secondarySize: {
-        secondarySizeValue: '340',
-        secondarySizeUom: 'g',
-        secondarySizeText: '340g',
-      },
-      thirdSize: {
-        thirdSizeValue: null,
-        thirdSizeUom: null,
-        thirdSizeText: null,
-      },
-      sizeTextDescription: 'Net Wt. 12 oz (340g)',
-      count: 1,
-    },
-    packaging: {
-      containerMaterialType: 'cardboard',
-      containerType: 'box',
-      recyclingAdvice: ['recyclable'],
-      forestStewardshipCouncilClaim: false,
-      packaging_ancillaryInformation: [],
-    },
-    attributesAndCertifiers: {
-      claims: {
-        beeFriendly: {
-          beeFriendly_Certifier: null,
-          beeFriendly_claim: false,
-        },
-        bioBased: {
-          bioBased_certifier: null,
-          bioBased_claim: false,
-        },
-        bioDynamic: {
-          bioDynamic_certifier: null,
-          bioDynamic_claim: false,
-        },
-        gmp: {
-          gmp_certifier: null,
-          gmp_claim: false,
-        },
-        glutenFree: {
-          glutenFree_certifier: null,
-          glutenFree_claim: false,
-        },
-        italCertifiedSeal: {
-          italCertifiedSeal_certifier: null,
-          italCertifiedSeal_claim: false,
-        },
-        italCertifiedConsious: {
-          italCertifiedConsious_certifier: null,
-          italCertifiedConsious_claim: false,
-        },
-        kosher: {
-          kosher_certifier: 'Kosher U',
-          kosher_claim: true,
-        },
-        liveAndActiveCulture: {
-          liveAndActiveCulture_certifier: null,
-          liveAndActiveCulture_claim: false,
-        },
-        lowGlycemic: {
-          lowGlycemic_certifier: null,
-          lowGlycemic_claim: false,
-        },
-        npa: {
-          npa_certifier: null,
-          npa_claim: false,
-        },
-        newYorkStateGrownAndCertified: {
-          newYorkStateGrownAndCertified_certifier: null,
-          newYorkStateGrownAndCertified_claim: false,
-        },
-        nonGmo: {
-          nonGmo_certifier: null,
-          nonGmo_claim: false,
-        },
-        organic: {
-          organic_Certifier: 'USDA',
-          organic_claim: true,
-        },
-        glyphosateResidueFree: {
-          glyphosateResidueFree_certifier: null,
-          glyphosateResidueFree_claim: false,
-        },
-        vegan: {
-          vegan_certifier: null,
-          vegan_claim: false,
-        },
-        plantBasedOrPlantDerived: {
-          plantBasedOrPlantDerived_certifier: null,
-          plantBasedOrPlantDerived_claim: false,
-        },
-      },
-      containInfo: {
-        attribute_contain: ['natural ingredients', 'whole grain oats'],
-        attribute_doesNotContain: ['artificial colors', 'artificial flavors'],
-      },
-      otherClaims: {
-        fatContentClaims: ['low fat'],
-        saltOrSodiumClaims: ['low sodium'],
-        sugarAndSweetenerClaims: ['no added sugar'],
-        highOrRichInOrExcellentSourceOf: ['rich in fiber'],
-        usdaInspectionMark: 'USDA organic',
-      },
-    },
-    physical: {
-      upc12: '123456789012',
-    },
-    marketingAll: {
-      marketingContents: [
-        'Made with whole grain oats',
-        'Good source of fiber',
-        'No artificial colors or flavors',
-      ],
-      copyrightOrTradeMark: '© 2024 Healthy Brand',
-      slogan: 'Healthy and Delicious',
-      website: 'www.healthybrand.com',
-      socialMedia: {
-        socialList: ['facebook', 'twitter', 'instagram'],
-        socialMediaText: ['@healthybrand'],
-      },
-      enlaredToShow: false,
-    },
-    supplyChain: {
-      CountryOfOrigin: 'USA',
-      manufactureDate: '2024-01-01',
-      manufacturePhoneNumber: '1234567890',
-      manufactureStreetAddress: '123 Healthy Way',
-      manufactureCity: 'Healthville',
-      manufactureState: 'CA',
-      manufactureZipcode: '12345',
-      manufactureName: 'Healthy Brand Inc.',
-    },
-    instructions: {
-      consumerStorageInstructions: ['Store in a cool, dry place'],
-      otherInstruction: ['Do not freeze'],
-      cookingInstructions: ['Add milk and enjoy'],
-      usageInstructions: ['Perfect for breakfast'],
-    },
-  },
-};
-
-const check = {
-  answerOfQuestionsAboutNutritionFact:
-    'I see the whole nutrition fact panel on the provided image.',
-  answerOfQuestionAboutNutritionFactTitle:
-    'I see the "Nutrition Facts" title on the provided image.',
-  answerOfQuestionAboutValidator:
-    'I apologize for the errors in my previous responses. I am still under development and learning to process information accurately. I will try my best to provide information based only on the image and the OCR text.',
-  answerOfQuestionAboutLanguage:
-    'I understand. I will only provide information in English from now on.',
-  answerOfDebug:
-    'I apologize for including Spanish in the "footnote.value" field. I am still learning to differentiate languages accurately.',
-  answerOfDebug2:
-    'I apologize, I cannot see the percent daily value of trans fat on the provided image.',
-  product: {
-    readAllConstants:
-      'I have read all the constants you provided. I understand their importance in creating the JSON output.',
-    factPanels: [
-      {
-        panelName: 'Nutrition Facts',
-        amountPerServing: {
-          name: 'Per 1 oz/28g',
-        },
-        calories: {
-          value: 70,
-          uom: 'calories',
-        },
-        servingSize: {
-          description: '1 package',
-          value: '57',
-          uom: 'g',
-        },
-        servingPerContainer: {
-          value: null,
-          uom: null,
-        },
-        nutrients: [
-          {
-            name: 'Total Fat',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 2.5,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 3,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Saturated Fat',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 0,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Trans Fat',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 0,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Cholesterol',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 0,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Sodium',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 330,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 14,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Total Carb.',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 14,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 5,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Dietary Fiber',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 1,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 4,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Total Sugars',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 8,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: null,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Incl. Added Sugars',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 6,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 12,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Protein',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 3,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: null,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Vitamin D',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0.1,
-            uom: 'mcg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 0,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Calcium',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 30,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 2,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Iron',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0.7,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 4,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Potassium',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 460,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 10,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Thiamin',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0.12,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 10,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Riboflavin (Vitamin B₂)',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0.55,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 40,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Niacin (Vitamin B₃)',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 4.7,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 30,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Vitamin B₆',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0.12,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 8,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Vitamin B₁₂',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0.09,
-            uom: 'mcg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 4,
-            footnoteIndicator: null,
-          },
-        ],
-        footnote: {
-          value:
-            '*The % Daily Value (DV) tells you how much a nutrient in a serving\nof food contributes to a daily diet. 2,000 calories a day is used for\ngeneral nutrition advice.',
-        },
-      },
-      {
-        panelName: 'Nutrition Facts',
-        amountPerServing: {
-          name: 'Per container',
-        },
-        calories: {
-          value: 150,
-          uom: 'calories',
-        },
-        servingSize: {
-          description: '1 package',
-          value: '57',
-          uom: 'g',
-        },
-        servingPerContainer: {
-          value: null,
-          uom: null,
-        },
-        nutrients: [
-          {
-            name: 'Total Fat',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 5,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 6,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Saturated Fat',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 0,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Trans Fat',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 0,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Cholesterol',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 0,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Sodium',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 660,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 29,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Total Carb.',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 29,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 11,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Dietary Fiber',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 2,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 7,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Total Sugars',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 16,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: null,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Incl. Added Sugars',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 12,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 24,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Protein',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 6,
-            uom: 'g',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: null,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Vitamin D',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0.2,
-            uom: 'mcg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 2,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Calcium',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 60,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 4,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Iron',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 1.5,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 8,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Potassium',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 940,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 20,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Thiamin',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0.24,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 20,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Riboflavin (Vitamin B₂)',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 1.11,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 90,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Niacin (Vitamin B₃)',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 9.5,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 60,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Vitamin B₆',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0.24,
-            uom: 'mg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 15,
-            footnoteIndicator: null,
-          },
-          {
-            name: 'Vitamin B₁₂',
-            descriptor: null,
-            quantityComparisonOperator: null,
-            value: 0.19,
-            uom: 'mcg',
-            quantityDescription: null,
-            dailyPercentComparisonOperator: null,
-            percentDailyValue: 8,
-            footnoteIndicator: null,
-          },
-        ],
-        footnote: {
-          value:
-            '*The % Daily Value (DV) tells you how much a nutrient in a serving\nof food contributes to a daily diet. 2,000 calories a day is used for\ngeneral nutrition advice.',
-        },
-      },
-    ],
-  },
 };
