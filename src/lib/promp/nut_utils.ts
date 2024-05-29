@@ -57,6 +57,7 @@ export const make_nut_prompt = ({
     },
     "product": {
       "readAllConstants": your answer gemini (please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?),
+      "content_in_spanish_must_be_prohibited": true,
       "factPanels":null or [
         {
           "panelName": string ,
