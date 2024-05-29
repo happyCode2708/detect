@@ -7,6 +7,7 @@ import {
   onProcessGemini,
   createCollage,
   encodeImageToBase64,
+  writeJsonToFile,
 } from '../../utils';
 import {
   getOcrText,
@@ -15,7 +16,10 @@ import {
   addUniqueString,
 } from '../../lib/server_utils';
 import { uploadsDir, pythonPath } from '../../server';
-import { makePrompt, make_nut_prompt } from '../../constants';
+import { makePrompt } from '../../lib/promp/all_utils';
+import { make_nut_prompt } from '../../lib/promp/nut_utils';
+import { resultsDir } from '../../server';
+
 // import { NEW_PROMPT, ORIGINAL_PROMPT } from './constants';
 // import OpenAI from 'openai';
 
@@ -69,13 +73,13 @@ router.post(
     const files = req.files as Express.Multer.File[];
 
     const filePaths = files?.map((file: any) => file.path);
-    const fileNames = files?.map((file: any) => file.filename);
+    // const fileNames = files?.map((file: any) => file.filename);
 
-    const isSingleFileUpload = filePaths?.length === 1;
+    // const isSingleFileUpload = filePaths?.length === 1;
 
     const collateImageName = `${sessionId}.jpeg`;
 
-    const collatedOuputPath = path.join(uploadsDir, collateImageName);
+    // const collatedOuputPath = path.join(uploadsDir, collateImageName);
     // const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
 
     // const ocrText = await getOcrText(filePaths[0]);
@@ -83,6 +87,7 @@ router.post(
     console.log('filePath', JSON.stringify(filePaths));
 
     const biasForm = JSON.parse(req.body?.biasForm);
+    const outputConfig = JSON.parse(req.body?.outputConfig);
 
     let invalidatedInput = await findImagesContainNutFact(filePaths);
 
@@ -103,20 +108,6 @@ router.post(
 
     console.log('result', JSON.stringify(invalidatedInput));
 
-    const nutImagesOCRresult = await getOcrTextAllImages(
-      invalidatedInput.nutIncluded
-    );
-
-    const nutText = nutImagesOCRresult.reduce(
-      (accumulator: any, currentValue: any, idx: number) => {
-        return {
-          ...accumulator,
-          [`ocrImage_${idx}`]: currentValue,
-        };
-      },
-      {}
-    );
-
     res.json({
       sessionId,
       images: [],
@@ -128,31 +119,23 @@ router.post(
       ],
     });
 
-    onProcessGemini({
+    onProcessNut({
       req,
       res,
+      invalidatedInput,
       sessionId,
       collateImageName,
-      collatedOuputPath: invalidatedInput.nutIncluded,
-      prompt: make_nut_prompt({
-        ocrText: JSON.stringify(nutText),
-        imageCount: invalidatedInput.nutIncluded?.length,
-      }),
-      prefix: 'nut',
+      outputConfig,
     });
 
-    // onProcessGemini({
-    //   req,
-    //   res,
-    //   sessionId,
-    //   collateImageName,
-    //   collatedOuputPath: [
-    //     ...invalidatedInput.nutIncluded,
-    //     ...invalidatedInput.nutExcluded,
-    //   ],
-    //   prompt: makePrompt({}),
-    //   prefix: 'all',
-    // });
+    onProcessOther({
+      req,
+      res,
+      invalidatedInput,
+      sessionId,
+      collateImageName,
+      outputConfig,
+    });
 
     return;
 
@@ -263,5 +246,97 @@ router.post(
 //     res.status(500).send('Failed to generate text');
 //   }
 // });
+
+const onProcessNut = async ({
+  req,
+  res,
+  invalidatedInput,
+  sessionId,
+  collateImageName,
+  outputConfig,
+}: {
+  req: any;
+  res: any;
+  invalidatedInput: any;
+  sessionId: string;
+  collateImageName: string;
+  outputConfig: any;
+}) => {
+  if (invalidatedInput?.nutIncluded?.length === 0 || !outputConfig.nut) {
+    const resultFileName = 'nut-' + sessionId + '.json';
+
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      resultFileName,
+      JSON.stringify({ product: { factPanel: [] } })
+    );
+    return;
+  }
+
+  const nutImagesOCRresult = await getOcrTextAllImages(
+    invalidatedInput.nutIncluded
+  );
+  const nutText = nutImagesOCRresult.reduce(
+    (accumulator: any, currentValue: any, idx: number) => {
+      return {
+        ...accumulator,
+        [`ocrImage_${idx}`]: currentValue,
+      };
+    },
+    {}
+  );
+  onProcessGemini({
+    req,
+    res,
+    sessionId,
+    collateImageName,
+    collatedOuputPath: invalidatedInput.nutIncluded,
+    prompt: make_nut_prompt({
+      ocrText: JSON.stringify(nutText),
+      imageCount: invalidatedInput.nutIncluded?.length,
+    }),
+    prefix: 'nut',
+  });
+};
+
+const onProcessOther = ({
+  req,
+  res,
+  invalidatedInput,
+  sessionId,
+  collateImageName,
+  outputConfig,
+}: {
+  req: any;
+  res: any;
+  invalidatedInput: any;
+  sessionId: string;
+  collateImageName: string;
+  outputConfig: any;
+}) => {
+  if (!outputConfig.other) {
+    const resultFileName = 'all-' + sessionId + '.json';
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      resultFileName,
+      JSON.stringify({ product: {} })
+    );
+
+    return;
+  }
+
+  onProcessGemini({
+    req,
+    res,
+    sessionId,
+    collateImageName,
+    collatedOuputPath: [
+      ...invalidatedInput.nutIncluded,
+      ...invalidatedInput.nutExcluded,
+    ],
+    prompt: makePrompt({}),
+    prefix: 'all',
+  });
+};
 
 export default router;

@@ -1,5 +1,4 @@
 import vision, { ImageAnnotatorClient } from '@google-cloud/vision';
-import { makePrompt, make_nut_prompt } from '../constants';
 const { execFile } = require('child_process');
 
 export const getOcrText = async (

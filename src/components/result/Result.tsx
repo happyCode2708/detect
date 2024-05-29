@@ -2,6 +2,7 @@ import NutritionTable from '@/components/table/NutritionTable';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { removeDuplicates } from '@/lib/utils';
+import { isEqual } from 'lodash';
 
 export const Result = ({ productInfo }: { productInfo: any }) => {
   if (!productInfo) return null;
@@ -26,7 +27,7 @@ const TableResult = ({ productInfo }: { productInfo: any }) => {
   return (
     <>
       {productInfo ? (
-        <div className='p-4 border rounded-md flex-1 overflow-auto max-h-[500px]'>
+        <div className='p-4 border rounded-md flex-1 overflow-auto max-h-screen'>
           <MetaInfo productInfo={productInfo} />
           <SectionWrapper name='Nutrition Fact/Supplement Fact'>
             {productInfo?.factPanels?.map((labelData: any, idx: number) => {
@@ -52,7 +53,8 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     factPanels,
     ocrText,
     isFactPanelLooked,
-    ingredientsGroup,
+    ingredients_group,
+    other_ingredients_group,
     factPanelDebug,
     isFactPanelGoodToRead,
     attributesAndCertifiers,
@@ -68,7 +70,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
 
   const { containOnEquipment, contain, freeOf } = allergen || {};
   const { claims, otherClaims, containInfo } = attributesAndCertifiers || {};
-  const { marketingContents, socialMedia, ...marketingRest } =
+  const { marketing_contents, socialMedia, ...marketingRest } =
     marketingAll || {};
   const { primarySize, secondarySize, thirdSize, ...headerRest } = header || {};
   const { recyclingInfo, recyclable, ...restPackaging } = packaging || {};
@@ -126,17 +128,38 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
           </div>
         ) : null}
       </SectionWrapper>
-
-      <SectionWrapper name='Ingredients'>
-        {ingredientsGroup?.map((ingredientItem: any, idx: number) => {
-          return (
-            <div>
-              <div className='font-bold'>Ingredient No.{idx + 1}: </div>
-              <p>{ingredientItem?.ingredients} </p>
-            </div>
-          );
-        })}
-      </SectionWrapper>
+      {ingredients_group?.length > 0 && (
+        <SectionWrapper name='Ingredients'>
+          {ingredients_group?.map((ingredientList: any, idx: number) => {
+            return (
+              <div>
+                <div className='font-bold'>Ingredient No.{idx + 1}: </div>
+                <p className='pl-4'>
+                  {ingredientList?.ingredients
+                    ?.map((ingredientItem: any) => ingredientItem?.text)
+                    .join(', ')}
+                </p>
+              </div>
+            );
+          })}
+        </SectionWrapper>
+      )}
+      {other_ingredients_group?.length > 0 && (
+        <SectionWrapper name='Other Ingredients'>
+          {other_ingredients_group?.map((ingredientList: any, idx: number) => {
+            return (
+              <div>
+                <div className='font-bold'>Ingredient No.{idx + 1}: </div>
+                <p className='pl-4'>
+                  {ingredientList?.ingredients
+                    ?.map((ingredientItem: any) => ingredientItem?.text)
+                    .join(', ')}
+                </p>
+              </div>
+            );
+          })}
+        </SectionWrapper>
+      )}
 
       <SectionWrapper name='Attributes'>
         {/* {claimsOrCertifications?.length > 0 && (
@@ -155,6 +178,19 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         {claims &&
           Object.entries(claims)?.map(
             ([key, attributeGroup]: [key: string, value: any]) => {
+              const isClaimHaveValue = Object.entries(attributeGroup).find(
+                (keyAndAvalue) => {
+                  const [fieldKey, fieldValue] = keyAndAvalue;
+                  if (fieldValue) {
+                    return true;
+                  }
+
+                  return false;
+                }
+              );
+
+              if (!isClaimHaveValue) return null;
+
               return (
                 <div key={key}>
                   <div className='font-bold'>
@@ -172,14 +208,14 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
       </SectionWrapper>
 
       <SectionWrapper name='Marketing'>
-        {marketingContents?.length > 0 && (
+        {/* {marketing_contents?.length > 0 && (
           <div>
             <div className='font-bold'>Marketing Contents: </div>
-            {marketingContents?.map((marketingClaim: string, idx: number) => {
+            {marketing_contents?.map((marketingClaim: string, idx: number) => {
               return <p className='mb-[8px]'>{marketingClaim} </p>;
             })}
           </div>
-        )}
+        )} */}
         <CamelFieldStringRender objectValues={socialMedia} />
         <CamelFieldStringRender objectValues={marketingRest} />
       </SectionWrapper>
@@ -194,13 +230,13 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
           </div>
         )}
         {contain && (
-          <div>
+          <div className='flex flex-row'>
             <div className='font-bold'>Contain: </div>
-            <p>{contain?.join(', ')} </p>
+            <div>{contain?.join(', ')} </div>
           </div>
         )}
         {freeOf && (
-          <div>
+          <div className='flex flex-row'>
             <div className='font-bold'>Free of: </div>
             <p>{freeOf?.join(', ')} </p>
           </div>
@@ -241,7 +277,8 @@ const CamelFieldStringRender = ({ objectValues }: { objectValues: Object }) => {
     <>
       {Object.entries(objectValues)?.map(
         ([key, value]: [key: string, value: any]) => {
-          if (value === null || value === undefined) return null;
+          if (value === null || value === undefined || isEqual(value, []))
+            return null;
 
           return (
             <div key={key}>

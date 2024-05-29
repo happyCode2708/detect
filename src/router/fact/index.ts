@@ -3,7 +3,6 @@ import fs from 'fs';
 import { resultsDir, historyDir } from '../../server';
 import path from 'path';
 import { writeJsonToFile } from '../../utils';
-import { log } from 'console';
 
 const router = express.Router();
 
@@ -16,7 +15,7 @@ router.get('/get-result/:sessionId', async (req, res) => {
   }
 
   // Construct the full file path
-  const filePath = path.join(resultsDir + `/${sessionId}`, sessionId);
+  // const filePath = path.join(resultsDir + `/${sessionId}`, sessionId);
   const allFilePath = path.join(
     resultsDir + `/${sessionId}`,
     'all-' + sessionId + '.json'
@@ -27,32 +26,26 @@ router.get('/get-result/:sessionId', async (req, res) => {
   );
 
   try {
-    const [
-      // allData,
-      nutData,
-    ] = await Promise.all([
-      // fs.readFileSync(allFilePath, 'utf8'),
+    const [allData, nutData] = await Promise.all([
+      fs.readFileSync(allFilePath, 'utf8'),
       fs.readFileSync(nutFilePath, 'utf8'),
     ]);
 
-    // const allRes = JSON.parse(allData);
+    const allRes = JSON.parse(allData);
     const nutRes = JSON.parse(nutData);
 
-    // const { isSuccess: allSuccess } = allRes || {};
+    const { isSuccess: allSuccess } = allRes || {};
     const { isSuccess: nutSuccess } = nutRes || {};
 
-    if (
-      nutSuccess === false
-      // || allSuccess === false
-    ) {
+    if (nutSuccess === false || allSuccess === false) {
       res.json({ isSuccess: false });
     }
 
     let response = {
-      // ...allRes,
+      ...allRes,
       ...nutRes,
       product: {
-        // ...allRes.product,
+        ...allRes.product,
         factPanels: transformFactPanels(nutRes.product.factPanels),
       },
     };
@@ -67,14 +60,15 @@ router.get('/get-result/:sessionId', async (req, res) => {
     // removeFieldByPath(response, 'answerOfRemindQuestion');
     // removeFieldByPath(response, 'answerOfFoundBug');
     // removeFieldByPath(response, 'answerOfFoundBug');
-    // removeFieldByPath(response, 'product.certifierAndLogo');
-    // removeFieldByPath(response, 'product.readAllConstants');
+    removeFieldByPath(response, 'product.is_product_supplement');
+    removeFieldByPath(response, 'product.readAllConstants');
+    removeFieldByPath(response, 'product.certifierAndLogo');
     // removeFieldByPath(response, 'answerOfQuestionsAboutNutritionFact');
     // removeFieldByPath(response, 'answerOfQuestionAboutNutritionFactTitle');
     // removeFieldByPath(response, 'answerOfQuestionAboutValidator');
     // removeFieldByPath(response, 'answerOfQuestionAboutLanguage');
     // removeFieldByPath(response, 'answerOfDebug');
-    // removeFieldByPath(response, 'answerOfDebug_2');
+    removeFieldByPath(response, 'validatorAndFixBug');
 
     res.json(response);
   } catch (error) {

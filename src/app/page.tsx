@@ -23,6 +23,10 @@ export default function Home() {
   const [inputImages, setInputImages] = useState<any>([]);
   const [procImages, setProcImages] = useState<any>([]);
   const [biasForm, setBiasForm] = useState<any>({});
+  const [outputConfig, setOutputConfig] = useState<any>({
+    nut: true,
+    other: true,
+  });
 
   const [resultFileName, setResultFileName] = useState<any>();
   const [sessionId, setSessionId] = useState<any>();
@@ -47,6 +51,7 @@ export default function Home() {
       formData.append('file', file);
     });
     formData.append('biasForm', JSON.stringify(biasForm));
+    formData.append('outputConfig', JSON.stringify(outputConfig));
 
     setLoading(true);
     setProductInfo(null);
@@ -209,9 +214,31 @@ export default function Home() {
 
   return (
     <FluidContainer>
-      <div className='flex flex-col gap-10 p-10'>
-        <div className='flex flex-row items-center w-full gap-2'>
-          <div className='rounded-md p-4 border flex flex-row gap-2 flex-1'>
+      <div className='flex flex-col gap-4 p-10'>
+        <SectionWrapper title='Output Config'>
+          <div className='flex flex-row gap-4'>
+            <div className='flex flex-row gap-2'>
+              <Label className='col-span-3'> Nutrition/Supplement Facts </Label>
+              <Checkbox
+                checked={outputConfig?.nut}
+                onCheckedChange={(checked: boolean) => {
+                  setOutputConfig((prev: any) => ({ ...prev, nut: checked }));
+                }}
+              />
+            </div>
+            <div className='flex flex-row gap-2'>
+              <Label className='col-span-3'>Other </Label>
+              <Checkbox
+                checked={outputConfig?.other}
+                onCheckedChange={(checked: boolean) => {
+                  setOutputConfig((prev: any) => ({ ...prev, other: checked }));
+                }}
+              />
+            </div>
+          </div>
+        </SectionWrapper>
+        <SectionWrapper title='input image'>
+          <div className='flex flex-row gap-2 flex-1'>
             <Input
               ref={refInput}
               type='file'
@@ -222,26 +249,26 @@ export default function Home() {
             <Button variant='destructive' onClick={onClearFile}>
               Clear
             </Button>
-          </div>
-          <Button
-            disabled={loading || files?.length <= 0}
-            onClick={handleSubmit}
-          >
-            {loading ? (
-              <div className='flex flex-row items-center'>
-                <RefreshCcw className='mr-1 animate-spin' />
-                <span>Processing</span>
-              </div>
-            ) : (
-              'Extract'
-            )}
-          </Button>
-          {loading && (
-            <Button variant='secondary' onClick={onCancel}>
-              Cancel
+            <Button
+              disabled={loading || files?.length <= 0}
+              onClick={handleSubmit}
+            >
+              {loading ? (
+                <div className='flex flex-row items-center'>
+                  <RefreshCcw className='mr-1 animate-spin' />
+                  <span>Processing</span>
+                </div>
+              ) : (
+                'Extract'
+              )}
             </Button>
-          )}
-        </div>
+            {loading && (
+              <Button variant='secondary' onClick={onCancel}>
+                Cancel
+              </Button>
+            )}
+          </div>
+        </SectionWrapper>
 
         {/* <ExtractionHistory /> */}
 
@@ -339,7 +366,7 @@ const SectionWrapper = ({
 }) => {
   return (
     <div className='pt-6 relative'>
-      <div className='border rounded-md p-[10px] pt-[20px]'>
+      <div className='border rounded-md px-[10px] py-[20px]'>
         {title && (
           <div className='font-bold border rounded-lg px-[8px] py-[2px] absolute top-[8px] lef-[35px] bg-white'>
             {title}
