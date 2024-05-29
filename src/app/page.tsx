@@ -214,29 +214,45 @@ export default function Home() {
 
   return (
     <FluidContainer>
-      <div className='flex flex-col gap-4 p-10'>
-        <SectionWrapper title='Output Config'>
-          <div className='flex flex-row gap-4'>
-            <div className='flex flex-row gap-2'>
-              <Label className='col-span-3'> Nutrition/Supplement Facts </Label>
-              <Checkbox
-                checked={outputConfig?.nut}
-                onCheckedChange={(checked: boolean) => {
-                  setOutputConfig((prev: any) => ({ ...prev, nut: checked }));
-                }}
-              />
-            </div>
-            <div className='flex flex-row gap-2'>
-              <Label className='col-span-3'>Other </Label>
-              <Checkbox
-                checked={outputConfig?.other}
-                onCheckedChange={(checked: boolean) => {
-                  setOutputConfig((prev: any) => ({ ...prev, other: checked }));
-                }}
-              />
-            </div>
+      <div className='flex flex-col gap-4 py-4 px-4'>
+        <div className='grid grid-cols-4 gap-2'>
+          <div className='col-span-1'>
+            <SectionWrapper title='Info'>Last updated: 5/29/24</SectionWrapper>
           </div>
-        </SectionWrapper>
+          <div className='col-span-3'>
+            <SectionWrapper title='Output Config'>
+              <div className='flex flex-row gap-4'>
+                <div className='flex flex-row gap-2'>
+                  <Label className='col-span-3'>
+                    {' '}
+                    Nutrition/Supplement Facts{' '}
+                  </Label>
+                  <Checkbox
+                    checked={outputConfig?.nut}
+                    onCheckedChange={(checked: boolean) => {
+                      setOutputConfig((prev: any) => ({
+                        ...prev,
+                        nut: checked,
+                      }));
+                    }}
+                  />
+                </div>
+                <div className='flex flex-row gap-2'>
+                  <Label className='col-span-3'>Others </Label>
+                  <Checkbox
+                    checked={outputConfig?.other}
+                    onCheckedChange={(checked: boolean) => {
+                      setOutputConfig((prev: any) => ({
+                        ...prev,
+                        other: checked,
+                      }));
+                    }}
+                  />
+                </div>
+              </div>
+            </SectionWrapper>
+          </div>
+        </div>
         <SectionWrapper title='input image'>
           <div className='flex flex-row gap-2 flex-1'>
             <Input
@@ -366,7 +382,7 @@ const SectionWrapper = ({
 }) => {
   return (
     <div className='pt-6 relative'>
-      <div className='border rounded-md px-[10px] py-[20px]'>
+      <div className='border rounded-md px-[10px] py-[20px] min-h-[66px]'>
         {title && (
           <div className='font-bold border rounded-lg px-[8px] py-[2px] absolute top-[8px] lef-[35px] bg-white'>
             {title}
