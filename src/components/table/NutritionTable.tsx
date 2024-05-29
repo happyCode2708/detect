@@ -55,27 +55,34 @@ const NutritionTable = ({ data }: { data: any }) => {
         <TableHeader>
           <TableRow>
             <TableHead>NAME</TableHead>
+            <TableHead>ANCILARRRY INFO</TableHead>
             <TableHead>QUANTITY</TableHead>
-            {/* <TableHead>UOM</TableHead> */}
             <TableHead>DAILY PERCENT</TableHead>
             <TableHead>FOOTNOTE</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {data.nutrients.map((nutrient: any, index: number) => {
-            // const isHaveSubIngredient =
-            //   nutrient?.nutrient_sub_ingredients?.length > 0;
-
             return (
               <>
-                <TableRow
-                  key={index}
-                  // className={isHaveSubIngredient ? 'border-none' : ''}
-                >
+                <TableRow>
                   <TableCell>
-                    <span>{nutrient.name}</span>
-                    {nutrient?.descriptor_or_subIngredientList && (
-                      <span>({nutrient?.descriptor_or_subIngredientList})</span>
+                    <div>{nutrient.name}</div>
+                  </TableCell>
+                  <TableCell>
+                    {nutrient?.descriptor && (
+                      <div className='mt-6'>
+                        <div className='pl-[8px]'>{nutrient?.descriptor}</div>
+                      </div>
+                    )}
+                    {nutrient?.contain_sub_ingredients?.length > 0 && (
+                      <div className='mt-6'>
+                        <div className='pl-[8px]'>
+                          {nutrient?.contain_sub_ingredients
+                            ?.map((item: any) => item?.full_name)
+                            ?.join(', ')}
+                        </div>
+                      </div>
                     )}
                   </TableCell>
                   <TableCell key={index}>

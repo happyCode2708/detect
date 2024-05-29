@@ -2,6 +2,8 @@ import express from 'express';
 import fs from 'fs';
 import { resultsDir, historyDir } from '../../server';
 import path from 'path';
+import { writeJsonToFile } from '../../utils';
+import { log } from 'console';
 
 const router = express.Router();
 
@@ -54,6 +56,12 @@ router.get('/get-result/:sessionId', async (req, res) => {
         factPanels: transformFactPanels(nutRes.product.factPanels),
       },
     };
+
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      'validated-output-' + sessionId + '.json',
+      JSON.stringify(response)
+    );
 
     // removeFieldByPath(response, 'answerOfQuestion');
     // removeFieldByPath(response, 'answerOfRemindQuestion');
@@ -124,5 +132,40 @@ const combineResult = (result: any) => {
 };
 
 const transformFactPanels = (factPanels: any) => {
-  return factPanels;
+  if (!factPanels) return factPanels;
+
+  let cloneFactPanels = [...factPanels];
+
+  cloneFactPanels = cloneFactPanels.map((factPanelItem: any) => {
+    return transformOneFactPanel(factPanelItem);
+  });
+
+  return cloneFactPanels;
+};
+
+const transformOneFactPanel = (factPanelItem: any) => {
+  let cloneFactPanelItem = { ...factPanelItem };
+
+  cloneFactPanelItem.nutrients = cloneFactPanelItem.nutrients.map(
+    (nutrientItem: any) => {
+      let modifiedNutrient = { ...nutrientItem };
+
+      const logicExtractedDescriptor = getDescriptor(nutrientItem?.name);
+      if (logicExtractedDescriptor && !nutrientItem?.['descriptor']) {
+        modifiedNutrient['descriptor'] = logicExtractedDescriptor;
+        modifiedNutrient['name'] = modifiedNutrient['name']?.split(
+          logicExtractedDescriptor
+        )?.[0];
+      }
+
+      return modifiedNutrient;
+    }
+  );
+  return cloneFactPanelItem;
+};
+
+const getDescriptor = (nutrientName: string) => {
+  const pattern = /(\s*\([^()]*\))+$/;
+  const match = nutrientName.match(pattern);
+  return match ? match[0] : null;
 };

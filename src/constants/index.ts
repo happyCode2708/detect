@@ -871,7 +871,7 @@ export const make_nut_prompt = ({
 }) => {
   return `
   Some common constants:
-  + FOOTNOTE_INDICATORS = ["*", "**", "†", "★★", "★", "¥"]
+  + FOOTNOTE_INDICATORS = ["*", "**", "†", "¥", "‡", "†††"]
   
   OCR texts from ${imageCount} provided images:
   ${ocrText}
@@ -895,6 +895,7 @@ export const make_nut_prompt = ({
       "answerOfDebug_3": your answer gemini (why i see you keep removing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something),
       "answerOfDebug_4": your answer gemini (Are you sure you see percent daily value of Protein is 0%?),
       "answerOfDebug_5": your answer gemini (I told you if you see a nutrient in type of Extract so its descriptor must be the text after word "Extract"?),
+      "answerOfDebug_6": your answer gemini (why you keep read info as new nutrient but the content info is not separated by line?),
       "end": true,
     },
     "product": {
@@ -916,10 +917,11 @@ export const make_nut_prompt = ({
           "nutrients": [
             {
               "fullNutrientInfo": string, // include quantity information, percent daily value
-              "name": string, 
+              "name": string,
               "descriptor": string,
+              "have_intended_nutrient_row_below": boolean,
               "contain_sub_ingredients": [{
-                 name: string,
+                 full_name: string,
                  quantity: string,
                  uom: string,
               },...],
@@ -961,13 +963,15 @@ Some common rules:
 Nutrient rule:
 1) sometimes nutrients could be put vertically and separated by • symbol and • symbol is not the 'nutrients.footnoteIndicator'
 
-2) some nutrients such as ("Total Carbohydrate", "total sugar", "Includes... Added Sugars", ...) and they are must be separated nutrients
-
-4) The nutrition fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information, or different "% Daily value" by age. Let's to break down and separate into two different fact panels one is for 'per serving'
+2) The nutrition fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information, or different "% Daily value" by age. Let's to break down and separate into two different fact panels one is for 'per serving'
 and other for 'per container' just if "amoutPerServing.percentDailyValueFor" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "nutrients" but each "nutrients" could have different "footnoteIndicator".
 
-5) "factPanels.panelName":
+3) "factPanels.panelName":
 + if there is text on image contain "Nutrition Facts" or "Supplement Facts". If not it should be null
+
+4) "nutrients" rules: 
++ some nutrients such as ("Total Carbohydrate", "total sugar", "Includes... Added Sugars", ...) and they are must be separated nutrients
++ Most of the time the each nutrient will be seperated by horizontal line for vertical layout. So that the content between two line is definitely belong to one nutrient and the content could be multiple lines of info. So be careful when you list the nutrient.
 
 6) "nutrients.servingSize":
 + is info about serving size on nutrition fact panel. if serving size info have the parentheses the "servingsize.value" and "servingSize.uom" will be between the parentheses
@@ -983,16 +987,20 @@ Ex 6: "3 tbsp(60ml)" = {servingSize: {"value": 3, "uom": "tbsp"}, equivalent: {"
 + "nutrient.descriptor" could be the content in parentheses start with "as"
 Ex: Vitamin D3 (as cholecalciferol) = {"descriptor": "(as cholecalciferol)"}
 
-+ "nutrient.descriptor" could be the content in parentheses show up equivalent chemical subtance
-Ex: Folate (660 mcg L-5-methyltetrahydrofolate) = {"descriptor": "(660 mcg L-5-methyltetrahydrofolate)"}
++ "nutrient.descriptor" could be the content in parentheses show up equivalent chemical subtance, equivalent ingredient, or equivalent extract
+Ex 1: Folate (660 mcg L-5-methyltetrahydrofolate) = {"descriptor": "(660 mcg L-5-methyltetrahydrofolate)"}
+Ex 2: aloesorb (aloe leaf) = {"descriptor": "(aloe leaf)"}
 
 + "nutrient.descriptor" could be the content in parentheses show the explaination for nutrient.
 Ex: Calcium (extract from egg) = {"descriptor": "(extract from egg)"}
 
-+ "nutrient.descriptor" could be the content right after the main nutrient name.
-Ex: L-5 Hydroxytryptophan (5-HTP) (from Griffonia simplicifolia seed) = {"descriptor": "(5-HTP) (from Griffonia simplicifolia seed)"}
++ "nutrient.descriptor" could be the content in parentheses show the a phrase that could be the other name of nutrient
+Ex: One Day complex® (fruits blend) = {"descriptor": "(fruits blend)"}
 
-+ "nutrient.descriptor" could be all content in one parentheses or many parentheses right after the main nutrient name.
++ "nutrient.descriptor" could be all a content that below the nutrient name and a very detail explaination for that nutrient
+Ex: Lavender flower (Lavandula angustifolia) O extract 593 mg = {"descriptor": "(Lavandula angustifolia) O extract 593 mg"}
+
++ "nutrient.descriptor" could be the content right after the main nutrient name. (you could easily recognized by the consecutive parentheses with content inside)
 Ex: L-5 Hydroxytryptophan (5-HTP) (from Griffonia simplicifolia seed) = {"descriptor": "(5-HTP) (from Griffonia simplicifolia seed)"}
 
 + Be careull the nutrient could be an Extract so its name must contain "Extract" in nutrient name. And the "nutrient.descriptor" will be the remaining text after word "Extract".
@@ -1001,6 +1009,9 @@ Ex 2: "Holy Basil (Ocimum sanctum) (herb) Extract standardized to banana 20gram"
 
 8) "contain_sub_ingredients" rules:
 + is the list of sub-ingredients of a nutrient.
++ There are two ways to recoginize sub-ingredients of a nutrient:
+  - 1st: the list of sub-ingredients can be list as consecutive intended nutrient rows at below the nutrient name
+  - 2nd: the list of sub-ingredients is the statement with a lot of sub-ingredient at below the nutrient name
 
 9) "footnote":
 + "footnote" must be the last part of fact panel (the note may contain some special characters from FOOTNOTE_INDICATORS),
