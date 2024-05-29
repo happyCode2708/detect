@@ -52,6 +52,7 @@ export const make_nut_prompt = ({
       "answerOfDebug_4": your answer gemini (Are you sure you see percent daily value of Protein is 0%?),
       "answerOfDebug_5": your answer gemini (I told you if you see a nutrient in type of Extract so its descriptor must be the text after word "Extract"?),
       "answerOfDebug_6": your answer gemini (why you keep read info as new nutrient but the content info is not separated by line?),
+      "answerOfDebug_7": your answer gemini (remember "total sugar" and "added sugar" are separated nutrient"),
       "end": true,
     },
     "product": {

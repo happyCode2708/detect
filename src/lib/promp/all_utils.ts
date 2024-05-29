@@ -40,8 +40,8 @@ json
     "is_product_supplement": boolean,
     "certifierAndLogo":"your answer gemini" (help me list all certifiers logo(such as kosher U pareve, ...) and usda inspection marks on provided image),
     "readAllConstants": "your answer gemini"(please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?"),
-    "other_ingredients_group:[{"ingredients": [{"text": string}, ...]}], 
-    "ingredients_group": [{"ingredients": [{"text": string}, ...]}],
+    "other_ingredients_group:[{"ingredients": string[]}, ...], 
+    "ingredients_group": [{"ingredients": string[]}, ...], 
     "allergen": {
       "contain": string[],
       "containOnEquipment": {"statement": string, "allergenList: string[] },
@@ -208,13 +208,13 @@ Some rules for you:
 + "ingredients_groups" is the list of ingredients list since a product can have many ingredient list
 + "ingredients_groups.ingredients" content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:".
 + "ingredients_groups.ingredients" usually appear below or next to the nutrition panel.
-Ex 1: "Ingredients: Flour, Eggs."=  ingredients_groups: [{ingredients: "Flour, Eggs."}, ...]
+Ex 1: "Ingredients: Flour, Eggs." =  ingredients_groups: [{ingredients: ["Flour", "Eggs"]}, ...]
 
 2) "other_ingredients_group":
 + "other_ingredients_group" is the list of ingredients list since a product can have many ingredient list. And it is only for supplement product.
 + "other_ingredients_group.ingredients" content start right after a prefix text such as "other ingredients".
 + "other_ingredients_group.ingredients" usually appear below or next to the nutrition panel.
-Ex 1: "Other ingredients: Flour, Eggs."=  other_ingredients_groups: [{ingredients: "Flour, Eggs."}, ...]
+Ex 1: "Other ingredients: Flour, Eggs."=  other_ingredients_groups: [{ingredients: ["Flour", "Eggs"]}, ...]
 
 3) "marketingAll" rules:
 a) "marketingAll.website":
