@@ -135,9 +135,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
               <div>
                 <div className='font-bold'>Ingredient No.{idx + 1}: </div>
                 <p className='pl-4'>
-                  {ingredientList?.ingredients
-                    ?.map((ingredientItem: any) => ingredientItem?.text)
-                    .join(', ')}
+                  {ingredientList?.ingredients?.join(', ')}
                 </p>
               </div>
             );
@@ -150,11 +148,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
             return (
               <div>
                 <div className='font-bold'>Ingredient No.{idx + 1}: </div>
-                <p className='pl-4'>
-                  {ingredientList?.ingredients
-                    ?.map((ingredientItem: any) => ingredientItem?.text)
-                    .join(', ')}
-                </p>
+                <p className='pl-4'>{ingredientList?.ingredients.join(', ')}</p>
               </div>
             );
           })}
