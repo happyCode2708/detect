@@ -3,7 +3,9 @@
 // + "marketingContents" is texts to introduce or marketing features or benefits of product, and usually appear on the front face of product or some marketing pharagraph to appeal customer.
 // + there could be also marketing contents which are texts about nutrients appear on the main face of product to appeal customer to buy product
 // "answerOfDebug_4": your answer gemini (remember "marketingContents" is texts to introduce or marketing features or benefits of product, or some marketing pharagraph to appeal customer),
+// "answerOfDebug_4": your answer gemini" (Why you keep adding values not from enum to "allergen.freeOf"?),
 
+// + enum  ALLERGEN_LIST= "corn", "crustacean shellfish", "dairy", "egg", "fish", "milk", "oats", "peanuts / peanut oil", "phenylalanine", "seeds", "sesame", "soy / soybeans", "tree nuts", "wheat".
 export const makePrompt = ({
   ocrText,
   imageCount,
@@ -13,12 +15,16 @@ export const makePrompt = ({
 }) => {
   return `
   Some common constants:
-+ FAT_CONTAIN_CLAIM = ["zero grams trans fat per serving", "fat free"]
-+ SALT_OR_SODIUM_CLAIMS = ["low sodium", "low salt"]
-+ SUGAR_AND_SWEET_CLAIMS = ["no sugar alcohol"]
-+ ATTRIBUTE_CONTAIN_LIST = ["1,4-dioxane", "active yeast", "added antibiotics", "added colors", "added dyes", "added flavors", "added fragrances", "added hormones", "added nitrates", "added nitrites", "added preservatives", "additives", "alcohol", "allergen", "aluminum", "amino acids", "ammonia", "animal by-products", "animal derivatives", "animal ingredients", "animal products", "animal rennet", "antibiotics", "artificial additives", "artificial colors", "artificial dyes", "artificial flavors", "artificial fragrance", "artificial ingredients", "artificial preservatives", "binders and/or fillers", "bleach", "bpa (bisphenol-a)", "butylene glycol", "by-products", "caffeine", "carrageenan", "casein", "cbd / cannabidiol", "chemical additives", "chemical colors", "chemical dyes", "chemical flavors", "chemical fragrances", "chemical ingredients", "chemical preservatives", "chemical sunscreens", "chemicals", "chlorine", "cholesterol", "coatings", "corn fillers", "cottonseed oil", "dyes", "edta", "emulsifiers", "erythorbates", "expeller-pressed oils", "fillers", "fluoride", "formaldehyde", "fragrances", "grain", "hexane", "hormones", "hydrogenated oils", "kitniyos / kitniyot (legumes)", "lactose", "latex", "msg", "natural additives", "natural colors", "natural dyes", "natural flavors", "natural ingredients", "natural preservatives", "nitrates/nitrites", "omega fatty acids", "paba", "palm oil", "parabens", "pesticides", "petro chemical", "petrolatum", "petroleum byproducts", "phosphates", "phosphorus", "phthalates", "pits", "preservatives", "rbgh/bst", "rennet", "salicylates", "sea salt", "shells/ shell pieces", "silicone", "sles ( sodium laureth sulfate)", "sls ( sodium lauryl sulfate )", "stabilizers", "probiotics", "starch", "sulfates", "sulfides", "sulfites / sulphites", "sulfur dioxide", "synthetic additives", "synthetic colors", "synthetic dyes", "synthetic flavors", "synthetic fragrance", "synthetic ingredients", "synthetic preservatives", "synthetics", "thc / tetrahydrocannabinol", "toxic pesticides", "triclosan", "vegan ingredients", "vegetarian ingredients", "yeast", "yolks"]
-+ NON_CERTIFIED_CLAIMS = ["100% natural", "100% natural ingredients", "100% pure", "acid free", "aeroponic grown", "all natural", "all natural ingredients", "aquaponic/aquaculture grown", "baked", "biodegradable", "cage free", "cold-pressed", "direct trade", "dolphin safe", "dry roasted", "eco-friendly", "farm raised", "filtered", "free range", "freeze-dried", "from concentrate", "grade a", "greenhouse grown", "heat treated", "heirloom", "homeopathic", "homogenized", "hydroponic grown", "hypo-allergenic", "irradiated", "live food", "low acid", "low carbohydrate", "low cholesterol", "macrobiotic", "minimally processed", "natural", "natural botanicals", "natural fragrances", "natural ingredients", "no animal testing", "no sulfites added", "non gebrokts", "non-alcoholic", "non-irradiated", "non-toxic", "not fried", "not from concentrate", "pasteurized", "pasture raised", "prairie raised", "raw", "responsibly sourced palm oil", "sprouted", "un-filtered", "un-pasteurized", "unscented", "vegetarian or vegan diet/feed", "wild", "wild caught"]
-+ ALLERGEN_LIST=["corn", "crustacean shellfish", "dairy", "egg", "fish", "milk", "oats", "peanuts / peanut oil", "phenylalanine", "seeds", "sesame", "soy / soybeans", "tree nuts", "wheat"]
++ enum FAT_CONTAIN_CLAIM = ["zero grams trans fat per serving", "fat free"]
+
++ enum SALT_OR_SODIUM_CLAIMS = ["low sodium", "low salt"]
+
++ enum SUGAR_AND_SWEET_CLAIMS = ["no sugar alcohol"]
+
++ enum ATTRIBUTE_CONTAIN_LIST = ["1,4-dioxane", "active yeast", "added antibiotics", "added colors", "added dyes", "added flavors", "added fragrances", "added hormones", "added nitrates", "added nitrites", "added preservatives", "additives", "alcohol", "allergen", "aluminum", "amino acids", "ammonia", "animal by-products", "animal derivatives", "animal ingredients", "animal products", "animal rennet", "antibiotics", "artificial additives", "artificial colors", "artificial dyes", "artificial flavors", "artificial fragrance", "artificial ingredients", "artificial preservatives", "binders and/or fillers", "bleach", "bpa (bisphenol-a)", "butylene glycol", "by-products", "caffeine", "carrageenan", "casein", "cbd / cannabidiol", "chemical additives", "chemical colors", "chemical dyes", "chemical flavors", "chemical fragrances", "chemical ingredients", "chemical preservatives", "chemical sunscreens", "chemicals", "chlorine", "cholesterol", "coatings", "corn fillers", "cottonseed oil", "dyes", "edta", "emulsifiers", "erythorbates", "expeller-pressed oils", "fillers", "fluoride", "formaldehyde", "fragrances", "grain", "hexane", "hormones", "hydrogenated oils", "kitniyos / kitniyot (legumes)", "lactose", "latex", "msg", "natural additives", "natural colors", "natural dyes", "natural flavors", "natural ingredients", "natural preservatives", "nitrates/nitrites", "omega fatty acids", "paba", "palm oil", "parabens", "pesticides", "petro chemical", "petrolatum", "petroleum byproducts", "phosphates", "phosphorus", "phthalates", "pits", "preservatives", "rbgh/bst", "rennet", "salicylates", "sea salt", "shells/ shell pieces", "silicone", "sles ( sodium laureth sulfate)", "sls ( sodium lauryl sulfate )", "stabilizers", "probiotics", "starch", "sulfates", "sulfides", "sulfites / sulphites", "sulfur dioxide", "synthetic additives", "synthetic colors", "synthetic dyes", "synthetic flavors", "synthetic fragrance", "synthetic ingredients", "synthetic preservatives", "synthetics", "thc / tetrahydrocannabinol", "toxic pesticides", "triclosan", "vegan ingredients", "vegetarian ingredients", "yeast", "yolks"]
+
++ enum NON_CERTIFIED_CLAIMS = ["100% natural", "100% natural ingredients", "100% pure", "acid free", "aeroponic grown", "all natural", "all natural ingredients", "aquaponic/aquaculture grown", "baked", "biodegradable", "cage free", "cold-pressed", "direct trade", "dolphin safe", "dry roasted", "eco-friendly", "farm raised", "filtered", "free range", "freeze-dried", "from concentrate", "grade a", "greenhouse grown", "heat treated", "heirloom", "homeopathic", "homogenized", "hydroponic grown", "hypo-allergenic", "irradiated", "live food", "low acid", "low carbohydrate", "low cholesterol", "macrobiotic", "minimally processed", "natural", "natural botanicals", "natural fragrances", "natural ingredients", "no animal testing", "no sulfites added", "non gebrokts", "non-alcoholic", "non-irradiated", "non-toxic", "not fried", "not from concentrate", "pasteurized", "pasture raised", "prairie raised", "raw", "responsibly sourced palm oil", "sprouted", "un-filtered", "un-pasteurized", "unscented", "vegetarian or vegan diet/feed", "wild", "wild caught"]
+
 
 Remember (important):
 + do not provide data that you cannot see it by human eyes on provided images.
@@ -44,8 +50,10 @@ json
     "other_ingredients_group:[{"ingredients": string[]}, ...], 
     "ingredients_group": [{"ingredients": string[]}, ...], 
     "allergen": {
+      "ALLERGEN_LIST": ["corn", "crustacean shellfish", "dairy", "egg", "fish", "milk", "oats", "peanuts / peanut oil", "phenylalanine", "seeds", "sesame", "soy / soybeans", "tree nuts", "wheat"],
       "contain": string[],
       "containOnEquipment": {"statement": string, "allergenList: string[] },
+      "all_values_of_freeOf_must_from_ALLERGEN_LIST": true,
       "freeOf": string[],
     },
     "header": {
@@ -312,11 +320,9 @@ Ex 1: "May contain milk" should be recorded as {"contain": ["milk"]}
 Ex 2: "Contain: Corn, Milk." should be recorded as {"contain": ["Corn", "Milk"]}
 
 b) "allergen.freeOf" rules:
-+ "allergen.freeOf" is a list of allergen ingredients could make customer allergen that is stated as free from product.
-+ the list only from enum ALLERGEN_LIST
-+ "allergen.freeOf" list usually start after text "free of ..."
-Ex 1: "free of soy" should be recorded as {"freeOf": ["soy"]} 
-Ex 2: "No Milk, Corn" should be recorded as {"freeOf": ["Milk", "Corn"]}
++ "allergen.freeOf" 's value must match enum value in "allergen.ALLERGEN_LIST"
+Ex 1: "free of soy" should be recorded as {"freeOf": ["soy / soybeans"]} 
+Ex 2: "No Milk, Corn" should be recorded as {"freeOf": ["milk", "corn"]}
 
 c) "allergen.containOnEquipment" rules:
 + "containOnEquipment.allergenList" is a list of allergen ingredients that is said they may be contained in/on manufacturing equipments.
@@ -385,3 +391,6 @@ h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 // + "slogan" is a highlight text to praise product.
 
 // "slogan": fstring,
+
+// + "allergen.freeOf" is a list of allergen ingredients could make customer allergen that is stated as free from product.
+// + "allergen.freeOf" list usually start after text "free of ...", "made without ...".

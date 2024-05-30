@@ -60,15 +60,16 @@ router.get('/get-result/:sessionId', async (req, res) => {
     // removeFieldByPath(response, 'answerOfRemindQuestion');
     // removeFieldByPath(response, 'answerOfFoundBug');
     // removeFieldByPath(response, 'answerOfFoundBug');
-    removeFieldByPath(response, 'product.is_product_supplement');
-    removeFieldByPath(response, 'product.readAllConstants');
-    removeFieldByPath(response, 'product.certifierAndLogo');
     // removeFieldByPath(response, 'answerOfQuestionsAboutNutritionFact');
     // removeFieldByPath(response, 'answerOfQuestionAboutNutritionFactTitle');
     // removeFieldByPath(response, 'answerOfQuestionAboutValidator');
     // removeFieldByPath(response, 'answerOfQuestionAboutLanguage');
     // removeFieldByPath(response, 'answerOfDebug');
-    removeFieldByPath(response, 'validatorAndFixBug');
+    //**** ========= */
+    // removeFieldByPath(response, 'product.is_product_supplement');
+    // removeFieldByPath(response, 'product.readAllConstants');
+    // removeFieldByPath(response, 'product.certifierAndLogo');
+    // removeFieldByPath(response, 'validatorAndFixBug');
 
     res.json(response);
   } catch (error) {
