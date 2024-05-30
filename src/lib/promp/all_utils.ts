@@ -53,7 +53,6 @@ json
       "ALLERGEN_LIST": ["corn", "crustacean shellfish", "dairy", "egg", "fish", "milk", "oats", "peanuts / peanut oil", "phenylalanine", "seeds", "sesame", "soy / soybeans", "tree nuts", "wheat"],
       "contain": string[],
       "containOnEquipment": {"statement": string, "allergenList: string[] },
-      "all_values_of_freeOf_must_from_ALLERGEN_LIST": true,
       "freeOf": string[],
     },
     "header": {
