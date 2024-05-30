@@ -217,7 +217,7 @@ export default function Home() {
       <div className='flex flex-col gap-4 py-4 px-4'>
         <div className='grid grid-cols-4 gap-2'>
           <div className='col-span-1'>
-            <SectionWrapper title='Info'>Last updated: 5/29/24</SectionWrapper>
+            <SectionWrapper title='Info'>Last update: 5/29/24</SectionWrapper>
           </div>
           <div className='col-span-3'>
             <SectionWrapper title='Output Config'>
