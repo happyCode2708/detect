@@ -136,18 +136,6 @@ router.post(
       collateImageName,
       outputConfig,
     });
-
-    return;
-
-    // onProcessGemini({
-    //   req,
-    //   res,
-    //   sessionId,
-    //   collateImageName,
-    //   collatedOuputPath: filePaths,
-    //   filePaths,
-    //   ocrText: procOCRtext,
-    // });
   }
 );
 
