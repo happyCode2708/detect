@@ -68,7 +68,11 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     ...metaInfo
   } = productInfo;
 
-  const { containOnEquipment, contain, freeOf } = allergen || {};
+  const {
+    containOnEquipment,
+    validated_allergen_contain,
+    validated_allergen_freeOf,
+  } = allergen || {};
   const { claims, otherClaims, containInfo } = attributesAndCertifiers || {};
   const { marketing_contents, socialMedia, ...marketingRest } =
     marketingAll || {};
@@ -223,16 +227,16 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
             <div>{containOnEquipment?.statement}</div>
           </div>
         )}
-        {contain && (
+        {validated_allergen_contain && (
           <div className='flex flex-row'>
             <div className='font-bold'>Contain: </div>
-            <div>{contain?.join(', ')} </div>
+            <div>{validated_allergen_contain?.join(', ')} </div>
           </div>
         )}
-        {freeOf && (
+        {validated_allergen_freeOf && (
           <div className='flex flex-row'>
             <div className='font-bold'>Free of: </div>
-            <p>{freeOf?.join(', ')} </p>
+            <p>{validated_allergen_freeOf?.join(', ')} </p>
           </div>
         )}
       </SectionWrapper>

@@ -3,6 +3,8 @@ import fs from 'fs';
 import { resultsDir, historyDir } from '../../server';
 import path from 'path';
 import { writeJsonToFile } from '../../utils';
+import { lowerCase } from 'lodash';
+import { responseValidator } from '../../lib/validator/main';
 
 const router = express.Router();
 
@@ -44,11 +46,19 @@ router.get('/get-result/:sessionId', async (req, res) => {
     let response = {
       ...allRes,
       ...nutRes,
+      validatorAndFixBug: {
+        ...allRes.validatorAndFixBug,
+        ...nutRes.validatorAndFixBug,
+      },
       product: {
         ...allRes.product,
-        factPanels: transformFactPanels(nutRes.product.factPanels),
+        factPanels: nutRes.product.factPanels,
       },
     };
+    // ...validateProductDataPoints(allRes.product),
+    // factPanels: transformFactPanels(nutRes.product.factPanels),
+
+    let validatedResponse = responseValidator(response);
 
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
@@ -71,7 +81,7 @@ router.get('/get-result/:sessionId', async (req, res) => {
     // removeFieldByPath(response, 'product.certifierAndLogo');
     // removeFieldByPath(response, 'validatorAndFixBug');
 
-    res.json(response);
+    res.json(validatedResponse);
   } catch (error) {
     // console.log('error', error);
     return res.status(200).send('Image is processing. Please wait');
@@ -126,41 +136,192 @@ const combineResult = (result: any) => {
   return false;
 };
 
-const transformFactPanels = (factPanels: any) => {
-  if (!factPanels) return factPanels;
+// const transformFactPanels = (factPanels: any) => {
+//   if (!factPanels) return factPanels;
 
-  let cloneFactPanels = [...factPanels];
+//   let cloneFactPanels = [...factPanels];
 
-  cloneFactPanels = cloneFactPanels.map((factPanelItem: any) => {
-    return transformOneFactPanel(factPanelItem);
-  });
+//   cloneFactPanels = cloneFactPanels.map((factPanelItem: any) => {
+//     return transformOneFactPanel(factPanelItem);
+//   });
 
-  return cloneFactPanels;
-};
+//   return cloneFactPanels;
+// };
 
-const transformOneFactPanel = (factPanelItem: any) => {
-  let cloneFactPanelItem = { ...factPanelItem };
+// const transformOneFactPanel = (factPanelItem: any) => {
+//   let cloneFactPanelItem = { ...factPanelItem };
 
-  cloneFactPanelItem.nutrients = cloneFactPanelItem.nutrients.map(
-    (nutrientItem: any) => {
-      let modifiedNutrient = { ...nutrientItem };
+//   cloneFactPanelItem.nutrients = cloneFactPanelItem.nutrients.map(
+//     (nutrientItem: any) => {
+//       let modifiedNutrient = { ...nutrientItem };
 
-      const logicExtractedDescriptor = getDescriptor(nutrientItem?.name);
-      if (logicExtractedDescriptor && !nutrientItem?.['descriptor']) {
-        modifiedNutrient['descriptor'] = logicExtractedDescriptor;
-        modifiedNutrient['name'] = modifiedNutrient['name']?.split(
-          logicExtractedDescriptor
-        )?.[0];
-      }
+//       validateNutrientName(modifiedNutrient);
 
-      return modifiedNutrient;
-    }
-  );
-  return cloneFactPanelItem;
-};
+//       return modifiedNutrient;
+//     }
+//   );
 
-const getDescriptor = (nutrientName: string) => {
-  const pattern = /(\s*\([^()]*\))+$/;
-  const match = nutrientName.match(pattern);
-  return match ? match[0] : null;
-};
+//   return cloneFactPanelItem;
+// };
+
+// const getDescriptor = (nutrientName: string) => {
+//   const pattern = /(\s*\([^()]*\))+$/;
+//   const match = nutrientName.match(pattern);
+//   return match ? match[0] : null;
+// };
+
+// const validateNutrientName = (modifiedNutrient: any) => {
+//   const logicExtractedDescriptor = getDescriptor(modifiedNutrient?.name);
+//   if (logicExtractedDescriptor && !modifiedNutrient?.['descriptor']) {
+//     modifiedNutrient['descriptor'] = logicExtractedDescriptor;
+//     modifiedNutrient['name'] = modifiedNutrient['name']?.split(
+//       logicExtractedDescriptor
+//     )?.[0];
+//   }
+// };
+
+// const validateProductDataPoints = (productDataPoints: any) => {
+//   let modifiedProductDataPoints = { ...productDataPoints };
+
+//   validateAllergen(productDataPoints);
+//   // validateContainAndDoesNotContain(productDataPoints); //* attribute
+
+//   return modifiedProductDataPoints;
+// };
+
+// const validateContainAndDoesNotContainAttribute = (
+//   modifiedProductDataPoints: any
+// ) => {
+//   const current_allergen_freeOf =
+//     modifiedProductDataPoints['allergen']['allergen_freeOf'] || [];
+
+//   const current_allergen_contain =
+//     modifiedProductDataPoints['allergen']['allergen_contain'] || [];
+
+//   const current_product_does_not_contain =
+//     modifiedProductDataPoints['contain_and_notContain'][
+//       'product_does_not_contain'
+//     ] || [];
+
+//   const current_product_contain =
+//     modifiedProductDataPoints['contain_and_notContain']['product_contain'] ||
+//     [];
+// };
+
+// const validateContainOrDoesNotContain = (
+//   allergenList: any,
+//   containList: any,
+//   modifiedProductDataPoints: any,
+//   dataPointKey: string
+// ) => {
+//   let validated_allegen_field = [] as any;
+
+//   [...allergenList, ...containList].forEach((ingredientName) => {
+//     const lowercaseIngredientName = lowerCase(ingredientName);
+//     const matchedAllergen = checkMatchAllergen(lowercaseIngredientName);
+//     if (matchedAllergen && !validated_allegen_field.includes(matchedAllergen)) {
+//       validated_allegen_field.push(matchedAllergen);
+//     }
+//   });
+
+//   modifiedProductDataPoints['contain_and_notContain'][dataPointKey] =
+//     validated_allegen_field;
+// };
+
+// const validateAllergen = (modifiedProductDataPoints: any) => {
+//   const ALLERGENS = [
+//     'corn',
+//     'crustacean shellfish',
+//     'dairy',
+//     'egg',
+//     'fish',
+//     'milk',
+//     'oats',
+//     'peanuts / peanut oil',
+//     'phenylalanine',
+//     'seeds',
+//     'sesame',
+//     'soy / soybeans',
+//     'tree nuts',
+//     'wheat',
+//   ];
+
+//   const current_allergen_freeOf =
+//     modifiedProductDataPoints['allergen']['allergen_freeOf'] || [];
+
+//   const current_allergen_contain =
+//     modifiedProductDataPoints['allergen']['allergen_contain'] || [];
+
+//   const current_product_does_not_contain =
+//     modifiedProductDataPoints['contain_and_notContain'][
+//       'product_does_not_contain'
+//     ] || [];
+
+//   const current_product_contain =
+//     modifiedProductDataPoints['contain_and_notContain']['product_contain'] ||
+//     [];
+
+//   validateAllergenFreeOfOrContainOrContainOnEquipment(
+//     current_allergen_freeOf,
+//     current_product_does_not_contain,
+//     modifiedProductDataPoints,
+//     'validated_allergen_freeOf'
+//   );
+
+//   validateAllergenFreeOfOrContainOrContainOnEquipment(
+//     current_allergen_contain,
+//     current_product_contain,
+//     modifiedProductDataPoints,
+//     'validated_allergen_contain'
+//   );
+// };
+
+// const validateAllergenFreeOfOrContainOrContainOnEquipment = (
+//   allergenList: any,
+//   containList: any,
+//   modifiedProductDataPoints: any,
+//   dataPointKey: string
+// ) => {
+//   let validated_allegen_field = [] as any;
+
+//   [...allergenList, ...containList].forEach((ingredientName) => {
+//     const lowercaseIngredientName = lowerCase(ingredientName);
+//     const matchedAllergen = checkMatchAllergen(lowercaseIngredientName);
+//     if (matchedAllergen && !validated_allegen_field.includes(matchedAllergen)) {
+//       validated_allegen_field.push(matchedAllergen);
+//     }
+//   });
+
+//   modifiedProductDataPoints['allergen'][dataPointKey] = validated_allegen_field;
+// };
+
+// const checkMatchAllergen = (ingredientName: string) => {
+//   const ALLERGEN_MAPPING = {
+//     'crustacean shellfish': ['shellfish', 'crustacean shellfish'],
+//     corn: ['corn'],
+//     dairy: ['dairy'],
+//     egg: ['egg'],
+//     fish: ['fish'],
+//     milk: ['milk'],
+//     oats: ['oats'],
+//     'peanuts / peanut oil': ['peanuts / peanut oil', 'peanuts', 'peanut oil'],
+//     phenylalanine: ['phenylalanine'],
+//     seeds: ['seeds'],
+//     sesame: ['seasame'],
+//     'soy / soybeans': ['soy / soybeans', 'soy', 'soybeans'],
+//     'tree nuts': ['tree nuts', 'nuts', 'nut'],
+//     wheat: ['wheat'],
+//   };
+
+//   let matchAllergen = '';
+
+//   Object.entries(ALLERGEN_MAPPING).map((keyNvalue: any) => {
+//     const [allergenEnum, possibleValueList] = keyNvalue;
+
+//     if (possibleValueList.includes(ingredientName)) {
+//       matchAllergen = allergenEnum;
+//     }
+//   });
+
+//   return matchAllergen;
+// };

@@ -18,6 +18,10 @@
 
 // "answerOfDebug_5": "your answer gemini" (help me list all nutrient in type of Extract as string to this field "answerOfDebug_5"),
 // "answerOfDebug_6": your answer gemini (Why i see "Extract" word in descriptor? I told you if you see a nutrient Extract the descriptor must be the text after word "Extract"? Look at Value of "answerOfDebug_5" for reference),
+// "answerOfQuestionAboutLanguage": your answer gemini (The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish? The OCR text result could contain spanish so do not provide me those information in spanish),
+
+// I see you keep adding spanish content from spanish OCR text to 'footnote'. This is prohibited"
+// + "footnote" may contain multiple languages. Please only provide "footnote" in english only. Do not include spanish text on footnote
 export const make_nut_prompt = ({
   ocrText,
   imageCount,
@@ -45,14 +49,13 @@ export const make_nut_prompt = ({
       "answerOfQuestionsAboutNutritionFact": your answer gemini (Do you see nutrition facts panel on provided images? why? where is it on product?"),
       "answerOfQuestionAboutNutritionFactTitle": your answer gemini (Do you see fully "Supplement Fact" title or "Nutrition Fact" title  on provided images ? ),
       "answerOfQuestionAboutValidator": your answer gemini ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please compare with OCR texts and check if your info add to JSON is correct),
-      "answerOfQuestionAboutLanguage": your answer gemini (The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish? The OCR text result could contain spanish so do not provide me those information in spanish),
-      "answerOfDebug": your answer gemini (why i see you keep adding spanish to "footnote" field?),
       "answerOfDebug_2": your answer gemini (why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value),
       "answerOfDebug_3": your answer gemini (why i see you keep removing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something),
       "answerOfDebug_4": your answer gemini (Are you sure you see percent daily value of Protein is 0%?),
       "answerOfDebug_5": your answer gemini (I told you if you see a nutrient in type of Extract so its descriptor must be the text after word "Extract"?),
       "answerOfDebug_6": your answer gemini (why you keep read info as new nutrient but the content info is not separated by line?),
-      "answerOfDebug_7": your answer gemini (remember "total sugar" and "added sugar" are separated nutrient"),
+      "important_require_1": "gemini avoid adding spanish contents to JSON Object (such as 'footnote'),  
+      "important_require_2": "gemini remmeber 'trans fat', 'total sugar' and 'added sugar' are separated nutrient",
       "end": true,
     },
     "product": {
@@ -91,7 +94,8 @@ export const make_nut_prompt = ({
               "intended_level": number, // from 0 to 3
             }
           ],
-          "footnote": string
+          "footnote": string,
+          "footnote_english_only": string,
         }
       ],
     },
@@ -175,7 +179,6 @@ Ex 2: "Holy Basil (Ocimum sanctum) (herb) Extract standardized to banana 20gram"
 + "footnote" must be the last part of fact panel (the note may contain some special characters from FOOTNOTE_INDICATORS),
 and usually start with "%Daily Value....", "Not a significant source...", or "the % daily value...".
 + "footnote" is only one section, and is not multiple sections.
-+ "footnote" may contain multiple languages. Please only provide "footnote" in english only. Do not include spanish text on footnote 
 
 Ex 1: "**Not a significant source of saturated fat, trans fat. *Daily Value not established. = {footnote: {value :"**Not a significant source of saturated fat, trans fat. *Daily Value not established."}}
 Ex 2: "*Daily Value not established." = {footnote: "*Daily Value not established."}
@@ -231,7 +234,6 @@ Ex 2: "1g  <1%" should be recorded as {"percentDailyValue": 1, ...}
 17) nutrient of "added sugars" rules": 
 if you see a nutrient text like 'Includes Xg of Added Sugars  10%' this is the nutrient name = "added sugar" and "X" is its "value" and "g" is its "uom".
 and it should be recorded as a nutrient =  {"name": "Added Sugars", "value": 7, "uom": "g", "percentDailyValue": 10,...}
-
 `;
 };
 

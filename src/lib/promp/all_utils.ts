@@ -5,7 +5,141 @@
 // "answerOfDebug_4": your answer gemini (remember "marketingContents" is texts to introduce or marketing features or benefits of product, or some marketing pharagraph to appeal customer),
 // "answerOfDebug_4": your answer gemini" (Why you keep adding values not from enum to "allergen.freeOf"?),
 
+// + enum ATTRIBUTE_CONTAIN_LIST = [
+//   "1,4-dioxane",
+//   "active yeast",
+//   "added antibiotics",
+//   "added colors",
+//   "added dyes",
+//   "added flavors",
+//   "added fragrances",
+//   "added hormones",
+//   "added nitrates",
+//   "added nitrites",
+//   "added preservatives",
+//   "additives", "alcohol",
+//   "allergen",
+//   "aluminum",
+//   "amino acids",
+//   "ammonia",
+//   "animal by-products",
+//   "animal derivatives",
+//   "animal ingredients",
+//   "animal products",
+//   "animal rennet",
+//   "antibiotics",
+//   "artificial additives",
+//   "artificial colors",
+//   "artificial dyes",
+//   "artificial flavors",
+//   "artificial fragrance",
+//   "artificial ingredients",
+//   "artificial preservatives",
+//   "binders and/or fillers",
+//   "bleach", "bpa (bisphenol-a)",
+//   "butylene glycol", "by-products",
+//   "caffeine", "carrageenan",
+//   "casein", "cbd / cannabidiol",
+//   "chemical additives",
+//   "chemical colors",
+//   "chemical dyes",
+//   "chemical flavors",
+//   "chemical fragrances",
+//   "chemical ingredients",
+//   "chemical preservatives",
+//   "chemical sunscreens",
+//   "chemicals",
+//   "chlorine",
+//   "cholesterol",
+//   "coatings",
+//   "corn fillers",
+//   "cottonseed oil",
+//   "dyes",
+//   "edta",
+//   "emulsifiers",
+//   "erythorbates",
+//   "expeller-pressed oils",
+//   "fillers",
+//   "fluoride",
+//   "formaldehyde",
+//   "fragrances",
+//   "grain",
+//   "hexane",
+//   "hormones",
+//   "hydrogenated oils",
+//   "kitniyos / kitniyot (legumes)",
+//   "lactose",
+//   "latex",
+//   "msg",
+//   "natural additives",
+//   "natural colors",
+//   "natural dyes",
+//   "natural flavors",
+//   "natural ingredients",
+//   "natural preservatives",
+//   "nitrates/nitrites",
+//   "omega fatty acids",
+//   "paba",
+//   "palm oil",
+//   "parabens",
+//   "pesticides",
+//   "petro chemical",
+//   "petrolatum",
+//   "petroleum byproducts",
+//   "phosphates",
+//   "phosphorus",
+//   "phthalates",
+//   "pits",
+//   "preservatives",
+//   "rbgh/bst",
+//   "rennet",
+//   "salicylates",
+//   "sea salt",
+//   "shells/ shell pieces",
+//   "silicone",
+//   "sles ( sodium laureth sulfate)",
+//   "sls ( sodium lauryl sulfate )",
+//   "stabilizers",
+//   "probiotics",
+//   "starch",
+//   "sulfates",
+//   "sulfides",
+//   "sulfites / sulphites",
+//   "sulfur dioxide",
+//   "synthetic additives",
+//   "synthetic colors",
+//   "synthetic dyes",
+//   "synthetic flavors",
+//   "synthetic fragrance",
+//   "synthetic ingredients",
+//   "synthetic preservatives",
+//   "synthetics",
+//   "thc / tetrahydrocannabinol",
+//   "toxic pesticides",
+//   "triclosan",
+//   "vegan ingredients",
+//   "vegetarian ingredients",
+//   "yeast",
+//   "yolks"]
 // + enum  ALLERGEN_LIST= "corn", "crustacean shellfish", "dairy", "egg", "fish", "milk", "oats", "peanuts / peanut oil", "phenylalanine", "seeds", "sesame", "soy / soybeans", "tree nuts", "wheat".
+
+// "answerOf_debug_4": your answer gemini (why i see you keep adding spanish to "other_ingredients_group", "ingredients_group", and "instructions" fields?),
+// "answerOf_debug_2": "your answer gemini" (The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish?),
+// "answerOf_debug_3": your answer gemini" (Why you include translated content in JSON?),
+
+// + enum array ALLERGEN_LIST = [
+//   "corn",
+//   "crustacean shellfish",
+//   "dairy",
+//   "egg",
+//   "fish",
+//   "milk",
+//   "oats",
+//   "peanuts / peanut oil",
+//   "phenylalanine", "seeds",
+//   "sesame", "soy / soybeans",
+//   "tree nuts",
+//   "wheat"]
 export const makePrompt = ({
   ocrText,
   imageCount,
@@ -20,8 +154,6 @@ export const makePrompt = ({
 + enum SALT_OR_SODIUM_CLAIMS = ["low sodium", "low salt"]
 
 + enum SUGAR_AND_SWEET_CLAIMS = ["no sugar alcohol"]
-
-+ enum ATTRIBUTE_CONTAIN_LIST = ["1,4-dioxane", "active yeast", "added antibiotics", "added colors", "added dyes", "added flavors", "added fragrances", "added hormones", "added nitrates", "added nitrites", "added preservatives", "additives", "alcohol", "allergen", "aluminum", "amino acids", "ammonia", "animal by-products", "animal derivatives", "animal ingredients", "animal products", "animal rennet", "antibiotics", "artificial additives", "artificial colors", "artificial dyes", "artificial flavors", "artificial fragrance", "artificial ingredients", "artificial preservatives", "binders and/or fillers", "bleach", "bpa (bisphenol-a)", "butylene glycol", "by-products", "caffeine", "carrageenan", "casein", "cbd / cannabidiol", "chemical additives", "chemical colors", "chemical dyes", "chemical flavors", "chemical fragrances", "chemical ingredients", "chemical preservatives", "chemical sunscreens", "chemicals", "chlorine", "cholesterol", "coatings", "corn fillers", "cottonseed oil", "dyes", "edta", "emulsifiers", "erythorbates", "expeller-pressed oils", "fillers", "fluoride", "formaldehyde", "fragrances", "grain", "hexane", "hormones", "hydrogenated oils", "kitniyos / kitniyot (legumes)", "lactose", "latex", "msg", "natural additives", "natural colors", "natural dyes", "natural flavors", "natural ingredients", "natural preservatives", "nitrates/nitrites", "omega fatty acids", "paba", "palm oil", "parabens", "pesticides", "petro chemical", "petrolatum", "petroleum byproducts", "phosphates", "phosphorus", "phthalates", "pits", "preservatives", "rbgh/bst", "rennet", "salicylates", "sea salt", "shells/ shell pieces", "silicone", "sles ( sodium laureth sulfate)", "sls ( sodium lauryl sulfate )", "stabilizers", "probiotics", "starch", "sulfates", "sulfides", "sulfites / sulphites", "sulfur dioxide", "synthetic additives", "synthetic colors", "synthetic dyes", "synthetic flavors", "synthetic fragrance", "synthetic ingredients", "synthetic preservatives", "synthetics", "thc / tetrahydrocannabinol", "toxic pesticides", "triclosan", "vegan ingredients", "vegetarian ingredients", "yeast", "yolks"]
 
 + enum NON_CERTIFIED_CLAIMS = ["100% natural", "100% natural ingredients", "100% pure", "acid free", "aeroponic grown", "all natural", "all natural ingredients", "aquaponic/aquaculture grown", "baked", "biodegradable", "cage free", "cold-pressed", "direct trade", "dolphin safe", "dry roasted", "eco-friendly", "farm raised", "filtered", "free range", "freeze-dried", "from concentrate", "grade a", "greenhouse grown", "heat treated", "heirloom", "homeopathic", "homogenized", "hydroponic grown", "hypo-allergenic", "irradiated", "live food", "low acid", "low carbohydrate", "low cholesterol", "macrobiotic", "minimally processed", "natural", "natural botanicals", "natural fragrances", "natural ingredients", "no animal testing", "no sulfites added", "non gebrokts", "non-alcoholic", "non-irradiated", "non-toxic", "not fried", "not from concentrate", "pasteurized", "pasture raised", "prairie raised", "raw", "responsibly sourced palm oil", "sprouted", "un-filtered", "un-pasteurized", "unscented", "vegetarian or vegan diet/feed", "wild", "wild caught"]
 
@@ -38,22 +170,25 @@ Carefully examine the provided image and and created JSON output in given format
 json
 {
   "validatorAndFixBug": {
-    "answerOfDenbug_1": "your answer gemini" ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image),
-    "answerOfDebug_2": "your answer gemini" (The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish?),
-    "answerOfDebug_3": your answer gemini" (Why you include translated content in JSON?),
+    "answerOf_debug_1": "your answer gemini" ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image),
+    "important_require__1": 'gemini stop keeping to put spanish contents to JSON Object (such as 'instructions', 'other_ingredients_group', 'ingredients_group')",
+    "end": true,
   },
   "product": {
     "content_in_spanish_must_be_prohibited": true,
     "is_product_supplement": boolean,
     "certifierAndLogo":"your answer gemini" (help me list all certifiers logo(such as kosher U pareve, ...) and usda inspection marks on provided image),
     "readAllConstants": "your answer gemini"(please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?"),
-    "other_ingredients_group:[{"ingredients": string[]}, ...], 
-    "ingredients_group": [{"ingredients": string[]}, ...], 
+    "other_ingredients_group":[{"ingredients": string[]}, ...], 
+    "ingredients_group": [{"ingredients": string[]}, ...],
     "allergen": {
-      "ALLERGEN_LIST": ["corn", "crustacean shellfish", "dairy", "egg", "fish", "milk", "oats", "peanuts / peanut oil", "phenylalanine", "seeds", "sesame", "soy / soybeans", "tree nuts", "wheat"],
-      "contain": string[],
-      "containOnEquipment": {"statement": string, "allergenList: string[] },
-      "freeOf": string[],
+      "allergen_freeOf": string[],
+      "allergen_contain": string[],
+      "allergen_containOnEquipment": {"statement": string, "allergenList: string[] },
+    },
+    "contain_and_notContain": {
+      "product_contain": string[],
+      "product_does_not_contain": string[],
     },
     "header": {
       "productName": string,
@@ -159,10 +294,7 @@ json
           "plantBasedOrPlantDerivedClaim": boolean,
         },
       },
-      "containInfo": {
-        "attribute__contain": string[],
-        "attribute__doesNotContain": string[],
-      },
+
       "otherClaims:{
         "fatContentClaims": string[],
         "saltOrSodiumClaims": string[],
@@ -311,21 +443,22 @@ f) "packaging_ancillaryInformation":
 Ex: "22222-22-A4433"
 
 5) "allergen" rules:
-a) "allergen.contain" rules:
-+ "allergen.contain" is a list of allergen ingredients could make customer allergen.
-+ the list from enum ALLERGEN_LIST
+a) "allergen_contain" rules:
++ "allegen_contain" is a list of allergen ingredients could make customer allergen.
 + "allergen.contain" list usually start after text "contain:", or "contain".
-Ex 1: "May contain milk" should be recorded as {"contain": ["milk"]} 
-Ex 2: "Contain: Corn, Milk." should be recorded as {"contain": ["Corn", "Milk"]}
+Ex 1: "May contain milk, and corn" should be recorded as {"allergen_contain": ["milk". "corn]} 
+Ex 2: "Contain: Corn, Milk." should be recorded as {"allergen_contain": ["corn", "milk"]}
 
-b) "allergen.freeOf" rules:
-+ "allergen.freeOf" 's value must match enum value in "allergen.ALLERGEN_LIST"
-Ex 1: "free of soy" should be recorded as {"freeOf": ["soy / soybeans"]} 
-Ex 2: "No Milk, Corn" should be recorded as {"freeOf": ["milk", "corn"]}
+b) "allergen_freeOf":
++ "allergen_freeOf" is complicated to extract so please follow all rule below to get "freeOf" values:
 
-c) "allergen.containOnEquipment" rules:
-+ "containOnEquipment.allergenList" is a list of allergen ingredients that is said they may be contained in/on manufacturing equipments.
-+ "containOnEquipment.statement" is the context about manufacturing equipment may contain allergen ingredient list.
++ "allergen_freeOf" is all ingredients that is claim not be in product. usually start with text "free of ...", "made without ...".
+Ex 1: "free of soy & milk" should be recorded as {"allergen_freeOf": ["soy", "milk"]} 
+Ex 2: "No Milk, Corn" should be recorded as {"allergen_freeOf": ["milk", "corn"]}
+
+c) "allergen_containOnEquipment" rules:
++ "allergen_containOnEquipment.allergenList" is a list of allergen ingredients that is said they may be contained in/on manufacturing equipments.
++ "allergen_containOnEquipment.statement" is the context about manufacturing equipment may contain allergen ingredient list.
 
 6) "supplyChain":
 +  "supplyChain.countryOfOrigin" is the country name in where product was made. Ex: "USA".
@@ -357,13 +490,6 @@ Ex 2: If you see statement like "Non-gmo" but do not found the "Non-GMO" certifi
   }  
 }
 
-b) "attributesAndCertifiers.containInfo.attribute__contain":
-+ is a list thing that cotain in product
-+ the list from enum ATTRIBUTE_CONTAIN_LIST
-
-c) "attributesAndCertifiers.containInfo.attribute__doesNotContain":
-+ is a list thing that does not cotain in product
-+ the list from enum ATTRIBUTE_CONTAIN_LIST
 
 d)"attributesAndCertifiers.otherClaims.highOrRichInOrExcellentSourceOf":
 + is the list of the text such as "Rich in Vitamin D", "Excellent Source of Vitamin D", "High Vitamin D",.. the text that emphasize that product have something in high amount and found on provided image.
@@ -383,7 +509,12 @@ g) "attributesAndCertifiers.otherClaims.sugarAndSweetenerClaims" rules:
 
 h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 + if USDA inspection mark found on provided image, return full words on that inspection mark
-  `;
+  
+10) "contain_and_notContain" rules:
++ "product_contain" is a list of things product claim to contain, made with , or with, ...
+
++  "does_not_contain" is a list of things product claim does not contain, or made without, free of ...
+`;
 };
 
 // d) "slogan" rules:
@@ -393,3 +524,33 @@ h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 
 // + "allergen.freeOf" is a list of allergen ingredients could make customer allergen that is stated as free from product.
 // + "allergen.freeOf" list usually start after text "free of ...", "made without ...".
+
+// "MADE WITHOUT: wheat, ... shellfish": This statement clearly identifies ingredients not present in the product.
+// "wheat": Direct match to the "wheat" entry in ALLERGEN_LIST.
+// "shellfish": This aligns with "crustacean shellfish" in ALLERGEN_LIST, making it a valid addition.
+// Important Note: While the product avoids gluten, synthetic flavors/colors, and preservatives, these are not part of the standardized ALLERGEN_LIST provided, so they are not included in freeOf.
+
+// + list all ingredients that product claim does not contain list string
+// + list all ingredients that product claim does contain as list string
+
+// be careful with adjective and multiple nouns such as text "added flavoring and coloring" = ["added flavoring",  "added coloring"]
+
+// in format {
+// contain: string[],
+// doesNotContain: string[],
+// }nutreint
+
+// "containInfo": {
+//   "attribute__contain": string[],
+//   "attribute__doesNotContain": string[],
+// },
+
+// b) "attributesAndCertifiers.containInfo.attribute__contain":
+// + is a list thing that cotain in product
+// + the list from enum ATTRIBUTE_CONTAIN_LIST
+
+// c) "attributesAndCertifiers.containInfo.attribute__doesNotContain":
+// + is a list thing that does not cotain in product
+// + the list from enum ATTRIBUTE_CONTAIN_LIST
+
+// + the list from enum ALLERGEN_LIST
