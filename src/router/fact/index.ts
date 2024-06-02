@@ -27,6 +27,21 @@ router.get('/get-result/:sessionId', async (req, res) => {
     'nut-' + sessionId + '.json'
   );
 
+  const finalResultPath = path.join(
+    resultsDir + `/${sessionId}`,
+    'validated-output-' + sessionId + '.json'
+  );
+
+  try {
+    const [finalData] = await Promise.all([
+      fs.readFileSync(finalResultPath, 'utf8'),
+    ]);
+
+    const finalRes = JSON.parse(finalData);
+
+    return res.json(finalRes);
+  } catch (err) {}
+
   try {
     const [allData, nutData] = await Promise.all([
       fs.readFileSync(allFilePath, 'utf8'),
@@ -55,16 +70,23 @@ router.get('/get-result/:sessionId', async (req, res) => {
         factPanels: nutRes.product.factPanels,
       },
     };
-    // ...validateProductDataPoints(allRes.product),
-    // factPanels: transformFactPanels(nutRes.product.factPanels),
 
-    let validatedResponse = responseValidator(response);
+    let validatedResponse = await responseValidator(response);
 
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
       'validated-output-' + sessionId + '.json',
-      JSON.stringify(response)
+      JSON.stringify(validatedResponse)
     );
+
+    // ...validateProductDataPoints(allRes.product),
+    // factPanels: transformFactPanels(nutRes.product.factPanels),
+
+    // console.log('response', response);
+
+    // if (finalRes) {
+    //   res.json(validatedResponse);
+    // }
 
     // removeFieldByPath(response, 'answerOfQuestion');
     // removeFieldByPath(response, 'answerOfRemindQuestion');
@@ -80,10 +102,8 @@ router.get('/get-result/:sessionId', async (req, res) => {
     // removeFieldByPath(response, 'product.readAllConstants');
     // removeFieldByPath(response, 'product.certifierAndLogo');
     // removeFieldByPath(response, 'validatorAndFixBug');
-
-    res.json(validatedResponse);
   } catch (error) {
-    // console.log('error', error);
+    console.log('error', error);
     return res.status(200).send('Image is processing. Please wait');
   }
 });

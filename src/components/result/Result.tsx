@@ -65,6 +65,8 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     physical,
     instructions,
     packaging,
+    contain_and_notContain,
+    process_method,
     ...metaInfo
   } = productInfo;
 
@@ -202,7 +204,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
             }
           )}
         <CamelFieldStringRender objectValues={otherClaims} />
-        <CamelFieldStringRender objectValues={containInfo} />
+        <CamelFieldStringRender objectValues={contain_and_notContain} />
       </SectionWrapper>
 
       <SectionWrapper name='Marketing'>

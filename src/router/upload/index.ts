@@ -287,7 +287,7 @@ const onProcessNut = async ({
   });
 };
 
-const onProcessOther = ({
+const onProcessOther = async ({
   req,
   res,
   invalidatedInput,
@@ -313,6 +313,21 @@ const onProcessOther = ({
     return;
   }
 
+  const nutImagesOCRresult = await getOcrTextAllImages([
+    ...invalidatedInput.nutIncluded,
+    ...invalidatedInput.nutExcluded,
+  ]);
+
+  const allText = nutImagesOCRresult.reduce(
+    (accumulator: any, currentValue: any, idx: number) => {
+      return {
+        ...accumulator,
+        [`ocrImage_${idx}`]: currentValue,
+      };
+    },
+    {}
+  );
+
   onProcessGemini({
     req,
     res,
@@ -322,7 +337,13 @@ const onProcessOther = ({
       ...invalidatedInput.nutIncluded,
       ...invalidatedInput.nutExcluded,
     ],
-    prompt: makePrompt({}),
+    prompt: makePrompt({
+      ocrText: JSON.stringify(allText),
+      imageCount: [
+        ...invalidatedInput.nutIncluded,
+        ...invalidatedInput.nutExcluded,
+      ]?.length,
+    }),
     prefix: 'all',
   });
 };
