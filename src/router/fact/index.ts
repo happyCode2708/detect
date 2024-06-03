@@ -3,6 +3,9 @@ import fs from 'fs';
 import { resultsDir, historyDir } from '../../server';
 import path from 'path';
 import { writeJsonToFile } from '../../utils';
+import { lowerCase } from 'lodash';
+import { responseValidator } from '../../lib/validator/main';
+import { removeFieldByPath, removeRawFieldData } from '../../lib/server_utils';
 
 const router = express.Router();
 
@@ -14,8 +17,6 @@ router.get('/get-result/:sessionId', async (req, res) => {
     return res.json({ isSuccess: false });
   }
 
-  // Construct the full file path
-  // const filePath = path.join(resultsDir + `/${sessionId}`, sessionId);
   const allFilePath = path.join(
     resultsDir + `/${sessionId}`,
     'all-' + sessionId + '.json'
@@ -24,6 +25,21 @@ router.get('/get-result/:sessionId', async (req, res) => {
     resultsDir + `/${sessionId}`,
     'nut-' + sessionId + '.json'
   );
+
+  const finalResultPath = path.join(
+    resultsDir + `/${sessionId}`,
+    'validated-output-' + sessionId + '.json'
+  );
+
+  try {
+    const [finalData] = await Promise.all([
+      fs.readFileSync(finalResultPath, 'utf8'),
+    ]);
+
+    const finalRes = JSON.parse(finalData);
+
+    return res.json(finalRes);
+  } catch (err) {}
 
   try {
     const [allData, nutData] = await Promise.all([
@@ -34,46 +50,54 @@ router.get('/get-result/:sessionId', async (req, res) => {
     const allRes = JSON.parse(allData);
     const nutRes = JSON.parse(nutData);
 
-    const { isSuccess: allSuccess } = allRes || {};
-    const { isSuccess: nutSuccess } = nutRes || {};
+    const { isSuccess: allSuccess, status: allStatus } = allRes || {};
+    const { isSuccess: nutSuccess, status: nutStatus } = nutRes || {};
+
+    if (allStatus === 'processing' || nutStatus === 'processing') {
+      return res.status(200).send({
+        isSuccess: 'unknown',
+        status: 'processing',
+        message: 'Processing images',
+      });
+    }
 
     if (nutSuccess === false || allSuccess === false) {
-      res.json({ isSuccess: false });
+      return res.json({ isSuccess: false });
     }
 
     let response = {
-      ...allRes,
-      ...nutRes,
+      ...allRes.data,
+      ...nutRes.data,
+      validatorAndFixBug: {
+        ...allRes.data.validatorAndFixBug,
+        ...nutRes.data.validatorAndFixBug,
+      },
       product: {
-        ...allRes.product,
-        factPanels: transformFactPanels(nutRes.product.factPanels),
+        ...allRes.data.product,
+        factPanels: nutRes.data.product.factPanels,
       },
     };
+
+    let validatedResponse = await responseValidator(response);
+
+    removeRawFieldData(validatedResponse);
 
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
       'validated-output-' + sessionId + '.json',
-      JSON.stringify(response)
+      JSON.stringify({
+        isSuccess: true,
+        data: validatedResponse,
+        message: 'Successfully process image',
+      })
     );
-
-    // removeFieldByPath(response, 'answerOfQuestion');
-    // removeFieldByPath(response, 'answerOfRemindQuestion');
-    // removeFieldByPath(response, 'answerOfFoundBug');
-    // removeFieldByPath(response, 'answerOfFoundBug');
-    removeFieldByPath(response, 'product.is_product_supplement');
-    removeFieldByPath(response, 'product.readAllConstants');
-    removeFieldByPath(response, 'product.certifierAndLogo');
-    // removeFieldByPath(response, 'answerOfQuestionsAboutNutritionFact');
-    // removeFieldByPath(response, 'answerOfQuestionAboutNutritionFactTitle');
-    // removeFieldByPath(response, 'answerOfQuestionAboutValidator');
-    // removeFieldByPath(response, 'answerOfQuestionAboutLanguage');
-    // removeFieldByPath(response, 'answerOfDebug');
-    removeFieldByPath(response, 'validatorAndFixBug');
-
-    res.json(response);
   } catch (error) {
-    // console.log('error', error);
-    return res.status(200).send('Image is processing. Please wait');
+    console.log('error', error);
+    return res
+      .status(500)
+      .json({ isSuccess: false, message: 'Something went wrong' });
+
+    // return res.status(200).send('Image is processing. Please wait');
   }
 });
 
@@ -94,72 +118,3 @@ router.get('/get-history', (req, res) => {
 });
 
 export default router;
-
-type AnyObject = { [key: string]: any };
-
-const removeFieldByPath = (obj: AnyObject, path: string): AnyObject => {
-  const keys = path.split('.');
-  let current: AnyObject = obj;
-
-  for (let i = 0; i < keys.length - 1; i++) {
-    if (current[keys[i]] === undefined) {
-      return obj; // Path does not exist
-    }
-    current = current[keys[i]] as AnyObject;
-  }
-
-  delete current[keys[keys.length - 1]];
-  return obj;
-};
-
-const combineResult = (result: any) => {
-  if (result.nut && result.all) {
-    return {
-      product: {
-        ...result.all.product,
-        factPanels: result.nut.product.factPanels,
-      },
-    };
-  }
-
-  return false;
-};
-
-const transformFactPanels = (factPanels: any) => {
-  if (!factPanels) return factPanels;
-
-  let cloneFactPanels = [...factPanels];
-
-  cloneFactPanels = cloneFactPanels.map((factPanelItem: any) => {
-    return transformOneFactPanel(factPanelItem);
-  });
-
-  return cloneFactPanels;
-};
-
-const transformOneFactPanel = (factPanelItem: any) => {
-  let cloneFactPanelItem = { ...factPanelItem };
-
-  cloneFactPanelItem.nutrients = cloneFactPanelItem.nutrients.map(
-    (nutrientItem: any) => {
-      let modifiedNutrient = { ...nutrientItem };
-
-      const logicExtractedDescriptor = getDescriptor(nutrientItem?.name);
-      if (logicExtractedDescriptor && !nutrientItem?.['descriptor']) {
-        modifiedNutrient['descriptor'] = logicExtractedDescriptor;
-        modifiedNutrient['name'] = modifiedNutrient['name']?.split(
-          logicExtractedDescriptor
-        )?.[0];
-      }
-
-      return modifiedNutrient;
-    }
-  );
-  return cloneFactPanelItem;
-};
-
-const getDescriptor = (nutrientName: string) => {
-  const pattern = /(\s*\([^()]*\))+$/;
-  const match = nutrientName.match(pattern);
-  return match ? match[0] : null;
-};

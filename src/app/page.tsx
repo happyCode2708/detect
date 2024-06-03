@@ -1,10 +1,10 @@
 'use client';
 import { useEffect, useState, useRef, MutableRefObject } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader, RefreshCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import ExtractionHistory from '@/components/extract-history/ExtractionHitory';
+// import ExtractionHistory from '@/components/extract-history/ExtractionHitory';
 import { useMutateUploadFile } from '@/queries/home';
 import { FluidContainer } from '@/components/container/FluidContainer';
 import { Result } from '@/components/result/Result';
@@ -16,6 +16,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { isEqual } from 'lodash';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import Link from 'next/link';
+import { SectionWrapper } from '@/components/wrapper/SectionWrapper';
 
 export default function Home() {
   const [files, setFiles] = useState<any>([]);
@@ -28,7 +30,6 @@ export default function Home() {
     other: true,
   });
 
-  const [resultFileName, setResultFileName] = useState<any>();
   const [sessionId, setSessionId] = useState<any>();
 
   const [loading, setLoading] = useState(false);
@@ -94,7 +95,6 @@ export default function Home() {
 
   const onCancel = () => {
     setLoading(false);
-    // setResultFileName('');
     setSessionId('');
     setProductInfo(null);
     if (refInterval.current) {
@@ -120,7 +120,7 @@ export default function Home() {
     const fileReaders = [];
     let fileDataUrls: any = [];
 
-    files.forEach((file) => {
+    files.forEach((file, index) => {
       const fileReader = new FileReader();
 
       fileReaders.push(fileReader);
@@ -128,7 +128,7 @@ export default function Home() {
       fileReader.onload = (e) => {
         if (!e?.target) return;
 
-        fileDataUrls.push(e.target.result);
+        fileDataUrls[index] = e.target.result;
 
         // Only update state when all files are read
         if (fileDataUrls.length === files.length) {
@@ -166,17 +166,15 @@ export default function Home() {
               'Network response was not ok ' + response.statusText
             );
           }
-          const data = await response.json();
+          const res = await response.json();
 
-          const result = data;
-
-          const { isSuccess } = result || {};
+          const { isSuccess, data, message } = res || {};
 
           if (isSuccess === false) {
             setLoading(false);
             toast({
               title: 'Something went wrong',
-              description: 'Failed to process. Please try again',
+              description: message,
               variant: 'destructive',
               duration: 7000,
             });
@@ -186,22 +184,26 @@ export default function Home() {
             return;
           }
 
-          setProductInfo(result);
+          if (isSuccess === true) {
+            setProductInfo(data);
+            toast({
+              title: 'Successfully',
+              description: message,
+              variant: 'success',
+              duration: 5000,
+            });
 
-          toast({
-            title: 'Successfully',
-            description: 'Images processing is complete',
-            variant: 'success',
-            duration: 5000,
-          });
-
+            if (refInterval.current) {
+              clearInterval(refInterval.current);
+            }
+            setLoading(false);
+          }
+        } catch (error) {
+          console.error('some thing went wrong', error);
           if (refInterval.current) {
             clearInterval(refInterval.current);
           }
-
           setLoading(false);
-        } catch (error) {
-          console.error('Waiting for result', error);
         }
       }, 4500);
     }
@@ -217,7 +219,18 @@ export default function Home() {
       <div className='flex flex-col gap-4 py-4 px-4'>
         <div className='grid grid-cols-4 gap-2'>
           <div className='col-span-1'>
-            <SectionWrapper title='Info'>Last update: 5/29/24</SectionWrapper>
+            <SectionWrapper title='Info'>
+              <span>Last update: 3/6/24</span>
+              <Link
+                href='/update'
+                className={cn(
+                  buttonVariants({ variant: 'default' }),
+                  'h-[30px] ml-2'
+                )}
+              >
+                View update
+              </Link>
+            </SectionWrapper>
           </div>
           <div className='col-span-3'>
             <SectionWrapper title='Output Config'>
@@ -372,24 +385,3 @@ export default function Home() {
     </FluidContainer>
   );
 }
-
-const SectionWrapper = ({
-  title,
-  children,
-}: {
-  title?: string;
-  children: React.ReactNode;
-}) => {
-  return (
-    <div className='pt-6 relative'>
-      <div className='border rounded-md px-[10px] py-[20px] min-h-[66px]'>
-        {title && (
-          <div className='font-bold border rounded-lg px-[8px] py-[2px] absolute top-[8px] lef-[35px] bg-white'>
-            {title}
-          </div>
-        )}
-        {children && children}
-      </div>
-    </div>
-  );
-};

@@ -1,5 +1,3 @@
-export const NEW_PROMPT_1 = `you you know me?`;
-
 // export const NEW_PROMPT = `
 // Some common constants:
 // + FOOTNOTE_INDICATORS = ["*", "**", "†", "★★", "★"]
@@ -1117,4 +1115,4 @@ export const NEW_PROMPT_1 = `you you know me?`;
 
 // 2) Each nutritional line's values must stay unique. Do not interchange numbers between lines or make false inferences. For instance, "total sugar 18g, included 5g added sugar 4%," should create two objects: one as "name": "total sugar", "value": 18, "uom": "g", "percentDailyValue": null, and another as "name": "added sugar", "value": 5, "uom": "g", "percentDailyValue": 14%.
 
-export const PROCESS_TYPE = ['nut', 'all'];
+// export const PROCESS_TYPE = ['nut', 'all'];

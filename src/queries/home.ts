@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 export const useMutateUploadFile = () => {
   return useMutation({
     mutationFn: async (formData: any) => {
-      const response = await fetch('/api/upload/gemini', {
+      const response = await fetch('/api/upload/process-image', {
         method: 'POST',
         body: formData,
       });

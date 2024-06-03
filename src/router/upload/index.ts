@@ -57,7 +57,7 @@ const Storage = multer.diskStorage({
 const upload = multer({ storage: Storage });
 
 router.post(
-  '/gemini',
+  '/process-image',
   async (req, res, next) => {
     const sessionId = uuidv4();
 
@@ -256,10 +256,23 @@ const onProcessNut = async ({
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
       resultFileName,
-      JSON.stringify({ product: { factPanel: [] } })
+      JSON.stringify({ isSuccess: true, data: { product: { factPanel: [] } } })
     );
     return;
   }
+
+  const prefix = 'nut';
+
+  const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
+
+  writeJsonToFile(
+    resultsDir + `/${sessionId}`,
+    resultFileName,
+    JSON.stringify({
+      isSuccess: 'unknown',
+      status: 'processing',
+    })
+  );
 
   const nutImagesOCRresult = await getOcrTextAllImages(
     invalidatedInput.nutIncluded
@@ -283,11 +296,11 @@ const onProcessNut = async ({
       ocrText: JSON.stringify(nutText),
       imageCount: invalidatedInput.nutIncluded?.length,
     }),
-    prefix: 'nut',
+    prefix,
   });
 };
 
-const onProcessOther = ({
+const onProcessOther = async ({
   req,
   res,
   invalidatedInput,
@@ -307,11 +320,39 @@ const onProcessOther = ({
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
       resultFileName,
-      JSON.stringify({ product: {} })
+      JSON.stringify({ isSuccess: true, data: { product: {} } })
     );
 
     return;
   }
+
+  const prefix = 'all';
+
+  const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
+
+  writeJsonToFile(
+    resultsDir + `/${sessionId}`,
+    resultFileName,
+    JSON.stringify({
+      isSuccess: 'unknown',
+      status: 'processing',
+    })
+  );
+
+  const nutImagesOCRresult = await getOcrTextAllImages([
+    ...invalidatedInput.nutIncluded,
+    ...invalidatedInput.nutExcluded,
+  ]);
+
+  const allText = nutImagesOCRresult.reduce(
+    (accumulator: any, currentValue: any, idx: number) => {
+      return {
+        ...accumulator,
+        [`ocrImage_${idx}`]: currentValue,
+      };
+    },
+    {}
+  );
 
   onProcessGemini({
     req,
@@ -322,8 +363,14 @@ const onProcessOther = ({
       ...invalidatedInput.nutIncluded,
       ...invalidatedInput.nutExcluded,
     ],
-    prompt: makePrompt({}),
-    prefix: 'all',
+    prompt: makePrompt({
+      ocrText: JSON.stringify(allText),
+      imageCount: [
+        ...invalidatedInput.nutIncluded,
+        ...invalidatedInput.nutExcluded,
+      ]?.length,
+    }),
+    prefix,
   });
 };
 

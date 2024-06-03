@@ -23,20 +23,15 @@ export const getOcrText = async (
           const vertices = text.boundingPoly.vertices.map(
             (vertex) => `(${vertex.x},${vertex.y})`
           );
-          // console.log('Bounds: ' + vertices.join(', '));
         });
         return resolve(arrayText);
-
-        return resolve(JSON.stringify(wholeText));
       } else {
         console.log('No text detected.');
         return resolve([]);
-        return resolve('');
       }
     } catch (e) {
       console.log('Error', e);
       return resolve([]);
-      return resolve('');
     }
   });
 };
@@ -51,15 +46,13 @@ export const isImageHaveNutFact = (filePath: string) => {
   return new Promise((resolve, reject) => {
     execFile(
       process.env.pythonV || 'python',
-      ['detect.py', imagePath],
+      ['src/python/detect.py', imagePath],
       (error: any, stdout: any, stderr: any) => {
         if (error) {
           console.error(`exec error: ${error}`);
-          // return res.status(500).send(error);
         }
         if (stderr) {
           console.error(`stderr: ${stderr}`);
-          // return res.status(500).send(stderr);
         }
         console.log(stdout);
         console.log(typeof stdout);
@@ -67,12 +60,6 @@ export const isImageHaveNutFact = (filePath: string) => {
 
         const stringResult = stdout.split('```')?.[1];
         return resolve(stringResult === 'true');
-
-        // const detections = JSON.parse(stdout);
-        // console.log('detection')
-        // res.json(detections);
-        // return resolve(detections);
-        // fs.unlinkSync(imagePath); // Delete the uploaded file after processing
       }
     );
   });
@@ -114,4 +101,41 @@ export const addUniqueString = (array: string[], item: string) => {
     array.push(item);
   }
   return array;
+};
+
+type AnyObject = { [key: string]: any };
+
+export const removeFieldByPath = (obj: AnyObject, path: string): AnyObject => {
+  const keys = path.split('.');
+  let current: AnyObject = obj;
+
+  for (let i = 0; i < keys.length - 1; i++) {
+    if (current[keys[i]] === undefined) {
+      return obj; // Path does not exist
+    }
+    current = current[keys[i]] as AnyObject;
+  }
+
+  delete current[keys[keys.length - 1]];
+  return obj;
+};
+
+export const removeRawFieldData = (rawResponse: object) => {
+  const fields = [
+    'validatorAndFixBug',
+    'product.validatorAndFixBug',
+    'product.certifierAndLogo',
+    'product.content_in_spanish_must_be_prohibited',
+    'product.allergen.allergen_freeOf',
+    'product.allergen.allergen_contain',
+    'product.allergen.allergen_containOnEquipment',
+    'product.contain_and_notContain.product_contain',
+    'product.contain_and_notContain.product_does_not_contain',
+    'product.process',
+    'product.marketingAll.social_media_check',
+  ];
+
+  fields.forEach((removeField) => {
+    removeFieldByPath(rawResponse, removeField);
+  });
 };
