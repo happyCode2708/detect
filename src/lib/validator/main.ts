@@ -2,6 +2,7 @@ import { allergenValidator } from './allergenValidator';
 import { containValidator } from './containValidator';
 import { factPanelValidator } from './factPanelValidator';
 import { nonCertifierClaimValidator } from './nonCertifierClaimValidator';
+import { saltClaimValidator } from './saltClaimValidator';
 
 export const responseValidator = async (response: any) => {
   let validatedResponse = { ...response };
@@ -24,6 +25,7 @@ const validateProductDataPoints = async (response: any) => {
   await allergenValidator(modifiedProductDataPoints);
   await containValidator(modifiedProductDataPoints);
   await nonCertifierClaimValidator(modifiedProductDataPoints);
+  await saltClaimValidator(modifiedProductDataPoints);
 
   // validateContainAndDoesNotContain(productDataPoints); //* attribute
 

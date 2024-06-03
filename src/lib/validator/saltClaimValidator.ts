@@ -1,8 +1,6 @@
 import { lowerCase, toLower } from 'lodash';
 
-export const nonCertifierClaimValidator = async (
-  modifiedProductDataPoints: any
-) => {
+export const saltClaimValidator = async (modifiedProductDataPoints: any) => {
   const current_allergen_freeOf =
     modifiedProductDataPoints['allergen']['allergen_freeOf'][
       'allergen_freeOf_list'
