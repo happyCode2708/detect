@@ -1,4 +1,4 @@
-import { lowerCase, toLower } from 'lodash';
+import { toLower } from 'lodash';
 
 export const containValidator = (modifiedProductDataPoints: any) => {
   const current_allergen_freeOf =
@@ -15,8 +15,6 @@ export const containValidator = (modifiedProductDataPoints: any) => {
   const current_product_contain =
     modifiedProductDataPoints['contain_and_notContain']['product_contain'] ||
     [];
-
-  // const current_ingredients = []
 
   validateContainOrDoesNotContain(
     [...current_allergen_freeOf, ...current_product_does_not_contain],

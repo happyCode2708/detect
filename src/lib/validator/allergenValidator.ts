@@ -1,4 +1,4 @@
-import { lowerCase, toLower } from 'lodash';
+import { toLower } from 'lodash';
 
 export const allergenValidator = async (modifiedProductDataPoints: any) => {
   const current_allergen_freeOf =
@@ -59,17 +59,6 @@ const validateAllergenFreeOfOrContainOrContainOnEquipment = async (
 ) => {
   let validated_allegen_field = [] as any;
 
-  // ingredientList.forEach((ingredientName) => {
-  //   const lowercaseIngredientName = lowerCase(ingredientName);
-  //   const matchedAllergens = await checkMatchAllergen(lowercaseIngredientName);
-  //   if (matchedAllergens?.length > 0) {
-  //     validated_allegen_field = [
-  //       ...validated_allegen_field,
-  //       ...matchedAllergens,
-  //     ];
-  //   }
-  // });
-
   for (const ingredientName of ingredientList) {
     const lowercaseIngredientName = toLower(ingredientName);
     const matchedAllergens = await checkMatchAllergen(lowercaseIngredientName);
@@ -88,23 +77,6 @@ const validateAllergenFreeOfOrContainOrContainOnEquipment = async (
 
 const checkMatchAllergen = async (ingredientName: string) => {
   let matchAllergens = [] as any;
-
-  // Object.entries(ALLERGEN_MAPPING).forEach((keyNvalue: any) => {
-  //   const [allergenEnum, possibleValueList] = keyNvalue;
-
-  //   possibleValueList.forEach((possibleValueItem: string) => {
-  //     if (ingredientName.includes(possibleValueItem)) {
-  //       if (allergenEnum === 'tree nuts') {
-  //         if (!possibleValueList.includes(ingredientName)) {
-  //           return;
-  //         }
-  //       }
-
-  //       matchAllergens.push(allergenEnum);
-  //       return;
-  //     }
-  //   });
-  // });
 
   for (const keyNvalue of Object.entries(ALLERGEN_MAPPING)) {
     await promiseCheckEachEnum(keyNvalue, ingredientName, matchAllergens);
@@ -152,25 +124,3 @@ const ALLERGEN_MAPPING = {
   'tree nuts': ['tree nuts', 'nuts', 'nut'],
   wheat: ['wheat'],
 };
-
-// const ALLERGEN_MAPPING_CONTAIN = {
-//   'crustacean shellfish': ['shellfish', 'crustacean shellfish'],
-//   corn: ['corn'],
-//   dairy: ['dairy'],
-//   egg: ['egg'],
-//   fish: ['fish'],
-//   milk: ['milk'],
-//   oats: ['oats'],
-//   'peanuts / peanut oil': [
-//     'peanuts / peanut oil',
-//     'peanuts',
-//     'peanut oil',
-//     'tree nuts',
-//   ],
-//   phenylalanine: ['phenylalanine'],
-//   seeds: ['seeds'],
-//   sesame: ['seasame'],
-//   'soy / soybeans': ['soy / soybeans', 'soy', 'soybeans'],
-//   'tree nuts': ['tree nuts', 'nuts', 'nut'],
-//   wheat: ['wheat'],
-// };
