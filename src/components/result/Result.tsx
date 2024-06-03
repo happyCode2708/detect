@@ -71,7 +71,8 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
   } = productInfo;
 
   const {
-    containOnEquipment,
+    allergen_containOnEquipment_statement,
+    validated_allergen_containOnEquipment,
     validated_allergen_contain,
     validated_allergen_freeOf,
   } = allergen || {};
@@ -221,21 +222,27 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
       </SectionWrapper>
 
       <SectionWrapper name='Allergen'>
-        {containOnEquipment?.statement && (
+        {allergen_containOnEquipment_statement && (
           <div>
-            <div className='font-bold'>Contain on equipments list</div>
-            <div>{containOnEquipment?.allergenList?.join(', ')}</div>
-            <div className='font-bold'>Contain on equipment statement</div>
-            <div>{containOnEquipment?.statement}</div>
+            <div className='flex flex-row'>
+              <div className='font-bold'>Contain on equipments list: </div>
+              <div>{validated_allergen_containOnEquipment?.join(', ')}</div>
+            </div>
+            <div>
+              <div className='font-bold'>Contain on equipment statement: </div>
+              <p className='ml-6'>
+                {allergen_containOnEquipment_statement.statement}
+              </p>
+            </div>
           </div>
         )}
-        {validated_allergen_contain && (
+        {validated_allergen_contain?.length > 0 && (
           <div className='flex flex-row'>
             <div className='font-bold'>Contain: </div>
             <div>{validated_allergen_contain?.join(', ')} </div>
           </div>
         )}
-        {validated_allergen_freeOf && (
+        {validated_allergen_freeOf?.length > 0 && (
           <div className='flex flex-row'>
             <div className='font-bold'>Free of: </div>
             <p>{validated_allergen_freeOf?.join(', ')} </p>

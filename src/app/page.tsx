@@ -120,7 +120,7 @@ export default function Home() {
     const fileReaders = [];
     let fileDataUrls: any = [];
 
-    files.forEach((file) => {
+    files.forEach((file, index) => {
       const fileReader = new FileReader();
 
       fileReaders.push(fileReader);
@@ -128,7 +128,7 @@ export default function Home() {
       fileReader.onload = (e) => {
         if (!e?.target) return;
 
-        fileDataUrls.push(e.target.result);
+        fileDataUrls[index] = e.target.result;
 
         // Only update state when all files are read
         if (fileDataUrls.length === files.length) {
@@ -166,17 +166,15 @@ export default function Home() {
               'Network response was not ok ' + response.statusText
             );
           }
-          const data = await response.json();
+          const res = await response.json();
 
-          const result = data;
-
-          const { isSuccess } = result || {};
+          const { isSuccess, data, message } = res || {};
 
           if (isSuccess === false) {
             setLoading(false);
             toast({
               title: 'Something went wrong',
-              description: 'Failed to process. Please try again',
+              description: message,
               variant: 'destructive',
               duration: 7000,
             });
@@ -186,22 +184,26 @@ export default function Home() {
             return;
           }
 
-          setProductInfo(result);
+          if (isSuccess === true) {
+            setProductInfo(data);
+            toast({
+              title: 'Successfully',
+              description: message,
+              variant: 'success',
+              duration: 5000,
+            });
 
-          toast({
-            title: 'Successfully',
-            description: 'Images processing is complete',
-            variant: 'success',
-            duration: 5000,
-          });
-
+            if (refInterval.current) {
+              clearInterval(refInterval.current);
+            }
+            setLoading(false);
+          }
+        } catch (error) {
+          console.error('some thing went wrong', error);
           if (refInterval.current) {
             clearInterval(refInterval.current);
           }
-
           setLoading(false);
-        } catch (error) {
-          console.error('Waiting for result', error);
         }
       }, 4500);
     }

@@ -1,27 +1,3 @@
-// "answerOfValidator": "your answer gemini" (
-//   Can you tell me what you see from provided image?
-//   What is the first three nutrients in the nutrition fact panel exclude "calories"?
-//   the nutrient list order should be start from these item try to read from top to bottom and left to right of the nutrition fact.
-//   Is the nutrient list in the nutrition fact panel too long so it split to left and right side?),
-
-// "answerOfDebug": "your answer gemini" (could you help me list all footnote indicator of total sugars?),
-// "answerOfDebug2":"your answer gemini" (i see two nutrition fact panel on iamges. Could you tell me total sugars info of two panel (include quantity and daily percent value) ?"),
-// "answerOfDebug_4": "your answer gemini" (Do you think food blend is nutrient? and why?),
-// "answerOfDebug_3": "your answer gemini" (why i see you keep adding last nutrient to "footnote" field? remember "footnote" does not contain specific information about quantiy in weight or amout (ex: 400g, or 250ml,..)),
-// "answerOfDebug_6": "your answer gemini" (Are you sure you see that total fat have percent daily value of 0%?),
-// "answerOfDebug_5": "your answer gemini" (tell me amount per serving name you see?),
-
-// "answerOfDebug_4": your answer gemini (help me list all nutrients with their quantity and oum, and percent daily value as well as a long string here at this field "answerOfDebug_4". Please combine the given OCR text and what you see to make sure the result is correct),
-// "answerOfDebug_4": your answer gemini (Lis?),
-// "answerOfDebug_4": your answer gemini (what is  "(240 mcg Folic Acid)" in the fact panel?),
-// "answerOfDebug_4": your answer gemini (be careful sometimes you can see the "nutrients.quantityDescription" in the parentheses at the bottom of "nutrients.quantity"),
-
-// "answerOfDebug_5": "your answer gemini" (help me list all nutrient in type of Extract as string to this field "answerOfDebug_5"),
-// "answerOfDebug_6": your answer gemini (Why i see "Extract" word in descriptor? I told you if you see a nutrient Extract the descriptor must be the text after word "Extract"? Look at Value of "answerOfDebug_5" for reference),
-// "answerOfQuestionAboutLanguage": your answer gemini (The product images may include multiple languages; Could you please only provide information in English please, I do not want to see information in Spanish? The OCR text result could contain spanish so do not provide me those information in spanish),
-
-// I see you keep adding spanish content from spanish OCR text to 'footnote'. This is prohibited"
-// + "footnote" may contain multiple languages. Please only provide "footnote" in english only. Do not include spanish text on footnote
 export const make_nut_prompt = ({
   ocrText,
   imageCount,
@@ -236,43 +212,3 @@ if you see a nutrient text like 'Includes Xg of Added Sugars  10%' this is the n
 and it should be recorded as a nutrient =  {"name": "Added Sugars", "value": 7, "uom": "g", "percentDailyValue": 10,...}
 `;
 };
-
-// 13) "nutrients.nutrient_sub_ingredients" rules:
-// + "nutrients.nutrient_sub_ingredients" is the list of sub-ingredient below nutrient name (nutrient is usually blend, mix, compled, or a complex substance)
-// Ex1 :  "Banana, Grape(from juice), Apple" = [{"info": "Banana",...}, {"info": "Grape(from juice)",...}, {"info"": "Apple",...}]
-
-// NAME	QUANTITY	DAILY PERCENT	FOOTNOTE
-// Total Carbohydrate	6g	2%	+
-// Total Sugars	4g		**
-// Includes 4 g Added Sugars
-
-// "nutrient_sub_ingredients": [{
-//   "info": string,
-// },...],
-
-// "answerOfDebug_5": your answer gemini (Why you put content like "(as ...)" beside nutrient name to nutrient_sub_ingredients? They are only considered as "nutrients.descriptor"),
-
-// "answerOfDebug_6": your answer gemini (Why you keep add multiple sub-ingredients into one "nutrient_sub_ingredients.info"? Please record as an array of "nutrient_sub_ingredients" for sub-ingredients those separated by comma?),
-
-// "answerOfDebug_7": your answer gemini (why you do not recognize sub-ingredients? some nutrients with intended ingredients rows below obviously have sub-ingredients, sometimes multiple sub-ingredients could be written in the same row but should be recorded separately.),
-
-// 12) "nutrients.descriptor_or_subIngredientList" rules:
-// + "nutrients.descriptor_or_subIngredientList" could be the text inside the parentheses right next to "nutrients.name"
-// + "nutrients.descriptor_or_subIngredientList" could be also the text that is intended and appear on the row below a nutrient. (the text is usually the ingredient list of the blend, mixture, a subtance or complex,...)
-
-// 12) "nutrients.descriptor_or_subIngredientList" rules:
-// + "nutrients.descriptor_or_subIngredientList" could be the text inside the parentheses right next to "nutrients.name"
-// + "nutrients.descriptor_or_subIngredientList" could be also the text that is intended and appear on the row below a nutrient. (the text is usually the ingredient list of the blend, mixture, a subtance or complex,...)
-
-// "Vitamin D3 (as cholecalciferol)",
-// "Folate (660 mcg L-5-methyltetrahydrofolate)",
-// "Vitamin B12 (as methylcobalamin)",
-// "L-Tyrosine",
-// "L-5 Hydroxytryptophan (5-HTP) (from Griffonia simplicifolia seed)",
-// "Holy Basil (Ocimum sanctum) (herb) Extract",
-// "Schisandra (Schisandra chinensis) (berry) Extract",
-// "vegetarian capsule (hypromellose and water), microcrystalline cellulose, silicon dioxide"
-
-// "fullName": string,
-
-// 2) Each nutritional line's values must stay unique. Do not interchange numbers between lines or make false inferences. For instance, "total sugar 18g, included 5g added sugar 4%," should create two objects: one as "name": "total sugar", "value": 18, "uom": "g", "percentDailyValue": null, and another as "name": "added sugar", "value": 5, "uom": "g", "percentDailyValue": 14%.

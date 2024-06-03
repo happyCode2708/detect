@@ -12,6 +12,7 @@ Remember (important):
 Ex: Saturated Fat/Grasa Saturada (english/spanish) we should only record english content only and ignore spanish part. Do not translate spanish part to english and add it to JSON result
 + sometimes a content could appears twice on the image, once in English and once in Spanish. Please do not include spanish content
 + be careful that all images are from only one product. You may see the same nutrition fact from different images those are captured from diffrent angles of product.
++ the product images are captured from different angles and some info on an images could be obscured partly but the hidden parts could appear in other images. It is the remind to avoid you repeat the collected data since it could appear multiple times on different images.
 
 OCR texts from ${imageCount} provided images:
 ${ocrText}
@@ -29,7 +30,6 @@ json
     "content_in_spanish_must_be_prohibited": true,
     "is_product_supplement": boolean,
     "certifierAndLogo":"your answer gemini" (help me list all certifiers logo(such as kosher U pareve, ...) and usda inspection marks on provided image),
-    "readAllConstants": "your answer gemini"(please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?"),
     "other_ingredients_group":[{"ingredients": string[]}, ...], 
     "ingredients_group": [{"ingredients": string[]}, ...],
     "allergen": {
@@ -174,16 +174,17 @@ json
     "marketingAll": {
       "copyrightOrTradeMark": string,
       "website": string,
-      "socialMedia": {
+      "social_media_check": {
         "see_facebook_icon": boolean,
-        "google": boolean,
+        "see_google_icon": boolean,
         "see_instagram_icon": boolean,
         "see_pinterest_icon": boolean,
-        "old_pinterest": boolean,
-        "snapchat": boolean,
-        "tiktok": boolean,
+        "see_snapchat": boolean,
+        "see_tiktok_icon": boolean,
         "see_youtube_icon": boolean,
         "see_twitter_icon": boolean,
+      },
+      "socialMedia": {
         "socialList": string[],
         "socialMediaText": string[],
       },

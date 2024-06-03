@@ -57,7 +57,7 @@ const Storage = multer.diskStorage({
 const upload = multer({ storage: Storage });
 
 router.post(
-  '/gemini',
+  '/process-image',
   async (req, res, next) => {
     const sessionId = uuidv4();
 
@@ -256,10 +256,23 @@ const onProcessNut = async ({
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
       resultFileName,
-      JSON.stringify({ product: { factPanel: [] } })
+      JSON.stringify({ isSuccess: true, data: { product: { factPanel: [] } } })
     );
     return;
   }
+
+  const prefix = 'nut';
+
+  const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
+
+  writeJsonToFile(
+    resultsDir + `/${sessionId}`,
+    resultFileName,
+    JSON.stringify({
+      isSuccess: 'unknown',
+      status: 'processing',
+    })
+  );
 
   const nutImagesOCRresult = await getOcrTextAllImages(
     invalidatedInput.nutIncluded
@@ -283,7 +296,7 @@ const onProcessNut = async ({
       ocrText: JSON.stringify(nutText),
       imageCount: invalidatedInput.nutIncluded?.length,
     }),
-    prefix: 'nut',
+    prefix,
   });
 };
 
@@ -307,11 +320,24 @@ const onProcessOther = async ({
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
       resultFileName,
-      JSON.stringify({ product: {} })
+      JSON.stringify({ isSuccess: true, data: { product: {} } })
     );
 
     return;
   }
+
+  const prefix = 'all';
+
+  const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
+
+  writeJsonToFile(
+    resultsDir + `/${sessionId}`,
+    resultFileName,
+    JSON.stringify({
+      isSuccess: 'unknown',
+      status: 'processing',
+    })
+  );
 
   const nutImagesOCRresult = await getOcrTextAllImages([
     ...invalidatedInput.nutIncluded,
@@ -344,7 +370,7 @@ const onProcessOther = async ({
         ...invalidatedInput.nutExcluded,
       ]?.length,
     }),
-    prefix: 'all',
+    prefix,
   });
 };
 

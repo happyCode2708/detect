@@ -121,6 +121,14 @@ const ALLERGEN_MAPPING = {
   seeds: ['seeds'],
   sesame: ['seasame'],
   'soy / soybeans': ['soy', 'soybeans'],
-  'tree nuts': ['tree nuts', 'nuts', 'nut'],
+  'tree nuts': [
+    'tree nuts',
+    'nuts',
+    'nut',
+    'almond',
+    'almonds',
+    'pistachio',
+    'pistachios',
+  ],
   wheat: ['wheat'],
 };
