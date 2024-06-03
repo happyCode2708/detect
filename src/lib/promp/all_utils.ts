@@ -51,7 +51,7 @@ json
       "product_does_not_contain": string[],
     },
     "process": {
-      "low": string[],
+      "low_in_statement": string[],
       "exploit_methods": string[],
       "do_not_do": string[],
       "100_percent_or_all": string[],
@@ -162,7 +162,6 @@ json
       },
       "otherClaims:{
         "fatContentClaims": string[],
-        "saltOrSodiumClaims": string[],
         "sugarAndSweetenerClaims": string[],
         "highOrRichInOrExcellentSourceOf": string[],
         "usdaInspectionMark": string,
@@ -381,10 +380,6 @@ e) "attributesAndCertifiers.otherClaims.fatContentClaims":
 + is string array from enum FAT_CONTAIN_CLAIM
 + text "0g trans fat", or "0 Gram trans fat" found so recorded as {"fatContentClaims": ["zero gram trans fat per serving"]},
 
-f) "attributesAndCertifiers.otherClaims.saltOrSodiumClaims":
-+ is string array from enum SALT_OR_SODIUM_CLAIMS
-+ text "low sodium" found so recorded as {"saltOrSodiumClaims": ["low sodium"]}
-
 g) "attributesAndCertifiers.otherClaims.sugarAndSweetenerClaims" rules:
 + is string array from enum SUGAR_AND_SWEET_CLAIMS
 + text "no sugar alcohol" found so recorded as {"sugarAndSweetenerClaims": ["no sugar alcohol"]}
@@ -404,7 +399,7 @@ b) "product_does_not_contain" rules:
   - "No ..." (Ex: "No preservatives")
   
 11) "process" rules:
-  + "low" is the list of thing that product claim to have at low amount.
+  + "low_in_statement" is the list of statement that product claim to have at low amount.
   + "exploit_methods" is how they make product (ex: 'wild caught')
   + "do_not_do" is the list of things that company claim they do not doing at any stage of product development or production. (ex: 'no sulfites added', ...)
   + "100_percent_or_all" is the list of things that product claim to have at 100 percent or made with all (ex: "all natural", "100% pure ...")

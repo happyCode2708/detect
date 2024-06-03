@@ -77,8 +77,12 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     validated_allergen_freeOf,
   } = allergen || {};
   const { claims, otherClaims, containInfo } = attributesAndCertifiers || {};
-  const { marketing_contents, socialMedia, ...marketingRest } =
-    marketingAll || {};
+  const {
+    marketing_contents,
+    socialMedia,
+    social_media_check,
+    ...marketingRest
+  } = marketingAll || {};
   const { primarySize, secondarySize, thirdSize, ...headerRest } = header || {};
   const { recyclingInfo, recyclable, ...restPackaging } = packaging || {};
 

@@ -49,21 +49,22 @@ const validateContainOrDoesNotContain = async (
   modifiedProductDataPoints: any,
   dataPointKey: string
 ) => {
-  let validated_allegen_field = [] as any;
+  let validated_fields = [] as any;
 
   for (const ingredientName of ingredientList) {
     const lowercaseIngredientName = lowerCase(ingredientName);
     const matchedAllergens = await checkMatch(lowercaseIngredientName);
     if (matchedAllergens?.length > 0) {
-      validated_allegen_field = [
-        ...validated_allegen_field,
-        ...matchedAllergens,
-      ];
+      validated_fields = [...validated_fields, ...matchedAllergens];
     }
   }
 
+  let currentValues =
+    modifiedProductDataPoints['contain_and_notContain']?.[dataPointKey] || [];
+
   modifiedProductDataPoints['contain_and_notContain'][dataPointKey] = [
-    ...new Set(validated_allegen_field),
+    ...currentValues,
+    ...new Set(validated_fields),
   ];
 };
 
@@ -189,7 +190,13 @@ const CONTAIN_MAPPING = {
   rennet: ['rennet'],
   salicylates: ['salicylates'],
   'sea salt': ['sea salt'],
-  'shells/ shell pieces': ['shells/ shell pieces'],
+  'shells/ shell pieces': [
+    'shells/ shell pieces',
+    'shells',
+    'shell pieces',
+    'shell',
+    'nut shell fragments',
+  ],
   silicone: ['silicone'],
   'sles ( sodium laureth sulfate)': ['sles ( sodium laureth sulfate)'],
   'sls ( sodium lauryl sulfate )': ['sls ( sodium lauryl sulfate )'],

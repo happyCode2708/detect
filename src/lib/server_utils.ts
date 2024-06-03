@@ -139,3 +139,12 @@ export const removeRawFieldData = (rawResponse: object) => {
     removeFieldByPath(rawResponse, removeField);
   });
 };
+export const createMapping = (enumList: string[]) => {
+  const result: Record<string, string[]> = {};
+
+  enumList.forEach((item) => {
+    result[item] = [item];
+  });
+
+  return result;
+};

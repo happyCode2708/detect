@@ -29,7 +29,11 @@ export const nonCertifierClaimValidator = async (
 
   const process = modifiedProductDataPoints['process'] || {};
 
-  const { do_not_do, '100_percent_or_all': oneHundredPercentOrAll } = process;
+  const {
+    do_not_do,
+    '100_percent_or_all': oneHundredPercentOrAll,
+    low,
+  } = process;
 
   console.log('oneHundredPercentOrAll', oneHundredPercentOrAll);
 
@@ -90,11 +94,11 @@ const validate = async (
   let currentValues =
     modifiedProductDataPoints['attributesAndCertifiers']['otherClaims'][
       dataPointKey
-    ];
+    ] || [];
 
   modifiedProductDataPoints['attributesAndCertifiers']['otherClaims'][
     dataPointKey
-  ] = [...(currentValues || []), ...new Set(validated_allegen_field)];
+  ] = [...currentValues, ...new Set(validated_allegen_field)];
 };
 
 const checkMatch = async (ingredientName: string, enumValue: any) => {
@@ -204,3 +208,15 @@ const CONTAIN_MAPPING = {
 // "Additives",
 // "Adulterants",
 // "Animal Testing"
+
+const SODILUM_CLAIMS = {
+  'lightly salted': ['lightly salted'],
+  'low sodium': ['low sodium'],
+  'no salt': ['no salt'],
+  'no salt added': ['no salt added'],
+  'reduced sodium': ['reduced sodium'],
+  'salt free': ['salt free'],
+  'sodium free': ['sodium free'],
+  unsalted: ['unsalted'],
+  'very low sodium': ['very low sodium'],
+};
