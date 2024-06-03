@@ -30,18 +30,18 @@ export const saltClaimValidator = async (modifiedProductDataPoints: any) => {
   const {
     do_not_do,
     '100_percent_or_all': oneHundredPercentOrAll,
-    low_in_statement,
+    low,
   } = process;
 
-  console.log('oneHundredPercentOrAll', oneHundredPercentOrAll);
+  // console.log('oneHundredPercentOrAll', oneHundredPercentOrAll);
 
   console.log('start salt claim validator');
 
   await validate(
-    [...low_in_statement],
+    [...(low || [])],
     modifiedProductDataPoints,
     'saltOrSodiumClaim',
-    SODIUM_CLAIMS
+    SODIUM_CLAIMS_1
   );
 
   console.log('salt claim -- 1');
@@ -119,14 +119,26 @@ const promiseCheckEachEnum = async (keyNvalue: any, ingredientName: string) => {
 // "Adulterants",
 // "Animal Testing"
 
-const SODIUM_CLAIMS = {
-  'lightly salted': ['lightly salted'],
-  'low sodium': ['low sodium'],
-  'no salt': ['no salt'],
-  'no salt added': ['no salt added'],
-  'reduced sodium': ['reduced sodium'],
-  'salt free': ['salt free'],
-  'sodium free': ['sodium free', 'sodium'],
-  unsalted: ['unsalted'],
+const SODIUM_CLAIMS_1 = {
+  // 'lightly salted': ['lightly salted'],
+  'low sodium': ['low sodium', 'sodium'],
+  // 'no salt': ['no salt'],
+  // 'no salt added': ['no salt added'],
+  // 'reduced sodium': ['reduced sodium'],
+  // 'salt free': ['salt free'],
+  // 'sodium free': ['sodium free'],
+  // unsalted: ['unsalted'],
+  // 'very low sodium': ['very low sodium'],
+};
+
+const SODIUM_CLAIMS_2 = {
+  // 'lightly salted': ['lightly salted'],
+  // 'low sodium': ['low sodium'],
+  // 'no salt': ['no salt'],
+  // 'no salt added': ['no salt added'],
+  // 'reduced sodium': ['reduced sodium'],
+  // 'salt free': ['salt free'],
+  // 'sodium free': ['sodium free', 'sodium'],
+  // unsalted: ['unsalted'],
   'very low sodium': ['very low sodium'],
 };

@@ -51,7 +51,13 @@ json
       "product_does_not_contain": string[],
     },
     "process": {
-      "low_in_statement": string[],
+      "very_low": string[],
+      "low": string[],
+      "reduced": string[],
+      "no": string[],
+      "free_of": string[],
+      "zero_at": string[],
+      "high_in": string[],
       "exploit_methods": string[],
       "do_not_do": string[],
       "100_percent_or_all": string[],
@@ -161,9 +167,6 @@ json
         },
       },
       "otherClaims:{
-        "fatContentClaims": string[],
-        "sugarAndSweetenerClaims": string[],
-        "highOrRichInOrExcellentSourceOf": string[],
         "usdaInspectionMark": string,
       },
     },
@@ -372,18 +375,6 @@ Ex 2: If you see statement like "Non-gmo" but do not found the "Non-GMO" certifi
 }
 
 
-d)"attributesAndCertifiers.otherClaims.highOrRichInOrExcellentSourceOf":
-+ is the list of the text such as "Rich in Vitamin D", "Excellent Source of Vitamin D", "High Vitamin D",.. the text that emphasize that product have something in high amount and found on provided image.
-Ex 1: texts "high protein" and "rich in vitamin D" found should be recorded as {"highOrRichInOrExcellentSourceOf": ["high protein", "rich in vitamin D"]}
-
-e) "attributesAndCertifiers.otherClaims.fatContentClaims":
-+ is string array from enum FAT_CONTAIN_CLAIM
-+ text "0g trans fat", or "0 Gram trans fat" found so recorded as {"fatContentClaims": ["zero gram trans fat per serving"]},
-
-g) "attributesAndCertifiers.otherClaims.sugarAndSweetenerClaims" rules:
-+ is string array from enum SUGAR_AND_SWEET_CLAIMS
-+ text "no sugar alcohol" found so recorded as {"sugarAndSweetenerClaims": ["no sugar alcohol"]}
-
 h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 + if USDA inspection mark found on provided image, return full words on that inspection mark
   
@@ -399,10 +390,16 @@ b) "product_does_not_contain" rules:
   - "No ..." (Ex: "No preservatives")
   
 11) "process" rules:
-  + "low_in_statement" is the list of statement that product claim to have at low amount.
-  + "exploit_methods" is how they make product (ex: 'wild caught')
-  + "do_not_do" is the list of things that company claim they do not doing at any stage of product development or production. (ex: 'no sulfites added', ...)
-  + "100_percent_or_all" is the list of things that product claim to have at 100 percent or made with all (ex: "all natural", "100% pure ...")
+  + "very_low" is the list of things product claim to have at very low amount (such as "very low sodium", ...)
+  + "reduced" is the list of things product claim to have reduced amount (such as "reduced calorie",...)
+  + "low" is the list of things that product claim to have at low amount (such as "low calorie", ...)
+  + "no" is the list of things that product claim to have no at (such as "no sugar added",...)
+  + "free_of" is the list of things that product claim to free of (such as "free of saturated fat", "fat free",...)
+  + "high_in" is the list of things that product claim to have at high amount (such as "high fructose conrn syrup",...)
+  + "zero_at" is the list of things that product claim to have zero amount (such as "0g trans fat", ...)
+  + "exploit_methods" is how they make product (ex: 'wild caught').
+  + "do_not_do" is the list of things that company claim they do not doing at any stage of product development or production. (ex: 'no sulfites added', ...).
+  + "100_percent_or_all" is the list of things that product claim to have at 100 percent or made with all (ex: "all natural", "100% pure ...").
   `;
 };
 
