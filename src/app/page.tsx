@@ -1,10 +1,10 @@
 'use client';
 import { useEffect, useState, useRef, MutableRefObject } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader, RefreshCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import ExtractionHistory from '@/components/extract-history/ExtractionHitory';
+// import ExtractionHistory from '@/components/extract-history/ExtractionHitory';
 import { useMutateUploadFile } from '@/queries/home';
 import { FluidContainer } from '@/components/container/FluidContainer';
 import { Result } from '@/components/result/Result';
@@ -16,6 +16,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { isEqual } from 'lodash';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import Link from 'next/link';
+import { SectionWrapper } from '@/components/wrapper/SectionWrapper';
 
 export default function Home() {
   const [files, setFiles] = useState<any>([]);
@@ -28,7 +30,6 @@ export default function Home() {
     other: true,
   });
 
-  const [resultFileName, setResultFileName] = useState<any>();
   const [sessionId, setSessionId] = useState<any>();
 
   const [loading, setLoading] = useState(false);
@@ -94,7 +95,6 @@ export default function Home() {
 
   const onCancel = () => {
     setLoading(false);
-    // setResultFileName('');
     setSessionId('');
     setProductInfo(null);
     if (refInterval.current) {
@@ -219,7 +219,18 @@ export default function Home() {
       <div className='flex flex-col gap-4 py-4 px-4'>
         <div className='grid grid-cols-4 gap-2'>
           <div className='col-span-1'>
-            <SectionWrapper title='Info'>Last update: 5/29/24</SectionWrapper>
+            <SectionWrapper title='Info'>
+              <span>Last update: 3/6/24</span>
+              <Link
+                href='/update'
+                className={cn(
+                  buttonVariants({ variant: 'default' }),
+                  'h-[30px] ml-2'
+                )}
+              >
+                View update
+              </Link>
+            </SectionWrapper>
           </div>
           <div className='col-span-3'>
             <SectionWrapper title='Output Config'>
@@ -374,24 +385,3 @@ export default function Home() {
     </FluidContainer>
   );
 }
-
-const SectionWrapper = ({
-  title,
-  children,
-}: {
-  title?: string;
-  children: React.ReactNode;
-}) => {
-  return (
-    <div className='pt-6 relative'>
-      <div className='border rounded-md px-[10px] py-[20px] min-h-[66px]'>
-        {title && (
-          <div className='font-bold border rounded-lg px-[8px] py-[2px] absolute top-[8px] lef-[35px] bg-white'>
-            {title}
-          </div>
-        )}
-        {children && children}
-      </div>
-    </div>
-  );
-};
