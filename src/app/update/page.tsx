@@ -101,7 +101,7 @@ const UPDATE_LIST = {
       {
         content: (
           <div>
-            Add OCR text to validate input image for other data points
+            Add OCR text to validate input images for other data points
             <Tag type='exp'>Experimental</Tag>
           </div>
         ),
