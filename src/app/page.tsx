@@ -30,7 +30,9 @@ export default function Home() {
     other: true,
   });
 
-  const [sessionId, setSessionId] = useState<any>();
+  const [sessionId, setSessionId] = useState<any>(
+    'ee07682a-45c5-46bc-a552-ba7adc083164'
+  );
 
   const [loading, setLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState<null | string>(null);
@@ -186,15 +188,15 @@ export default function Home() {
 
           if (isSuccess === true) {
             setProductInfo(data);
-            toast({
-              title: 'Successfully',
-              description: message,
-              variant: 'success',
-              duration: 5000,
-            });
+            // toast({
+            //   title: 'Successfully',
+            //   description: message,
+            //   variant: 'success',
+            //   duration: 5000,
+            // });
 
             if (refInterval.current) {
-              clearInterval(refInterval.current);
+              // clearInterval(refInterval.current);
             }
             setLoading(false);
           }
@@ -205,7 +207,7 @@ export default function Home() {
           }
           setLoading(false);
         }
-      }, 4500);
+      }, 7500);
     }
     return () => {
       if (!refInterval.current) return;
