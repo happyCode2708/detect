@@ -30,8 +30,8 @@ json
     "content_in_spanish_must_be_prohibited": true,
     "is_product_supplement": boolean,
     "certifierAndLogo":"your answer gemini" (help me list all certifiers logo(such as kosher U pareve, ...) and usda inspection marks on provided image),
-    "other_ingredients_group":[{"ingredients": string[], ingredients_statement: string }, ...], 
-    "ingredients_group": [{"ingredients": string[], "ingredients_statement": string }, ...],
+    "other_ingredients_group":[{ingredients_statement: string, "ingredients": string[], }, ...], 
+    "ingredients_group": [{"ingredients_statement": string, "ingredients": string[] }, ...],
     "allergen": {
       "allergen_contain_statement": string, 
       "allergen_freeOf_statement": string,
@@ -224,8 +224,10 @@ Some common rules:
 Some rules for you:
 1) "ingredients_groups":
 + "ingredients_groups" is the list of ingredients list since a product can have many ingredient list
-+ "ingredients_groups.ingredients" content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:".
-+ "ingredients_groups.ingredients" usually appear below or next to the nutrition panel.
++ "ingredients_groups.ingredients_statement" content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:".
++ "ingredients_groups.ingredients_statement" usually appear below or next to the nutrition panel.
++ "ingredients_groups.ingredients" is the break-out list of ingredients list into string array.
+
 Ex 1: "Ingredients: Flour, Eggs." =  ingredients_groups: [{ingredients: ["Flour", "Eggs"]}, ...]
 
 2) "other_ingredients_group":
