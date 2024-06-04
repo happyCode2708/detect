@@ -33,22 +33,33 @@ export const sugarAndSweetClaimValidator = async (
     do_not_do,
     '100_percent_or_all': oneHundredPercentOrAll,
     low,
+    lower,
+    no,
   } = process;
 
   // console.log('oneHundredPercentOrAll', oneHundredPercentOrAll);
 
-  console.log('start salt claim validator');
+  console.log('start sugar claim validator');
 
   await validate(
-    [...current_product_does_not_contain],
+    [...current_product_does_not_contain, ...no],
     modifiedProductDataPoints,
     'sugarAndSweetClaims',
     SUGAR_AND_SWEET_CLAIMS_1
   );
 
-  console.log('salt claim -- 1');
+  console.log('sugar claim -- 1');
 
-  console.log('salt claim validator -- finish');
+  await validate(
+    [...(lower || [])],
+    modifiedProductDataPoints,
+    'sugarAndSweetClaims',
+    SUGAR_AND_SWEET_CLAIMS_2
+  );
+
+  console.log('sugar claim -- 1');
+
+  console.log('sugar claim validator -- finish');
 };
 
 const validate = async (
@@ -102,9 +113,17 @@ const promiseCheckEachEnum = async (keyNvalue: any, ingredientName: string) => {
     console.log('coup', `${ingredientName}-${possibleValueItem}`);
     if (ingredientName.includes(possibleValueItem)) {
       console.log('found in enums');
-      if (containEnum === 'natural') {
+      if (
+        [
+          'no cane sugar',
+          'no sugar added',
+          'no added sugar',
+          'no sugar',
+          'no sugar alcohol',
+        ].includes(containEnum)
+      ) {
         if (!possibleValueItem.includes(ingredientName)) {
-          //   return;
+          return;
         }
       }
       foundMatches.push(containEnum);
@@ -117,12 +136,10 @@ const promiseCheckEachEnum = async (keyNvalue: any, ingredientName: string) => {
 
 const SUGAR_AND_SWEET_CLAIMS_1 = {
   'no acesulfame k': ['no acesulfame k'],
-  'no added sugar': ['no added sugar'],
   'no agave': ['no agave'],
   'no allulose': ['no allulose'],
   'no artificial sweetener': ['no artificial sweetener'],
   'no aspartame': ['no aspartame'],
-  'no cane sugar': ['no cane sugar'],
   'no coconut/coconut palm sugar': ['no coconut/coconut palm sugar'],
   'no corn syrup': ['no corn syrup'],
   'no high fructose corn syrup': ['no high fructose corn syrup'],
@@ -130,16 +147,21 @@ const SUGAR_AND_SWEET_CLAIMS_1 = {
   'no saccharin': ['no saccharin'],
   'no splenda/sucralose': ['no splenda/sucralose'],
   'no stevia': ['no stevia'],
-  'no sugar': ['no sugar'],
-  'no sugar added': ['no sugar added'],
-  'no sugar alcohol': ['no sugar alcohol', 'sugar alcohol'],
+  'no added sugar': ['no added sugar', 'added sugar'], //! sugar
+  'no sugar added': ['no sugar added', 'sugar added'], //! sugar
+  'no cane sugar': ['no cane sugar', 'cane sugar'], //! sugar
+  'no sugar alcohol': ['no sugar alcohol', 'sugar alcohol'], //! sugar
+  'no sugar': ['no sugar', 'sugar'], //! sugar
   'no tagatose': ['no tagatose'],
   'no xylitol': ['no xylitol'],
   unsweetened: ['unsweetened'],
-  xylitol: ['xylitol'],
 };
 
 const SUGAR_AND_SWEET_CLAIMS_2 = {
+  'lower sugar': ['lower sugar', 'sugar'],
+};
+
+const SUGAR_AND_SWEET_CLAIMS_3 = {
   'acesulfame k': ['acesulfame k'],
   agave: ['agave'],
   allulose: ['allulose'],

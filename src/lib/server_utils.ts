@@ -147,4 +147,10 @@ export const createMapping = (enumList: string[]) => {
   });
 
   return result;
+
+  // const result =  {};
+
+  // claims.forEach((item) => {
+  //   result[item] = [item];
+  // });
 };

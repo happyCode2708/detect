@@ -47,7 +47,7 @@ export const nonCertifierClaimValidator = async (
     ],
     modifiedProductDataPoints,
     'nonCertifierClaims',
-    DOES_NOT_CONTAIN_MAPPING
+    NON_CERTIFIED_MAPPING_1
   );
 
   console.log('non Certifier claim -- 1');
@@ -56,14 +56,23 @@ export const nonCertifierClaimValidator = async (
     [
       ...current_allergen_contain,
       ...current_product_contain,
-      ...oneHundredPercentOrAll,
+      ...(oneHundredPercentOrAll || []),
     ],
     modifiedProductDataPoints,
     'nonCertifierClaims',
-    CONTAIN_MAPPING
+    NON_CERTIFIED_MAPPING_2
   );
 
   console.log('non Certifier claim -- 2');
+
+  await validate(
+    [...(low || [])],
+    modifiedProductDataPoints,
+    'nonCertifierClaims',
+    NON_CERTIFIED_MAPPING_3
+  );
+
+  console.log('non Certifier claim -- 3');
 
   console.log('non certifier claim validator -- finish');
 };
@@ -116,7 +125,7 @@ const checkMatch = async (ingredientName: string, enumValue: any) => {
 
 const promiseCheckEachEnum = async (keyNvalue: any, ingredientName: string) => {
   const [containEnum, possibleValueList] = keyNvalue;
-  let foundMatchs = [] as any;
+  let foundMatches = [] as any;
 
   possibleValueList.forEach((possibleValueItem: string) => {
     console.log('coup', `${ingredientName}-${possibleValueItem}`);
@@ -127,15 +136,15 @@ const promiseCheckEachEnum = async (keyNvalue: any, ingredientName: string) => {
           return;
         }
       }
-      foundMatchs.push(containEnum);
+      foundMatches.push(containEnum);
       return;
     }
   });
 
-  return Promise.resolve(foundMatchs);
+  return Promise.resolve(foundMatches);
 };
 
-const DOES_NOT_CONTAIN_MAPPING = {
+const NON_CERTIFIED_MAPPING_1 = {
   'acid free': ['acid free', 'acid'],
   'free range': ['free range', 'range'],
   'no animal testing': ['no animal testing', 'animal testing'],
@@ -148,12 +157,13 @@ const DOES_NOT_CONTAIN_MAPPING = {
   'not from concentrate': ['not from concentrate'],
 };
 
-const LOW_MAPPING = {
-  'low acid': ['low acid'],
-  'low carbohydrate': ['low carbohydrate'],
-  'low cholesterol': ['low cholesterol'],
+const NON_CERTIFIED_MAPPING_3 = {
+  'low acid': ['low acid', 'acid'],
+  'low carbohydrate': ['low carbohydrate', 'carbohydrate'],
+  'low cholesterol': ['low cholesterol', 'cholesterol'],
 };
-const CONTAIN_MAPPING = {
+
+const NON_CERTIFIED_MAPPING_2 = {
   '100% natural': ['100% natural'],
   '100% natural ingredients': ['100% natural ingredients'],
   '100% pure': ['100% pure'],
@@ -208,15 +218,3 @@ const CONTAIN_MAPPING = {
 // "Additives",
 // "Adulterants",
 // "Animal Testing"
-
-const SODILUM_CLAIMS = {
-  'lightly salted': ['lightly salted'],
-  'low sodium': ['low sodium'],
-  'no salt': ['no salt'],
-  'no salt added': ['no salt added'],
-  'reduced sodium': ['reduced sodium'],
-  'salt free': ['salt free'],
-  'sodium free': ['sodium free'],
-  unsalted: ['unsalted'],
-  'very low sodium': ['very low sodium'],
-};

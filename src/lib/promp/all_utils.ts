@@ -30,8 +30,8 @@ json
     "content_in_spanish_must_be_prohibited": true,
     "is_product_supplement": boolean,
     "certifierAndLogo":"your answer gemini" (help me list all certifiers logo(such as kosher U pareve, ...) and usda inspection marks on provided image),
-    "other_ingredients_group":[{"ingredients": string[]}, ...], 
-    "ingredients_group": [{"ingredients": string[]}, ...],
+    "other_ingredients_group":[{"ingredients": string[], ingredients_statement: string }, ...], 
+    "ingredients_group": [{"ingredients": string[], "ingredients_statement": string }, ...],
     "allergen": {
       "allergen_contain_statement": string, 
       "allergen_freeOf_statement": string,
@@ -52,6 +52,7 @@ json
     },
     "process": {
       "very_low": string[],
+      "lower": string[],
       "low": string[],
       "reduced": string[],
       "no": string[],
@@ -391,8 +392,9 @@ b) "product_does_not_contain" rules:
   
 11) "process" rules:
   + "very_low" is the list of things product claim to have at very low amount (such as "very low sodium", ...)
-  + "reduced" is the list of things product claim to have reduced amount (such as "reduced calorie",...)
+  + "lower" is the list of things that product claim to have at lower amount (such as "lower sugar", ...)
   + "low" is the list of things that product claim to have at low amount (such as "low calorie", ...)
+  + "reduced" is the list of things product claim to have reduced amount (such as "reduced calorie",...)
   + "no" is the list of things that product claim to have no at (such as "no sugar added",...)
   + "free_of" is the list of things that product claim to free of (such as "free of saturated fat", "fat free",...)
   + "high_in" is the list of things that product claim to have at high amount (such as "high fructose conrn syrup",...)
@@ -594,3 +596,5 @@ b) "product_does_not_contain" rules:
 // + enum SUGAR_AND_SWEET_CLAIMS = ["no sugar alcohol"]
 
 // + enum NON_CERTIFIED_CLAIMS = ["100% natural", "100% natural ingredients", "100% pure", "acid free", "aeroponic grown", "all natural", "all natural ingredients", "aquaponic/aquaculture grown", "baked", "biodegradable", "cage free", "cold-pressed", "direct trade", "dolphin safe", "dry roasted", "eco-friendly", "farm raised", "filtered", "free range", "freeze-dried", "from concentrate", "grade a", "greenhouse grown", "heat treated", "heirloom", "homeopathic", "homogenized", "hydroponic grown", "hypo-allergenic", "irradiated", "live food", "low acid", "low carbohydrate", "low cholesterol", "macrobiotic", "minimally processed", "natural", "natural botanicals", "natural fragrances", "natural ingredients", "no animal testing", "no sulfites added", "non gebrokts", "non-alcoholic", "non-irradiated", "non-toxic", "not fried", "not from concentrate", "pasteurized", "pasture raised", "prairie raised", "raw", "responsibly sourced palm oil", "sprouted", "un-filtered", "un-pasteurized", "unscented", "vegetarian or vegan diet/feed", "wild", "wild caught"]
+
+// "adjective distribution" or "shared adjective"
