@@ -57,7 +57,16 @@ export const sugarAndSweetClaimValidator = async (
     SUGAR_AND_SWEET_CLAIMS_2
   );
 
-  console.log('sugar claim -- 1');
+  console.log('sugar claim -- 2');
+
+  // await validate(
+  //   [...(lower || [])],
+  //   modifiedProductDataPoints,
+  //   'sugarAndSweetClaims',
+  //   SUGAR_AND_SWEET_CLAIMS_2
+  // );
+
+  // console.log('sugar claim -- 3');
 
   console.log('sugar claim validator -- finish');
 };
@@ -138,7 +147,10 @@ const SUGAR_AND_SWEET_CLAIMS_1 = {
   'no acesulfame k': ['no acesulfame k'],
   'no agave': ['no agave'],
   'no allulose': ['no allulose'],
-  'no artificial sweetener': ['no artificial sweetener'],
+  'no artificial sweetener': [
+    'no artificial sweetener',
+    'artificial sweetener',
+  ],
   'no aspartame': ['no aspartame'],
   'no coconut/coconut palm sugar': ['no coconut/coconut palm sugar'],
   'no corn syrup': ['no corn syrup'],
@@ -173,39 +185,16 @@ const SUGAR_AND_SWEET_CLAIMS_3 = {
   'fruit juice': ['fruit juice'],
   'high fructose corn syrup': ['high fructose corn syrup'],
   honey: ['honey'],
-  'low sugar': ['low sugar'],
-  'lower sugar': ['lower sugar'],
   'monk fruit': ['monk fruit'],
   'natural sweeteners': ['natural sweeteners'],
-  'no acesulfame k': ['no acesulfame k'],
-  'no added sugar': ['no added sugar'],
-  'no agave': ['no agave'],
-  'no allulose': ['no allulose'],
-  'no artificial sweetener': ['no artificial sweetener'],
-  'no aspartame': ['no aspartame'],
-  'no cane sugar': ['no cane sugar'],
-  'no coconut/coconut palm sugar': ['no coconut/coconut palm sugar'],
-  'no corn syrup': ['no corn syrup'],
-  'no high fructose corn syrup': ['no high fructose corn syrup'],
-  'no refined sugars': ['no refined sugars'],
-  'no saccharin': ['no saccharin'],
-  'no splenda/sucralose': ['no splenda/sucralose'],
-  'no stevia': ['no stevia'],
-  'no sugar': ['no sugar'],
-  'no sugar added': ['no sugar added'],
-  'no sugar alcohol': ['no sugar alcohol', 'sugar alcohol'],
-  'no tagatose': ['no tagatose'],
-  'no xylitol': ['no xylitol'],
   'reduced sugar': ['reduced sugar'],
   'refined sugar': ['refined sugar'],
   saccharin: ['saccharin'],
   'splenda/sucralose': ['splenda/sucralose'],
   stevia: ['stevia'],
   'sugar alcohol': ['sugar alcohol'],
-  'sugar free': ['sugar free'],
   'sugars added': ['sugars added'],
   tagatose: ['tagatose'],
-  unsweetened: ['unsweetened'],
   xylitol: ['xylitol'],
 };
 

@@ -49,6 +49,15 @@ export const fatContentClaimValidator = async (
 
   console.log('fat content claim -- 1');
 
+  await validate(
+    [...(no || [])],
+    modifiedProductDataPoints,
+    'fatContentClaims',
+    FAT_CONTAIN_CLAIM_2
+  );
+
+  console.log('fat content claim -- 1');
+
   console.log('fat content claim validator -- finish');
 };
 
@@ -129,15 +138,16 @@ const FAT_CONTAIN_CLAIM_1 = {
   'low in saturated fat': ['low in saturated fat'],
 };
 
+const FAT_CONTAIN_CLAIM_2 = {
+  'no fat': ['no fat'],
+  'no trans fat': ['no trans fat'],
+};
+
 const FAT_CONTAIN_CLAIM_ORIGIN = {
   'fat free': ['fat free'],
   'free of saturated fat': ['free of saturated fat'],
-  'low fat': ['low fat'],
-  'low in saturated fat': ['low in saturated fat'],
-  'no fat': ['no fat'],
-  'no trans fat': ['no trans fat'],
-  'reduced fat': ['reduced fat'],
   'trans fat free': ['trans fat free'],
+  'reduced fat': ['reduced fat'],
   'zero grams trans fat per serving': ['zero grams trans fat per serving'],
   'zero trans fat': ['zero trans fat'],
 };
