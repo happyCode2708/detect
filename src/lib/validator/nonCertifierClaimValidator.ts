@@ -35,6 +35,7 @@ export const nonCertifierClaimValidator = async (
     low,
     raw,
     un_prefix,
+    natural,
   } = process;
 
   console.log('oneHundredPercentOrAll', oneHundredPercentOrAll);
@@ -78,15 +79,6 @@ export const nonCertifierClaimValidator = async (
   console.log('non Certifier claim -- 3');
 
   await validate(
-    [...(low || [])],
-    modifiedProductDataPoints,
-    'nonCertifierClaims',
-    NON_CERTIFIED_MAPPING_3
-  );
-
-  console.log('non Certifier claim -- 3');
-
-  await validate(
     [...(un_prefix || [])],
     modifiedProductDataPoints,
     'nonCertifierClaims',
@@ -94,6 +86,15 @@ export const nonCertifierClaimValidator = async (
   );
 
   console.log('non Certifier claim -- 4');
+
+  await validate(
+    [...(natural || [])],
+    modifiedProductDataPoints,
+    'nonCertifierClaims',
+    NON_CERTIFIED_MAPPING_5
+  );
+
+  console.log('non Certifier claim -- 5');
 
   console.log('non certifier claim validator -- finish');
 };
@@ -210,10 +211,6 @@ const NON_CERTIFIED_MAPPING_2 = {
   'live food': ['live food'],
   macrobiotic: ['macrobiotic'],
   'minimally processed': ['minimally processed'],
-  natural: ['natural'],
-  'natural botanicals': ['natural botanicals'],
-  'natural fragrances': ['natural fragrances'],
-  'natural ingredients': ['natural ingredients'],
   pasteurized: ['pasteurized'],
   'pasture raised': ['pasture raised'],
   'prairie raised': ['prairie raised'],
@@ -235,4 +232,11 @@ const NON_CERTIFIED_MAPPING_4 = {
   'un-filtered': ['un-filtered', 'unfiltered'],
   'un-pasteurized': ['un-pasteurized', 'unpasteurized'],
   unscented: ['unscented'],
+};
+
+const NON_CERTIFIED_MAPPING_5 = {
+  natural: ['natural'],
+  'natural botanicals': ['natural botanicals'],
+  'natural fragrances': ['natural fragrances'],
+  'natural ingredients': ['natural ingredients'],
 };

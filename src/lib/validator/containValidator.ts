@@ -25,6 +25,10 @@ export const containValidator = async (modifiedProductDataPoints: any) => {
     modifiedProductDataPoints['contain_and_notContain']['product_contain'] ||
     [];
 
+  const process = modifiedProductDataPoints['process'] || [];
+
+  const { other_things } = process;
+
   const ingredients_group = modifiedProductDataPoints?.[
     'ingredients_group'
   ]?.reduce(
@@ -51,6 +55,7 @@ export const containValidator = async (modifiedProductDataPoints: any) => {
       ...current_allergen_contain,
       ...current_product_contain,
       ...ingredients_group,
+      ...other_things,
     ],
     modifiedProductDataPoints,
     'validated_product_contain'
@@ -233,7 +238,7 @@ const CONTAIN_MAPPING = {
   'sles ( sodium laureth sulfate)': ['sles ( sodium laureth sulfate)'],
   'sls ( sodium lauryl sulfate )': ['sls ( sodium lauryl sulfate )'],
   stabilizers: ['stabilizers'],
-  probiotics: ['probiotics'],
+  probiotics: ['probiotics', 'probiotic'],
   starch: ['starch'],
   sulfates: ['sulfates'],
   sulfides: ['sulfides'],

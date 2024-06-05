@@ -66,6 +66,13 @@ json
       "un_prefix": string[],
       "raw": string[],
       "acidity_percent_statement": string[],
+      "total_fat": {
+        value: float,
+        "uom": string,
+      },
+      "grade": string[],
+      "natural": string[],
+      "other_things": string[],
     } 
     "header": {
       "productName": string,
@@ -231,6 +238,8 @@ Some rules for you:
 + "ingredients_groups.ingredients_statement" content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:".
 + "ingredients_groups.ingredients_statement" usually appear below or next to the nutrition panel.
 + "ingredients_groups.ingredients" is the break-out list of ingredients list into string array.
++ "ingredients_groups." 
+
 Ex 1: "Ingredients: Flour, Eggs." =  ingredients_groups: [{ingredients: ["Flour", "Eggs"], ...}, ...]
 
 2) "other_ingredients_group":
@@ -426,6 +435,14 @@ b) "product_does_not_contain" rules:
   + "un_prefix" is the list of things that product claim with adjective start withh "un" (such as "unpasteurized", "un-pasteurized", "unfiltered", ...).
   
   + "acidity_percent_statement" is the list of acidity statement (such as "Acidity 12%",...)
+  
+  + "total_fat.value" is the value of total fat on nutrition fact panel.
+
+  + "grade" is the list of statements on product about grading (such as "grade A", "choice", "prime", "select", "premium", ...)
+  
+  + "natural" is the list of statements about natural (such as: "natural botanicals", "natural ingredients", ...)
+
+  + "other_things" is the list of things or statements (such as: "probiotic", )
   `;
 };
 

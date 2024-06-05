@@ -11,5 +11,5 @@ export const acidityClaimsValidator = async (
     'acidity'
   ] = [...new Set(acidity_percent_statement)];
 
-  console.log('High/Rich In/Excellent Source validator -- finish');
+  console.log('acidity claim validator -- finish');
 };

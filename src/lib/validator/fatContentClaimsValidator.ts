@@ -34,7 +34,10 @@ export const fatContentClaimValidator = async (
     '100_percent_or_all': oneHundredPercentOrAll,
     low,
     no,
+    total_fat,
   } = process;
+
+  const no_fat_from_fact_panel = total_fat?.value === 0 ? ['no fat'] : [];
 
   // console.log('oneHundredPercentOrAll', oneHundredPercentOrAll);
 
@@ -50,7 +53,7 @@ export const fatContentClaimValidator = async (
   console.log('fat content claim -- 1');
 
   await validate(
-    [...(no || [])],
+    [...(no || []), ...no_fat_from_fact_panel],
     modifiedProductDataPoints,
     'fatContentClaims',
     FAT_CONTAIN_CLAIM_2

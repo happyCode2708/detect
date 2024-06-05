@@ -146,13 +146,20 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
       </SectionWrapper>
       {ingredients_group?.length > 0 && (
         <SectionWrapper name='Ingredients'>
-          {ingredients_group?.map((ingredientList: any, idx: number) => {
+          {ingredients_group?.map((ingredientListObject: any, idx: number) => {
             return (
               <div>
                 <div className='font-bold'>Ingredient No.{idx + 1}: </div>
-                <p className='pl-4'>
-                  {ingredientList?.ingredients?.join(', ')}
-                </p>
+                <div className='pl-6'>
+                  <CamelFieldStringRender
+                    objectValues={{
+                      ...ingredientListObject,
+                      ingredients: JSON.stringify(
+                        ingredientListObject?.ingredients
+                      ),
+                    }}
+                  />
+                </div>
               </div>
             );
           })}
