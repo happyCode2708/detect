@@ -80,7 +80,6 @@ export const make_nut_prompt = ({
 The Most Important rule:
 + Only get data that visibly seen by normal eyes not from other sources on internet
 + Remind again if you see fact panel just give detail data that could be seen by human eyes not from other source like internet.
-+ Only get ingredients data that visibly seen by normal eyes not from other sources on internet.
 + Remind you again only provide the data visibly on provided image, and must be detected by human eyes not from other source on internet.
 
 Some definitions:
@@ -212,3 +211,5 @@ if you see a nutrient text like 'Includes Xg of Added Sugars  10%' this is the n
 and it should be recorded as a nutrient =  {"name": "Added Sugars", "value": 7, "uom": "g", "percentDailyValue": 10,...}
 `;
 };
+
+// + Only get ingredients data that visibly seen by normal eyes not from other sources on internet.

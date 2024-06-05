@@ -59,9 +59,13 @@ json
       "free_of": string[],
       "zero_at": string[],
       "high_in": string[],
+      "rich_in_full_statement": string[],
       "exploit_methods": string[],
       "do_not_do": string[],
       "100_percent_or_all": string[],
+      "un_prefix": string[],
+      "raw": string[],
+      "acidity_percent": string,
     } 
     "header": {
       "productName": string,
@@ -393,17 +397,33 @@ b) "product_does_not_contain" rules:
   - "No ..." (Ex: "No preservatives")
   
 11) "process" rules:
-  + "very_low" is the list of things product claim to have at very low amount (such as "very low sodium", ...)
-  + "lower" is the list of things that product claim to have at lower amount (such as "lower sugar", ...)
-  + "low" is the list of things that product claim to have at low amount (such as "low calorie", ...)
-  + "reduced" is the list of things product claim to have reduced amount (such as "reduced calorie",...)
-  + "no" is the list of things that product claim to have no at (such as "no sugar added",...)
-  + "free_of" is the list of things that product claim to free of (such as "free of saturated fat", "fat free",...)
-  + "high_in" is the list of things that product claim to have at high amount (such as "high fructose conrn syrup",...)
-  + "zero_at" is the list of things that product claim to have zero amount (such as "0g trans fat", ...)
+  + "very_low" is the list of things product claim to have at very low amount (such as "very low sodium", ...).
+  
+  + "lower" is the list of things that product claim to have at lower amount (such as "lower sugar", ...).
+  
+  + "low" is the list of things that product claim to have at low amount (such as "low calorie", ...).
+  
+  + "reduced" is the list of things product claim to have reduced amount (such as "reduced calorie",...).
+  
+  + "no" is the list of things that product claim to have no at (such as "no sugar added",...).
+  
+  + "free_of" is the list of things that product claim to free of (such as "free of saturated fat", "fat free",...).
+  
+  + "high_in_full_statement" is the list of statements that product claim to have at high amount (such as "high fructose conrn syrup", ...).
+
+  + "rich_in_full_statement" is the list of statements that product claim to rich in (such as "rich in vitamin D", "rich sourch of vitamin C", ...).
+  
+  + "zero_at" is the list of things that product claim to have zero amount (such as "0g trans fat", ...).
+  
   + "exploit_methods" is how they make product (ex: 'wild caught').
+  
   + "do_not_do" is the list of things that company claim they do not doing at any stage of product development or production. (ex: 'no sulfites added', ...).
+  
   + "100_percent_or_all" is the list of things that product claim to have at 100 percent or made with all (ex: "all natural", "100% pure ...").
+  
+  + "raw" is the list of things that product claim to have raw at (such as "raw juice", ...).
+  
+  + "un_prefix" is the list of things that product claim with adjective start withh "un" (such as "unpasteurized", "un-pasteurized", "unfiltered", ...).
   `;
 };
 

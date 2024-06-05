@@ -5,29 +5,16 @@ export const highRichExcellentClaimsValidator = async (
 ) => {
   const process = modifiedProductDataPoints['process'] || {};
 
-  const {
-    do_not_do,
-    '100_percent_or_all': oneHundredPercentOrAll,
-    low,
-    no,
-    high_in,
-  } = process;
-
-  // console.log('oneHundredPercentOrAll', oneHundredPercentOrAll);
+  const { high_in_full_statement, rich_in_full_statement } = process;
 
   console.log('start High/Rich In/Excellent Source claim validator');
 
-  // await validate(
-  //   [...(high_in || [])],
-  //   modifiedProductDataPoints,
-  //   'fatContentClaims',
-  //   FAT_CONTAIN_CLAIM_1
-  // );
+  const all_rich_statement =
+    [...rich_in_full_statement, ...high_in_full_statement] || [];
 
-  // console.log('fat content claim -- 1');
   modifiedProductDataPoints['attributesAndCertifiers']['otherClaims'][
     'High/Rich In/Excellent Source'
-  ] = [...new Set(high_in || [])];
+  ] = [...new Set(all_rich_statement)];
 
   console.log('High/Rich In/Excellent Source validator -- finish');
 };
