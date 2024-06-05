@@ -1,5 +1,7 @@
+import { acidityClaimsValidator } from './acidityClaimsValidator';
 import { allergenValidator } from './allergenValidator';
 import { calorieClaimValidator } from './calorieClaimValidator';
+import { certifierAndClaimsValidator } from './certifierAndClaimsValidator';
 import { containValidator } from './containValidator';
 import { factPanelValidator } from './factPanelValidator';
 import { fatContentClaimValidator } from './fatContentClaimsValidator';
@@ -28,6 +30,8 @@ const validateProductDataPoints = async (response: any) => {
   let modifiedProductDataPoints = { ...productDataPoints };
 
   highRichExcellentClaimsValidator(modifiedProductDataPoints);
+  acidityClaimsValidator(modifiedProductDataPoints);
+  certifierAndClaimsValidator(modifiedProductDataPoints);
   await allergenValidator(modifiedProductDataPoints);
   await containValidator(modifiedProductDataPoints);
   await nonCertifierClaimValidator(modifiedProductDataPoints);

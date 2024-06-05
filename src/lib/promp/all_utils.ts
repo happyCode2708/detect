@@ -58,14 +58,14 @@ json
       "no": string[],
       "free_of": string[],
       "zero_at": string[],
-      "high_in": string[],
+      "high_in_full_statement": string[],
       "rich_in_full_statement": string[],
       "exploit_methods": string[],
       "do_not_do": string[],
       "100_percent_or_all": string[],
       "un_prefix": string[],
       "raw": string[],
-      "acidity_percent": string,
+      "acidity_percent_statement": string[],
     } 
     "header": {
       "productName": string,
@@ -231,14 +231,14 @@ Some rules for you:
 + "ingredients_groups.ingredients_statement" content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:".
 + "ingredients_groups.ingredients_statement" usually appear below or next to the nutrition panel.
 + "ingredients_groups.ingredients" is the break-out list of ingredients list into string array.
-
-Ex 1: "Ingredients: Flour, Eggs." =  ingredients_groups: [{ingredients: ["Flour", "Eggs"]}, ...]
+Ex 1: "Ingredients: Flour, Eggs." =  ingredients_groups: [{ingredients: ["Flour", "Eggs"], ...}, ...]
 
 2) "other_ingredients_group":
 + "other_ingredients_group" is the list of ingredients list since a product can have many ingredient list. And it is only for supplement product.
-+ "other_ingredients_group.ingredients" content start right after a prefix text such as "other ingredients".
-+ "other_ingredients_group.ingredients" usually appear below or next to the nutrition panel.
-Ex 1: "Other ingredients: Flour, Eggs."=  other_ingredients_groups: [{ingredients: ["Flour", "Eggs"]}, ...]
++ "other_ingredients_group.ingredients_statement" content start right after a prefix text such as "other ingredients".
++ "other_ingredients_group.ingredients_statement" usually appear below or next to the nutrition panel.
++ "other_ingredients_group.ingredients" is the break-out list of ingredients list into string array.
+Ex 1: "Other ingredients: Flour, Eggs."=  other_ingredients_groups: [{ingredients: ["Flour", "Eggs"], ...}, ...]
 
 3) "marketingAll" rules:
 a) "marketingAll.website":
@@ -424,6 +424,8 @@ b) "product_does_not_contain" rules:
   + "raw" is the list of things that product claim to have raw at (such as "raw juice", ...).
   
   + "un_prefix" is the list of things that product claim with adjective start withh "un" (such as "unpasteurized", "un-pasteurized", "unfiltered", ...).
+  
+  + "acidity_percent_statement" is the list of acidity statement (such as "Acidity 12%",...)
   `;
 };
 

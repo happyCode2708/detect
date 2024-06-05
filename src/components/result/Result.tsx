@@ -85,6 +85,11 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
   } = marketingAll || {};
   const { primarySize, secondarySize, thirdSize, ...headerRest } = header || {};
   const { recyclingInfo, recyclable, ...restPackaging } = packaging || {};
+  const {
+    product_contain,
+    product_does_not_contain,
+    ...validatedContainClaims
+  } = contain_and_notContain;
 
   return (
     <>
@@ -209,7 +214,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
             }
           )}
         <CamelFieldStringRender objectValues={otherClaims} />
-        <CamelFieldStringRender objectValues={contain_and_notContain} />
+        <CamelFieldStringRender objectValues={validatedContainClaims} />
 
         {/* <CamelFieldStringRender objectValues={{ high: high_in }} /> */}
       </SectionWrapper>

@@ -33,6 +33,8 @@ export const nonCertifierClaimValidator = async (
     do_not_do,
     '100_percent_or_all': oneHundredPercentOrAll,
     low,
+    raw,
+    un_prefix,
   } = process;
 
   console.log('oneHundredPercentOrAll', oneHundredPercentOrAll);
@@ -57,6 +59,7 @@ export const nonCertifierClaimValidator = async (
       ...current_allergen_contain,
       ...current_product_contain,
       ...(oneHundredPercentOrAll || []),
+      ...(raw || []),
     ],
     modifiedProductDataPoints,
     'nonCertifierClaims',
@@ -73,6 +76,24 @@ export const nonCertifierClaimValidator = async (
   );
 
   console.log('non Certifier claim -- 3');
+
+  await validate(
+    [...(low || [])],
+    modifiedProductDataPoints,
+    'nonCertifierClaims',
+    NON_CERTIFIED_MAPPING_3
+  );
+
+  console.log('non Certifier claim -- 3');
+
+  await validate(
+    [...(un_prefix || [])],
+    modifiedProductDataPoints,
+    'nonCertifierClaims',
+    NON_CERTIFIED_MAPPING_4
+  );
+
+  console.log('non Certifier claim -- 4');
 
   console.log('non certifier claim validator -- finish');
 };
@@ -157,12 +178,6 @@ const NON_CERTIFIED_MAPPING_1 = {
   'not from concentrate': ['not from concentrate'],
 };
 
-const NON_CERTIFIED_MAPPING_3 = {
-  'low acid': ['low acid', 'acid'],
-  'low carbohydrate': ['low carbohydrate', 'carbohydrate'],
-  'low cholesterol': ['low cholesterol', 'cholesterol'],
-};
-
 const NON_CERTIFIED_MAPPING_2 = {
   '100% natural': ['100% natural'],
   '100% natural ingredients': ['100% natural ingredients'],
@@ -205,16 +220,19 @@ const NON_CERTIFIED_MAPPING_2 = {
   raw: ['raw'],
   'responsibly sourced palm oil': ['responsibly sourced palm oil'],
   sprouted: ['sprouted'],
-  'un-filtered': ['un-filtered'],
-  'un-pasteurized': ['un-pasteurized'],
-  unscented: ['unscented'],
   'vegetarian or vegan diet/feed': ['vegetarian or vegan diet/feed'],
   wild: ['wild'],
   'wild caught': ['wild caught'],
 };
 
-// "GMOs",
-// "Synthetics",
-// "Additives",
-// "Adulterants",
-// "Animal Testing"
+const NON_CERTIFIED_MAPPING_3 = {
+  'low acid': ['low acid', 'acid'],
+  'low carbohydrate': ['low carbohydrate', 'carbohydrate'],
+  'low cholesterol': ['low cholesterol', 'cholesterol'],
+};
+
+const NON_CERTIFIED_MAPPING_4 = {
+  'un-filtered': ['un-filtered', 'unfiltered'],
+  'un-pasteurized': ['un-pasteurized', 'unpasteurized'],
+  unscented: ['unscented'],
+};
