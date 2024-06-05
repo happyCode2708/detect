@@ -220,7 +220,7 @@ export default function Home() {
         <div className='grid grid-cols-4 gap-2'>
           <div className='col-span-1'>
             <SectionWrapper title='Info'>
-              <span>Last update: 3/6/24</span>
+              <span>Last update: 6/5/24</span>
               <Link
                 href='/update'
                 className={cn(

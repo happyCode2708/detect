@@ -80,7 +80,7 @@ router.get('/get-result/:sessionId', async (req, res) => {
 
     let validatedResponse = await responseValidator(response);
 
-    // removeRawFieldData(validatedResponse);
+    removeRawFieldData(validatedResponse);
 
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
