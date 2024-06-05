@@ -25,6 +25,23 @@ export const containValidator = async (modifiedProductDataPoints: any) => {
     modifiedProductDataPoints['contain_and_notContain']['product_contain'] ||
     [];
 
+  const process = modifiedProductDataPoints['process'] || [];
+
+  const { other_things } = process;
+
+  const ingredients_group = modifiedProductDataPoints?.[
+    'ingredients_group'
+  ]?.reduce(
+    (accumulator: string[], currentValue: { ingredients: string[] }) => {
+      const nextIngredientList = [...accumulator, ...currentValue?.ingredients];
+
+      return [...new Set(nextIngredientList)];
+    },
+    []
+  );
+
+  console.log('ingredient  groups', ingredients_group);
+
   await validateContainOrDoesNotContain(
     [...current_allergen_freeOf, ...current_product_does_not_contain],
     modifiedProductDataPoints,
@@ -34,7 +51,12 @@ export const containValidator = async (modifiedProductDataPoints: any) => {
   console.log('contain -- 1');
 
   await validateContainOrDoesNotContain(
-    [...current_allergen_contain, ...current_product_contain],
+    [
+      ...current_allergen_contain,
+      ...current_product_contain,
+      ...ingredients_group,
+      ...other_things,
+    ],
     modifiedProductDataPoints,
     'validated_product_contain'
   );
@@ -49,21 +71,22 @@ const validateContainOrDoesNotContain = async (
   modifiedProductDataPoints: any,
   dataPointKey: string
 ) => {
-  let validated_allegen_field = [] as any;
+  let validated_fields = [] as any;
 
   for (const ingredientName of ingredientList) {
     const lowercaseIngredientName = lowerCase(ingredientName);
     const matchedAllergens = await checkMatch(lowercaseIngredientName);
     if (matchedAllergens?.length > 0) {
-      validated_allegen_field = [
-        ...validated_allegen_field,
-        ...matchedAllergens,
-      ];
+      validated_fields = [...validated_fields, ...matchedAllergens];
     }
   }
 
+  let currentValues =
+    modifiedProductDataPoints['contain_and_notContain']?.[dataPointKey] || [];
+
   modifiedProductDataPoints['contain_and_notContain'][dataPointKey] = [
-    ...new Set(validated_allegen_field),
+    ...currentValues,
+    ...new Set(validated_fields),
   ];
 };
 
@@ -82,16 +105,30 @@ const checkMatch = async (ingredientName: string) => {
 
 const promiseCheckEachEnum = async (keyNvalue: any, ingredientName: string) => {
   const [containEnum, possibleValueList] = keyNvalue;
-  let foundMatchs = [] as any;
+  let foundMatches = [] as any;
 
   possibleValueList.forEach((possibleValueItem: string) => {
     if (ingredientName.includes(possibleValueItem)) {
-      foundMatchs.push(containEnum);
-      return;
+      if (
+        [
+          'added preservatives',
+          'artificial preservatives',
+          'chemical preservatives',
+          'natural preservatives',
+          'synthetic preservatives',
+          'preservatives',
+        ].includes(containEnum)
+      ) {
+        if (!possibleValueList.includes(ingredientName)) {
+          return;
+        }
+      }
+
+      foundMatches.push(containEnum);
     }
   });
 
-  return Promise.resolve(foundMatchs);
+  return Promise.resolve(foundMatches);
 };
 
 const CONTAIN_MAPPING = {
@@ -106,6 +143,11 @@ const CONTAIN_MAPPING = {
   'added nitrates': ['added nitrates'],
   'added nitrites': ['added nitrites'],
   'added preservatives': ['added preservatives'],
+  'artificial preservatives': ['artificial preservatives'],
+  'chemical preservatives': ['chemical preservatives'],
+  'natural preservatives': ['natural preservatives'],
+  'synthetic preservatives': ['synthetic preservatives'],
+  preservatives: ['preservatives'],
   additives: ['additives'],
   alcohol: ['alcohol'],
   allergen: ['allergen'],
@@ -124,7 +166,6 @@ const CONTAIN_MAPPING = {
   'artificial flavors': ['artificial flavors'],
   'artificial fragrance': ['artificial fragrance'],
   'artificial ingredients': ['artificial ingredients'],
-  'artificial preservatives': ['artificial preservatives'],
   'binders and/or fillers': ['binders and/or fillers'],
   bleach: ['bleach'],
   'bpa (bisphenol-a)': ['bpa (bisphenol-a)'],
@@ -140,7 +181,6 @@ const CONTAIN_MAPPING = {
   'chemical flavors': ['chemical flavors'],
   'chemical fragrances': ['chemical fragrances'],
   'chemical ingredients': ['chemical ingredients'],
-  'chemical preservatives': ['chemical preservatives'],
   'chemical sunscreens': ['chemical sunscreens'],
   chemicals: ['chemicals'],
   chlorine: ['chlorine'],
@@ -168,11 +208,10 @@ const CONTAIN_MAPPING = {
   'natural additives': ['natural additives'],
   'natural colors': ['natural colors'],
   'natural dyes': ['natural dyes'],
-  'natural flavors': ['natural flavors'],
+  'natural flavors': ['natural flavors', 'natural flavor'],
   'natural ingredients': ['natural ingredients'],
-  'natural preservatives': ['natural preservatives'],
   'nitrates/nitrites': ['nitrates/nitrites'],
-  'omega fatty acids': ['omega fatty acids'],
+  'omega fatty acids': ['omega fatty acids', 'omega'],
   paba: ['paba'],
   'palm oil': ['palm oil'],
   parabens: ['parabens'],
@@ -184,17 +223,22 @@ const CONTAIN_MAPPING = {
   phosphorus: ['phosphorus'],
   phthalates: ['phthalates'],
   pits: ['pits'],
-  preservatives: ['preservatives'],
-  'rbgh/bst': ['rbgh/bst'],
+  'rbgh/bst': ['rbgh/bst', 'bst', 'rbst'],
   rennet: ['rennet'],
   salicylates: ['salicylates'],
   'sea salt': ['sea salt'],
-  'shells/ shell pieces': ['shells/ shell pieces'],
+  'shells/ shell pieces': [
+    'shells/ shell pieces',
+    'shells',
+    'shell pieces',
+    'shell',
+    'nut shell fragments',
+  ],
   silicone: ['silicone'],
   'sles ( sodium laureth sulfate)': ['sles ( sodium laureth sulfate)'],
   'sls ( sodium lauryl sulfate )': ['sls ( sodium lauryl sulfate )'],
   stabilizers: ['stabilizers'],
-  probiotics: ['probiotics'],
+  probiotics: ['probiotics', 'probiotic'],
   starch: ['starch'],
   sulfates: ['sulfates'],
   sulfides: ['sulfides'],
@@ -206,7 +250,6 @@ const CONTAIN_MAPPING = {
   'synthetic flavors': ['synthetic flavors'],
   'synthetic fragrance': ['synthetic fragrance'],
   'synthetic ingredients': ['synthetic ingredients'],
-  'synthetic preservatives': ['synthetic preservatives'],
   synthetics: ['synthetics'],
   'thc / tetrahydrocannabinol': ['thc / tetrahydrocannabinol'],
   'toxic pesticides': ['toxic pesticides'],

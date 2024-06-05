@@ -133,9 +133,25 @@ export const removeRawFieldData = (rawResponse: object) => {
     'product.contain_and_notContain.product_does_not_contain',
     'product.process',
     'product.marketingAll.social_media_check',
+    'ingredients',
   ];
 
   fields.forEach((removeField) => {
     removeFieldByPath(rawResponse, removeField);
   });
+};
+export const createMapping = (enumList: string[]) => {
+  const result: Record<string, string[]> = {};
+
+  enumList.forEach((item) => {
+    result[item] = [item];
+  });
+
+  return result;
+
+  // const result =  {};
+
+  // claims.forEach((item) => {
+  //   result[item] = [item];
+  // });
 };

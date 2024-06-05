@@ -30,8 +30,8 @@ json
     "content_in_spanish_must_be_prohibited": true,
     "is_product_supplement": boolean,
     "certifierAndLogo":"your answer gemini" (help me list all certifiers logo(such as kosher U pareve, ...) and usda inspection marks on provided image),
-    "other_ingredients_group":[{"ingredients": string[]}, ...], 
-    "ingredients_group": [{"ingredients": string[]}, ...],
+    "other_ingredients_group":[{ingredients_statement: string, "ingredients": string[], }, ...], 
+    "ingredients_group": [{"ingredients_statement": string, "ingredients": string[] }, ...],
     "allergen": {
       "allergen_contain_statement": string, 
       "allergen_freeOf_statement": string,
@@ -51,10 +51,28 @@ json
       "product_does_not_contain": string[],
     },
     "process": {
+      "very_low": string[],
+      "lower": string[],
       "low": string[],
+      "reduced": string[],
+      "no": string[],
+      "free_of": string[],
+      "zero_at": string[],
+      "high_in_full_statement": string[],
+      "rich_in_full_statement": string[],
       "exploit_methods": string[],
       "do_not_do": string[],
       "100_percent_or_all": string[],
+      "un_prefix": string[],
+      "raw": string[],
+      "acidity_percent_statement": string[],
+      "total_fat": {
+        value: float,
+        "uom": string,
+      },
+      "grade": string[],
+      "natural": string[],
+      "other_things": string[],
     } 
     "header": {
       "productName": string,
@@ -161,10 +179,6 @@ json
         },
       },
       "otherClaims:{
-        "fatContentClaims": string[],
-        "saltOrSodiumClaims": string[],
-        "sugarAndSweetenerClaims": string[],
-        "highOrRichInOrExcellentSourceOf": string[],
         "usdaInspectionMark": string,
       },
     },
@@ -221,15 +235,19 @@ Some common rules:
 Some rules for you:
 1) "ingredients_groups":
 + "ingredients_groups" is the list of ingredients list since a product can have many ingredient list
-+ "ingredients_groups.ingredients" content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:".
-+ "ingredients_groups.ingredients" usually appear below or next to the nutrition panel.
-Ex 1: "Ingredients: Flour, Eggs." =  ingredients_groups: [{ingredients: ["Flour", "Eggs"]}, ...]
++ "ingredients_groups.ingredients_statement" content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:".
++ "ingredients_groups.ingredients_statement" usually appear below or next to the nutrition panel.
++ "ingredients_groups.ingredients" is the break-out list of ingredients list into string array.
++ "ingredients_groups." 
+
+Ex 1: "Ingredients: Flour, Eggs." =  ingredients_groups: [{ingredients: ["Flour", "Eggs"], ...}, ...]
 
 2) "other_ingredients_group":
 + "other_ingredients_group" is the list of ingredients list since a product can have many ingredient list. And it is only for supplement product.
-+ "other_ingredients_group.ingredients" content start right after a prefix text such as "other ingredients".
-+ "other_ingredients_group.ingredients" usually appear below or next to the nutrition panel.
-Ex 1: "Other ingredients: Flour, Eggs."=  other_ingredients_groups: [{ingredients: ["Flour", "Eggs"]}, ...]
++ "other_ingredients_group.ingredients_statement" content start right after a prefix text such as "other ingredients".
++ "other_ingredients_group.ingredients_statement" usually appear below or next to the nutrition panel.
++ "other_ingredients_group.ingredients" is the break-out list of ingredients list into string array.
+Ex 1: "Other ingredients: Flour, Eggs."=  other_ingredients_groups: [{ingredients: ["Flour", "Eggs"], ...}, ...]
 
 3) "marketingAll" rules:
 a) "marketingAll.website":
@@ -373,22 +391,6 @@ Ex 2: If you see statement like "Non-gmo" but do not found the "Non-GMO" certifi
 }
 
 
-d)"attributesAndCertifiers.otherClaims.highOrRichInOrExcellentSourceOf":
-+ is the list of the text such as "Rich in Vitamin D", "Excellent Source of Vitamin D", "High Vitamin D",.. the text that emphasize that product have something in high amount and found on provided image.
-Ex 1: texts "high protein" and "rich in vitamin D" found should be recorded as {"highOrRichInOrExcellentSourceOf": ["high protein", "rich in vitamin D"]}
-
-e) "attributesAndCertifiers.otherClaims.fatContentClaims":
-+ is string array from enum FAT_CONTAIN_CLAIM
-+ text "0g trans fat", or "0 Gram trans fat" found so recorded as {"fatContentClaims": ["zero gram trans fat per serving"]},
-
-f) "attributesAndCertifiers.otherClaims.saltOrSodiumClaims":
-+ is string array from enum SALT_OR_SODIUM_CLAIMS
-+ text "low sodium" found so recorded as {"saltOrSodiumClaims": ["low sodium"]}
-
-g) "attributesAndCertifiers.otherClaims.sugarAndSweetenerClaims" rules:
-+ is string array from enum SUGAR_AND_SWEET_CLAIMS
-+ text "no sugar alcohol" found so recorded as {"sugarAndSweetenerClaims": ["no sugar alcohol"]}
-
 h) attributesAndCertifiers.otherClaims.usdaInspectionMark":
 + if USDA inspection mark found on provided image, return full words on that inspection mark
   
@@ -404,10 +406,43 @@ b) "product_does_not_contain" rules:
   - "No ..." (Ex: "No preservatives")
   
 11) "process" rules:
-  + "low" is the list of thing that product claim to have at low amount.
-  + "exploit_methods" is how they make product (ex: 'wild caught')
-  + "do_not_do" is the list of things that company claim they do not doing at any stage of product development or production. (ex: 'no sulfites added', ...)
-  + "100_percent_or_all" is the list of things that product claim to have at 100 percent or made with all (ex: "all natural", "100% pure ...")
+  + "very_low" is the list of things product claim to have at very low amount (such as "very low sodium", ...).
+  
+  + "lower" is the list of things that product claim to have at lower amount (such as "lower sugar", ...).
+  
+  + "low" is the list of things that product claim to have at low amount (such as "low calorie", ...).
+  
+  + "reduced" is the list of things product claim to have reduced amount (such as "reduced calorie",...).
+  
+  + "no" is the list of things that product claim to have no at (such as "no sugar added",...).
+  
+  + "free_of" is the list of things that product claim to free of (such as "free of saturated fat", "fat free",...).
+  
+  + "high_in_full_statement" is the list of statements that product claim to have at high amount (such as "high fructose conrn syrup", ...).
+
+  + "rich_in_full_statement" is the list of statements that product claim to rich in (such as "rich in vitamin D", "rich sourch of vitamin C", ...).
+  
+  + "zero_at" is the list of things that product claim to have zero amount (such as "0g trans fat", ...).
+  
+  + "exploit_methods" is how they make product (ex: 'wild caught').
+  
+  + "do_not_do" is the list of things that company claim they do not doing at any stage of product development or production. (ex: 'no sulfites added', ...).
+  
+  + "100_percent_or_all" is the list of things that product claim to have at 100 percent or made with all (ex: "all natural", "100% pure ...").
+  
+  + "raw" is the list of things that product claim to have raw at (such as "raw juice", ...).
+  
+  + "un_prefix" is the list of things that product claim with adjective start withh "un" (such as "unpasteurized", "un-pasteurized", "unfiltered", ...).
+  
+  + "acidity_percent_statement" is the list of acidity statement (such as "Acidity 12%",...)
+  
+  + "total_fat.value" is the value of total fat on nutrition fact panel.
+
+  + "grade" is the list of statements on product about grading (such as "grade A", "choice", "prime", "select", "premium", ...)
+  
+  + "natural" is the list of statements about natural (such as: "natural botanicals", "natural ingredients", ...)
+
+  + "other_things" is the list of things or statements (such as: "probiotic", )
   `;
 };
 
@@ -602,3 +637,5 @@ b) "product_does_not_contain" rules:
 // + enum SUGAR_AND_SWEET_CLAIMS = ["no sugar alcohol"]
 
 // + enum NON_CERTIFIED_CLAIMS = ["100% natural", "100% natural ingredients", "100% pure", "acid free", "aeroponic grown", "all natural", "all natural ingredients", "aquaponic/aquaculture grown", "baked", "biodegradable", "cage free", "cold-pressed", "direct trade", "dolphin safe", "dry roasted", "eco-friendly", "farm raised", "filtered", "free range", "freeze-dried", "from concentrate", "grade a", "greenhouse grown", "heat treated", "heirloom", "homeopathic", "homogenized", "hydroponic grown", "hypo-allergenic", "irradiated", "live food", "low acid", "low carbohydrate", "low cholesterol", "macrobiotic", "minimally processed", "natural", "natural botanicals", "natural fragrances", "natural ingredients", "no animal testing", "no sulfites added", "non gebrokts", "non-alcoholic", "non-irradiated", "non-toxic", "not fried", "not from concentrate", "pasteurized", "pasture raised", "prairie raised", "raw", "responsibly sourced palm oil", "sprouted", "un-filtered", "un-pasteurized", "unscented", "vegetarian or vegan diet/feed", "wild", "wild caught"]
+
+// "adjective distribution" or "shared adjective"

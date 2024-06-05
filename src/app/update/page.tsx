@@ -66,6 +66,8 @@ const Tag = ({
             ? 'px-2 bg-red-500'
             : type === 'test'
             ? 'px-2 bg-green-500'
+            : type === 'good'
+            ? 'px-2 bg-orange-500'
             : 'px-2 bg-blue-500'
         }
       >
@@ -76,8 +78,105 @@ const Tag = ({
 };
 
 const UPDATE_LIST = {
-  '3/6/24': {
-    name: '3/6/24 update',
+  '6/5/24': {
+    name: '6/5/24 update',
+    updateContent: [
+      {
+        content: (
+          <div>
+            Detect and map calories claims
+            <Tag type='test'>Testing</Tag>
+            <Tag type='default'>In-progress</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Detect and map grade claims
+            <Tag type='test'>Testing</Tag>
+            <Tag type='default'>In-progress</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Detect and map "high/rich/excellent" claims
+            <Tag type='test'>Testing</Tag>
+            <Tag type='default'>In-progress</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Detect and map calories claims
+            <Tag type='test'>Testing</Tag>
+            <Tag type='default'>In-progress</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Detect and map non-certifier claims
+            <Tag type='test'>Testing</Tag>
+            <Tag type='default'>In-progress</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Detect and map sugar claims
+            <Tag type='test'>Testing</Tag>
+            <Tag type='default'>In-progress</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Detect and map whole grain claims
+            <Tag type='test'>Testing</Tag>
+            <Tag type='default'>In-progress</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Detect and map whole fat claims
+            <Tag type='test'>Testing</Tag>
+            <Tag type='default'>In-progress</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Add some items to contain and does-not-contain claims (such as nut
+            shell, rbgh/bst,)
+            <Tag type='test'>Testing</Tag>
+            <Tag type='default'>In-progress</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Test method using OCR text to validate input images for other data
+            points
+            <Tag type='test'>Testing</Tag>
+            <Tag type='good'>Good result</Tag>
+          </div>
+        ),
+      },
+    ],
+  },
+  '6/3/24': {
+    name: '6/3/24 update',
     updateContent: [
       {
         content: (
@@ -87,7 +186,6 @@ const UPDATE_LIST = {
             <Tag type='imp'>Improving</Tag>
           </div>
         ),
-        ex: [`"peanut" mapped into "peanut / peanut oil"`],
       },
       {
         content: (
@@ -108,8 +206,8 @@ const UPDATE_LIST = {
       },
     ],
   },
-  '29/5/24': {
-    name: '29/5/24 update',
+  '5/29/24': {
+    name: '5/29/24 update',
     updateContent: [
       {
         content: (
@@ -117,7 +215,7 @@ const UPDATE_LIST = {
             Get ancillary info from supplement dietary ingredients (that could
             be sub-ingredients, equivalent substance, extra info, ...)
             <Tag type='test'>Testing</Tag>
-            <Tag type='improve'>Improving</Tag>
+            <Tag type='imp'>Improving</Tag>
           </div>
         ),
         ex: [

@@ -29,7 +29,14 @@ export const nonCertifierClaimValidator = async (
 
   const process = modifiedProductDataPoints['process'] || {};
 
-  const { do_not_do, '100_percent_or_all': oneHundredPercentOrAll } = process;
+  const {
+    do_not_do,
+    '100_percent_or_all': oneHundredPercentOrAll,
+    low,
+    raw,
+    un_prefix,
+    natural,
+  } = process;
 
   console.log('oneHundredPercentOrAll', oneHundredPercentOrAll);
 
@@ -43,7 +50,7 @@ export const nonCertifierClaimValidator = async (
     ],
     modifiedProductDataPoints,
     'nonCertifierClaims',
-    DOES_NOT_CONTAIN_MAPPING
+    NON_CERTIFIED_MAPPING_1
   );
 
   console.log('non Certifier claim -- 1');
@@ -52,14 +59,42 @@ export const nonCertifierClaimValidator = async (
     [
       ...current_allergen_contain,
       ...current_product_contain,
-      ...oneHundredPercentOrAll,
+      ...(oneHundredPercentOrAll || []),
+      ...(raw || []),
     ],
     modifiedProductDataPoints,
     'nonCertifierClaims',
-    CONTAIN_MAPPING
+    NON_CERTIFIED_MAPPING_2
   );
 
   console.log('non Certifier claim -- 2');
+
+  await validate(
+    [...(low || [])],
+    modifiedProductDataPoints,
+    'nonCertifierClaims',
+    NON_CERTIFIED_MAPPING_3
+  );
+
+  console.log('non Certifier claim -- 3');
+
+  await validate(
+    [...(un_prefix || [])],
+    modifiedProductDataPoints,
+    'nonCertifierClaims',
+    NON_CERTIFIED_MAPPING_4
+  );
+
+  console.log('non Certifier claim -- 4');
+
+  await validate(
+    [...(natural || [])],
+    modifiedProductDataPoints,
+    'nonCertifierClaims',
+    NON_CERTIFIED_MAPPING_5
+  );
+
+  console.log('non Certifier claim -- 5');
 
   console.log('non certifier claim validator -- finish');
 };
@@ -90,11 +125,11 @@ const validate = async (
   let currentValues =
     modifiedProductDataPoints['attributesAndCertifiers']['otherClaims'][
       dataPointKey
-    ];
+    ] || [];
 
   modifiedProductDataPoints['attributesAndCertifiers']['otherClaims'][
     dataPointKey
-  ] = [...(currentValues || []), ...new Set(validated_allegen_field)];
+  ] = [...currentValues, ...new Set(validated_allegen_field)];
 };
 
 const checkMatch = async (ingredientName: string, enumValue: any) => {
@@ -112,7 +147,7 @@ const checkMatch = async (ingredientName: string, enumValue: any) => {
 
 const promiseCheckEachEnum = async (keyNvalue: any, ingredientName: string) => {
   const [containEnum, possibleValueList] = keyNvalue;
-  let foundMatchs = [] as any;
+  let foundMatches = [] as any;
 
   possibleValueList.forEach((possibleValueItem: string) => {
     console.log('coup', `${ingredientName}-${possibleValueItem}`);
@@ -123,15 +158,15 @@ const promiseCheckEachEnum = async (keyNvalue: any, ingredientName: string) => {
           return;
         }
       }
-      foundMatchs.push(containEnum);
+      foundMatches.push(containEnum);
       return;
     }
   });
 
-  return Promise.resolve(foundMatchs);
+  return Promise.resolve(foundMatches);
 };
 
-const DOES_NOT_CONTAIN_MAPPING = {
+const NON_CERTIFIED_MAPPING_1 = {
   'acid free': ['acid free', 'acid'],
   'free range': ['free range', 'range'],
   'no animal testing': ['no animal testing', 'animal testing'],
@@ -144,12 +179,7 @@ const DOES_NOT_CONTAIN_MAPPING = {
   'not from concentrate': ['not from concentrate'],
 };
 
-const LOW_MAPPING = {
-  'low acid': ['low acid'],
-  'low carbohydrate': ['low carbohydrate'],
-  'low cholesterol': ['low cholesterol'],
-};
-const CONTAIN_MAPPING = {
+const NON_CERTIFIED_MAPPING_2 = {
   '100% natural': ['100% natural'],
   '100% natural ingredients': ['100% natural ingredients'],
   '100% pure': ['100% pure'],
@@ -181,26 +211,32 @@ const CONTAIN_MAPPING = {
   'live food': ['live food'],
   macrobiotic: ['macrobiotic'],
   'minimally processed': ['minimally processed'],
-  natural: ['natural'],
-  'natural botanicals': ['natural botanicals'],
-  'natural fragrances': ['natural fragrances'],
-  'natural ingredients': ['natural ingredients'],
   pasteurized: ['pasteurized'],
   'pasture raised': ['pasture raised'],
   'prairie raised': ['prairie raised'],
   raw: ['raw'],
   'responsibly sourced palm oil': ['responsibly sourced palm oil'],
   sprouted: ['sprouted'],
-  'un-filtered': ['un-filtered'],
-  'un-pasteurized': ['un-pasteurized'],
-  unscented: ['unscented'],
   'vegetarian or vegan diet/feed': ['vegetarian or vegan diet/feed'],
   wild: ['wild'],
   'wild caught': ['wild caught'],
 };
 
-// "GMOs",
-// "Synthetics",
-// "Additives",
-// "Adulterants",
-// "Animal Testing"
+const NON_CERTIFIED_MAPPING_3 = {
+  'low acid': ['low acid', 'acid'],
+  'low carbohydrate': ['low carbohydrate', 'carbohydrate'],
+  'low cholesterol': ['low cholesterol', 'cholesterol'],
+};
+
+const NON_CERTIFIED_MAPPING_4 = {
+  'un-filtered': ['un-filtered', 'unfiltered'],
+  'un-pasteurized': ['un-pasteurized', 'unpasteurized'],
+  unscented: ['unscented'],
+};
+
+const NON_CERTIFIED_MAPPING_5 = {
+  natural: ['natural'],
+  'natural botanicals': ['natural botanicals'],
+  'natural fragrances': ['natural fragrances'],
+  'natural ingredients': ['natural ingredients'],
+};

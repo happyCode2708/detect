@@ -66,7 +66,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     instructions,
     packaging,
     contain_and_notContain,
-    process_method,
+    process,
     ...metaInfo
   } = productInfo;
 
@@ -77,10 +77,19 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     validated_allergen_freeOf,
   } = allergen || {};
   const { claims, otherClaims, containInfo } = attributesAndCertifiers || {};
-  const { marketing_contents, socialMedia, ...marketingRest } =
-    marketingAll || {};
+  const {
+    marketing_contents,
+    socialMedia,
+    social_media_check,
+    ...marketingRest
+  } = marketingAll || {};
   const { primarySize, secondarySize, thirdSize, ...headerRest } = header || {};
   const { recyclingInfo, recyclable, ...restPackaging } = packaging || {};
+  const {
+    product_contain,
+    product_does_not_contain,
+    ...validatedContainClaims
+  } = contain_and_notContain;
 
   return (
     <>
@@ -137,13 +146,20 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
       </SectionWrapper>
       {ingredients_group?.length > 0 && (
         <SectionWrapper name='Ingredients'>
-          {ingredients_group?.map((ingredientList: any, idx: number) => {
+          {ingredients_group?.map((ingredientListObject: any, idx: number) => {
             return (
               <div>
                 <div className='font-bold'>Ingredient No.{idx + 1}: </div>
-                <p className='pl-4'>
-                  {ingredientList?.ingredients?.join(', ')}
-                </p>
+                <div className='pl-6'>
+                  <CamelFieldStringRender
+                    objectValues={{
+                      ...ingredientListObject,
+                      ingredients: JSON.stringify(
+                        ingredientListObject?.ingredients
+                      ),
+                    }}
+                  />
+                </div>
               </div>
             );
           })}
@@ -205,7 +221,9 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
             }
           )}
         <CamelFieldStringRender objectValues={otherClaims} />
-        <CamelFieldStringRender objectValues={contain_and_notContain} />
+        <CamelFieldStringRender objectValues={validatedContainClaims} />
+
+        {/* <CamelFieldStringRender objectValues={{ high: high_in }} /> */}
       </SectionWrapper>
 
       <SectionWrapper name='Marketing'>
