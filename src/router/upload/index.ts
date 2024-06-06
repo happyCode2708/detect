@@ -108,6 +108,14 @@ router.post(
 
     console.log('result', JSON.stringify(invalidatedInput));
 
+    const nutImagesOCRresult = await getOcrTextAllImages(
+      invalidatedInput.nutIncluded
+    );
+
+    const nutExcludedImagesOCRresult = await getOcrTextAllImages(
+      invalidatedInput.nutExcluded
+    );
+
     res.json({
       sessionId,
       images: [],
@@ -123,6 +131,7 @@ router.post(
       req,
       res,
       invalidatedInput,
+      ocrList: nutImagesOCRresult,
       sessionId,
       collateImageName,
       outputConfig,
@@ -132,6 +141,7 @@ router.post(
       req,
       res,
       invalidatedInput,
+      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
       sessionId,
       collateImageName,
       outputConfig,
@@ -239,6 +249,7 @@ const onProcessNut = async ({
   req,
   res,
   invalidatedInput,
+  ocrList,
   sessionId,
   collateImageName,
   outputConfig,
@@ -246,6 +257,7 @@ const onProcessNut = async ({
   req: any;
   res: any;
   invalidatedInput: any;
+  ocrList: any[];
   sessionId: string;
   collateImageName: string;
   outputConfig: any;
@@ -258,6 +270,13 @@ const onProcessNut = async ({
       resultFileName,
       JSON.stringify({ isSuccess: true, data: { product: { factPanel: [] } } })
     );
+
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      'nut-orc-' + sessionId + '.json',
+      JSON.stringify({})
+    );
+
     return;
   }
 
@@ -274,18 +293,22 @@ const onProcessNut = async ({
     })
   );
 
-  const nutImagesOCRresult = await getOcrTextAllImages(
-    invalidatedInput.nutIncluded
-  );
-  const nutText = nutImagesOCRresult.reduce(
+  const nutText = ocrList.reduce(
     (accumulator: any, currentValue: any, idx: number) => {
       return {
         ...accumulator,
-        [`ocrImage_${idx}`]: currentValue,
+        [`ocrImage_${idx + 1}`]: currentValue,
       };
     },
     {}
   );
+
+  writeJsonToFile(
+    resultsDir + `/${sessionId}`,
+    'nut-orc-' + sessionId + '.json',
+    JSON.stringify(nutText)
+  );
+
   onProcessGemini({
     req,
     res,
@@ -304,6 +327,7 @@ const onProcessOther = async ({
   req,
   res,
   invalidatedInput,
+  ocrList,
   sessionId,
   collateImageName,
   outputConfig,
@@ -311,6 +335,7 @@ const onProcessOther = async ({
   req: any;
   res: any;
   invalidatedInput: any;
+  ocrList: any[];
   sessionId: string;
   collateImageName: string;
   outputConfig: any;
@@ -321,6 +346,12 @@ const onProcessOther = async ({
       resultsDir + `/${sessionId}`,
       resultFileName,
       JSON.stringify({ isSuccess: true, data: { product: {} } })
+    );
+
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      'all-orc-' + sessionId + '.json',
+      JSON.stringify({})
     );
 
     return;
@@ -339,19 +370,20 @@ const onProcessOther = async ({
     })
   );
 
-  const nutImagesOCRresult = await getOcrTextAllImages([
-    ...invalidatedInput.nutIncluded,
-    ...invalidatedInput.nutExcluded,
-  ]);
-
-  const allText = nutImagesOCRresult.reduce(
+  const allText = ocrList.reduce(
     (accumulator: any, currentValue: any, idx: number) => {
       return {
         ...accumulator,
-        [`ocrImage_${idx}`]: currentValue,
+        [`ocrImage_${idx + 1}`]: currentValue,
       };
     },
     {}
+  );
+
+  writeJsonToFile(
+    resultsDir + `/${sessionId}`,
+    'all-orc-' + sessionId + '.json',
+    JSON.stringify(allText)
   );
 
   onProcessGemini({

@@ -37,6 +37,8 @@ export const getOcrText = async (
 };
 
 export const getOcrTextAllImages = async (filePaths: string[]) => {
+  if (filePaths?.length === 0) return [];
+
   return Promise.all(filePaths.map((path) => getOcrText(path)));
 };
 

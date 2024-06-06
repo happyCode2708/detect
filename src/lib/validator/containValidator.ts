@@ -27,7 +27,7 @@ export const containValidator = async (modifiedProductDataPoints: any) => {
 
   const process = modifiedProductDataPoints['process'] || [];
 
-  const { other_things } = process;
+  // const { other_things } = process;
 
   const ingredients_group = modifiedProductDataPoints?.[
     'ingredients_group'
@@ -55,7 +55,7 @@ export const containValidator = async (modifiedProductDataPoints: any) => {
       ...current_allergen_contain,
       ...current_product_contain,
       ...ingredients_group,
-      ...other_things,
+      // ...other_things,
     ],
     modifiedProductDataPoints,
     'validated_product_contain'

@@ -6,6 +6,7 @@ import { writeJsonToFile } from '../../utils';
 import { lowerCase } from 'lodash';
 import { responseValidator } from '../../lib/validator/main';
 import { removeFieldByPath, removeRawFieldData } from '../../lib/server_utils';
+import { mapOcrToPredictDataPoint } from '../../lib/validator/mapOcrToPredictDataPoint';
 
 const router = express.Router();
 
@@ -26,6 +27,11 @@ router.get('/get-result/:sessionId', async (req, res) => {
     'nut-' + sessionId + '.json'
   );
 
+  const allOcrFilePath = path.join(
+    resultsDir + `/${sessionId}`,
+    'all-orc-' + sessionId + '.json'
+  );
+
   const finalResultPath = path.join(
     resultsDir + `/${sessionId}`,
     'validated-output-' + sessionId + '.json'
@@ -42,13 +48,15 @@ router.get('/get-result/:sessionId', async (req, res) => {
   } catch (err) {}
 
   try {
-    const [allData, nutData] = await Promise.all([
+    const [allData, nutData, allOcr] = await Promise.all([
       fs.readFileSync(allFilePath, 'utf8'),
       fs.readFileSync(nutFilePath, 'utf8'),
+      fs.readFileSync(allOcrFilePath, 'utf8'),
     ]);
 
     const allRes = JSON.parse(allData);
     const nutRes = JSON.parse(nutData);
+    const allOcrText = JSON.parse(allOcr);
 
     const { isSuccess: allSuccess, status: allStatus } = allRes || {};
     const { isSuccess: nutSuccess, status: nutStatus } = nutRes || {};
@@ -79,6 +87,7 @@ router.get('/get-result/:sessionId', async (req, res) => {
     };
 
     let validatedResponse = await responseValidator(response);
+    await mapOcrToPredictDataPoint(allOcrText);
 
     // removeRawFieldData(validatedResponse);
 

@@ -55,6 +55,8 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     isFactPanelLooked,
     ingredients_group,
     other_ingredients_group,
+    validated_ingredients_group,
+    validated_other_ingredients_group,
     factPanelDebug,
     isFactPanelGoodToRead,
     attributesAndCertifiers,
@@ -144,37 +146,43 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
           </div>
         ) : null}
       </SectionWrapper>
-      {ingredients_group?.length > 0 && (
+      {validated_ingredients_group?.length > 0 && (
         <SectionWrapper name='Ingredients'>
-          {ingredients_group?.map((ingredientListObject: any, idx: number) => {
-            return (
-              <div>
-                <div className='font-bold'>Ingredient No.{idx + 1}: </div>
-                <div className='pl-6'>
-                  <CamelFieldStringRender
-                    objectValues={{
-                      ...ingredientListObject,
-                      ingredients: JSON.stringify(
-                        ingredientListObject?.ingredients
-                      ),
-                    }}
-                  />
+          {validated_ingredients_group?.map(
+            (ingredientListObject: any, idx: number) => {
+              return (
+                <div>
+                  <div className='font-bold'>Ingredient No.{idx + 1}: </div>
+                  <div className='pl-6'>
+                    <CamelFieldStringRender
+                      objectValues={{
+                        ...ingredientListObject,
+                        ingredients: JSON.stringify(
+                          ingredientListObject?.ingredients
+                        ),
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            }
+          )}
         </SectionWrapper>
       )}
-      {other_ingredients_group?.length > 0 && (
+      {validated_other_ingredients_group?.length > 0 && (
         <SectionWrapper name='Other Ingredients'>
-          {other_ingredients_group?.map((ingredientList: any, idx: number) => {
-            return (
-              <div>
-                <div className='font-bold'>Ingredient No.{idx + 1}: </div>
-                <p className='pl-4'>{ingredientList?.ingredients.join(', ')}</p>
-              </div>
-            );
-          })}
+          {validated_other_ingredients_group?.map(
+            (ingredientList: any, idx: number) => {
+              return (
+                <div>
+                  <div className='font-bold'>Ingredient No.{idx + 1}: </div>
+                  <p className='pl-4'>
+                    {ingredientList?.ingredients.join(', ')}
+                  </p>
+                </div>
+              );
+            }
+          )}
         </SectionWrapper>
       )}
 

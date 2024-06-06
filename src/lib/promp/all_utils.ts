@@ -30,8 +30,20 @@ json
     "content_in_spanish_must_be_prohibited": true,
     "is_product_supplement": boolean,
     "certifierAndLogo":"your answer gemini" (help me list all certifiers logo(such as kosher U pareve, ...) and usda inspection marks on provided image),
-    "other_ingredients_group":[{ingredients_statement: string, "ingredients": string[], }, ...], 
-    "ingredients_group": [{"ingredients_statement": string, "ingredients": string[] }, ...],
+    "other_ingredients_group":[
+      {
+        "ingredients_statement": string, 
+        "ingredients": string[], 
+      }, 
+      ...
+    ], 
+    "ingredients_group":[
+      {
+        "ingredients_statement": string, 
+        "ingredients": string[] 
+      }, 
+      ...
+    ],
     "allergen": {
       "allergen_contain_statement": string, 
       "allergen_freeOf_statement": string,
@@ -76,7 +88,6 @@ json
         "statement": string,
         "list_break_out": string[],
       },
-      "other_things": string[],
     } 
     "header": {
       "productName": string,
@@ -446,9 +457,7 @@ b) "product_does_not_contain" rules:
   
   + "natural" is the list of statements about natural (such as: "natural botanicals", "natural ingredients", ...)
 
-  + "live_and_active_cultures.statement" is the statement about all active cultures inside product.
-
-  + "other_things" is the list of things or statements (such as: "probiotic", )
+  + "live_and_active_cultures.statement" is the statement about all active cultures inside product (include the active cultures list).
   `;
 };
 
