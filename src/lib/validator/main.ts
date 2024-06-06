@@ -7,6 +7,7 @@ import { factPanelValidator } from './factPanelValidator';
 import { fatContentClaimValidator } from './fatContentClaimsValidator';
 import { gradeClaimsValidator } from './gradeClaimValidator';
 import { highRichExcellentClaimsValidator } from './highRichExcellentClaimsValidator';
+import { ingredientsValidator } from './ingredientsValidator';
 import { nonCertifierClaimValidator } from './nonCertifierClaimValidator';
 import { saltClaimValidator } from './saltClaimValidator';
 import { sugarAndSweetClaimValidator } from './sugarAndSweetClaimValidator';
@@ -17,8 +18,8 @@ export const responseValidator = async (response: any) => {
 
   console.log('start validator');
 
-  factPanelValidator(response);
-  await validateProductDataPoints(response);
+  factPanelValidator(validatedResponse);
+  await validateProductDataPoints(validatedResponse);
 
   console.log('finish');
 
@@ -30,6 +31,7 @@ const validateProductDataPoints = async (response: any) => {
 
   let modifiedProductDataPoints = { ...productDataPoints };
 
+  ingredientsValidator(modifiedProductDataPoints);
   highRichExcellentClaimsValidator(modifiedProductDataPoints);
   acidityClaimsValidator(modifiedProductDataPoints);
   certifierAndClaimsValidator(modifiedProductDataPoints);
@@ -47,5 +49,12 @@ const validateProductDataPoints = async (response: any) => {
 
   // console.log('test', modifiedProductDataPoints);
 
+  console.log(
+    'last modified',
+    JSON.stringify(modifiedProductDataPoints['ingredients_group'])
+  );
+
   response['product'] = { ...response.product, ...modifiedProductDataPoints };
+
+  console.log('response', JSON.stringify(response));
 };

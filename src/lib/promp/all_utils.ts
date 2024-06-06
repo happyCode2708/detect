@@ -72,6 +72,10 @@ json
       },
       "grade": string[],
       "natural": string[],
+      "live_and_active_cultures": {
+        "statement": string,
+        "list_break_out": string[],
+      },
       "other_things": string[],
     } 
     "header": {
@@ -441,6 +445,8 @@ b) "product_does_not_contain" rules:
   + "grade" is the list of statements on product about grading (such as "grade A", "choice", "prime", "select", "premium", ...)
   
   + "natural" is the list of statements about natural (such as: "natural botanicals", "natural ingredients", ...)
+
+  + "live_and_active_cultures.statement" is the statement about all active cultures inside product.
 
   + "other_things" is the list of things or statements (such as: "probiotic", )
   `;
