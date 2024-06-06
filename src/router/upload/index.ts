@@ -19,6 +19,7 @@ import { uploadsDir, pythonPath } from '../../server';
 import { makePrompt } from '../../lib/promp/all_utils';
 import { make_nut_prompt } from '../../lib/promp/nut_utils';
 import { resultsDir } from '../../server';
+import { mapOcrToPredictDataPoint } from '../../lib/validator/mapOcrToPredictDataPoint';
 
 // import { NEW_PROMPT, ORIGINAL_PROMPT } from './constants';
 // import OpenAI from 'openai';
@@ -380,6 +381,8 @@ const onProcessOther = async ({
     {}
   );
 
+  const { ocr_claims } = (await mapOcrToPredictDataPoint(allText)) || {};
+
   writeJsonToFile(
     resultsDir + `/${sessionId}`,
     'all-orc-' + sessionId + '.json',
@@ -401,6 +404,7 @@ const onProcessOther = async ({
         ...invalidatedInput.nutIncluded,
         ...invalidatedInput.nutExcluded,
       ]?.length,
+      detectedClaims: JSON.stringify(ocr_claims),
     }),
     prefix,
   });

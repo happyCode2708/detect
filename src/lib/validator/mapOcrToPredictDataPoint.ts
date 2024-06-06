@@ -1,6 +1,8 @@
 import { toLower } from 'lodash';
 
-export const mapOcrToPredictDataPoint = async (OcrText: string) => {
+export const mapOcrToPredictDataPoint = async (
+  OcrText: string
+): Promise<any> => {
   if (!OcrText) return [];
 
   const ocrImageTexts = Object.entries(OcrText)?.map((keyAndValue: any) => {
@@ -37,6 +39,8 @@ export const mapOcrToPredictDataPoint = async (OcrText: string) => {
   );
 
   await validate(ocrImageTexts, modData, 'fat_claim_predict', FAT_CLAIMS);
+
+  return Promise.resolve(modData);
 
   console.log(JSON.stringify(modData));
 };

@@ -1,9 +1,11 @@
 export const makePrompt = ({
   ocrText,
   imageCount,
+  detectedClaims,
 }: {
   ocrText?: string;
   imageCount?: number;
+  detectedClaims: string;
 }) => {
   return `
 Remember (important):
@@ -235,6 +237,19 @@ json
       "cookingInstructions": string[],
       "usageInstructions": string[], 
     },
+    "detected_claims_by_ocr": {
+      "detected_claims": ${detectedClaims},
+      "analysis": {
+        "non_certified_claim_predict": [
+          {
+            "product_contain": boolean,
+            "claim": string,
+          },
+          ...
+        ],
+        ...
+      }
+    }
   },
 }
 

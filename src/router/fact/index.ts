@@ -48,15 +48,15 @@ router.get('/get-result/:sessionId', async (req, res) => {
   } catch (err) {}
 
   try {
-    const [allData, nutData, allOcr] = await Promise.all([
+    const [allData, nutData] = await Promise.all([
       fs.readFileSync(allFilePath, 'utf8'),
       fs.readFileSync(nutFilePath, 'utf8'),
-      fs.readFileSync(allOcrFilePath, 'utf8'),
+      // fs.readFileSync(allOcrFilePath, 'utf8'),
     ]);
 
     const allRes = JSON.parse(allData);
     const nutRes = JSON.parse(nutData);
-    const allOcrText = JSON.parse(allOcr);
+    // const allOcrText = JSON.parse(allOcr);
 
     const { isSuccess: allSuccess, status: allStatus } = allRes || {};
     const { isSuccess: nutSuccess, status: nutStatus } = nutRes || {};
@@ -87,7 +87,6 @@ router.get('/get-result/:sessionId', async (req, res) => {
     };
 
     let validatedResponse = await responseValidator(response);
-    await mapOcrToPredictDataPoint(allOcrText);
 
     // removeRawFieldData(validatedResponse);
 
