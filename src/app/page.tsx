@@ -113,14 +113,14 @@ export default function Home() {
   const handleSelectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
 
-    const files = Array.from(event.target.files);
-    setFiles(files);
+    const inputFiles = Array.from(event.target.files);
+    setFiles(inputFiles);
     setBiasForm({});
-    if (files.length === 0) return;
+    if (inputFiles.length === 0) return;
     const fileReaders = [];
     let fileDataUrls: any = [];
 
-    files.forEach((file, index) => {
+    inputFiles.forEach((file, index) => {
       const fileReader = new FileReader();
 
       fileReaders.push(fileReader);
@@ -131,7 +131,7 @@ export default function Home() {
         fileDataUrls[index] = e.target.result;
 
         // Only update state when all files are read
-        if (fileDataUrls.length === files.length) {
+        if (fileDataUrls.length === inputFiles.length) {
           setInputImages(fileDataUrls);
         }
       };

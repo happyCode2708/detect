@@ -25,6 +25,7 @@ json
 {
   "validatorAndFixBug": {
     "answerOfQuestion_1": "your answer gemini" ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image),
+    "answerOfQuestion_2": "your answer gemini" ( why you do not analysis for "contain_claim_predict" and "does_not_contain_claim_predict"?),
     "require__1": "gemini stop keeping to put spanish contents to JSON Object (such as 'instructions', 'other_ingredients_group', 'ingredients_group')",
     "end": true,
   },
@@ -242,8 +243,10 @@ json
       "analysis": {
         "non_certified_claim_predict": [
           {
-            "product_contain": boolean,
             "claim": string,
+            "found_claim_info_on_product_image": boolean,
+            "product_contain_that": boolean,
+            "product_does_not_contain_that": boolean,
           },
           ...
         ],
