@@ -13,36 +13,29 @@ export const mapOcrToPredictDataPoint = async (
 
   let modData = {
     ocr_claims: {
-      non_certified_claim_predict: [],
+      non_certified_claim: [],
     },
   };
 
   await validate(
     ocrImageTexts,
     modData,
-    'non_certified_claim_predict',
+    'non_certified_claim',
     NON_CERTIFICATE_CLAIMS
   );
 
-  await validate(
-    ocrImageTexts,
-    modData,
-    'contain_claim_predict',
-    CONTAIN_MAPPING
-  );
+  await validate(ocrImageTexts, modData, 'contain_claim', CONTAIN_MAPPING);
 
   await validate(
     ocrImageTexts,
     modData,
-    'sugar_and_sweet_claim_predict',
+    'sugar_and_sweet_claim',
     SUGAR_AND_SWEET_CLAIMS
   );
 
-  await validate(ocrImageTexts, modData, 'fat_claim_predict', FAT_CLAIMS);
+  await validate(ocrImageTexts, modData, 'fat_claim', FAT_CLAIMS);
 
   return Promise.resolve(modData);
-
-  console.log(JSON.stringify(modData));
 };
 
 const validate = async (
@@ -89,9 +82,9 @@ const promiseCheckEachEnum = async (keyNvalue: any, ingredientName: string) => {
   let foundMatches = [] as any;
 
   possibleValueList.forEach((possibleValueItem: string) => {
-    // console.log('coup', `${ingredientName}-${possibleValueItem}`);
+    console.log('comoare', `${ingredientName}-${possibleValueItem}`);
     if (ingredientName.includes(possibleValueItem)) {
-      console.log('found in enums');
+      console.log('found in enums -- ocr');
       if (containEnum === 'natural') {
         if (!possibleValueItem.includes(ingredientName)) {
           //   return;
@@ -176,9 +169,9 @@ const CONTAIN_MAPPING = {
   '1,4-dioxane': ['1,4-dioxane'],
   'active yeast': ['active yeast'],
   'added antibiotics': ['added antibiotics'],
-  'added colors': ['added colors', 'colors'],
+  'added colors': ['added colors'],
   'added dyes': ['added dyes'],
-  'added flavors': ['added flavors', 'flavors'],
+  'added flavors': ['added flavors'],
   'added fragrances': ['added fragrances'],
   'added hormones': ['added hormones'],
   'added nitrates': ['added nitrates'],
@@ -202,12 +195,12 @@ const CONTAIN_MAPPING = {
   'animal rennet': ['animal rennet'],
   antibiotics: ['antibiotics'],
   'artificial additives': ['artificial additives'],
-  'artificial colors': ['artificial colors', 'colors'],
+  'artificial colors': ['artificial colors'],
   'artificial dyes': ['artificial dyes'],
-  'artificial flavors': ['artificial flavors', 'flavors'],
+  'artificial flavors': ['artificial flavors'],
   'artificial fragrance': ['artificial fragrance'],
   'artificial ingredients': ['artificial ingredients'],
-  'binders and/or fillers': ['binders and/or fillers'],
+  'binders and/or fillers': ['binders and fillers', 'binders or fillers'],
   bleach: ['bleach'],
   'bpa (bisphenol-a)': ['bpa (bisphenol-a)'],
   'butylene glycol': ['butylene glycol'],
@@ -217,9 +210,9 @@ const CONTAIN_MAPPING = {
   casein: ['casein'],
   'cbd / cannabidiol': ['cbd / cannabidiol', 'cbd', 'cannabidiol'],
   'chemical additives': ['chemical additives'],
-  'chemical colors': ['chemical colors', 'colors'],
+  'chemical colors': ['chemical colors'],
   'chemical dyes': ['chemical dyes'],
-  'chemical flavors': ['chemical flavors', 'flavors'],
+  'chemical flavors': ['chemical flavors'],
   'chemical fragrances': ['chemical fragrances'],
   'chemical ingredients': ['chemical ingredients'],
   'chemical sunscreens': ['chemical sunscreens'],
@@ -258,6 +251,8 @@ const CONTAIN_MAPPING = {
     'natural flavor',
     'naturally flavored',
   ],
+  //? extra,
+  // 'naturally flavored': ['naturally flavored'], //! sub - natural flavors
   'natural ingredients': ['natural ingredients'],
   'nitrates/nitrites': ['nitrates/nitrites', 'nitrates', 'nitrites'],
   'omega fatty acids': ['omega fatty acids', 'omega'],
@@ -313,153 +308,6 @@ const CONTAIN_MAPPING = {
   yolks: ['yolks'],
 };
 
-const NO_CONTAIN_MAPPING = {
-  'no contain 1,4-dioxane': ['1,4-dioxane'],
-  'no contain active yeast': ['active yeast'],
-  'no contain added antibiotics': ['added antibiotics'],
-  'no contain added colors': ['added colors', 'colors'],
-  'no contain added dyes': ['added dyes'],
-  'no contain added flavors': ['added flavors', 'flavors'],
-  'no contain added fragrances': ['added fragrances'],
-  'no contain added hormones': ['added hormones'],
-  'no contain added nitrates': ['added nitrates'],
-  'no contain added nitrites': ['added nitrites'],
-  'no contain added preservatives': ['added preservatives'],
-  'no contain artificial preservatives': ['artificial preservatives'],
-  'no contain chemical preservatives': ['chemical preservatives'],
-  'no contain natural preservatives': ['natural preservatives'],
-  'no contain synthetic preservatives': ['synthetic preservatives'],
-  'no contain preservatives': ['preservatives'],
-  'no contain additives': ['additives'],
-  'no contain alcohol': ['alcohol'],
-  'no contain allergen': ['allergen'],
-  'no contain aluminum': ['aluminum'],
-  'no contain amino acids': ['amino acids'],
-  'no contain ammonia': ['ammonia'],
-  'no contain animal by-products': ['animal by-products'],
-  'no contain animal derivatives': ['animal derivatives'],
-  'no contain animal ingredients': ['animal ingredients'],
-  'no contain animal products': ['animal products'],
-  'no contain animal rennet': ['animal rennet'],
-  'no contain antibiotics': ['antibiotics'],
-  'no contain artificial additives': ['artificial additives'],
-  'no contain artificial colors': ['artificial colors', 'colors'],
-  'no contain artificial dyes': ['artificial dyes'],
-  'no contain artificial flavors': ['artificial flavors', 'flavors'],
-  'no contain artificial fragrance': ['artificial fragrance'],
-  'no contain artificial ingredients': ['artificial ingredients'],
-  'no contain binders and/or fillers': ['binders and/or fillers'],
-  'no contain bleach': ['bleach'],
-  'no contain bpa (bisphenol-a)': ['bpa (bisphenol-a)'],
-  'no contain butylene glycol': ['butylene glycol'],
-  'no contain by-products': ['by-products'],
-  'no contain caffeine': ['caffeine'],
-  'no contain carrageenan': ['carrageenan'],
-  'no contain casein': ['casein'],
-  'no contain cbd / cannabidiol': ['cbd / cannabidiol', 'cbd', 'cannabidiol'],
-  'no contain chemical additives': ['chemical additives'],
-  'no contain chemical colors': ['chemical colors', 'colors'],
-  'no contain chemical dyes': ['chemical dyes'],
-  'no contain chemical flavors': ['chemical flavors', 'flavors'],
-  'no contain chemical fragrances': ['chemical fragrances'],
-  'no contain chemical ingredients': ['chemical ingredients'],
-  'no contain chemical sunscreens': ['chemical sunscreens'],
-  'no contain chemicals': ['chemicals'],
-  'no contain chlorine': ['chlorine'],
-  'no contain cholesterol': ['cholesterol'],
-  'no contain coatings': ['coatings'],
-  'no contain corn fillers': ['corn fillers'],
-  'no contain cottonseed oil': ['cottonseed oil'],
-  'no contain dyes': ['dyes'],
-  'no contain edta': ['edta'],
-  'no contain emulsifiers': ['emulsifiers'],
-  'no contain erythorbates': ['erythorbates'],
-  'no contain expeller-pressed oils': ['expeller-pressed oils'],
-  'no contain fillers': ['fillers'],
-  'no contain fluoride': ['fluoride'],
-  'no contain formaldehyde': ['formaldehyde'],
-  'no contain fragrances': ['fragrances'],
-  'no contain grain': ['grain'],
-  'no contain hexane': ['hexane'],
-  'no contain hormones': ['hormones'],
-  'no contain hydrogenated oils': ['hydrogenated oils'],
-  'no contain kitniyos / kitniyot (legumes)': [
-    'kitniyos / kitniyot (legumes)',
-    'kitniyos',
-    'kitniyot (legumes)',
-  ],
-  'no contain lactose': ['lactose'],
-  'no contain latex': ['latex'],
-  'no contain msg': ['msg'],
-  'no contain natural additives': ['natural additives'],
-  'no contain natural colors': ['natural colors'],
-  'no contain natural dyes': ['natural dyes'],
-  'no contain natural flavors': [
-    'natural flavors',
-    'natural flavor',
-    'naturally flavored',
-  ],
-  'no contain natural ingredients': ['natural ingredients'],
-  'no contain nitrates/nitrites': ['nitrates/nitrites', 'nitrates', 'nitrites'],
-  'no contain omega fatty acids': ['omega fatty acids', 'omega'],
-  'no contain paba': ['paba'],
-  'no contain palm oil': ['palm oil'],
-  'no contain parabens': ['parabens'],
-  'no contain pesticides': ['pesticides', 'pesticide'],
-  'no contain petro chemical': ['petro chemical'],
-  'no contain petrolatum': ['petrolatum'],
-  'no contain petroleum byproducts': ['petroleum byproducts'],
-  'no contain phosphates': ['phosphates'],
-  'no contain phosphorus': ['phosphorus'],
-  'no contain phthalates': ['phthalates'],
-  'no contain pits': ['pits'],
-  'no contain rbgh/bst': ['rbgh/bst', 'bst', 'rbst'],
-  'no contain rennet': ['rennet'],
-  'no contain salicylates': ['salicylates'],
-  'no contain sea salt': ['sea salt'],
-  'no contain shells/ shell pieces': [
-    'shells/ shell pieces',
-    'shells',
-    'shell pieces',
-    'shell',
-    'nut shell fragments',
-  ],
-  'no contain silicone': ['silicone'],
-  'no contain sles ( sodium laureth sulfate)': [
-    'sles ( sodium laureth sulfate)',
-  ],
-  'no contain sls ( sodium lauryl sulfate )': ['sls ( sodium lauryl sulfate )'],
-  'no contain stabilizers': ['stabilizers'],
-  'no contain probiotics': ['probiotics', 'probiotic'],
-  'no contain starch': ['starch'],
-  'no contain sulfates': ['sulfates'],
-  'no contain sulfides': ['sulfides'],
-  'no contain sulfites / sulphites': [
-    'sulfites / sulphites',
-    'sulfites',
-    'sulphites',
-  ],
-  'no contain sulfur dioxide': ['sulfur dioxide'],
-  'no contain synthetic additives': ['synthetic additives'],
-  'no contain synthetic colors': ['synthetic colors'],
-  'no contain synthetic dyes': ['synthetic dyes'],
-  'no contain synthetic flavors': ['synthetic flavors'],
-  'no contain synthetic fragrance': ['synthetic fragrance'],
-  'no contain synthetic ingredients': ['synthetic ingredients'],
-  'no contain synthetics': ['synthetics'],
-  'no contain thc / tetrahydrocannabinol': [
-    'thc / tetrahydrocannabinol',
-    'thc',
-    'tetrahydrocannabinol',
-  ],
-  'no contain toxic pesticides': ['toxic pesticides'],
-  'no contain triclosan': ['triclosan'],
-  'no contain vegan ingredients': ['vegan ingredients'],
-  'no contain vegetarian ingredients': ['vegetarian ingredients'],
-  'no contain yeast': ['yeast'],
-  'no contain yolks': ['yolks'],
-};
-
 const FAT_CLAIMS = {
   'low fat': ['low fat'],
   'low in saturated fat': ['low in saturated fat'],
@@ -496,6 +344,76 @@ const SUGAR_AND_SWEET_CLAIMS = {
   'no acesulfame k': ['no acesulfame k', 'acesulfame k', 'acesulfame'],
   'no added sugar': ['no added sugar', 'added sugar'],
   'no agave': ['no agave', 'agave'],
+  'no allulose': ['no allulose', 'allulose'],
+  'no artificial sweetener': [
+    'no artificial sweetener',
+    'artificial sweetener',
+  ],
+  'no aspartame': ['no aspartame', 'aspartame'],
+  'no cane sugar': ['no cane sugar', 'cane sugar'],
+  'no coconut/coconut palm sugar': [
+    'no coconut/coconut palm sugar',
+    'no coconut sugar',
+    'no coconut palm sugar',
+    'coconut sugar',
+    'coconut palm',
+  ],
+  'no corn syrup': ['no corn syrup'],
+  'no high fructose corn syrup': [
+    'no high fructose corn syrup',
+    'high fructose corn syrup',
+  ],
+  'no refined sugars': ['no refined sugars', 'refined sugars'],
+  'no saccharin': ['no saccharin', 'saccharin'],
+  'no splenda/sucralose': [
+    'no splenda/sucralose',
+    'no splenda',
+    'no sucralose',
+    'splenda',
+    'sucralose',
+  ],
+  'no stevia': ['no stevia', 'stevia'],
+  'no sugar': ['no sugar', 'sugar'],
+  'no sugar added': ['no sugar added'],
+  'no sugar alcohol': ['no sugar alcohol', 'sugar alcohol'],
+  'no tagatose': ['no tagatose', 'tagatose'],
+  'no xylitol': ['no xylitol', 'xylitol'],
+  'reduced sugar': ['reduced sugar'],
+  'refined sugar': ['refined sugar'],
+  saccharin: ['saccharin'],
+  'splenda/sucralose': ['splenda/sucralose', 'splenda', 'sucralose'],
+  stevia: ['stevia'],
+  'sugar alcohol': ['sugar alcohol'],
+  'sugar free': ['sugar free'],
+  'sugars added': ['sugars added'],
+  tagatose: ['tagatose'],
+  unsweetened: ['unsweetened'],
+  xylitol: ['xylitol'],
+};
+
+const SUGAR_AND_SWEET_CLAIMS_SUBJECT = {
+  'acesulfame k': ['acesulfame k', 'acesulfame'],
+  agave: ['agave'],
+  allulose: ['allulose'],
+  'artificial sweetener': ['artificial sweetener'],
+  aspartame: ['aspartame'],
+  'beet sugar': ['beet sugar'],
+  'cane sugar': ['cane sugar'],
+  'coconut/coconut palm sugar': [
+    'coconut/coconut palm sugar',
+    'coconut sugar',
+    'coconut palm sugar',
+  ],
+  'fruit juice': ['fruit juice'],
+  'high fructose corn syrup': ['high fructose corn syrup'],
+  honey: ['honey'],
+  'low sugar': ['sugar'],
+  'lower sugar': ['sugar'],
+  'monk fruit': ['monk fruit'],
+  'natural sweeteners': ['natural sweeteners'],
+  'no acesulfame k': ['acesulfame k', 'acesulfame'],
+  'no added sugar': ['added sugar'],
+  'no agave': ['agave'],
   'no allulose': ['no allulose', 'allulose'],
   'no artificial sweetener': [
     'no artificial sweetener',

@@ -8,25 +8,28 @@ import { fatContentClaimValidator } from './fatContentClaimsValidator';
 import { gradeClaimsValidator } from './gradeClaimValidator';
 import { highRichExcellentClaimsValidator } from './highRichExcellentClaimsValidator';
 import { ingredientsValidator } from './ingredientsValidator';
-import { nonCertifierClaimValidator } from './nonCertifierClaimValidator';
+// import { nonCertifierClaimValidator } from './nonCertifierClaimValidator';
 import { saltClaimValidator } from './saltClaimValidator';
 import { sugarAndSweetClaimValidator } from './sugarAndSweetClaimValidator';
 import { wholeGrainClaimValidator } from './wholeGrainClaim';
+import { containValidatorOcr } from './ocrScanValidator/containValidatorOcr';
+import { nonCertifierOcrValidator } from './ocrScanValidator/nonCertifierOcrValidator';
+import { sugarAndSweetValidatorOcr } from './ocrScanValidator/sugarAndSweetValidatorOcr';
 
-export const responseValidator = async (response: any) => {
+export const responseValidator = async (response: any, ocrClaims: any) => {
   let validatedResponse = { ...response };
 
   console.log('start validator');
 
   factPanelValidator(validatedResponse);
-  await validateProductDataPoints(validatedResponse);
+  await validateProductDataPoints(validatedResponse, ocrClaims);
 
   console.log('finish');
 
   return validatedResponse;
 };
 
-const validateProductDataPoints = async (response: any) => {
+const validateProductDataPoints = async (response: any, ocrClaims: any) => {
   const { factPanels, ...productDataPoints } = response?.product || {};
 
   let modifiedProductDataPoints = { ...productDataPoints };
@@ -37,24 +40,28 @@ const validateProductDataPoints = async (response: any) => {
   certifierAndClaimsValidator(modifiedProductDataPoints);
   gradeClaimsValidator(modifiedProductDataPoints);
   await allergenValidator(modifiedProductDataPoints);
-  await containValidator(modifiedProductDataPoints);
-  await nonCertifierClaimValidator(modifiedProductDataPoints);
-  await saltClaimValidator(modifiedProductDataPoints);
-  await sugarAndSweetClaimValidator(modifiedProductDataPoints);
-  await calorieClaimValidator(modifiedProductDataPoints);
-  await wholeGrainClaimValidator(modifiedProductDataPoints);
-  await fatContentClaimValidator(modifiedProductDataPoints);
+  // await containValidator(modifiedProductDataPoints);
+  await containValidatorOcr(modifiedProductDataPoints);
+  // await nonCertifierClaimValidator(modifiedProductDataPoints);
+  await nonCertifierOcrValidator(modifiedProductDataPoints);
+
+  // await saltClaimValidator(modifiedProductDataPoints);
+  // await sugarAndSweetClaimValidator(modifiedProductDataPoints);
+  await sugarAndSweetValidatorOcr(modifiedProductDataPoints);
+  // await calorieClaimValidator(modifiedProductDataPoints);
+  // await wholeGrainClaimValidator(modifiedProductDataPoints);
+  // await fatContentClaimValidatordsa(modifiedProductDataPoints);
 
   // validateContainAndDoesNotContain(productDataPoints); //* attribute
 
   // console.log('test', modifiedProductDataPoints);
 
-  console.log(
-    'last modified',
-    JSON.stringify(modifiedProductDataPoints['ingredients_group'])
-  );
+  // console.log(
+  //   'last modified',
+  //   JSON.stringify(modifiedProductDataPoints['ingredients_group'])
+  // );
 
   response['product'] = { ...response.product, ...modifiedProductDataPoints };
 
-  console.log('response', JSON.stringify(response));
+  // console.log('response', JSON.stringify(response));
 };

@@ -81,7 +81,7 @@ const validate = async (
   }
 
   let currentValues =
-    modifiedProductDataPoints['attributesAndCertifiers']['otherClaims'][
+    modifiedProductDataPoints?.['attributesAndCertifiers']?.['otherClaims'][
       dataPointKey
     ] || [];
 
@@ -110,7 +110,7 @@ const promiseCheckEachEnum = async (keyNvalue: any, ingredientName: string) => {
   possibleValueList.forEach((possibleValueItem: string) => {
     console.log('coup', `${ingredientName}-${possibleValueItem}`);
     if (ingredientName.includes(possibleValueItem)) {
-      console.log('found in enums');
+      console.log('found in enums -- calorie');
       if (containEnum === 'natural') {
         if (!possibleValueItem.includes(ingredientName)) {
           //   return;

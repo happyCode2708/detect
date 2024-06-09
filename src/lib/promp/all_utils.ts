@@ -1,3 +1,5 @@
+// "text_statement_about_claim_found_in_product": string,
+
 export const makePrompt = ({
   ocrText,
   imageCount,
@@ -13,19 +15,23 @@ Remember (important):
 + The product images may include multiple languages. Please ignore non-english content.
 Ex: Saturated Fat/Grasa Saturada (english/spanish) we should only record english content only and ignore spanish part. Do not translate spanish part to english and add it to JSON result
 + sometimes a content could appears twice on the image, once in English and once in Spanish. Please do not include spanish content
-+ be careful that all images are from only one product. You may see the same nutrition fact from different images those are captured from diffrent angles of product.
++ be careful that all images are from only one product. You may see the same nutrition fact from different images those are captured from different angles of product.
 + the product images are captured from different angles and some info on an images could be obscured partly but the hidden parts could appear in other images. It is the remind to avoid you repeat the collected data since it could appear multiple times on different images.
 
-OCR texts from ${imageCount} provided images:
+
++ OCR texts from ${imageCount} provided images:
 ${ocrText}
+
++ Guessed claims form OCR
+const detected_claims = ${detectedClaims}
+
 
 Carefully examine the provided image and and created JSON output in given format:
 
 json
 {
   "validatorAndFixBug": {
-    "answerOfQuestion_1": "your answer gemini" ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image),
-    "answerOfQuestion_2": "your answer gemini" ( why you do not analysis for "contain_claim_predict" and "does_not_contain_claim_predict"?),
+    "answerOfQuestion_1": your answer gemini ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image),
     "require__1": "gemini stop keeping to put spanish contents to JSON Object (such as 'instructions', 'other_ingredients_group', 'ingredients_group')",
     "end": true,
   },
@@ -238,28 +244,41 @@ json
       "cookingInstructions": string[],
       "usageInstructions": string[], 
     },
-    "detected_claims_by_ocr": {
-      "detected_claims": ${detectedClaims},
-      "analysis": {
-        "non_certified_claim_predict": [
-          {
-            "claim": string,
-            "found_claim_info_on_product_image": boolean,
-            "product_contain_that": boolean,
-            "product_does_not_contain_that": boolean,
-          },
-          ...
-        ],
+    "analysis_detected_claims": {
+      "non_certified_claim": [
+        {
+          "claim": string,
+          "does_claim_correct_with_info_provided_on_image": boolean,
+        },
         ...
-      }
+      ],
+      "contain_claim": [
+        {
+          "claim": string,
+          "does_product_info_talk_about_thing_in_claim": boolean,
+          "does_product_contain_thing_in_claim": boolean,
+        },
+        ...
+      ],
+      "sugar_and_sweet_claim": [
+        {
+          "claim": string,
+          "does_claim_correct_with_info_provided_on_image": boolean,
+          "does_product_use_thing_mention_in_claim": boolean, 
+          "is_product_free_from_that_thing": boolean,
+        },
+        ...
+      ],
+      ...
     }
+  
   },
 }
 
 The Most Important rule:
 + Only get data that visibly seen by normal eyes not from other sources on internet
 + Only get ingredients data that visibly seen by normal eyes not from other sources on internet.
-+ Remind you again only provide the data visibly on provided image, and must be detected by human eyes not from other source on internet.
++ Remind you again only provide the data visibly on provnonided image, and must be detected by human eyes not from other source on internet.
 
 Some common rules:
 + content in prompt can be similar to typescript and nodejs syntax.
@@ -478,6 +497,8 @@ b) "product_does_not_contain" rules:
   + "live_and_active_cultures.statement" is the statement about all active cultures inside product (include the active cultures list).
   `;
 };
+
+// + "full_text_about_claim_on_product_images" is the full text statement about claim found on the product images
 
 // d) "slogan" rules:
 // + "slogan" is a highlight text to praise product.

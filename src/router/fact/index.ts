@@ -32,6 +32,11 @@ router.get('/get-result/:sessionId', async (req, res) => {
     'all-orc-' + sessionId + '.json'
   );
 
+  const ocrClaimsFilePath = path.join(
+    resultsDir + `/${sessionId}`,
+    'orc-claims' + sessionId + '.json'
+  );
+
   const finalResultPath = path.join(
     resultsDir + `/${sessionId}`,
     'validated-output-' + sessionId + '.json'
@@ -48,15 +53,15 @@ router.get('/get-result/:sessionId', async (req, res) => {
   } catch (err) {}
 
   try {
-    const [allData, nutData] = await Promise.all([
+    const [allData, nutData, ocrClaimData] = await Promise.all([
       fs.readFileSync(allFilePath, 'utf8'),
       fs.readFileSync(nutFilePath, 'utf8'),
-      // fs.readFileSync(allOcrFilePath, 'utf8'),
+      fs.readFileSync(allOcrFilePath, 'utf8'),
     ]);
 
     const allRes = JSON.parse(allData);
     const nutRes = JSON.parse(nutData);
-    // const allOcrText = JSON.parse(allOcr);
+    const ocrClaims = JSON.parse(ocrClaimData);
 
     const { isSuccess: allSuccess, status: allStatus } = allRes || {};
     const { isSuccess: nutSuccess, status: nutStatus } = nutRes || {};
@@ -86,7 +91,7 @@ router.get('/get-result/:sessionId', async (req, res) => {
       },
     };
 
-    let validatedResponse = await responseValidator(response);
+    let validatedResponse = await responseValidator(response, ocrClaims);
 
     // removeRawFieldData(validatedResponse);
 

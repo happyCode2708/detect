@@ -51,7 +51,7 @@ export const wholeGrainClaimValidator = async (
   console.log('whole grain claim -- 1');
 
   if (
-    modifiedProductDataPoints['attributesAndCertifiers']['otherClaims'][
+    modifiedProductDataPoints?.['attributesAndCertifiers']?.['otherClaims']?.[
       'wholeGrainClaimStatements'
     ]?.length > 0
   ) {
@@ -84,7 +84,7 @@ const validate = async (
   }
 
   let currentValues =
-    modifiedProductDataPoints['attributesAndCertifiers']['otherClaims'][
+    modifiedProductDataPoints?.['attributesAndCertifiers']?.['otherClaims']?.[
       dataPointKey
     ] || [];
 
