@@ -6,8 +6,6 @@ export const sugarAndSweetValidatorOcr = async (
       'sugar_and_sweet_claim'
     ] || [];
 
-  console.log('analysis_list', JSON.stringify(analysis_list));
-
   await validate(
     [...analysis_list],
     modifiedProductDataPoints,
@@ -41,19 +39,19 @@ const validate = async (
 };
 
 const check = async (analysisItem: any): Promise<boolean> => {
-  const { claim, does_product_use_thing_mention_in_claim } = analysisItem;
+  const { claim, product_contain_sweet_source_from_claim } = analysisItem;
 
   if (!claim) return Promise.resolve(false);
 
   if (
-    does_product_use_thing_mention_in_claim === true &&
+    product_contain_sweet_source_from_claim === true &&
     (claim as string).startsWith('no ')
   ) {
     return Promise.resolve(false);
   }
 
   if (
-    does_product_use_thing_mention_in_claim === false &&
+    product_contain_sweet_source_from_claim === false &&
     !(claim as string).startsWith('no ')
   ) {
     return Promise.resolve(false);

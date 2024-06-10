@@ -152,14 +152,16 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
             (ingredientListObject: any, idx: number) => {
               return (
                 <div>
-                  <div className='font-bold'>Ingredient No.{idx + 1}: </div>
+                  <div className='font-bold'>
+                    Validated Ingredient No.{idx + 1}:{' '}
+                  </div>
                   <div className='pl-6'>
                     <CamelFieldStringRender
                       objectValues={{
                         ...ingredientListObject,
-                        ingredients: JSON.stringify(
-                          ingredientListObject?.ingredients
-                        ),
+                        // ingredients: JSON.stringify(
+                        //   ingredientListObject?.ingredients
+                        // ),
                       }}
                     />
                   </div>
@@ -172,13 +174,22 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
       {validated_other_ingredients_group?.length > 0 && (
         <SectionWrapper name='Other Ingredients'>
           {validated_other_ingredients_group?.map(
-            (ingredientList: any, idx: number) => {
+            (ingredientListObject: any, idx: number) => {
               return (
                 <div>
-                  <div className='font-bold'>Ingredient No.{idx + 1}: </div>
-                  <p className='pl-4'>
-                    {ingredientList?.ingredients.join(', ')}
-                  </p>
+                  <div className='font-bold'>
+                    Validated Ingredient No.{idx + 1}:{' '}
+                  </div>
+                  <div className='pl-6'>
+                    <CamelFieldStringRender
+                      objectValues={{
+                        ...ingredientListObject,
+                        // ingredients: JSON.stringify(
+                        //   ingredientListObject?.ingredients
+                        // ),
+                      }}
+                    />
+                  </div>
                 </div>
               );
             }

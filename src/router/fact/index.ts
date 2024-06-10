@@ -93,7 +93,7 @@ router.get('/get-result/:sessionId', async (req, res) => {
 
     let validatedResponse = await responseValidator(response, ocrClaims);
 
-    // removeRawFieldData(validatedResponse);
+    removeRawFieldData(validatedResponse);
 
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
@@ -119,7 +119,7 @@ router.get('/get-history', (req, res) => {
 
   fs.readFile(historyPath, 'utf8', (err, data) => {
     if (err) {
-      console.error('Wating for result');
+      console.error('Waiting for result');
       // Send a 404 error if the file is not found
       return res.status(404).send('history not found.');
     }

@@ -141,6 +141,9 @@ export const removeRawFieldData = (rawResponse: object) => {
     'product.contain_and_notContain.product_does_not_contain',
     'product.process',
     'product.marketingAll.social_media_check',
+    'product.analysis_detected_claims',
+    'product.ingredients_group',
+    'product.other_ingredients_group',
     'ingredients',
   ];
 

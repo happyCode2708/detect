@@ -6,78 +6,82 @@ export const make_nut_prompt = ({
   imageCount?: number;
 }) => {
   return `
-  Some common constants:
-  + FOOTNOTE_INDICATORS = ["*", "**", "†", "¥", "‡", "†††"]
+Some common constants:
++ FOOTNOTE_INDICATORS = ["*", "**", "†", "¥", "‡", "†††"]
   
-  OCR texts from ${imageCount} provided images:
-  ${ocrText}
+OCR texts from ${imageCount} provided images:
+${ocrText}
   
-  Remember (important):
-  + the provided images could contain or could not contain nutrition fact/supplement fact.
-  + nutrition info must be visibly seen by human eyes not from other source data
-  + do not provide data that you cannot see it by human eyes on provided images.
+Remember (important):
++ the provided images could contain or could not contain nutrition fact/supplement fact.
++ nutrition info must be visibly seen by human eyes not from other source data
++ do not provide data that you cannot see it by human eyes on provided images.
   
-  Carefully examine the provided image and and created JSON output in given format:
+Carefully examine the provided image and and created JSON output in given format:
   
-  json
-  {
-    "validatorAndFixBug": {
-      "answerOfQuestionsAboutNutritionFact": your answer gemini (Do you see nutrition facts panel on provided images? why? where is it on product?"),
-      "answerOfQuestionAboutNutritionFactTitle": your answer gemini (Do you see fully "Supplement Fact" title or "Nutrition Fact" title  on provided images ? ),
-      "answerOfQuestionAboutValidator": your answer gemini ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please compare with OCR texts and check if your info add to JSON is correct),
-      "answerOfDebug_2": your answer gemini (why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value),
-      "answerOfDebug_3": your answer gemini (why i see you keep removing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something),
-      "answerOfDebug_4": your answer gemini (Are you sure you see percent daily value of Protein is 0%?),
-      "answerOfDebug_5": your answer gemini (I told you if you see a nutrient in type of Extract so its descriptor must be the text after word "Extract"?),
-      "answerOfDebug_6": your answer gemini (why you keep read info as new nutrient but the content info is not separated by line?),
-      "important_require_1": "gemini avoid adding spanish contents to JSON Object (such as 'footnote'),  
-      "important_require_2": "gemini remmeber 'trans fat', 'total sugar' and 'added sugar' are separated nutrient",
-      "end": true,
-    },
-    "product": {
-      "readAllConstants": your answer gemini (please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?),
-      "content_in_spanish_must_be_prohibited": true,
-      "factPanels":null or [
-        {
-          "panelName": string ,
-          "amountPerServing": {"percentDailyValueFor": string?},
-          "calories": {"value": float?, "uom": "calories"}
-          "servingSize": {
+json
+{
+  "validatorAndFixBug": {
+    "answerOfQuestionsAboutNutritionFact": your answer gemini (Do you see nutrition facts panel on provided images? why? where is it on product?"),
+    "answerOfQuestionAboutNutritionFactTitle": your answer gemini (Do you see fully "Supplement Fact" title or "Nutrition Fact" title  on provided images ? ),
+    "answerOfQuestionAboutValidator": your answer gemini ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please compare with OCR texts and check if your info add to JSON is correct),
+    "answerOfDebug_2": your answer gemini (why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value),
+    "answerOfDebug_3": your answer gemini (why i see you keep removing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something),
+    "answerOfDebug_4": your answer gemini (Are you sure you see percent daily value of Protein is 0%?),
+    "answerOfDebug_5": your answer gemini (I told you if you see a nutrient in type of Extract so its descriptor must be the text after word "Extract"?),
+    "answerOfDebug_6": your answer gemini (why you keep read info as new nutrient but the content info is not separated by line?),
+    "important_require_1": "gemini avoid adding spanish contents to JSON Object (such as 'footnote'),  
+    "important_require_2": "gemini remmeber 'trans fat', 'total sugar' and 'added sugar' are separated nutrient",
+    "end": true,
+  },
+  "product": {
+    "readAllConstants": your answer gemini (please help me read carefully all constant above carefully. they are important and will be used to create the json output. And answer me did you read them?),
+    "content_in_spanish_must_be_prohibited": true,
+    "factPanels": [
+      {
+        "panelName": string ,
+        "amountPerServing": {"percentDailyValueFor": string?},
+        "calories": {"value": float?, "uom": "calories"}
+        "servingSize": {
+          "value": string, 
+          "uom": string,
+          "equivalent": {
             "value": string, 
             "uom": string,
-            "equivalent": {
-              "value": string, 
-              "uom": string,
-            }, 
-          },
-          "servingPerContainer":" {"value": float? or number?, "uom": string},
-          "nutrients": [
-            {
-              "fullNutrientInfo": string, // include quantity information, percent daily value
-              "name": string,
-              "descriptor": string,
-              "have_intended_nutrient_row_below": boolean,
-              "contain_sub_ingredients": [{
-                 full_name: string,
-                 quantity: string,
-                 uom: string,
-              },...],
-              "quantityComparisonOperator": string?, 
-              "value": float?, 
-              "uom": string, 
-              "quantityEquivalent": string?,
-              "dailyPercentComparisonOperator": string?, 
-              "percentDailyValue": float?,  
-              "footnoteIndicator": string?, // value must be choosen from FOOTNOTE_INDICATORS,
-              "intended_level": number, // from 0 to 3
-            }
-          ],
-          "footnote": string,
-          "footnote_english_only": string,
-        }
-      ],
-    },
-  }
+          }, 
+        },
+        "servingPerContainer":" {"value": float? or number?, "uom": string},
+        "nutrients": [
+          {
+            "fullNutrientInfo": string, // include quantity information, percent daily value
+            "name": string,
+            "descriptor": string,
+            "have_intended_nutrient_row_below": boolean,
+            "contain_sub_ingredients": [
+              {
+                full_name: string,
+                quantity: string,
+                uom: string,
+              },
+              ...
+            ],
+            "quantityComparisonOperator": string?, 
+            "value": float?, 
+            "uom": string, 
+            "quantityEquivalent": string?,
+            "dailyPercentComparisonOperator": string?, 
+            "percentDailyValue": float?,  
+            "footnoteIndicator": string?, // value must be choosen from FOOTNOTE_INDICATORS,
+            "intended_level": number, // from 0 to 3
+          }
+        ],
+        "footnote": string,
+        "footnote_english_only": string,
+      },
+      ...
+    ],
+  },
+}
 
 The Most Important rule:
 + Only get data that visibly seen by normal eyes not from other sources on internet

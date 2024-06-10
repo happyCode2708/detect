@@ -33,6 +33,7 @@ json
   "validatorAndFixBug": {
     "answerOfQuestion_1": your answer gemini ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image),
     "require__1": "gemini stop keeping to put spanish contents to JSON Object (such as 'instructions', 'other_ingredients_group', 'ingredients_group')",
+    "require__2": "gemini you must analyze, and validate all detected_claims, i see you only some items in detected_claims",
     "end": true,
   },
   "product": {
@@ -42,14 +43,12 @@ json
     "other_ingredients_group":[
       {
         "ingredients_statement": string, 
-        "ingredients": string[], 
       }, 
       ...
     ], 
     "ingredients_group":[
       {
         "ingredients_statement": string, 
-        "ingredients": string[] 
       }, 
       ...
     ],
@@ -263,9 +262,8 @@ json
       "sugar_and_sweet_claim": [
         {
           "claim": string,
-          "does_claim_correct_with_info_provided_on_image": boolean,
-          "does_product_use_thing_mention_in_claim": boolean, 
-          "is_product_free_from_that_thing": boolean,
+          "sweet_source_from_claim": string,
+          "product_contain_sweet_source_from_claim": boolean,
         },
         ...
       ],
@@ -289,17 +287,11 @@ Some rules for you:
 + "ingredients_groups" is the list of ingredients list since a product can have many ingredient list
 + "ingredients_groups.ingredients_statement" content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:".
 + "ingredients_groups.ingredients_statement" usually appear below or next to the nutrition panel.
-+ "ingredients_groups.ingredients" is the break-out list of ingredients list into string array.
-+ "ingredients_groups." 
-
-Ex 1: "Ingredients: Flour, Eggs." =  ingredients_groups: [{ingredients: ["Flour", "Eggs"], ...}, ...]
 
 2) "other_ingredients_group":
 + "other_ingredients_group" is the list of ingredients list since a product can have many ingredient list. And it is only for supplement product.
 + "other_ingredients_group.ingredients_statement" content start right after a prefix text such as "other ingredients".
 + "other_ingredients_group.ingredients_statement" usually appear below or next to the nutrition panel.
-+ "other_ingredients_group.ingredients" is the break-out list of ingredients list into string array.
-Ex 1: "Other ingredients: Flour, Eggs."=  other_ingredients_groups: [{ingredients: ["Flour", "Eggs"], ...}, ...]
 
 3) "marketingAll" rules:
 a) "marketingAll.website":
@@ -497,6 +489,16 @@ b) "product_does_not_contain" rules:
   + "live_and_active_cultures.statement" is the statement about all active cultures inside product (include the active cultures list).
   `;
 };
+// "does_claim_correct_with_info_provided_on_image": boolean,
+// "is_product_free_from_that_thing": boolean,
+
+// + "other_ingredients_group.ingredients" is the break-out list of ingredients list into string array.
+// Ex 1: "Other ingredients: Flour, Eggs."=  other_ingredients_groups: [{ingredients: ["Flour", "Eggs"], ...}, ...]
+
+// + "ingredients_groups.ingredients" is the break-out list of ingredients list into string array.
+// Ex 1: "Ingredients: Flour, Eggs." =  ingredients_groups: [{ingredients: ["Flour", "Eggs"], ...}, ...]
+
+// "does_product_use_thing_mention_in_claim": boolean,
 
 // + "full_text_about_claim_on_product_images" is the full text statement about claim found on the product images
 

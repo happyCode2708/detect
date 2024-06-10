@@ -6,11 +6,6 @@ export const nonCertifierOcrValidator = async (
       'non_certified_claim'
     ] || [];
 
-  console.log(
-    'non_certified_claim_predict_analysis',
-    JSON.stringify(non_certifier_claim_predict_analysis)
-  );
-
   await validate(
     [...non_certifier_claim_predict_analysis],
     modifiedProductDataPoints,
