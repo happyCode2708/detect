@@ -6,6 +6,7 @@ import { writeJsonToFile } from '../../utils';
 import { lowerCase } from 'lodash';
 import { responseValidator } from '../../lib/validator/main';
 import { removeFieldByPath, removeRawFieldData } from '../../lib/server_utils';
+import { mapOcrToPredictDataPoint } from '../../lib/validator/mapOcrToPredictDataPoint';
 
 const router = express.Router();
 
@@ -26,6 +27,16 @@ router.get('/get-result/:sessionId', async (req, res) => {
     'nut-' + sessionId + '.json'
   );
 
+  const allOcrFilePath = path.join(
+    resultsDir + `/${sessionId}`,
+    'all-orc-' + sessionId + '.json'
+  );
+
+  const ocrClaimsFilePath = path.join(
+    resultsDir + `/${sessionId}`,
+    'orc-claims' + sessionId + '.json'
+  );
+
   const finalResultPath = path.join(
     resultsDir + `/${sessionId}`,
     'validated-output-' + sessionId + '.json'
@@ -42,13 +53,15 @@ router.get('/get-result/:sessionId', async (req, res) => {
   } catch (err) {}
 
   try {
-    const [allData, nutData] = await Promise.all([
+    const [allData, nutData, ocrClaimData] = await Promise.all([
       fs.readFileSync(allFilePath, 'utf8'),
       fs.readFileSync(nutFilePath, 'utf8'),
+      fs.readFileSync(allOcrFilePath, 'utf8'),
     ]);
 
     const allRes = JSON.parse(allData);
     const nutRes = JSON.parse(nutData);
+    const ocrClaims = JSON.parse(ocrClaimData);
 
     const { isSuccess: allSuccess, status: allStatus } = allRes || {};
     const { isSuccess: nutSuccess, status: nutStatus } = nutRes || {};
@@ -78,7 +91,7 @@ router.get('/get-result/:sessionId', async (req, res) => {
       },
     };
 
-    let validatedResponse = await responseValidator(response);
+    let validatedResponse = await responseValidator(response, ocrClaims);
 
     removeRawFieldData(validatedResponse);
 
@@ -106,7 +119,7 @@ router.get('/get-history', (req, res) => {
 
   fs.readFile(historyPath, 'utf8', (err, data) => {
     if (err) {
-      console.error('Wating for result');
+      console.error('Waiting for result');
       // Send a 404 error if the file is not found
       return res.status(404).send('history not found.');
     }

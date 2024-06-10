@@ -1,5 +1,3 @@
-import { toLower } from 'lodash';
-
 export const highRichExcellentClaimsValidator = async (
   modifiedProductDataPoints: any
 ) => {

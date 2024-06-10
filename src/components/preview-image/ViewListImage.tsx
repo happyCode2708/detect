@@ -62,7 +62,10 @@ export const ViewListImage = ({
           <div className='grid grid-cols-2 gap-2 rounded-sm border p-2'>
             {images?.map((image: any, imgIdx: number) => {
               return (
-                <div className='w-[140px] h-[140px] border rounded-sm p-2 flex items-center justify-center relative'>
+                <div
+                  className='w-[140px] h-[140px] border rounded-sm p-2 flex items-center justify-center relative'
+                  key={image}
+                >
                   <img
                     src={image}
                     className='max-w-full max-h-full object-contain object-center'

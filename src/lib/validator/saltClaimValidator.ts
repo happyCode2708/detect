@@ -70,7 +70,7 @@ const validate = async (
   }
 
   let currentValues =
-    modifiedProductDataPoints['attributesAndCertifiers']['otherClaims'][
+    modifiedProductDataPoints?.['attributesAndCertifiers']?.['otherClaims']?.[
       dataPointKey
     ] || [];
 

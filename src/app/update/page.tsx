@@ -78,6 +78,41 @@ const Tag = ({
 };
 
 const UPDATE_LIST = {
+  '6/10/24': {
+    name: '6/10/24 update',
+    updateContent: [
+      {
+        content: (
+          <div>
+            Apply new strategy to detect, analyze, and validate "contain", "does
+            not contain claim", "sweet and sugar", "non certifier" claims to
+            increase claim-detector precision.
+            <Tag type='test'>Testing</Tag>
+            <Tag type='default'>In-progress</Tag>
+            <Tag type='good'>In-progress</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Resolve the issue that some preview image fail to display after
+            inputting image files
+            <Tag type='default'>Fixed</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Resolve the issue that nutrition fact result is frequently produced
+            in wrong format
+            <Tag type='default'>Fixed</Tag>
+          </div>
+        ),
+      },
+    ],
+  },
   '6/5/24': {
     name: '6/5/24 update',
     updateContent: [

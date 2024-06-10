@@ -3,6 +3,7 @@ import { lowerCase, toLower } from 'lodash';
 export const nonCertifierClaimValidator = async (
   modifiedProductDataPoints: any
 ) => {
+  console.log('running  ------------------------');
   const current_allergen_freeOf =
     modifiedProductDataPoints['allergen']['allergen_freeOf'][
       'allergen_freeOf_list'
@@ -123,7 +124,7 @@ const validate = async (
   }
 
   let currentValues =
-    modifiedProductDataPoints['attributesAndCertifiers']['otherClaims'][
+    modifiedProductDataPoints?.['attributesAndCertifiers']?.['otherClaims']?.[
       dataPointKey
     ] || [];
 

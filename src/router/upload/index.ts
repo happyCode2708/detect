@@ -14,11 +14,14 @@ import {
   getOcrTextAllImages,
   findImagesContainNutFact,
   addUniqueString,
+  onProcessNut,
+  onProcessOther,
 } from '../../lib/server_utils';
 import { uploadsDir, pythonPath } from '../../server';
 import { makePrompt } from '../../lib/promp/all_utils';
 import { make_nut_prompt } from '../../lib/promp/nut_utils';
 import { resultsDir } from '../../server';
+import { mapOcrToPredictDataPoint } from '../../lib/validator/mapOcrToPredictDataPoint';
 
 // import { NEW_PROMPT, ORIGINAL_PROMPT } from './constants';
 // import OpenAI from 'openai';
@@ -108,6 +111,14 @@ router.post(
 
     console.log('result', JSON.stringify(invalidatedInput));
 
+    const nutImagesOCRresult = await getOcrTextAllImages(
+      invalidatedInput.nutIncluded
+    );
+
+    const nutExcludedImagesOCRresult = await getOcrTextAllImages(
+      invalidatedInput.nutExcluded
+    );
+
     res.json({
       sessionId,
       images: [],
@@ -123,6 +134,7 @@ router.post(
       req,
       res,
       invalidatedInput,
+      ocrList: nutImagesOCRresult,
       sessionId,
       collateImageName,
       outputConfig,
@@ -132,6 +144,7 @@ router.post(
       req,
       res,
       invalidatedInput,
+      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
       sessionId,
       collateImageName,
       outputConfig,
@@ -235,143 +248,168 @@ router.post(
 //   }
 // });
 
-const onProcessNut = async ({
-  req,
-  res,
-  invalidatedInput,
-  sessionId,
-  collateImageName,
-  outputConfig,
-}: {
-  req: any;
-  res: any;
-  invalidatedInput: any;
-  sessionId: string;
-  collateImageName: string;
-  outputConfig: any;
-}) => {
-  if (invalidatedInput?.nutIncluded?.length === 0 || !outputConfig.nut) {
-    const resultFileName = 'nut-' + sessionId + '.json';
+// const onProcessNut = async ({
+//   req,
+//   res,
+//   invalidatedInput,
+//   ocrList,
+//   sessionId,
+//   collateImageName,
+//   outputConfig,
+// }: {
+//   req: any;
+//   res: any;
+//   invalidatedInput: any;
+//   ocrList: any[];
+//   sessionId: string;
+//   collateImageName: string;
+//   outputConfig: any;
+// }) => {
+//   if (invalidatedInput?.nutIncluded?.length === 0 || !outputConfig.nut) {
+//     const resultFileName = 'nut-' + sessionId + '.json';
 
-    writeJsonToFile(
-      resultsDir + `/${sessionId}`,
-      resultFileName,
-      JSON.stringify({ isSuccess: true, data: { product: { factPanel: [] } } })
-    );
-    return;
-  }
+//     writeJsonToFile(
+//       resultsDir + `/${sessionId}`,
+//       resultFileName,
+//       JSON.stringify({ isSuccess: true, data: { product: { factPanel: [] } } })
+//     );
 
-  const prefix = 'nut';
+//     writeJsonToFile(
+//       resultsDir + `/${sessionId}`,
+//       'nut-orc-' + sessionId + '.json',
+//       JSON.stringify({})
+//     );
 
-  const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
+//     return;
+//   }
 
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    resultFileName,
-    JSON.stringify({
-      isSuccess: 'unknown',
-      status: 'processing',
-    })
-  );
+//   const prefix = 'nut';
 
-  const nutImagesOCRresult = await getOcrTextAllImages(
-    invalidatedInput.nutIncluded
-  );
-  const nutText = nutImagesOCRresult.reduce(
-    (accumulator: any, currentValue: any, idx: number) => {
-      return {
-        ...accumulator,
-        [`ocrImage_${idx}`]: currentValue,
-      };
-    },
-    {}
-  );
-  onProcessGemini({
-    req,
-    res,
-    sessionId,
-    collateImageName,
-    collatedOuputPath: invalidatedInput.nutIncluded,
-    prompt: make_nut_prompt({
-      ocrText: JSON.stringify(nutText),
-      imageCount: invalidatedInput.nutIncluded?.length,
-    }),
-    prefix,
-  });
-};
+//   const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
 
-const onProcessOther = async ({
-  req,
-  res,
-  invalidatedInput,
-  sessionId,
-  collateImageName,
-  outputConfig,
-}: {
-  req: any;
-  res: any;
-  invalidatedInput: any;
-  sessionId: string;
-  collateImageName: string;
-  outputConfig: any;
-}) => {
-  if (!outputConfig.other) {
-    const resultFileName = 'all-' + sessionId + '.json';
-    writeJsonToFile(
-      resultsDir + `/${sessionId}`,
-      resultFileName,
-      JSON.stringify({ isSuccess: true, data: { product: {} } })
-    );
+//   writeJsonToFile(
+//     resultsDir + `/${sessionId}`,
+//     resultFileName,
+//     JSON.stringify({
+//       isSuccess: 'unknown',
+//       status: 'processing',
+//     })
+//   );
 
-    return;
-  }
+//   const nutText = ocrList.reduce(
+//     (accumulator: any, currentValue: any, idx: number) => {
+//       return {
+//         ...accumulator,
+//         [`ocrImage_${idx + 1}`]: currentValue,
+//       };
+//     },
+//     {}
+//   );
 
-  const prefix = 'all';
+//   writeJsonToFile(
+//     resultsDir + `/${sessionId}`,
+//     'nut-orc-' + sessionId + '.json',
+//     JSON.stringify(nutText)
+//   );
 
-  const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
+//   onProcessGemini({
+//     req,
+//     res,
+//     sessionId,
+//     collateImageName,
+//     collatedOuputPath: invalidatedInput.nutIncluded,
+//     prompt: make_nut_prompt({
+//       ocrText: JSON.stringify(nutText),
+//       imageCount: invalidatedInput.nutIncluded?.length,
+//     }),
+//     prefix,
+//   });
+// };
 
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    resultFileName,
-    JSON.stringify({
-      isSuccess: 'unknown',
-      status: 'processing',
-    })
-  );
+// const onProcessOther = async ({
+//   req,
+//   res,
+//   invalidatedInput,
+//   ocrList,
+//   sessionId,
+//   collateImageName,
+//   outputConfig,
+// }: {
+//   req: any;
+//   res: any;
+//   invalidatedInput: any;
+//   ocrList: any[];
+//   sessionId: string;
+//   collateImageName: string;
+//   outputConfig: any;
+// }) => {
+//   if (!outputConfig.other) {
+//     const resultFileName = 'all-' + sessionId + '.json';
+//     writeJsonToFile(
+//       resultsDir + `/${sessionId}`,
+//       resultFileName,
+//       JSON.stringify({ isSuccess: true, data: { product: {} } })
+//     );
 
-  const nutImagesOCRresult = await getOcrTextAllImages([
-    ...invalidatedInput.nutIncluded,
-    ...invalidatedInput.nutExcluded,
-  ]);
+//     writeJsonToFile(
+//       resultsDir + `/${sessionId}`,
+//       'all-orc-' + sessionId + '.json',
+//       JSON.stringify({})
+//     );
 
-  const allText = nutImagesOCRresult.reduce(
-    (accumulator: any, currentValue: any, idx: number) => {
-      return {
-        ...accumulator,
-        [`ocrImage_${idx}`]: currentValue,
-      };
-    },
-    {}
-  );
+//     return;
+//   }
 
-  onProcessGemini({
-    req,
-    res,
-    sessionId,
-    collateImageName,
-    collatedOuputPath: [
-      ...invalidatedInput.nutIncluded,
-      ...invalidatedInput.nutExcluded,
-    ],
-    prompt: makePrompt({
-      ocrText: JSON.stringify(allText),
-      imageCount: [
-        ...invalidatedInput.nutIncluded,
-        ...invalidatedInput.nutExcluded,
-      ]?.length,
-    }),
-    prefix,
-  });
-};
+//   const prefix = 'all';
+
+//   const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
+
+//   writeJsonToFile(
+//     resultsDir + `/${sessionId}`,
+//     resultFileName,
+//     JSON.stringify({
+//       isSuccess: 'unknown',
+//       status: 'processing',
+//     })
+//   );
+
+//   const allText = ocrList.reduce(
+//     (accumulator: any, currentValue: any, idx: number) => {
+//       return {
+//         ...accumulator,
+//         [`ocrImage_${idx + 1}`]: currentValue,
+//       };
+//     },
+//     {}
+//   );
+
+//   const { ocr_claims } = (await mapOcrToPredictDataPoint(allText)) || {};
+
+//   writeJsonToFile(
+//     resultsDir + `/${sessionId}`,
+//     'all-orc-' + sessionId + '.json',
+//     JSON.stringify(allText)
+//   );
+
+//   onProcessGemini({
+//     req,
+//     res,
+//     sessionId,
+//     collateImageName,
+//     collatedOuputPath: [
+//       ...invalidatedInput.nutIncluded,
+//       ...invalidatedInput.nutExcluded,
+//     ],
+//     prompt: makePrompt({
+//       ocrText: JSON.stringify(allText),
+//       imageCount: [
+//         ...invalidatedInput.nutIncluded,
+//         ...invalidatedInput.nutExcluded,
+//       ]?.length,
+//       detectedClaims: JSON.stringify(ocr_claims),
+//     }),
+//     prefix,
+//   });
+// };
 
 export default router;
