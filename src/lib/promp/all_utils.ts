@@ -1,5 +1,6 @@
 // "text_statement_about_claim_found_in_product": string,
 // "debug": string, // tell me how you gemini know product contain or not contain that sweet source?
+// "product_contain_sweet_source_above": boolean, // important note (1 - the sugar could naturally occurring in ingredient mean that product have sugar)
 
 export const makePrompt = ({
   ocrText,
@@ -254,6 +255,7 @@ json
       "contain_claim": [
         {
           "claim": string,
+          "amount_value": string,
           "does_product_info_talk_about_thing_in_claim": boolean, 
           "does_product_contain_thing_in_claim": boolean, // important note (note 1 - cholesterol in nutrition fact with 0mg mean that product does not contain cholesterol. Note 2 - product contain "sugar alcohol" do not mean product contain "alcohol")   
         },
@@ -261,9 +263,9 @@ json
       ],
       "sugar_and_sweet_claim": [
         {
-          "claim": string,
-          "sweet_source_from_claim": string, //ex: "no sugar" => "sugar"
-          "product_contain_sweet_source_above": boolean, // important note (1 - the sugar could naturally occurring in ingredient mean that product have sugar)   
+          "sugar_type_claim": string,
+          "product_contain_sugar_type_above": boolean, // important note (1 - the sugar could naturally occurring in ingredient mean that product have sugar. 2 - "zero sugar" or "insignificant amount of sugar" mean have no "sugar"),
+          "amount_value": string,
           "debug": string, // tell me how you gemini know product contain or not contain that sweet source?
         },
         ...
