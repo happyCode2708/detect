@@ -1,4 +1,5 @@
 // "text_statement_about_claim_found_in_product": string,
+// "debug": string, // tell me how you gemini know product contain or not contain that sweet source?
 
 export const makePrompt = ({
   ocrText,
@@ -17,7 +18,6 @@ Ex: Saturated Fat/Grasa Saturada (english/spanish) we should only record english
 + sometimes a content could appears twice on the image, once in English and once in Spanish. Please do not include spanish content
 + be careful that all images are from only one product. You may see the same nutrition fact from different images those are captured from different angles of product.
 + the product images are captured from different angles and some info on an images could be obscured partly but the hidden parts could appear in other images. It is the remind to avoid you repeat the collected data since it could appear multiple times on different images.
-
 
 + OCR texts from ${imageCount} provided images:
 ${ocrText}
@@ -247,23 +247,24 @@ json
       "non_certified_claim": [
         {
           "claim": string,
-          "does_claim_correct_with_info_provided_on_image": boolean,
+          "does_claim_correct_with_info_provided_on_image": boolean, //* important note (1 - wildly is not mean wild claim )
         },
         ...
       ],
       "contain_claim": [
         {
           "claim": string,
-          "does_product_info_talk_about_thing_in_claim": boolean,
-          "does_product_contain_thing_in_claim": boolean,
+          "does_product_info_talk_about_thing_in_claim": boolean, 
+          "does_product_contain_thing_in_claim": boolean, // important note (note 1 - cholesterol in nutrition fact with 0mg mean that product does not contain cholesterol. Note 2 - product contain "sugar alcohol" do not mean product contain "alcohol")   
         },
         ...
       ],
       "sugar_and_sweet_claim": [
         {
           "claim": string,
-          "sweet_source_from_claim": string,
-          "product_contain_sweet_source_from_claim": boolean,
+          "sweet_source_from_claim": string, //ex: "no sugar" => "sugar"
+          "product_contain_sweet_source_above": boolean, // important note (1 - the sugar could naturally occurring in ingredient mean that product have sugar)   
+          "debug": string, // tell me how you gemini know product contain or not contain that sweet source?
         },
         ...
       ],

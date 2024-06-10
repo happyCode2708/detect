@@ -26,11 +26,18 @@ export const mapOcrToPredictDataPoint = async (
 
   await validate(ocrImageTexts, modData, 'contain_claim', CONTAIN_MAPPING);
 
+  // await validate(
+  //   ocrImageTexts,
+  //   modData,
+  //   'sugar_and_sweet_claim',
+  //   SUGAR_AND_SWEET_CLAIMS
+  // );
+
   await validate(
     ocrImageTexts,
     modData,
     'sugar_and_sweet_claim',
-    SUGAR_AND_SWEET_CLAIMS
+    SUGAR_AND_SWEET_CLAIMS_EXPERIMENTAL
   );
 
   await validate(ocrImageTexts, modData, 'fat_claim', FAT_CLAIMS);
@@ -384,79 +391,83 @@ const SUGAR_AND_SWEET_CLAIMS = {
   'splenda/sucralose': ['splenda/sucralose', 'splenda', 'sucralose'],
   stevia: ['stevia'],
   'sugar alcohol': ['sugar alcohol'],
-  'sugar free': ['sugar free'],
+  'sugar free': ['sugar free', 'sugar-free'],
   'sugars added': ['sugars added'],
   tagatose: ['tagatose'],
   unsweetened: ['unsweetened'],
   xylitol: ['xylitol'],
 };
 
-const SUGAR_AND_SWEET_CLAIMS_SUBJECT = {
+const SUGAR_AND_SWEET_CLAIMS_EXPERIMENTAL = {
   'acesulfame k': ['acesulfame k', 'acesulfame'],
+  // 'no acesulfame k': ['acesulfame k', 'acesulfame'],
   agave: ['agave'],
+  // 'no agave': ['agave'],
   allulose: ['allulose'],
-  'artificial sweetener': ['artificial sweetener'],
+  // 'no allulose': ['no allulose', 'allulose'],
+  'artificial sweetener': ['artificial sweetener', 'artificial sweetener'],
+  // 'no artificial sweetener': [
+  //   'no artificial sweetener',
+  //   'artificial sweetener',
+  // ],
   aspartame: ['aspartame'],
+  // 'no aspartame': ['no aspartame', 'aspartame'],
   'beet sugar': ['beet sugar'],
   'cane sugar': ['cane sugar'],
+  // 'no cane sugar': ['no cane sugar', 'cane sugar'],
   'coconut/coconut palm sugar': [
     'coconut/coconut palm sugar',
     'coconut sugar',
     'coconut palm sugar',
   ],
+  // 'no coconut/coconut palm sugar': [
+  //   'no coconut/coconut palm sugar',
+  //   'no coconut sugar',
+  //   'no coconut palm sugar',
+  //   'coconut sugar',
+  //   'coconut palm',
+  // ],
   'fruit juice': ['fruit juice'],
   'high fructose corn syrup': ['high fructose corn syrup'],
+  // 'no high fructose corn syrup': [
+  //   'no high fructose corn syrup',
+  //   'high fructose corn syrup',
+  // ],
   honey: ['honey'],
-  'low sugar': ['sugar'],
-  'lower sugar': ['sugar'],
+  'low sugar': ['low sugar'],
+  'lower sugar': ['lower sugar'],
   'monk fruit': ['monk fruit'],
   'natural sweeteners': ['natural sweeteners'],
-  'no acesulfame k': ['acesulfame k', 'acesulfame'],
-  'no added sugar': ['added sugar'],
-  'no agave': ['agave'],
-  'no allulose': ['no allulose', 'allulose'],
-  'no artificial sweetener': [
-    'no artificial sweetener',
-    'artificial sweetener',
-  ],
-  'no aspartame': ['no aspartame', 'aspartame'],
-  'no cane sugar': ['no cane sugar', 'cane sugar'],
-  'no coconut/coconut palm sugar': [
-    'no coconut/coconut palm sugar',
-    'no coconut sugar',
-    'no coconut palm sugar',
-    'coconut sugar',
-    'coconut palm',
-  ],
-  'no corn syrup': ['no corn syrup'],
-  'no high fructose corn syrup': [
-    'no high fructose corn syrup',
-    'high fructose corn syrup',
-  ],
-  'no refined sugars': ['no refined sugars', 'refined sugars'],
-  'no saccharin': ['no saccharin', 'saccharin'],
-  'no splenda/sucralose': [
-    'no splenda/sucralose',
-    'no splenda',
-    'no sucralose',
-    'splenda',
-    'sucralose',
-  ],
-  'no stevia': ['no stevia', 'stevia'],
-  'no sugar': ['no sugar', 'sugar'],
-  'no sugar added': ['no sugar added'],
-  'no sugar alcohol': ['no sugar alcohol', 'sugar alcohol'],
-  'no tagatose': ['no tagatose', 'tagatose'],
-  'no xylitol': ['no xylitol', 'xylitol'],
-  'reduced sugar': ['reduced sugar'],
+  'added sugar': ['added sugar'], //? fake
+  // 'no added sugar': ['added sugar'],
+  'corn syrup': ['corn syrup'], //? fake
+  // 'no corn syrup': ['no corn syrup'],
+
   'refined sugar': ['refined sugar'],
+  // 'no refined sugars': ['no refined sugars', 'refined sugars'],
   saccharin: ['saccharin'],
+  // 'no saccharin': ['no saccharin', 'saccharin'],
   'splenda/sucralose': ['splenda/sucralose', 'splenda', 'sucralose'],
+  // 'no splenda/sucralose': [
+  //   'no splenda/sucralose',
+  //   'no splenda',
+  //   'no sucralose',
+  //   'splenda',
+  //   'sucralose',
+  // ],
   stevia: ['stevia'],
-  'sugar alcohol': ['sugar alcohol'],
-  'sugar free': ['sugar free'],
+  // 'no stevia': ['no stevia', 'stevia'],
+  sugar: ['no sugar', 'sugar'], //? fake
+  // 'no sugar': ['no sugar', 'sugar'],
   'sugars added': ['sugars added'],
+  // 'no sugar added': ['no sugar added'],
+  'sugar alcohol': ['sugar alcohol'],
+  // 'no sugar alcohol': ['no sugar alcohol', 'sugar alcohol'],
   tagatose: ['tagatose'],
-  unsweetened: ['unsweetened'],
+  // 'no tagatose': ['no tagatose', 'tagatose'],
   xylitol: ['xylitol'],
+  // 'no xylitol': ['no xylitol', 'xylitol'],
+  'reduced sugar': ['reduced sugar'],
+  'sugar free': ['sugar free', 'sugar-free'],
+  unsweetened: ['unsweetened'],
 };
