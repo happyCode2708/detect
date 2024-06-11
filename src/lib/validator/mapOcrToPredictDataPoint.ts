@@ -40,6 +40,10 @@ export const mapOcrToPredictDataPoint = async (
     SUGAR_AND_SWEET_CLAIMS_EXPERIMENTAL
   );
 
+  await validate(ocrImageTexts, modData, 'salt_or_sodium_claim', SODIUM_CLAIMS);
+
+  await validate(ocrImageTexts, modData, 'calorie_claim', CALORIE_CLAIMS);
+
   await validate(ocrImageTexts, modData, 'fat_claim', FAT_CLAIMS);
 
   return Promise.resolve(modData);
@@ -197,16 +201,16 @@ const CONTAIN_MAPPING = {
   ammonia: ['ammonia'],
   'animal by-products': ['animal by-products'],
   'animal derivatives': ['animal derivatives'],
-  'animal ingredients': ['animal ingredients'],
+  'animal ingredients': ['animal ingredients', 'ingredients'],
   'animal products': ['animal products'],
   'animal rennet': ['animal rennet'],
   antibiotics: ['antibiotics'],
   'artificial additives': ['artificial additives'],
-  'artificial colors': ['artificial colors'],
+  'artificial colors': ['artificial colors', 'colors'],
   'artificial dyes': ['artificial dyes'],
   'artificial flavors': ['artificial flavors'],
   'artificial fragrance': ['artificial fragrance'],
-  'artificial ingredients': ['artificial ingredients'],
+  'artificial ingredients': ['artificial ingredients', 'ingredients'],
   'binders and/or fillers': ['binders and fillers', 'binders or fillers'],
   bleach: ['bleach'],
   'bpa (bisphenol-a)': ['bpa (bisphenol-a)'],
@@ -217,11 +221,11 @@ const CONTAIN_MAPPING = {
   casein: ['casein'],
   'cbd / cannabidiol': ['cbd / cannabidiol', 'cbd', 'cannabidiol'],
   'chemical additives': ['chemical additives'],
-  'chemical colors': ['chemical colors'],
+  'chemical colors': ['chemical colors', 'colors'],
   'chemical dyes': ['chemical dyes'],
   'chemical flavors': ['chemical flavors'],
   'chemical fragrances': ['chemical fragrances'],
-  'chemical ingredients': ['chemical ingredients'],
+  'chemical ingredients': ['chemical ingredients', 'ingredients'],
   'chemical sunscreens': ['chemical sunscreens'],
   chemicals: ['chemicals'],
   chlorine: ['chlorine'],
@@ -251,7 +255,7 @@ const CONTAIN_MAPPING = {
   latex: ['latex'],
   msg: ['msg'],
   'natural additives': ['natural additives'],
-  'natural colors': ['natural colors'],
+  'natural colors': ['natural colors', 'colors'],
   'natural dyes': ['natural dyes'],
   'natural flavors': [
     'natural flavors',
@@ -296,11 +300,11 @@ const CONTAIN_MAPPING = {
   'sulfites / sulphites': ['sulfites / sulphites', 'sulfites', 'sulphites'],
   'sulfur dioxide': ['sulfur dioxide'],
   'synthetic additives': ['synthetic additives'],
-  'synthetic colors': ['synthetic colors'],
+  'synthetic colors': ['synthetic colors', 'colors'],
   'synthetic dyes': ['synthetic dyes'],
   'synthetic flavors': ['synthetic flavors'],
   'synthetic fragrance': ['synthetic fragrance'],
-  'synthetic ingredients': ['synthetic ingredients'],
+  'synthetic ingredients': ['synthetic ingredients', 'ingredients'],
   synthetics: ['synthetics'],
   'thc / tetrahydrocannabinol': [
     'thc / tetrahydrocannabinol',
@@ -309,23 +313,10 @@ const CONTAIN_MAPPING = {
   ],
   'toxic pesticides': ['toxic pesticides'],
   triclosan: ['triclosan'],
-  'vegan ingredients': ['vegan ingredients'],
-  'vegetarian ingredients': ['vegetarian ingredients'],
+  'vegan ingredients': ['vegan ingredients', 'ingredients'],
+  'vegetarian ingredients': ['vegetarian ingredients', 'ingredients'],
   yeast: ['yeast'],
   yolks: ['yolks'],
-};
-
-const FAT_CLAIMS = {
-  'low fat': ['low fat'],
-  'low in saturated fat': ['low in saturated fat'],
-  'no fat': ['no fat'],
-  'no trans fat': ['no trans fat'],
-  'fat free': ['fat free'],
-  'free of saturated fat': ['free of saturated fat'],
-  'trans fat free': ['trans fat free'],
-  'reduced fat': ['reduced fat'],
-  'zero grams trans fat per serving': ['zero grams trans fat per serving'],
-  'zero trans fat': ['zero trans fat'],
 };
 
 const SUGAR_AND_SWEET_CLAIMS = {
@@ -459,7 +450,7 @@ const SUGAR_AND_SWEET_CLAIMS_EXPERIMENTAL = {
   // 'no stevia': ['no stevia', 'stevia'],
   sugar: ['no sugar', 'sugar'], //? fake
   // 'no sugar': ['no sugar', 'sugar'],
-  'sugars added': ['sugars added'],
+  'sugars added': ['sugars added', 'sugar added'],
   // 'no sugar added': ['no sugar added'],
   'sugar alcohol': ['sugar alcohol'],
   // 'no sugar alcohol': ['no sugar alcohol', 'sugar alcohol'],
@@ -470,4 +461,34 @@ const SUGAR_AND_SWEET_CLAIMS_EXPERIMENTAL = {
   'reduced sugar': ['reduced sugar'],
   'sugar free': ['sugar free', 'sugar-free'],
   unsweetened: ['unsweetened'],
+};
+const SODIUM_CLAIMS = {
+  'lightly salted': ['lightly salted'],
+  'low sodium': ['low sodium'],
+  'no salt': ['no salt'],
+  'no salt added': ['no salt added'],
+  'reduced sodium': ['reduced sodium'],
+  'salt free': ['salt free'],
+  'sodium free': ['sodium free'],
+  unsalted: ['unsalted'],
+  'very low sodium': ['very low sodium'],
+};
+
+const CALORIE_CLAIMS = {
+  'low calorie': ['low calorie', 'low in calorie'],
+  'reduced calorie': ['reduced calorie'],
+  'zero calorie': ['zero calorie'],
+};
+
+const FAT_CLAIMS = {
+  'low fat': ['low fat'],
+  'low in saturated fat': ['low in saturated fat'],
+  'no fat': ['no fat'],
+  'no trans fat': ['no trans fat'],
+  'fat free': ['fat free'],
+  'free of saturated fat': ['free of saturated fat'],
+  'trans fat free': ['trans fat free'],
+  'reduced fat': ['reduced fat'],
+  'zero grams trans fat per serving': ['zero grams trans fat per serving'],
+  'zero trans fat': ['zero trans fat'],
 };

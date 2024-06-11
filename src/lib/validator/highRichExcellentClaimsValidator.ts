@@ -12,6 +12,8 @@ export const highRichExcellentClaimsValidator = async (
     ...(high_in_full_statement || []),
   ];
 
+  if (!modifiedProductDataPoints?.['attributesAndCertifiers']) return;
+
   modifiedProductDataPoints['attributesAndCertifiers']['otherClaims'][
     'High/Rich In/Excellent Source'
   ] = [...new Set(all_rich_statement)];

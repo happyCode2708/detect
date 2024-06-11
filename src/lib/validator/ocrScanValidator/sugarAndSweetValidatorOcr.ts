@@ -25,7 +25,7 @@ const validate = async (
     let valid = await check_with_contrast_dic(analysisItem);
 
     if (valid === true) {
-      const claimValue = analysisItem['claim'];
+      const claimValue = analysisItem['sugar_type_claim'];
 
       let currentValues =
         modifiedProductDataPoints?.['attributesAndCertifiers']?.[
@@ -79,23 +79,35 @@ const check = async (analysisItem: any): Promise<boolean> => {
 const check_with_contrast_dic = async (
   analysisItem: any
 ): Promise<boolean | string> => {
-  const { claim, product_contain_sweet_source_above } = analysisItem;
+  const { sugar_type_claim, amount_value, product_contain_sugar_type_above } =
+    analysisItem;
 
-  if (!claim) return Promise.resolve(false);
+  if (!sugar_type_claim) return Promise.resolve(false);
 
-  if (product_contain_sweet_source_above === true) {
+  if (
+    product_contain_sugar_type_above === true &&
+    ['0g', '0mg', '0'].includes(amount_value)
+  ) {
+    return Promise.resolve(false);
+  }
+
+  if (product_contain_sugar_type_above === true) {
     return Promise.resolve(true);
   }
 
-  if (product_contain_sweet_source_above === false) {
+  if (product_contain_sugar_type_above === false) {
     const found_contrast_enum =
-      SUGAR_AND_SWEET_CLAIMS_EXPERIMENTAL_CONTRAST_DIC?.[claim];
+      SUGAR_AND_SWEET_CLAIMS_EXPERIMENTAL_CONTRAST_DIC?.[sugar_type_claim];
 
-    if (found_contrast_enum) {
-      return Promise.resolve(found_contrast_enum);
-    } else {
+    if (['sugar free'].includes(sugar_type_claim)) {
+      return Promise.resolve(true);
+    }
+
+    if (!found_contrast_enum) {
       return Promise.resolve(false);
     }
+
+    return Promise.resolve(found_contrast_enum);
   }
 
   return Promise.resolve(true);
@@ -146,7 +158,7 @@ const SUGAR_AND_SWEET_CLAIMS_EXPERIMENTAL_CONTRAST_DIC: Record<string, string> =
     // sugar: ['no sugar', 'sugar'], //? fake
     sugar: 'no sugar',
     // 'sugars added': ['sugars added'],
-    'sugar added': 'no sugar added',
+    'sugars added': 'no sugar added',
     // 'sugar alcohol': ['sugar alcohol'],
     'sugar alcohol': 'no sugar alcohol',
     // tagatose: ['tagatose'],

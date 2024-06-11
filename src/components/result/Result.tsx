@@ -1,22 +1,34 @@
+'use client';
 import NutritionTable from '@/components/table/NutritionTable';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { removeDuplicates } from '@/lib/utils';
 import { isEqual } from 'lodash';
+import { useState } from 'react';
 
 export const Result = ({ productInfo }: { productInfo: any }) => {
   if (!productInfo) return null;
 
+  const [tabActive, setTabActive] = useState<string>('table');
+
+  const onValueChange = (tabActive: string) => {
+    setTabActive(tabActive);
+  };
+
   return (
-    <Tabs defaultValue='table' className='w-full overflow-hidden'>
+    <Tabs
+      defaultValue='table'
+      className='w-full overflow-hidden'
+      onValueChange={onValueChange}
+    >
       <TabsList className='grid w-full grid-cols-2'>
         <TabsTrigger value='table'>Table</TabsTrigger>
         <TabsTrigger value='json'>Json</TabsTrigger>
       </TabsList>
-      <TabsContent value='table'>
+      <TabsContent value='table' forceMount hidden={tabActive !== 'table'}>
         <TableResult productInfo={productInfo?.product} />
       </TabsContent>
-      <TabsContent value='json'>
+      <TabsContent value='json' forceMount hidden={tabActive !== 'json'}>
         <JsonRender productInfo={productInfo} />
       </TabsContent>
     </Tabs>

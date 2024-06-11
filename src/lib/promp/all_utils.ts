@@ -257,7 +257,8 @@ json
           "claim": string,
           "amount_value": string,
           "does_product_info_talk_about_thing_in_claim": boolean, 
-          "does_product_contain_thing_in_claim": boolean, // important note (note 1 - cholesterol in nutrition fact with 0mg mean that product does not contain cholesterol. Note 2 - product contain "sugar alcohol" do not mean product contain "alcohol")   
+          "does_product_contain_thing_in_claim": boolean, // important notes (Note 1 - cholesterol in nutrition fact with 0mg mean that product does not contain cholesterol) (Note 2 - "sugar alcohol" is not a type of "alcohol") (Note 3 - "Artificial Food Colors" does not imply "Artificial ingredients")   
+          "debug": string, // tell me how you gemini know product contain or not contain the thing mentioned in claim?
         },
         ...
       ],
@@ -267,6 +268,20 @@ json
           "product_contain_sugar_type_above": boolean, // important note (1 - the sugar could naturally occurring in ingredient mean that product have sugar. 2 - "zero sugar" or "insignificant amount of sugar" mean have no "sugar"),
           "amount_value": string,
           "debug": string, // tell me how you gemini know product contain or not contain that sweet source?
+        },
+        ...
+      ],
+      "salt_or_sodium_claim": [
+        {
+          "claim": string,
+          "does_claim_correct_with_info_provided_on_image": boolean, //* important note (1 - wildly is not mean wild claim )
+        },
+        ...
+      ],
+      "calorie_claim": [
+        {
+          "claim": string,
+          "does_claim_correct_with_info_provided_on_image": boolean, //* important note (1 - wildly is not mean wild claim )
         },
         ...
       ],
