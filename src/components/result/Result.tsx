@@ -103,7 +103,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     product_contain,
     product_does_not_contain,
     ...validatedContainClaims
-  } = contain_and_notContain;
+  } = contain_and_notContain || {};
 
   return (
     <>
