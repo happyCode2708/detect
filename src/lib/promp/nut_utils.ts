@@ -32,6 +32,7 @@ json
     "answerOfDebug_6": your answer gemini (why you keep read info as new nutrient but the content info is not separated by line?),
     "important_require_1": "gemini avoid adding spanish contents to JSON Object (such as 'footnote'),  
     "important_require_2": "gemini remmeber 'trans fat', 'total sugar' and 'added sugar' are separated nutrient",
+    "important_require_3": "1 - percent daily value of total sugars is always null" 
     "end": true,
   },
   "product": {
