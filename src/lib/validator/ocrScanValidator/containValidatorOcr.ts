@@ -45,12 +45,21 @@ const validate = async (
 };
 
 const check = async (analysisItem: any): Promise<boolean> => {
-  const { claim, does_product_info_talk_about_thing_in_claim } = analysisItem;
+  const { claim, does_product_info_talk_about_thing_in_claim, validate } =
+    analysisItem;
 
   if (!claim) return Promise.resolve(false);
 
   if (!does_product_info_talk_about_thing_in_claim)
     return Promise.resolve(false);
+
+  if (validate === 'deduced/implied from other info or similar text') {
+    return Promise.resolve(false);
+  }
+
+  if (validate === 'seen on product') {
+    return Promise.resolve(true);
+  }
 
   return Promise.resolve(true);
 };

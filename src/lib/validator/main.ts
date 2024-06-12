@@ -43,14 +43,14 @@ const validateProductDataPoints = async (response: any, ocrClaims: any) => {
   certifierAndClaimsValidator(modifiedProductDataPoints);
   gradeClaimsValidator(modifiedProductDataPoints);
   await allergenValidator(modifiedProductDataPoints);
-  // await containValidator(modifiedProductDataPoints);
   await containValidatorOcr(modifiedProductDataPoints);
+  await containValidator(modifiedProductDataPoints);
   // await nonCertifierClaimValidator(modifiedProductDataPoints);
   await nonCertifierOcrValidator(modifiedProductDataPoints);
 
   // await saltClaimValidator(modifiedProductDataPoints);
   await saltOrSodiumValidatorOcr(modifiedProductDataPoints);
-  // await sugarAndSweetClaimValidator(modifiedProductDataPoints);
+  await sugarAndSweetClaimValidator(modifiedProductDataPoints);
   await sugarAndSweetValidatorOcr(modifiedProductDataPoints);
   // await calorieClaimValidator(modifiedProductDataPoints);
   await calorieClaimValidatorOcr(modifiedProductDataPoints);
@@ -75,3 +75,6 @@ const validateProductDataPoints = async (response: any, ocrClaims: any) => {
 //? note
 //* juice percent
 //* milk type
+
+//! bug
+//* synthetic color => deduced from "artificial color"

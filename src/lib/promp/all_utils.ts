@@ -1,6 +1,7 @@
 // "text_statement_about_claim_found_in_product": string,
 // "debug": string, // tell me how you gemini know product contain or not contain that sweet source?
 // "product_contain_sweet_source_above": boolean, // important note (1 - the sugar could naturally occurring in ingredient mean that product have sugar)
+// "do_you_see_claim_on_product_or_you_deduce_from_other_info": string,
 
 export const makePrompt = ({
   ocrText,
@@ -259,6 +260,7 @@ json
           "does_product_info_talk_about_thing_in_claim": boolean, 
           "does_product_contain_thing_in_claim": boolean, // important notes (Note 1 - cholesterol in nutrition fact with 0mg mean that product does not contain cholesterol) (Note 2 - "sugar alcohol" is not a type of "alcohol") (Note 3 - "Artificial Food Colors" does not imply "Artificial ingredients")   
           "debug": string, // tell me how you gemini know product contain or not contain the thing mentioned in claim?
+          "validate": "deduced/implied from other info or similar text" | "seen on product",
         },
         ...
       ],
@@ -274,14 +276,21 @@ json
       "salt_or_sodium_claim": [
         {
           "claim": string,
-          "does_claim_correct_with_info_provided_on_image": boolean, //* important note (1 - wildly is not mean wild claim )
+          "does_claim_correct_with_info_provided_on_image": boolean,
         },
         ...
       ],
       "calorie_claim": [
         {
           "claim": string,
-          "does_claim_correct_with_info_provided_on_image": boolean, //* important note (1 - wildly is not mean wild claim )
+          "does_claim_correct_with_info_provided_on_image": boolean, 
+        },
+        ...
+      ],
+      "fat_claim": [
+        {
+          "claim": string,
+          "does_claim_correct_with_info_provided_on_image": boolean, 
         },
         ...
       ],
@@ -505,6 +514,9 @@ b) "product_does_not_contain" rules:
   + "natural" is the list of statements about natural (such as: "natural botanicals", "natural ingredients", ...)
 
   + "live_and_active_cultures.statement" is the statement about all active cultures inside product (include the active cultures list).
+  
+12)  "analysis_detected_claims.contain_claim.validate":
++ is to check if claim info is deduced from other text, or deduced from other info, or implied from equivalent text info, or being seen directly on product.
   `;
 };
 // "does_claim_correct_with_info_provided_on_image": boolean,

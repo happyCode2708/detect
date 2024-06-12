@@ -138,6 +138,12 @@ const ALLERGEN_MAPPING = {
     'almonds',
     'pistachio',
     'pistachios',
+    'cashews',
+    'hazelnuts',
+    'macadamia nut',
+    'pecans',
+    'pine nut',
+    'walnut',
   ],
   wheat: ['wheat'],
 };
