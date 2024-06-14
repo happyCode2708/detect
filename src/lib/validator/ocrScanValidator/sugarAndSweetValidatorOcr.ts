@@ -24,6 +24,10 @@ const validate = async (
     // let valid = await check(analysisItem);
     let valid = await check_with_contrast_dic(analysisItem);
 
+    if (valid === null) {
+      return;
+    }
+
     if (valid === true) {
       const claimValue = analysisItem['sugar_type_claim'];
 
@@ -78,11 +82,18 @@ const check = async (analysisItem: any): Promise<boolean> => {
 
 const check_with_contrast_dic = async (
   analysisItem: any
-): Promise<boolean | string> => {
+): Promise<boolean | string | null> => {
   const { sugar_type_claim, amount_value, product_contain_sugar_type_above } =
     analysisItem;
 
   if (!sugar_type_claim) return Promise.resolve(false);
+
+  if (
+    sugar_type_claim === 'sugar' &&
+    product_contain_sugar_type_above === true
+  ) {
+    return Promise.resolve(null);
+  }
 
   if (
     product_contain_sugar_type_above === true &&
