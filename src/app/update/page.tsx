@@ -1,10 +1,24 @@
 'use client';
 import { FluidContainer } from '@/components/container/FluidContainer';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { SectionWrapper } from '@/components/wrapper/SectionWrapper';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 const UpdatePage = () => {
   return (
     <FluidContainer>
+      <div className='flex justify-end pt-4'>
+        <Link
+          href='/'
+          className={cn(
+            buttonVariants({ variant: 'outline' }),
+            'h-[30px] ml-2'
+          )}
+        >
+          Back
+        </Link>
+      </div>
       <SectionWrapper title='Update history'>
         {Object.entries(UPDATE_LIST).map((updateItem) => {
           const [key, updateInfo] = updateItem;
@@ -78,6 +92,59 @@ const Tag = ({
 };
 
 const UPDATE_LIST = {
+  '6/14/24': {
+    name: '6/14/24 update',
+    updateContent: [
+      {
+        content: (
+          <div>
+            Resolve issues does not show allergen on equipment statement
+            <Tag type='default'>Fixed</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Resolve issues that some type of tree nuts is not detected.
+            <Tag type='default'>Fixed</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Resolve crash issues when config detect nutrition/supplement fact
+            only
+            <Tag type='default'>Fixed</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Test new strategy to detect, analyze, and validate "contain", "does
+            not contain claim", "sweet and sugar", "non certifier" claims.
+            <Tag type='test'>Testing</Tag>
+            <Tag type='default'>Fixing bug</Tag>
+            <Tag type='imp'>Improving</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Apply new strategy to detect, analyze, and validate "fat",
+            "calorie", "salt or sodium" claims to increase claim-detector
+            precision.
+            <Tag type='test'>Testing</Tag>
+            <Tag type='default'>In-progress</Tag>
+            <Tag type='good'>Good result</Tag>
+          </div>
+        ),
+      },
+    ],
+  },
   '6/10/24': {
     name: '6/10/24 update',
     updateContent: [
@@ -89,7 +156,7 @@ const UPDATE_LIST = {
             increase claim-detector precision.
             <Tag type='test'>Testing</Tag>
             <Tag type='default'>In-progress</Tag>
-            <Tag type='good'>In-progress</Tag>
+            <Tag type='good'>Good result</Tag>
           </div>
         ),
       },

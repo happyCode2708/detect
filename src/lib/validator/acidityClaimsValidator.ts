@@ -7,6 +7,8 @@ export const acidityClaimsValidator = async (
 
   console.log('acidity claim validator');
 
+  if (!modifiedProductDataPoints?.['attributesAndCertifiers']) return;
+
   modifiedProductDataPoints['attributesAndCertifiers']['otherClaims'][
     'acidity'
   ] = [...new Set(acidity_percent_statement)];

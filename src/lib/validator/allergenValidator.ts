@@ -1,29 +1,32 @@
 import { toLower } from 'lodash';
 
 export const allergenValidator = async (modifiedProductDataPoints: any) => {
+  if (!modifiedProductDataPoints?.['allergen']) return;
+
   const current_allergen_freeOf =
-    modifiedProductDataPoints['allergen']['allergen_freeOf'][
+    modifiedProductDataPoints?.['allergen']?.['allergen_freeOf'][
       'allergen_freeOf_list'
     ] || [];
 
   const current_allergen_contain =
-    modifiedProductDataPoints['allergen']['allergen_contain'][
+    modifiedProductDataPoints?.['allergen']?.['allergen_contain'][
       'allergen_contain_list'
     ] || [];
 
   const current_allergen_containOnEquipment =
-    modifiedProductDataPoints['allergen']['allergen_containOnEquipment'][
+    modifiedProductDataPoints?.['allergen']?.['allergen_containOnEquipment'][
       'allergen_containOnEquipment_list'
     ] || [];
 
   const current_product_does_not_contain =
-    modifiedProductDataPoints['contain_and_notContain'][
+    modifiedProductDataPoints?.['contain_and_notContain']?.[
       'product_does_not_contain'
     ] || [];
 
   const current_product_contain =
-    modifiedProductDataPoints['contain_and_notContain']['product_contain'] ||
-    [];
+    modifiedProductDataPoints?.['contain_and_notContain']?.[
+      'product_contain'
+    ] || [];
 
   await validateAllergenFreeOfOrContainOrContainOnEquipment(
     [...current_allergen_freeOf, ...current_product_does_not_contain],
@@ -100,6 +103,12 @@ const promiseCheckEachEnum = async (
         }
       }
 
+      if (allergenEnum === 'crustacean shellfish') {
+        if (!possibleValueList.includes(ingredientName)) {
+          return;
+        }
+      }
+
       finalMatch.push(allergenEnum);
       return;
     }
@@ -119,7 +128,7 @@ const ALLERGEN_MAPPING = {
   'peanuts / peanut oil': ['peanut', 'peanuts', 'peanut oil'],
   phenylalanine: ['phenylalanine'],
   seeds: ['seeds'],
-  sesame: ['seasame'],
+  sesame: ['sesame'],
   'soy / soybeans': ['soy', 'soybeans'],
   'tree nuts': [
     'tree nuts',
@@ -129,6 +138,12 @@ const ALLERGEN_MAPPING = {
     'almonds',
     'pistachio',
     'pistachios',
+    'cashews',
+    'hazelnuts',
+    'macadamia nut',
+    'pecans',
+    'pine nut',
+    'walnut',
   ],
   wheat: ['wheat'],
 };

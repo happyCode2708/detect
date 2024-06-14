@@ -15,6 +15,9 @@ import { wholeGrainClaimValidator } from './wholeGrainClaim';
 import { containValidatorOcr } from './ocrScanValidator/containValidatorOcr';
 import { nonCertifierOcrValidator } from './ocrScanValidator/nonCertifierOcrValidator';
 import { sugarAndSweetValidatorOcr } from './ocrScanValidator/sugarAndSweetValidatorOcr';
+import { saltOrSodiumValidatorOcr } from './ocrScanValidator/saltOrSodiumClaimOcr';
+import { calorieClaimValidatorOcr } from './ocrScanValidator/calorieClaimValidatorOcr';
+import { fatClaimValidatorOcr } from './ocrScanValidator/fatClaimValidatorOcr';
 
 export const responseValidator = async (response: any, ocrClaims: any) => {
   let validatedResponse = { ...response };
@@ -40,17 +43,20 @@ const validateProductDataPoints = async (response: any, ocrClaims: any) => {
   certifierAndClaimsValidator(modifiedProductDataPoints);
   gradeClaimsValidator(modifiedProductDataPoints);
   await allergenValidator(modifiedProductDataPoints);
-  // await containValidator(modifiedProductDataPoints);
   await containValidatorOcr(modifiedProductDataPoints);
+  await containValidator(modifiedProductDataPoints);
   // await nonCertifierClaimValidator(modifiedProductDataPoints);
   await nonCertifierOcrValidator(modifiedProductDataPoints);
 
   // await saltClaimValidator(modifiedProductDataPoints);
-  // await sugarAndSweetClaimValidator(modifiedProductDataPoints);
+  await saltOrSodiumValidatorOcr(modifiedProductDataPoints);
+  await sugarAndSweetClaimValidator(modifiedProductDataPoints);
   await sugarAndSweetValidatorOcr(modifiedProductDataPoints);
   // await calorieClaimValidator(modifiedProductDataPoints);
+  await calorieClaimValidatorOcr(modifiedProductDataPoints);
   // await wholeGrainClaimValidator(modifiedProductDataPoints);
   // await fatContentClaimValidatordsa(modifiedProductDataPoints);
+  await fatClaimValidatorOcr(modifiedProductDataPoints);
 
   // validateContainAndDoesNotContain(productDataPoints); //* attribute
 
@@ -65,3 +71,10 @@ const validateProductDataPoints = async (response: any, ocrClaims: any) => {
 
   // console.log('response', JSON.stringify(response));
 };
+
+//? note
+//* juice percent
+//* milk type
+
+//! bug
+//* synthetic color => deduced from "artificial color"

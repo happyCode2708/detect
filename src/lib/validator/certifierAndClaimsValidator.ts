@@ -22,6 +22,8 @@ export const certifierAndClaimsValidator = async (
     });
   });
 
+  if (!modifiedProductDataPoints?.['attributesAndCertifiers']) return;
+
   modifiedProductDataPoints['attributesAndCertifiers']['claims'] =
     validated_certifier_and_claims;
 

@@ -1,22 +1,34 @@
+'use client';
 import NutritionTable from '@/components/table/NutritionTable';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { removeDuplicates } from '@/lib/utils';
 import { isEqual } from 'lodash';
+import { useState } from 'react';
 
 export const Result = ({ productInfo }: { productInfo: any }) => {
   if (!productInfo) return null;
 
+  const [tabActive, setTabActive] = useState<string>('table');
+
+  const onValueChange = (tabActive: string) => {
+    setTabActive(tabActive);
+  };
+
   return (
-    <Tabs defaultValue='table' className='w-full overflow-hidden'>
+    <Tabs
+      defaultValue='table'
+      className='w-full overflow-hidden'
+      onValueChange={onValueChange}
+    >
       <TabsList className='grid w-full grid-cols-2'>
         <TabsTrigger value='table'>Table</TabsTrigger>
         <TabsTrigger value='json'>Json</TabsTrigger>
       </TabsList>
-      <TabsContent value='table'>
+      <TabsContent value='table' forceMount hidden={tabActive !== 'table'}>
         <TableResult productInfo={productInfo?.product} />
       </TabsContent>
-      <TabsContent value='json'>
+      <TabsContent value='json' forceMount hidden={tabActive !== 'json'}>
         <JsonRender productInfo={productInfo} />
       </TabsContent>
     </Tabs>
@@ -73,8 +85,8 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
   } = productInfo;
 
   const {
-    allergen_containOnEquipment_statement,
     validated_allergen_containOnEquipment,
+    allergen_containOnEquipment_statement,
     validated_allergen_contain,
     validated_allergen_freeOf,
   } = allergen || {};
@@ -91,7 +103,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     product_contain,
     product_does_not_contain,
     ...validatedContainClaims
-  } = contain_and_notContain;
+  } = contain_and_notContain || {};
 
   return (
     <>
@@ -267,9 +279,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
             </div>
             <div>
               <div className='font-bold'>Contain on equipment statement: </div>
-              <p className='ml-6'>
-                {allergen_containOnEquipment_statement.statement}
-              </p>
+              <p className='ml-6'>{allergen_containOnEquipment_statement}</p>
             </div>
           </div>
         )}

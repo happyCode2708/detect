@@ -5,6 +5,8 @@ export const gradeClaimsValidator = async (modifiedProductDataPoints: any) => {
 
   console.log('grade claim validator');
 
+  if (!modifiedProductDataPoints?.['attributesAndCertifiers']) return;
+
   modifiedProductDataPoints['attributesAndCertifiers']['otherClaims']['grade'] =
     [...new Set(grade)];
 

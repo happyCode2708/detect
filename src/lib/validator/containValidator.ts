@@ -1,49 +1,63 @@
-import { lowerCase } from 'lodash';
+import { lowerCase, toLower } from 'lodash';
 
 export const containValidator = async (modifiedProductDataPoints: any) => {
   const current_allergen_freeOf =
-    modifiedProductDataPoints['allergen']['allergen_freeOf'][
+    modifiedProductDataPoints?.['allergen']?.['allergen_freeOf']?.[
       'allergen_freeOf_list'
     ] || [];
 
   const current_allergen_contain =
-    modifiedProductDataPoints['allergen']['allergen_contain'][
+    modifiedProductDataPoints?.['allergen']?.['allergen_contain']?.[
       'allergen_contain_list'
     ] || [];
 
   const current_allergen_containOnEquipment =
-    modifiedProductDataPoints['allergen']['allergen_containOnEquipment'][
+    modifiedProductDataPoints?.['allergen']?.['allergen_containOnEquipment']?.[
       'allergen_containOnEquipment_list'
     ] || [];
 
   const current_product_does_not_contain =
-    modifiedProductDataPoints['contain_and_notContain'][
+    modifiedProductDataPoints?.['contain_and_notContain']?.[
       'product_does_not_contain'
     ] || [];
 
   const current_product_contain =
-    modifiedProductDataPoints['contain_and_notContain']['product_contain'] ||
-    [];
+    modifiedProductDataPoints?.['contain_and_notContain']?.[
+      'product_contain'
+    ] || [];
 
-  const process = modifiedProductDataPoints['process'] || [];
+  const process = modifiedProductDataPoints?.['process'] || {};
 
-  // const { other_things } = process;
+  const { no } = process;
 
-  const ingredients_group = modifiedProductDataPoints?.[
-    'ingredients_group'
-  ]?.reduce(
-    (accumulator: string[], currentValue: { ingredients: string[] }) => {
-      const nextIngredientList = [...accumulator, ...currentValue?.ingredients];
+  // const ingredients_group = modifiedProductDataPoints?.[
+  //   'ingredients_group'
+  // ]?.reduce(
+  //   (accumulator: string[], currentValue: { ingredients: string[] }) => {
+  //     const nextIngredientList = [...accumulator, ...currentValue?.ingredients];
 
-      return [...new Set(nextIngredientList)];
-    },
-    []
-  );
+  //     return [...new Set(nextIngredientList)];
+  //   },
+  //   []
+  // );
 
-  console.log('ingredient  groups', ingredients_group);
+  const mapped_no = no?.map((no_item: string) => {
+    const lowerText = toLower(no_item);
+    if (lowerText?.startsWith('no ')) {
+      return lowerText?.split('no ')?.[1];
+    }
+
+    return lowerText;
+  });
+
+  // console.log('ingredient  groups', ingredients_group);
 
   await validateContainOrDoesNotContain(
-    [...current_allergen_freeOf, ...current_product_does_not_contain],
+    [
+      ...current_allergen_freeOf,
+      ...current_product_does_not_contain,
+      ...mapped_no,
+    ],
     modifiedProductDataPoints,
     'validated_product_does_not_contain'
   );
@@ -51,12 +65,7 @@ export const containValidator = async (modifiedProductDataPoints: any) => {
   console.log('contain -- 1');
 
   await validateContainOrDoesNotContain(
-    [
-      ...current_allergen_contain,
-      ...current_product_contain,
-      ...ingredients_group,
-      // ...other_things,
-    ],
+    [...current_allergen_contain, ...current_product_contain],
     modifiedProductDataPoints,
     'validated_product_contain'
   );
