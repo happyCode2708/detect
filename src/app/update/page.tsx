@@ -98,6 +98,14 @@ const UPDATE_LIST = {
       {
         content: (
           <div>
+            Resolve issues does not show allergen on equipment statement
+            <Tag type='default'>Fixed</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
             Resolve issues that some type of tree nuts is not detected.
             <Tag type='default'>Fixed</Tag>
           </div>
