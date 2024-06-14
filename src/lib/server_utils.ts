@@ -215,11 +215,23 @@ export const onProcessNut = async ({
     })
   );
 
-  const nutText = ocrList.reduce(
+  // const nutText = ocrList.reduce(
+  //   (accumulator: any, currentValue: any, idx: number) => {
+  //     return {
+  //       ...accumulator,
+  //       [`ocrImage_${idx + 1}`]: currentValue,
+  //     };
+  //   },
+  //   {}
+  // );
+
+  const new_nutText = ocrList.reduce(
     (accumulator: any, currentValue: any, idx: number) => {
+      let [whole_text, ...array_string] = currentValue;
+      let processed_whole_text = array_string.join(' ');
       return {
         ...accumulator,
-        [`ocrImage_${idx + 1}`]: currentValue,
+        [`ocrImage_${idx + 1}`]: processed_whole_text,
       };
     },
     {}
@@ -228,7 +240,7 @@ export const onProcessNut = async ({
   writeJsonToFile(
     resultsDir + `/${sessionId}`,
     'nut-orc-' + sessionId + '.json',
-    JSON.stringify(nutText)
+    JSON.stringify(new_nutText)
   );
 
   onProcessGemini({
@@ -238,7 +250,7 @@ export const onProcessNut = async ({
     collateImageName,
     collatedOuputPath: invalidatedInput.nutIncluded,
     prompt: make_nut_prompt({
-      ocrText: JSON.stringify(nutText),
+      ocrText: JSON.stringify(new_nutText),
       imageCount: invalidatedInput.nutIncluded?.length,
     }),
     prefix,
@@ -298,22 +310,34 @@ export const onProcessOther = async ({
     })
   );
 
-  const allText = ocrList.reduce(
+  // const allText = ocrList.reduce(
+  //   (accumulator: any, currentValue: any, idx: number) => {
+  //     return {
+  //       ...accumulator,
+  //       [`ocrImage_${idx + 1}`]: currentValue,
+  //     };
+  //   },
+  //   {}
+  // );
+
+  const new_allText = ocrList.reduce(
     (accumulator: any, currentValue: any, idx: number) => {
+      let [whole_text, ...array_string] = currentValue;
+      let processed_whole_text = array_string.join(' ');
       return {
         ...accumulator,
-        [`ocrImage_${idx + 1}`]: currentValue,
+        [`ocrImage_${idx + 1}`]: processed_whole_text,
       };
     },
     {}
   );
 
-  const { ocr_claims } = (await mapOcrToPredictDataPoint(allText)) || {};
+  const { ocr_claims } = (await mapOcrToPredictDataPoint(new_allText)) || {};
 
   writeJsonToFile(
     resultsDir + `/${sessionId}`,
     'all-orc-' + sessionId + '.json',
-    JSON.stringify(allText)
+    JSON.stringify(new_allText)
   );
 
   writeJsonToFile(
@@ -332,7 +356,7 @@ export const onProcessOther = async ({
       ...invalidatedInput.nutExcluded,
     ],
     prompt: makePrompt({
-      ocrText: JSON.stringify(allText),
+      ocrText: JSON.stringify(new_allText),
       imageCount: [
         ...invalidatedInput.nutIncluded,
         ...invalidatedInput.nutExcluded,

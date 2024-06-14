@@ -5,10 +5,16 @@ export const mapOcrToPredictDataPoint = async (
 ): Promise<any> => {
   if (!OcrText) return [];
 
+  // const ocrImageTexts = Object.entries(OcrText)?.map((keyAndValue: any) => {
+  //   let [key, value] = keyAndValue;
+
+  //   return { text: value?.[0] };
+  // });
+
   const ocrImageTexts = Object.entries(OcrText)?.map((keyAndValue: any) => {
     let [key, value] = keyAndValue;
 
-    return { text: value?.[0] };
+    return { text: value };
   });
 
   let modData = {
