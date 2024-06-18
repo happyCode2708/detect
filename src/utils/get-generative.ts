@@ -5,8 +5,6 @@ import {
 } from '@google-cloud/vertexai';
 
 export const getGenerative = () => {
-  require('dotenv').config();
-
   // const model = 'gemini-1.5-pro-preview-0514';
   // const model = 'gemini-1.5-flash-preview-0514';
   const model = 'gemini-1.5-pro-001';

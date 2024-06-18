@@ -1,8 +1,6 @@
 import vision, { ImageAnnotatorClient } from '@google-cloud/vision';
 
 export const getGoogleApiOcr = () => {
-  require('dotenv').config();
-
   const model = 'gemini-1.5-pro-preview-0514';
   // const model = 'gemini-1.5-flash-preview-0514';
 
