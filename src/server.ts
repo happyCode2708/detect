@@ -7,7 +7,8 @@ import { getGenerative } from './utils/get-generative';
 import { getGoogleApiOcr } from './utils/get-gg-api-ocr';
 import nextBuild from 'next/dist/build';
 
-require('dotenv').config();
+const env = process.env.NODE_ENV || 'development';
+require('dotenv').config({ path: `.env.${env}` });
 
 getGenerative();
 getGoogleApiOcr();
@@ -45,7 +46,7 @@ const startServer = async () => {
 
   nextApp.prepare().then(() => {
     app.listen(port, async () => {
-      console.log(`Next.js App running on port ${port}`);
+      console.log(`Next.js App running in ${env} mode on port ${port}`);
     });
   });
 };
