@@ -15,7 +15,7 @@ jobs:
         node-version: [18.17]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     env:
-      GOOGLE_CREDENTIAL_2: ${{ secrests.GOOGLE_CREDENTIALs}
+      GOOGLE_CREDENTIAL_2: ${{ secrets.GOOGLE_CREDENTIALs}}
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
