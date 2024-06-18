@@ -62,9 +62,7 @@ router.get('/get-result/:sessionId', async (req, res) => {
     }
 
     return res.json(finalRes);
-  } catch (err) {
-    console.log('---- read validated ouput errof');
-  }
+  } catch (err) {}
 
   try {
     const [allData, nutData, ocrClaimData] = await Promise.all([
