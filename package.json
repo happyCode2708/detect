@@ -11,7 +11,7 @@
     "build:server": "tsc --project tsconfig.server.json",
     "build:custom-next": "cross-env NEXT_BUILD=true",
     "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png,py}\" dist/",
-    "build:next": "cross-env NEXT_BUILD=true node dist/server.js",
+    "build:next": "cross-env NODE_ENV=production NEXT_BUILD=true node dist/server.js",
     "build": "cross-env NODE_ENV=production npm run build:server && npm run copyfiles && npm run build:next"
   },
   "dependencies": {
