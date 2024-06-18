@@ -5,7 +5,7 @@ on:
     branches: ['main']
 
 jobs:
-  build:
+  prepare:
     runs-on: self-hosted
 
     strategy:
@@ -18,7 +18,10 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+  env:
+    runs-on: self-hosted
 
+    steps:
       - name: Create env file
         run: |
           echo "GOOGLE_CREDENTIALS=${{ secrets.GOOGLE_CREDENTIALS}}" >> .env.production
@@ -27,5 +30,9 @@ jobs:
       - name: Print contents of .env.production file
         run: cat .env.production
 
+  build:
+    runs-on: self-hosted
+
+    steps:
       - name: Build
         run: npm run build --if-present
