@@ -1,6 +1,8 @@
-import { lowerCase, toLower } from 'lodash';
+import { lowerCase, toLower, isEmpty } from 'lodash';
 
 export const containValidator = async (modifiedProductDataPoints: any) => {
+  if (isEmpty(modifiedProductDataPoints)) return;
+
   const current_allergen_freeOf =
     modifiedProductDataPoints?.['allergen']?.['allergen_freeOf']?.[
       'allergen_freeOf_list'
@@ -30,25 +32,16 @@ export const containValidator = async (modifiedProductDataPoints: any) => {
 
   const { no } = process;
 
-  // const ingredients_group = modifiedProductDataPoints?.[
-  //   'ingredients_group'
-  // ]?.reduce(
-  //   (accumulator: string[], currentValue: { ingredients: string[] }) => {
-  //     const nextIngredientList = [...accumulator, ...currentValue?.ingredients];
+  const mapped_no = no
+    ? no?.map((no_item: string) => {
+        const lowerText = toLower(no_item);
+        if (lowerText?.startsWith('no ')) {
+          return lowerText?.split('no ')?.[1];
+        }
 
-  //     return [...new Set(nextIngredientList)];
-  //   },
-  //   []
-  // );
-
-  const mapped_no = no?.map((no_item: string) => {
-    const lowerText = toLower(no_item);
-    if (lowerText?.startsWith('no ')) {
-      return lowerText?.split('no ')?.[1];
-    }
-
-    return lowerText;
-  });
+        return lowerText;
+      })
+    : [];
 
   // console.log('ingredient  groups', ingredients_group);
 
@@ -91,7 +84,7 @@ const validateContainOrDoesNotContain = async (
   }
 
   let currentValues =
-    modifiedProductDataPoints['contain_and_notContain']?.[dataPointKey] || [];
+    modifiedProductDataPoints?.['contain_and_notContain']?.[dataPointKey] || [];
 
   modifiedProductDataPoints['contain_and_notContain'][dataPointKey] = [
     ...currentValues,
@@ -268,3 +261,14 @@ const CONTAIN_MAPPING = {
   yeast: ['yeast'],
   yolks: ['yolks'],
 };
+
+// const ingredients_group = modifiedProductDataPoints?.[
+//   'ingredients_group'
+// ]?.reduce(
+//   (accumulator: string[], currentValue: { ingredients: string[] }) => {
+//     const nextIngredientList = [...accumulator, ...currentValue?.ingredients];
+
+//     return [...new Set(nextIngredientList)];
+//   },
+//   []
+// );
