@@ -1,8 +1,10 @@
-import { lowerCase, toLower } from 'lodash';
+import { lowerCase, toLower, isEmpty } from 'lodash';
 
 export const sugarAndSweetClaimValidator = async (
   modifiedProductDataPoints: any
 ) => {
+  if (isEmpty(modifiedProductDataPoints)) return;
+
   const current_allergen_freeOf =
     modifiedProductDataPoints['allergen']['allergen_freeOf'][
       'allergen_freeOf_list'
