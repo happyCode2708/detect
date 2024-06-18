@@ -99,7 +99,10 @@ const promiseCheckEachEnum = async (keyNvalue: any, ingredientName: string) => {
   let foundMatches = [] as any;
 
   possibleValueList.forEach((possibleValueItem: string) => {
-    console.log('comoare', `${ingredientName}-${possibleValueItem}`);
+    console.log(
+      'map whole ocr to possible value - the possible value',
+      `${possibleValueItem}`
+    );
     if (ingredientName.includes(possibleValueItem)) {
       console.log('found in enums -- ocr');
       if (containEnum === 'natural') {

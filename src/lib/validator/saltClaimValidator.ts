@@ -97,7 +97,7 @@ const promiseCheckEachEnum = async (keyNvalue: any, ingredientName: string) => {
   let foundMatches = [] as any;
 
   possibleValueList.forEach((possibleValueItem: string) => {
-    console.log('coup', `${ingredientName}-${possibleValueItem}`);
+    console.log('coup - ', `${ingredientName}-${possibleValueItem}`);
     if (ingredientName.includes(possibleValueItem)) {
       console.log('found in enums');
       if (containEnum === 'natural') {

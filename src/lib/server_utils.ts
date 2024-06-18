@@ -52,9 +52,11 @@ export const isImageHaveNutFact = (filePath: string) => {
   const imagePath = filePath;
 
   return new Promise((resolve, reject) => {
+    const pythonPath =
+      process.env.NODE_ENV !== 'production' ? 'src/python/' : 'dist/python/';
     execFile(
       process.env.pythonV || 'python',
-      ['src/python/detect.py', imagePath],
+      [`${pythonPath}detect.py`, imagePath],
       (error: any, stdout: any, stderr: any) => {
         if (error) {
           console.error(`exec error: ${error}`);

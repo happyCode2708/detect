@@ -5,6 +5,7 @@ import path from 'path';
 import apiRouter from './router';
 import { getGenerative } from './utils/get-generative';
 import { getGoogleApiOcr } from './utils/get-gg-api-ocr';
+import nextBuild from 'next/dist/build';
 
 require('dotenv').config();
 
@@ -25,12 +26,28 @@ export const resultsDir = path.join(__dirname, 'data/results');
 export const historyDir = path.join(__dirname, 'data/history');
 export const pythonPath = path.join(__dirname, 'python');
 
-app.use('/api', apiRouter);
+const startServer = async () => {
+  if (process.env.NEXT_BUILD) {
+    app.listen(port, async () => {
+      console.log('Next.js is building for production');
+      // @ts-expect-error
+      await nextBuild(path.join(__dirname, '../'));
 
-app.use((req, res) => nextHandler(req, res));
+      process.exit();
+    });
 
-nextApp.prepare().then(() => {
-  app.listen(port, async () => {
-    console.log(`Next.js App running on port ${port}`);
+    return;
+  }
+
+  app.use('/api', apiRouter);
+
+  app.use((req, res) => nextHandler(req, res));
+
+  nextApp.prepare().then(() => {
+    app.listen(port, async () => {
+      console.log(`Next.js App running on port ${port}`);
+    });
   });
-});
+};
+
+startServer();

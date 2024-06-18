@@ -10,7 +10,6 @@ import {
   writeJsonToFile,
 } from '../../utils';
 import {
-  getOcrText,
   getOcrTextAllImages,
   findImagesContainNutFact,
   addUniqueString,
@@ -18,12 +17,7 @@ import {
   onProcessOther,
 } from '../../lib/server_utils';
 import { uploadsDir, pythonPath } from '../../server';
-import { makePrompt } from '../../lib/promp/all_utils';
-import { make_nut_prompt } from '../../lib/promp/nut_utils';
-import { resultsDir } from '../../server';
-import { mapOcrToPredictDataPoint } from '../../lib/validator/mapOcrToPredictDataPoint';
 
-// import { NEW_PROMPT, ORIGINAL_PROMPT } from './constants';
 // import OpenAI from 'openai';
 
 // const openai = new OpenAI({
@@ -81,7 +75,6 @@ router.post(
     // const isSingleFileUpload = filePaths?.length === 1;
 
     const collateImageName = `${sessionId}.jpeg`;
-
     // const collatedOuputPath = path.join(uploadsDir, collateImageName);
     // const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
 

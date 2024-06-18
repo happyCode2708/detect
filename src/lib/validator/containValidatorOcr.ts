@@ -4,11 +4,6 @@ export const containValidatorOcr = async (modifiedProductDataPoints: any) => {
       'contain_claim_predict'
     ] || [];
 
-  console.log(
-    'contain_claim_predict_analysis',
-    JSON.stringify(contain_claim_predict_analysis)
-  );
-
   await validate(
     [...contain_claim_predict_analysis],
     modifiedProductDataPoints

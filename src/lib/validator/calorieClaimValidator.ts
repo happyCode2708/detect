@@ -35,7 +35,7 @@ export const calorieClaimValidator = async (modifiedProductDataPoints: any) => {
     reduced,
   } = process;
 
-  // console.log('oneHundredPercentOrAll', oneHundredPercentOrAll);
+  // .log('oneHundredPercentOrAll', oneHundredPercentOrAll);
 
   console.log('start calorie claim validator');
 

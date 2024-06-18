@@ -47,7 +47,5 @@ export const ingredientsValidator = async (modifiedProductDataPoints: any) => {
     return;
   }
 
-  console.log(JSON.stringify(modifiedProductDataPoints['ingredients_group']));
-
   console.log('ingredients validator -- finish');
 };
