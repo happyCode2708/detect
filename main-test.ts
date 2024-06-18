@@ -25,3 +25,8 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build --if-present
+
+
+      - name: Change Directory
+      run: cd /home/ubuntu/actions-runner/_work/YOUR_PROJECT_NAME/YOUR_PROJECT_NAME
+    - run: pm2 reload 0
