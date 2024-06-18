@@ -7,6 +7,7 @@ import { lowerCase } from 'lodash';
 import { responseValidator } from '../../lib/validator/main';
 import { removeFieldByPath, removeRawFieldData } from '../../lib/server_utils';
 import { mapOcrToPredictDataPoint } from '../../lib/validator/mapOcrToPredictDataPoint';
+import { error } from 'console';
 
 const router = express.Router();
 
@@ -49,8 +50,21 @@ router.get('/get-result/:sessionId', async (req, res) => {
 
     const finalRes = JSON.parse(finalData);
 
+    const { status } = finalRes;
+
+    if (status === 'validating') {
+      console.log('validating');
+      return res.status(200).send({
+        isSuccess: 'unknown',
+        status: 'validating',
+        message: 'validating data',
+      });
+    }
+
     return res.json(finalRes);
-  } catch (err) {}
+  } catch (err) {
+    console.log('---- read validated ouput errof');
+  }
 
   try {
     const [allData, nutData, ocrClaimData] = await Promise.all([
@@ -90,6 +104,22 @@ router.get('/get-result/:sessionId', async (req, res) => {
         factPanels: nutRes.data.product.factPanels,
       },
     };
+
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      'validated-output-' + sessionId + '.json',
+      JSON.stringify({
+        isSuccess: 'unknown',
+        status: 'validating',
+        message: 'Validating data',
+      })
+    );
+
+    res.status(200).send({
+      isSuccess: 'unknown',
+      status: 'validating',
+      message: 'validating data',
+    });
 
     let validatedResponse = await responseValidator(response, ocrClaims);
 
