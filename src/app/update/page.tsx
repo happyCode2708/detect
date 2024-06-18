@@ -22,7 +22,6 @@ const UpdatePage = () => {
       <SectionWrapper title='Update history'>
         {Object.entries(UPDATE_LIST).map((updateItem) => {
           const [key, updateInfo] = updateItem;
-          console.log('update info', updateInfo);
           return <UpdateItem updateInfo={updateInfo} />;
         })}
       </SectionWrapper>

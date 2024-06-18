@@ -39,8 +39,6 @@ export const fatContentClaimValidator = async (
 
   const no_fat_from_fact_panel = total_fat?.value === 0 ? ['no fat'] : [];
 
-  // console.log('oneHundredPercentOrAll', oneHundredPercentOrAll);
-
   console.log('start fat content claim validator');
 
   await validate(

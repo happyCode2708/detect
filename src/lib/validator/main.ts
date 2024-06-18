@@ -57,19 +57,9 @@ const validateProductDataPoints = async (response: any, ocrClaims: any) => {
   // await wholeGrainClaimValidator(modifiedProductDataPoints);
   // await fatContentClaimValidatordsa(modifiedProductDataPoints);
   await fatClaimValidatorOcr(modifiedProductDataPoints);
-
   // validateContainAndDoesNotContain(productDataPoints); //* attribute
 
-  // console.log('test', modifiedProductDataPoints);
-
-  // console.log(
-  //   'last modified',
-  //   JSON.stringify(modifiedProductDataPoints['ingredients_group'])
-  // );
-
   response['product'] = { ...response.product, ...modifiedProductDataPoints };
-
-  // console.log('response', JSON.stringify(response));
 };
 
 //? note
