@@ -205,7 +205,7 @@ export default function Home() {
           }
           setLoading(false);
         }
-      }, 4500);
+      }, 2000);
     }
     return () => {
       if (!refInterval.current) return;
