@@ -119,6 +119,7 @@ export default function Home() {
     if (inputFiles.length === 0) return;
     const fileReaders = [];
     let fileDataUrls: any = [];
+    let count = 0;
 
     inputFiles.forEach((file, index) => {
       const fileReader = new FileReader();
@@ -129,9 +130,10 @@ export default function Home() {
         if (!e?.target) return;
 
         fileDataUrls[index] = e.target.result;
+        count++;
 
         // Only update state when all files are read
-        if (fileDataUrls.length === inputFiles.length) {
+        if (count === inputFiles.length) {
           setInputImages(fileDataUrls);
         }
       };
@@ -160,7 +162,7 @@ export default function Home() {
     if (sessionId) {
       refInterval.current = window.setInterval(async () => {
         try {
-          const response = await fetch('/api/fact/get-result/' + sessionId);
+          const response = await fetch('/api/info/get-result/' + sessionId);
           if (!response.ok) {
             throw new Error(
               'Network response was not ok ' + response.statusText
@@ -205,7 +207,7 @@ export default function Home() {
           }
           setLoading(false);
         }
-      }, 2000);
+      }, 3000);
     }
     return () => {
       if (!refInterval.current) return;
@@ -220,7 +222,7 @@ export default function Home() {
         <div className='grid grid-cols-4 gap-2'>
           <div className='col-span-1'>
             <SectionWrapper title='Info'>
-              <span>Last update: 6/14/24</span>
+              <span>Last update: 6/19/24</span>
               <Link
                 href='/update'
                 className={cn(

@@ -1,8 +1,7 @@
-import { writeJsonToFile, onProcessGemini } from '../utils';
-import { mapOcrToPredictDataPoint } from '../lib/validator/mapOcrToPredictDataPoint';
-import { resultsDir } from '../server';
-import { makePrompt } from '../lib/promp/all_utils';
-import { make_nut_prompt } from '../lib/promp/nut_utils';
+import { writeJsonToFile } from './json';
+import fs from 'fs';
+import path from 'path';
+import { historyDir } from '../server';
 
 import { ImageAnnotatorClient } from '@google-cloud/vision';
 const { execFile } = require('child_process');
@@ -153,6 +152,7 @@ export const removeRawFieldData = (rawResponse: object) => {
     removeFieldByPath(rawResponse, removeField);
   });
 };
+
 export const createMapping = (enumList: string[]) => {
   const result: Record<string, string[]> = {};
 
@@ -161,210 +161,224 @@ export const createMapping = (enumList: string[]) => {
   });
 
   return result;
-
-  // const result =  {};
-
-  // claims.forEach((item) => {
-  //   result[item] = [item];
-  // });
 };
 
-export const onProcessNut = async ({
-  req,
-  res,
-  invalidatedInput,
-  ocrList,
-  sessionId,
-  collateImageName,
-  outputConfig,
-}: {
-  req: any;
-  res: any;
-  invalidatedInput: any;
-  ocrList: any[];
-  sessionId: string;
-  collateImageName: string;
-  outputConfig: any;
-}) => {
-  if (invalidatedInput?.nutIncluded?.length === 0 || !outputConfig.nut) {
-    const resultFileName = 'nut-' + sessionId + '.json';
+export const addNewExtractionToHistory = async (
+  id: string,
+  historyData: any
+) => {
+  const historyFilePath = path.join(historyDir, 'history.json');
+  try {
+    fs.readFile(historyFilePath, 'utf8', (err: any, data) => {
+      let history: any = []; // Initialize products as an empty array
 
-    writeJsonToFile(
-      resultsDir + `/${sessionId}`,
-      resultFileName,
-      JSON.stringify({ isSuccess: true, data: { product: { factPanel: [] } } })
-    );
+      if (data) {
+        history = JSON.parse(data);
+      }
 
-    writeJsonToFile(
-      resultsDir + `/${sessionId}`,
-      'nut-orc-' + sessionId + '.json',
-      JSON.stringify({})
-    );
+      history = [{ id, ...historyData }, ...history];
 
-    return;
-  }
-
-  const prefix = 'nut';
-
-  const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
-
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    resultFileName,
-    JSON.stringify({
-      isSuccess: 'unknown',
-      status: 'processing',
-    })
-  );
-
-  // const nutText = ocrList.reduce(
-  //   (accumulator: any, currentValue: any, idx: number) => {
-  //     return {
-  //       ...accumulator,
-  //       [`ocrImage_${idx + 1}`]: currentValue,
-  //     };
-  //   },
-  //   {}
-  // );
-
-  const new_nutText = ocrList.reduce(
-    (accumulator: any, currentValue: any, idx: number) => {
-      let [whole_text, ...array_string] = currentValue;
-      let processed_whole_text = array_string.join(' ');
-      return {
-        ...accumulator,
-        [`ocrImage_${idx + 1}`]: processed_whole_text,
-      };
-    },
-    {}
-  );
-
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    'nut-orc-' + sessionId + '.json',
-    JSON.stringify(new_nutText)
-  );
-
-  onProcessGemini({
-    req,
-    res,
-    sessionId,
-    collateImageName,
-    collatedOuputPath: invalidatedInput.nutIncluded,
-    prompt: make_nut_prompt({
-      ocrText: JSON.stringify(new_nutText),
-      imageCount: invalidatedInput.nutIncluded?.length,
-    }),
-    prefix,
-  });
+      writeJsonToFile(historyDir, 'history.json', JSON.stringify(history));
+    });
+  } catch (e) {}
 };
 
-export const onProcessOther = async ({
-  req,
-  res,
-  invalidatedInput,
-  ocrList,
-  sessionId,
-  collateImageName,
-  outputConfig,
-}: {
-  req: any;
-  res: any;
-  invalidatedInput: any;
-  ocrList: any[];
-  sessionId: string;
-  collateImageName: string;
-  outputConfig: any;
-}) => {
-  if (!outputConfig.other) {
-    const resultFileName = 'all-' + sessionId + '.json';
-    writeJsonToFile(
-      resultsDir + `/${sessionId}`,
-      resultFileName,
-      JSON.stringify({ isSuccess: true, data: { product: {} } })
-    );
+// export const onProcessNut = async ({
+//   req,
+//   res,
+//   invalidatedInput,
+//   ocrList,
+//   sessionId,
+//   collateImageName,
+//   outputConfig,
+// }: {
+//   req: any;
+//   res: any;
+//   invalidatedInput: any;
+//   ocrList: any[];
+//   sessionId: string;
+//   collateImageName: string;
+//   outputConfig: any;
+// }) => {
+//   if (invalidatedInput?.nutIncluded?.length === 0 || !outputConfig.nut) {
+//     const resultFileName = 'nut-' + sessionId + '.json';
 
-    writeJsonToFile(
-      resultsDir + `/${sessionId}`,
-      'all-orc-' + sessionId + '.json',
-      JSON.stringify({})
-    );
+//     writeJsonToFile(
+//       resultsDir + `/${sessionId}`,
+//       resultFileName,
+//       JSON.stringify({ isSuccess: true, data: { product: { factPanel: [] } } })
+//     );
 
-    writeJsonToFile(
-      resultsDir + `/${sessionId}`,
-      'orc-claims' + sessionId + '.json',
-      JSON.stringify({})
-    );
+//     writeJsonToFile(
+//       resultsDir + `/${sessionId}`,
+//       'nut-orc-' + sessionId + '.json',
+//       JSON.stringify({})
+//     );
 
-    return;
-  }
+//     return;
+//   }
 
-  const prefix = 'all';
+//   const prefix = 'nut';
 
-  const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
+//   const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
 
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    resultFileName,
-    JSON.stringify({
-      isSuccess: 'unknown',
-      status: 'processing',
-    })
-  );
+//   writeJsonToFile(
+//     resultsDir + `/${sessionId}`,
+//     resultFileName,
+//     JSON.stringify({
+//       isSuccess: 'unknown',
+//       status: 'processing',
+//     })
+//   );
 
-  // const allText = ocrList.reduce(
-  //   (accumulator: any, currentValue: any, idx: number) => {
-  //     return {
-  //       ...accumulator,
-  //       [`ocrImage_${idx + 1}`]: currentValue,
-  //     };
-  //   },
-  //   {}
-  // );
+//   // const nutText = ocrList.reduce(
+//   //   (accumulator: any, currentValue: any, idx: number) => {
+//   //     return {
+//   //       ...accumulator,
+//   //       [`ocrImage_${idx + 1}`]: currentValue,
+//   //     };
+//   //   },
+//   //   {}
+//   // );
 
-  const new_allText = ocrList.reduce(
-    (accumulator: any, currentValue: any, idx: number) => {
-      let [whole_text, ...array_string] = currentValue;
-      let processed_whole_text = array_string.join(' ');
-      return {
-        ...accumulator,
-        [`ocrImage_${idx + 1}`]: processed_whole_text,
-      };
-    },
-    {}
-  );
+//   const new_nutText = ocrList.reduce(
+//     (accumulator: any, currentValue: any, idx: number) => {
+//       let [whole_text, ...array_string] = currentValue;
+//       let processed_whole_text = array_string.join(' ');
+//       return {
+//         ...accumulator,
+//         [`ocrImage_${idx + 1}`]: processed_whole_text,
+//       };
+//     },
+//     {}
+//   );
 
-  const { ocr_claims } = (await mapOcrToPredictDataPoint(new_allText)) || {};
+//   writeJsonToFile(
+//     resultsDir + `/${sessionId}`,
+//     'nut-orc-' + sessionId + '.json',
+//     JSON.stringify(new_nutText)
+//   );
 
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    'all-orc-' + sessionId + '.json',
-    JSON.stringify(new_allText)
-  );
+//   onProcessGemini({
+//     req,
+//     res,
+//     sessionId,
+//     collateImageName,
+//     collatedOuputPath: invalidatedInput.nutIncluded,
+//     prompt: make_nut_prompt({
+//       ocrText: JSON.stringify(new_nutText),
+//       imageCount: invalidatedInput.nutIncluded?.length,
+//     }),
+//     prefix,
+//   });
+// };
 
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    'orc-claims' + sessionId + '.json',
-    JSON.stringify(ocr_claims)
-  );
+// export const onProcessOther = async ({
+//   req,
+//   res,
+//   invalidatedInput,
+//   ocrList,
+//   sessionId,
+//   collateImageName,
+//   outputConfig,
+// }: {
+//   req: any;
+//   res: any;
+//   invalidatedInput: any;
+//   ocrList: any[];
+//   sessionId: string;
+//   collateImageName: string;
+//   outputConfig: any;
+// }) => {
+//   if (!outputConfig.other) {
+//     const resultFileName = 'all-' + sessionId + '.json';
+//     writeJsonToFile(
+//       resultsDir + `/${sessionId}`,
+//       resultFileName,
+//       JSON.stringify({ isSuccess: true, data: { product: {} } })
+//     );
 
-  onProcessGemini({
-    req,
-    res,
-    sessionId,
-    collateImageName,
-    collatedOuputPath: [
-      ...invalidatedInput.nutIncluded,
-      ...invalidatedInput.nutExcluded,
-    ],
-    prompt: makePrompt({
-      ocrText: JSON.stringify(new_allText),
-      imageCount: [
-        ...invalidatedInput.nutIncluded,
-        ...invalidatedInput.nutExcluded,
-      ]?.length,
-      detectedClaims: JSON.stringify(ocr_claims),
-    }),
-    prefix,
-  });
-};
+//     writeJsonToFile(
+//       resultsDir + `/${sessionId}`,
+//       'all-orc-' + sessionId + '.json',
+//       JSON.stringify({})
+//     );
+
+//     writeJsonToFile(
+//       resultsDir + `/${sessionId}`,
+//       'orc-claims' + sessionId + '.json',
+//       JSON.stringify({})
+//     );
+
+//     return;
+//   }
+
+//   const prefix = 'all';
+
+//   const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
+
+//   writeJsonToFile(
+//     resultsDir + `/${sessionId}`,
+//     resultFileName,
+//     JSON.stringify({
+//       isSuccess: 'unknown',
+//       status: 'processing',
+//     })
+//   );
+
+//   // const allText = ocrList.reduce(
+//   //   (accumulator: any, currentValue: any, idx: number) => {
+//   //     return {
+//   //       ...accumulator,
+//   //       [`ocrImage_${idx + 1}`]: currentValue,
+//   //     };
+//   //   },
+//   //   {}
+//   // );
+
+//   const new_allText = ocrList.reduce(
+//     (accumulator: any, currentValue: any, idx: number) => {
+//       let [whole_text, ...array_string] = currentValue;
+//       let processed_whole_text = array_string.join(' ');
+//       return {
+//         ...accumulator,
+//         [`ocrImage_${idx + 1}`]: processed_whole_text,
+//       };
+//     },
+//     {}
+//   );
+
+//   const { ocr_claims } = (await mapOcrToPredictDataPoint(new_allText)) || {};
+
+//   writeJsonToFile(
+//     resultsDir + `/${sessionId}`,
+//     'all-orc-' + sessionId + '.json',
+//     JSON.stringify(new_allText)
+//   );
+
+//   writeJsonToFile(
+//     resultsDir + `/${sessionId}`,
+//     'orc-claims' + sessionId + '.json',
+//     JSON.stringify(ocr_claims)
+//   );
+
+//   onProcessGemini({
+//     req,
+//     res,
+//     sessionId,
+//     collateImageName,
+//     collatedOuputPath: [
+//       ...invalidatedInput.nutIncluded,
+//       ...invalidatedInput.nutExcluded,
+//     ],
+//     prompt: makePrompt({
+//       ocrText: JSON.stringify(new_allText),
+//       imageCount: [
+//         ...invalidatedInput.nutIncluded,
+//         ...invalidatedInput.nutExcluded,
+//       ]?.length,
+//       detectedClaims: JSON.stringify(ocr_claims),
+//     }),
+//     prefix,
+//   });
+// };

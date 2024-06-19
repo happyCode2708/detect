@@ -6,25 +6,7 @@ import cv2
 
 model = YOLO('best-nut-l-e100.pt') 
 
-# image_path = 'input/skew/skew_panel_3.jpg'
-# image_path = 'input/blurry/blurry_panel.jpeg'
-# image_path = 'input/skew/detected_panel.png'
 image_path = 'input/skew/skew_panel.jpeg'
-# image_path = 'input/tdc/tdc_1.png'
-# image_path = 'input/tdc/tdc_2.png'
-# image_path = 'input/tdc/tdc_4.png'
-# image_path = 'input/tdc/tdc_5.png'
-# image_path = 'input/tdc/tdc_6.png'
-# image_path = 'input/tdc/tdc_7.png'
-# image_path = 'input/tdc/tdc_8.png'
-# image_path = 'input/tdc/tdc_9.png'
-# image_path = 'input/tdc/tdc_10.png'
-
-# image_path = 'input/google/can_label.jpeg'
-# image_path = 'input/camera/camera_1.jpeg'
-# image_path = 'input/camera/camera_2.jpeg'
-
-
 
 detected_objects = detectNut(image_path, model)
 

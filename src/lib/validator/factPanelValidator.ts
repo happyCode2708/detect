@@ -1,3 +1,5 @@
+import { toLower } from 'lodash';
+
 export const factPanelValidator = (response: any) => {
   let modifiedFactPanels = response['product']['factPanels'] || [];
 
@@ -26,6 +28,7 @@ const transformOneFactPanel = (factPanelItem: any) => {
       let modifiedNutrient = { ...nutrientItem };
 
       validateNutrientName(modifiedNutrient);
+      validateSubIngredient(modifiedNutrient);
 
       return modifiedNutrient;
     }
@@ -47,5 +50,28 @@ const validateNutrientName = (modifiedNutrient: any) => {
     modifiedNutrient['name'] = modifiedNutrient['name']?.split(
       logicExtractedDescriptor
     )?.[0];
+  }
+};
+
+const validateSubIngredient = (modifiedNutrient: any) => {
+  const lowerNutrientName = toLower(modifiedNutrient?.name);
+  console.log(lowerNutrientName);
+
+  if (['total sugar', 'total sugars'].includes(lowerNutrientName)) {
+    let contain_sub_ingredients =
+      modifiedNutrient?.['contain_sub_ingredients'] || [];
+
+    const foundAddedSugarIdx = contain_sub_ingredients?.findIndex(
+      (subIngredientItem: any) => {
+        return toLower(subIngredientItem?.['full_name']).includes(
+          'added sugars'
+        );
+      }
+    );
+
+    if (foundAddedSugarIdx !== -1) {
+      contain_sub_ingredients.splice(foundAddedSugarIdx, 1);
+      modifiedNutrient['contain_sub_ingredients'] = contain_sub_ingredients;
+    }
   }
 };

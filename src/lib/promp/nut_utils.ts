@@ -30,9 +30,11 @@ json
     "answerOfDebug_4": your answer gemini (Are you sure you see percent daily value of Protein is 0%?),
     "answerOfDebug_5": your answer gemini (I told you if you see a nutrient in type of Extract so its descriptor must be the text after word "Extract"?),
     "answerOfDebug_6": your answer gemini (why you keep read info as new nutrient but the content info is not separated by line?),
-    "important_require_1": "gemini avoid adding spanish contents to JSON Object (such as 'footnote'),  
-    "important_require_2": "gemini remmeber 'trans fat', 'total sugar' and 'added sugar' are separated nutrient",
-    "important_require_3": "1 - percent daily value of total sugars is always null" 
+    "require_1": "gemini avoid adding spanish contents to JSON Object (such as 'footnote'),  
+    "require_2": "gemini remember 'trans fat', 'total sugar' and 'added sugar/include added sugar' are separated nutrient even though they could be intended row",
+    "require_3": "1st - percent daily value of total sugars is always null",
+    "require_4": "protein does not have percent daily value",
+    "require_5": "added sugar is not sub ingredient of total sugar. Added sugar is considered as a separated nutrient",
     "end": true,
   },
   "product": {
@@ -185,6 +187,8 @@ Ex 4: "%dv for adults" = {amountPerServing: {percentDailyValueFor: "for adults"}
 Ex 1: "10g    <10%" = {quantityComparisonOperator: null, dailyPercentComparisonOperator: "<", ...}
 Ex 2: "<10g    10%" = {quantityComparisonOperator: "<", dailyPercentComparisonOperator: null, ...}
 Ex 3: "<10g    <10%" ={quantityComparisonOperator: "<", dailyPercentComparisonOperator: "<", ...}
+Ex 4: "less than 1g" ={quantityComparisonOperator: "less than", ...}
+
 
 13) "nutrients.quantityEquivalent":
 + "nutrients.quantityEquivalent" is usually additional text right next to "nutrient.uom" and inside the parentheses.
@@ -219,4 +223,4 @@ and it should be recorded as a nutrient =  {"name": "Added Sugars", "value": 7, 
 `;
 };
 
-// + Only get ingredients data that visibly seen by normal eyes not from other sources on internet.
+// 2nd - total sugar and added sugar are two separated nutrient

@@ -70,6 +70,6 @@ def ocr_space(image):
   }
 
   response = requests.request("POST", url, headers=headers, data=payload, files=files)
-  resopnse_obj = json.loads(response.text)
-  print(resopnse_obj.ParsedResults)
-  return resopnse_obj
+  response_obj = json.loads(response.text)
+  print(response_obj.ParsedResults)
+  return response_obj

@@ -91,6 +91,69 @@ const Tag = ({
 };
 
 const UPDATE_LIST = {
+  '6/19/24': {
+    name: '6/19/24 update',
+    updateContent: [
+      {
+        content: (
+          <div>
+            Resolve issues that combines the 'added sugar' and 'total sugar' to
+            one nutrient item.
+            <Tag type='default'>Fixed</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Resolve issues that the protein's percent daily is recorded
+            incorrectly
+            <Tag type='default'>Fixed</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Add new validator to 'added sugar' (Nutrition fact)
+            <Tag type='test'>Testing</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Fix the response error on harmful content
+            <Tag type='default'>Fixed</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Remove 'sugar' from sugar and sweet claim
+            <Tag type='default'>Fixed</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            Resolve issue that make UI crash when have not enough values for
+            allergen validator and contain validator
+            <Tag type='default'>Fixed</Tag>
+          </div>
+        ),
+      },
+      {
+        content: (
+          <div>
+            <Tag type='default'>Fixed</Tag>
+          </div>
+        ),
+      },
+    ],
+  },
   '6/14/24': {
     name: '6/14/24 update',
     updateContent: [
