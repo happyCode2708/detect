@@ -2,12 +2,9 @@ import express from 'express';
 import fs from 'fs';
 import { resultsDir, historyDir } from '../../server';
 import path from 'path';
-import { writeJsonToFile } from '../../utils';
-import { lowerCase } from 'lodash';
+import { writeJsonToFile } from '../../lib/json';
 import { responseValidator } from '../../lib/validator/main';
-import { removeFieldByPath, removeRawFieldData } from '../../lib/server_utils';
-import { mapOcrToPredictDataPoint } from '../../lib/validator/mapOcrToPredictDataPoint';
-import { error } from 'console';
+import { removeRawFieldData } from '../../lib/server_utils';
 
 const router = express.Router();
 
@@ -31,11 +28,6 @@ router.get('/get-result/:sessionId', async (req, res) => {
   const allOcrFilePath = path.join(
     resultsDir + `/${sessionId}`,
     'all-orc-' + sessionId + '.json'
-  );
-
-  const ocrClaimsFilePath = path.join(
-    resultsDir + `/${sessionId}`,
-    'orc-claims' + sessionId + '.json'
   );
 
   const finalResultPath = path.join(
@@ -137,8 +129,6 @@ router.get('/get-result/:sessionId', async (req, res) => {
     return res
       .status(500)
       .json({ isSuccess: false, message: 'Something went wrong' });
-
-    // return res.status(200).send('Image is processing. Please wait');
   }
 });
 

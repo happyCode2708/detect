@@ -160,7 +160,7 @@ export default function Home() {
     if (sessionId) {
       refInterval.current = window.setInterval(async () => {
         try {
-          const response = await fetch('/api/fact/get-result/' + sessionId);
+          const response = await fetch('/api/info/get-result/' + sessionId);
           if (!response.ok) {
             throw new Error(
               'Network response was not ok ' + response.statusText
@@ -205,7 +205,7 @@ export default function Home() {
           }
           setLoading(false);
         }
-      }, 2000);
+      }, 3000);
     }
     return () => {
       if (!refInterval.current) return;

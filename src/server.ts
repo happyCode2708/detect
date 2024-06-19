@@ -3,8 +3,8 @@ import next from 'next';
 import path from 'path';
 
 import apiRouter from './router';
-import { getGenerative } from './utils/get-generative';
-import { getGoogleApiOcr } from './utils/get-gg-api-ocr';
+import { getGenerative } from './lib/google/get-generative';
+import { getGoogleApiOcr } from './lib/google/get-gg-api-ocr';
 import nextBuild from 'next/dist/build';
 
 const env = process.env.NODE_ENV || 'development';

@@ -3,20 +3,16 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
-import {
-  onProcessGemini,
-  createCollage,
-  encodeImageToBase64,
-  writeJsonToFile,
-} from '../../utils';
+
 import {
   getOcrTextAllImages,
   findImagesContainNutFact,
   addUniqueString,
-  onProcessNut,
-  onProcessOther,
 } from '../../lib/server_utils';
-import { uploadsDir, pythonPath } from '../../server';
+
+import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
+
+import { uploadsDir } from '../../server';
 
 // import OpenAI from 'openai';
 
@@ -70,15 +66,10 @@ router.post(
     const files = req.files as Express.Multer.File[];
 
     const filePaths = files?.map((file: any) => file.path);
-    // const fileNames = files?.map((file: any) => file.filename);
-
-    // const isSingleFileUpload = filePaths?.length === 1;
 
     const collateImageName = `${sessionId}.jpeg`;
     // const collatedOuputPath = path.join(uploadsDir, collateImageName);
     // const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
-
-    // const ocrText = await getOcrText(filePaths[0]);
 
     console.log('filePath', JSON.stringify(filePaths));
 
@@ -86,8 +77,6 @@ router.post(
     const outputConfig = JSON.parse(req.body?.outputConfig);
 
     let invalidatedInput = await findImagesContainNutFact(filePaths);
-
-    // console.log('ocrText', JSON.stringify(procOCRtext));
 
     // await createCollage(filePaths, collatedOuputPath);
 

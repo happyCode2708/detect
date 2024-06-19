@@ -1,3 +1,5 @@
+import { toLower } from 'lodash';
+
 export const factPanelValidator = (response: any) => {
   let modifiedFactPanels = response['product']['factPanels'] || [];
 
@@ -49,3 +51,15 @@ const validateNutrientName = (modifiedNutrient: any) => {
     )?.[0];
   }
 };
+
+// const validateSubIngredient = (modifiedNutrient: any) => {
+//   const namne = toLower(modifiedNutrient?.name) ;
+
+//   const logicExtractedDescriptor = getDescriptor(modifiedNutrient?.name);
+//   if (logicExtractedDescriptor && !modifiedNutrient?.['descriptor']) {
+//     modifiedNutrient['descriptor'] = logicExtractedDescriptor;
+//     modifiedNutrient['name'] = modifiedNutrient['name']?.split(
+//       logicExtractedDescriptor
+//     )?.[0];
+//   }
+// };
