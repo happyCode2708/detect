@@ -89,6 +89,9 @@ const NutritionTable = ({ data }: { data: any }) => {
                     {![null, undefined].includes(
                       nutrient?.quantityComparisonOperator
                     ) && <span>{nutrient.quantityComparisonOperator}</span>}
+                    {nutrient?.quantityComparisonOperator === 'less than' && (
+                      <span>&nbsp;</span>
+                    )}
                     {nutrient?.value}
                     {nutrient?.uom ?? <span>{nutrient?.uom}</span>}
                     {![null, undefined].includes(

@@ -34,6 +34,7 @@ json
     "require_2": "gemini remember 'trans fat', 'total sugar' and 'added sugar/include added sugar' are separated nutrient even though they could be intended row",
     "require_3": "1st - percent daily value of total sugars is always null",
     "require_4": "protein does not have percent daily value",
+    "require_5": "added sugar is not sub ingredient of total sugar. Added sugar is considered as a separated nutrient",
     "end": true,
   },
   "product": {
@@ -186,6 +187,8 @@ Ex 4: "%dv for adults" = {amountPerServing: {percentDailyValueFor: "for adults"}
 Ex 1: "10g    <10%" = {quantityComparisonOperator: null, dailyPercentComparisonOperator: "<", ...}
 Ex 2: "<10g    10%" = {quantityComparisonOperator: "<", dailyPercentComparisonOperator: null, ...}
 Ex 3: "<10g    <10%" ={quantityComparisonOperator: "<", dailyPercentComparisonOperator: "<", ...}
+Ex 4: "less than 1g" ={quantityComparisonOperator: "less than", ...}
+
 
 13) "nutrients.quantityEquivalent":
 + "nutrients.quantityEquivalent" is usually additional text right next to "nutrient.uom" and inside the parentheses.
