@@ -160,6 +160,16 @@ const UPDATE_LIST = {
               </div>
             </div>
             <div className='mt-2'>
+              <div className='font-bold'>Physical:</div>
+              <div>
+                + upc12
+                <Tag type='good'>medium</Tag>
+                <div className='text-muted-foreground'>
+                  possible issue: missing first number
+                </div>
+              </div>
+            </div>
+            <div className='mt-2'>
               <div className='font-bold'>Nutrition Fact:</div>
               <div>
                 + Nutrient Name
