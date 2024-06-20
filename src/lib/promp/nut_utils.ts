@@ -50,8 +50,13 @@ json
     "factPanels": [
       {
         "panelName": string ,
-        "amountPerServing": {"percentDailyValueFor": string?},
-        "calories": {"value": float?, "uom": "calories"}
+        "amountPerServing": {
+          "percentDailyValueFor": string
+        },
+        "calories": {
+          "value": float, 
+          "uom": "calories"
+        },
         "servingSize": {
           "value": string, 
           "uom": string,
@@ -60,7 +65,10 @@ json
             "uom": string,
           }, 
         },
-        "servingPerContainer":" {"value": float? or number?, "uom": string},
+        "servingPerContainer":" {
+          "value": float | number, 
+          "uom": string
+        },
         "nutrients": [
           {
             "fullNutrientInfo": string, // include quantity information, percent daily value

@@ -222,7 +222,7 @@ export default function Home() {
         <div className='grid grid-cols-4 gap-2'>
           <div className='col-span-1'>
             <SectionWrapper title='Info'>
-              <span>Last update: 6/19/24</span>
+              <span>Last update: 6/20/24</span>
               <Link
                 href='/update'
                 className={cn(
@@ -239,8 +239,7 @@ export default function Home() {
               <div className='flex flex-row gap-4'>
                 <div className='flex flex-row gap-2'>
                   <Label className='col-span-3'>
-                    {' '}
-                    Nutrition/Supplement Facts{' '}
+                    Nutrition/Supplement Facts
                   </Label>
                   <Checkbox
                     checked={outputConfig?.nut}
