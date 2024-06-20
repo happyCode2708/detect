@@ -109,6 +109,12 @@ const promiseCheckEachEnum = async (
         }
       }
 
+      if (allergenEnum === 'fish') {
+        if (!possibleValueList.includes(ingredientName)) {
+          return;
+        }
+      }
+
       finalMatch.push(allergenEnum);
       return;
     }

@@ -50,8 +50,13 @@ json
     "factPanels": [
       {
         "panelName": string ,
-        "amountPerServing": {"percentDailyValueFor": string?},
-        "calories": {"value": float?, "uom": "calories"}
+        "amountPerServing": {
+          "percentDailyValueFor": string
+        },
+        "calories": {
+          "value": float, 
+          "uom": "calories"
+        },
         "servingSize": {
           "value": string, 
           "uom": string,
@@ -60,7 +65,10 @@ json
             "uom": string,
           }, 
         },
-        "servingPerContainer":" {"value": float? or number?, "uom": string},
+        "servingPerContainer":" {
+          "value": float | number, 
+          "uom": string
+        },
         "nutrients": [
           {
             "fullNutrientInfo": string, // include quantity information, percent daily value
@@ -229,3 +237,4 @@ and it should be recorded as a nutrient =  {"name": "Added Sugars", "value": 7, 
 };
 
 // 2nd - total sugar and added sugar are two separated nutrient
+// "intended_level": number, // from 0 to 3

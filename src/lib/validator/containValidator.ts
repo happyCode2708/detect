@@ -165,7 +165,7 @@ const CONTAIN_MAPPING = {
   'artificial additives': ['artificial additives'],
   'artificial colors': ['artificial colors'],
   'artificial dyes': ['artificial dyes'],
-  'artificial flavors': ['artificial flavors'],
+  'artificial flavors': ['artificial flavors', 'artificial flavoring'],
   'artificial fragrance': ['artificial fragrance'],
   'artificial ingredients': ['artificial ingredients'],
   'binders and/or fillers': ['binders and/or fillers'],

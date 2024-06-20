@@ -201,9 +201,9 @@ const CONTAIN_MAPPING = {
   //? artificial
   'artificial preservatives': ['artificial preservatives'],
   'artificial additives': ['artificial additives', 'additives'],
-  'artificial colors': ['artificial colors', 'colors'],
+  'artificial colors': ['artificial colors', 'artificial coloring', 'colors'],
   'artificial dyes': ['artificial dyes', 'dyes'],
-  'artificial flavors': ['artificial flavors', 'dyes'],
+  'artificial flavors': ['artificial flavors', 'artificial flavoring', 'dyes'],
   'artificial fragrance': ['artificial fragrance', 'dyes'],
   'artificial ingredients': ['artificial ingredients', 'ingredients'],
   //? chemical

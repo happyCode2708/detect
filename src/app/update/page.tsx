@@ -91,6 +91,280 @@ const Tag = ({
 };
 
 const UPDATE_LIST = {
+  '6/20/24': {
+    name: '6/20/24 update',
+    updateContent: [
+      {
+        content: (
+          <div>
+            <div className='font-bold'>PRECISION:</div>
+            <div className='mt-2'>
+              <div className='font-bold'>Allergen:</div>
+              <div>
+                + contain
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + free of
+                <Tag type='test'>very high</Tag>
+              </div>
+              <div>
+                + contain on equipment statement
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + contain on equipment list
+                <Tag type='test'>high</Tag>
+              </div>
+            </div>
+            <div className='mt-2'>
+              <div className='font-bold'>Ingredients:</div>
+              <div>
+                + ingredient statement
+                <Tag type='test'>high</Tag>
+              </div>
+            </div>
+            <div className='mt-2'>
+              <div className='font-bold'>Header:</div>
+              <div>
+                + primary size
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + primary size text
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + secondary size
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + secondary size text
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + unit count
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + product name
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + brand name
+                <Tag type='test'>very high</Tag>
+              </div>
+              <div>
+                + size text description
+                <Tag type='test'>high</Tag>
+              </div>
+            </div>
+            <div className='mt-2'>
+              <div className='font-bold'>Nutrition Fact:</div>
+              <div>
+                + Nutrient Name
+                <Tag type='test'>very high</Tag>
+              </div>
+              <div>
+                + quantity
+                <Tag type='test'>very high</Tag>
+              </div>
+              <div>
+                + uom
+                <Tag type='test'>very high</Tag>
+              </div>
+              <div>
+                + percent daily value
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + Footnote symbol
+                <Tag type='good'>medium</Tag>
+              </div>
+              <div>
+                + Footnote
+                <Tag type='test'>high</Tag>
+              </div>
+            </div>
+            <div className='mt-2'>
+              <div className='font-bold'>Supplement Fact:</div>
+              <div>
+                + Nutrient Name / dietary ingredient name
+                <Tag type='test'>high</Tag>
+                <div className='text-muted-foreground'>
+                  possible issue: extracted name could be wrong
+                </div>
+              </div>
+              <div>
+                + quantity
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + uom
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + percent daily value
+                <Tag type='test'>very high</Tag>
+              </div>
+              <div>
+                + Footnote symbol
+                <Tag type='good'>medium</Tag>
+                <div className='text-muted-foreground'>
+                  possible issue: sometimes footnote symbol could not be
+                  detected or wrong footnote symbol
+                </div>
+              </div>
+              <div>
+                + descriptor
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + sub-ingredients of dietary ingredient
+                <Tag type='good'>medium</Tag>
+                <div className='text-muted-foreground'>
+                  possible issue: sub-ingredients info could be incorrectly read
+                  for too complicated supplement fact
+                </div>
+              </div>
+              <div>
+                + Footnote
+                <Tag type='test'>high</Tag>
+                <div className='text-muted-foreground'>
+                  possible issue: wrong footnote symbol
+                </div>
+              </div>
+            </div>
+            <div className='mt-2'>
+              <div className='font-bold'>Attributes:</div>
+              <div>
+                + contain
+                <Tag type='good'>high</Tag>
+              </div>
+              <div>
+                + does not contain
+                <Tag type='good'>high</Tag>
+              </div>
+              <div>
+                + certifier
+                <Tag type='default'>low</Tag>
+                <div className='text-muted-foreground'>
+                  possible issue: fake certifier symbol could be read as a legal
+                  certifier logo
+                </div>
+                <div className='text-muted-foreground'>
+                  possible issue: many certifier logos are missing from reading
+                  result
+                </div>
+                <div className='text-muted-foreground'>
+                  possible solution: train a certifier logo detector for better
+                  result
+                </div>
+              </div>
+              <div>
+                + claim with certifier
+                <Tag type='good'>medium</Tag>
+              </div>
+              <div>
+                + grade claim
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + fat claim
+                <Tag type='test'>high</Tag>
+                <div className='text-muted-foreground'>
+                  possible issue: some fat claim such as 'no fat' could be
+                  implied for 'total fat 0g' in nutrition fact
+                </div>
+              </div>
+              <div>
+                + calorie claim
+                <Tag type='test'>very high</Tag>
+              </div>
+              <div>
+                + sugar and sweet claim
+                <Tag type='test'>high</Tag>
+                <div className='text-muted-foreground'>
+                  possible issue: the sweet claim such as "corn syrup" could be
+                  deduced from "high fructose corn syrup". The expected result
+                  is only "high fructose corn syrup"
+                  <Tag type='default'>fixing</Tag>
+                </div>
+              </div>
+              <div>
+                + non-certifier claim
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + acidity claim
+                <Tag type='test'>very high</Tag>
+              </div>
+            </div>
+            <div className='mt-2'>
+              <div className='font-bold'>Supply chain:</div>
+              <div>
+                + country of origin
+                <Tag type='test'>very high</Tag>
+              </div>
+              <div>
+                + manufacturer phone number
+                <Tag type='test'>very high</Tag>
+              </div>
+              <div>
+                + manufacturer address
+                <Tag type='test'>very high</Tag>
+              </div>
+              <div>
+                + manufacturer city
+                <Tag type='test'>very high</Tag>
+              </div>
+              <div>
+                + manufacturer state
+                <Tag type='test'>very high</Tag>
+              </div>
+              <div>
+                + manufacturer zipcode
+                <Tag type='test'>very high</Tag>
+              </div>
+              <div>
+                + manufacturer name
+                <Tag type='test'>high</Tag>
+              </div>
+            </div>
+            <div className='mt-2'>
+              <div className='font-bold'>Marketing:</div>
+              <div>
+                + social media
+                <Tag type='test'>medium</Tag>
+                <div className='text-muted-foreground'>
+                  possible issue: sometimes pinterest logo could not be detected
+                </div>
+              </div>
+              <div>
+                + copyright/trademark
+                <Tag type='good'>medium</Tag>
+              </div>
+              <div>
+                + enlarged to show
+                <Tag type='test'>high</Tag>
+              </div>
+              <div>
+                + website
+                <Tag type='test'>high</Tag>
+              </div>
+            </div>
+            <div className='mt-2'>
+              <div className='font-bold'>Packaging:</div>
+              <div>
+                + Forest Stewardship Council Claim
+                <Tag type='test'>high</Tag>
+              </div>
+            </div>
+          </div>
+        ),
+      },
+    ],
+  },
   '6/19/24': {
     name: '6/19/24 update',
     updateContent: [
