@@ -75,7 +75,6 @@ json
             "dailyPercentComparisonOperator": string?, 
             "percentDailyValue": float?,  
             "footnoteIndicator": string?, // value must be choosen from FOOTNOTE_INDICATORS,
-            "intended_level": number, // from 0 to 3
           }
         ],
         "footnote": string,
@@ -224,3 +223,4 @@ and it should be recorded as a nutrient =  {"name": "Added Sugars", "value": 7, 
 };
 
 // 2nd - total sugar and added sugar are two separated nutrient
+// "intended_level": number, // from 0 to 3

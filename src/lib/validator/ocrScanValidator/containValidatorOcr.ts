@@ -45,8 +45,12 @@ const validate = async (
 };
 
 const check = async (analysisItem: any): Promise<boolean> => {
-  const { claim, does_product_info_talk_about_thing_in_claim, validate } =
-    analysisItem;
+  const {
+    claim,
+    does_product_info_talk_about_thing_in_claim,
+    validate,
+    debug,
+  } = analysisItem;
 
   if (!claim) return Promise.resolve(false);
 
@@ -54,6 +58,12 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
 
   if (validate === 'deduced/implied from other info or similar text') {
+    const skip = skipDeduceCase({ claim, debug });
+
+    if (skip) {
+      return Promise.resolve(true);
+    }
+
     return Promise.resolve(false);
   }
 
@@ -62,4 +72,13 @@ const check = async (analysisItem: any): Promise<boolean> => {
   }
 
   return Promise.resolve(true);
+};
+
+const skipDeduceCase = ({ claim, debug }: { claim: any; debug: any }) => {
+  if (claim === 'artificial flavors') {
+    if (debug?.includes('artificial flavoring')) {
+      return true;
+    }
+  }
+  return false;
 };
