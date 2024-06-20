@@ -1,3 +1,5 @@
+// "have_intended_nutrient_row_below": boolean,
+// "intended_level": number, // from 0 to 3
 export const make_nut_prompt = ({
   ocrText,
   imageCount,
@@ -17,6 +19,21 @@ Remember (important):
 + nutrition info must be visibly seen by human eyes not from other source data
 + do not provide data that you cannot see it by human eyes on provided images.
   
+Requirements:
++ gemini avoid adding spanish contents to JSON Object (such as 'footnote').
++ gemini remember 'trans fat', 'total sugar' and 'added sugar/include added sugar' are separated nutrient even though they could be intended row.
++ percent daily value of total sugars is always null.
++ protein does not have percent daily value.
++ added sugar is not sub ingredient of total sugar. Added sugar is considered as a separated nutrient.
++ always consider intended nutrient row as sub ingredient of nutrient.
++ sub-ingredient's full name of nutrient must not contain text about quantity or percent daily value info.
+
+Questions And Fix bugs:
++ why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value.
++ why i see you keep removing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something.
++ I told you if you see a nutrient in type of Extract so its descriptor must be the text after word "Extract"?
++ why you keep read info as new nutrient but the content info is not separated by line?
+
 Carefully examine the provided image and and created JSON output in given format:
   
 json
@@ -25,16 +42,6 @@ json
     "answerOfQuestionsAboutNutritionFact": your answer gemini (Do you see nutrition facts panel on provided images? why? where is it on product?"),
     "answerOfQuestionAboutNutritionFactTitle": your answer gemini (Do you see fully "Supplement Fact" title or "Nutrition Fact" title  on provided images ? ),
     "answerOfQuestionAboutValidator": your answer gemini ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image please compare with OCR texts and check if your info add to JSON is correct),
-    "answerOfDebug_2": your answer gemini (why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value),
-    "answerOfDebug_3": your answer gemini (why i see you keep removing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something),
-    "answerOfDebug_4": your answer gemini (Are you sure you see percent daily value of Protein is 0%?),
-    "answerOfDebug_5": your answer gemini (I told you if you see a nutrient in type of Extract so its descriptor must be the text after word "Extract"?),
-    "answerOfDebug_6": your answer gemini (why you keep read info as new nutrient but the content info is not separated by line?),
-    "require_1": "gemini avoid adding spanish contents to JSON Object (such as 'footnote'),  
-    "require_2": "gemini remember 'trans fat', 'total sugar' and 'added sugar/include added sugar' are separated nutrient even though they could be intended row",
-    "require_3": "1st - percent daily value of total sugars is always null",
-    "require_4": "protein does not have percent daily value",
-    "require_5": "added sugar is not sub ingredient of total sugar. Added sugar is considered as a separated nutrient",
     "end": true,
   },
   "product": {
@@ -59,10 +66,9 @@ json
             "fullNutrientInfo": string, // include quantity information, percent daily value
             "name": string,
             "descriptor": string,
-            "have_intended_nutrient_row_below": boolean,
             "contain_sub_ingredients": [
               {
-                full_name: string,
+                full_name: string, // exclude quantity information, percent daily info
                 quantity: string,
                 uom: string,
               },
@@ -74,8 +80,7 @@ json
             "quantityEquivalent": string?,
             "dailyPercentComparisonOperator": string?, 
             "percentDailyValue": float?,  
-            "footnoteIndicator": string?, // value must be choosen from FOOTNOTE_INDICATORS,
-            "intended_level": number, // from 0 to 3
+            "footnoteIndicator": string?, // value must be chosen from FOOTNOTE_INDICATORS,
           }
         ],
         "footnote": string,
@@ -149,13 +154,13 @@ Ex: Lavender flower (Lavandula angustifolia) O extract 593 mg = {"descriptor": "
 + "nutrient.descriptor" could be the content right after the main nutrient name. (you could easily recognized by the consecutive parentheses with content inside)
 Ex: L-5 Hydroxytryptophan (5-HTP) (from Griffonia simplicifolia seed) = {"descriptor": "(5-HTP) (from Griffonia simplicifolia seed)"}
 
-+ Be careull the nutrient could be an Extract so its name must contain "Extract" in nutrient name. And the "nutrient.descriptor" will be the remaining text after word "Extract".
++ Be careful the nutrient could be an Extract so its name must contain "Extract" in nutrient name. And the "nutrient.descriptor" will be the remaining text after word "Extract".
 Ex 1: "Holy Basil (Ocimum sanctum) (herb) Extract" ={name: "Holy Basil (Ocimum sanctum) (herb) Extract", descriptor": null}
 Ex 2: "Holy Basil (Ocimum sanctum) (herb) Extract standardized to banana 20gram" ={name: "Holy Basil (Ocimum sanctum) (herb) Extract", descriptor": "standardized to banana 20gram"}
 
 8) "contain_sub_ingredients" rules:
 + is the list of sub-ingredients of a nutrient.
-+ There are two ways to recoginize sub-ingredients of a nutrient:
++ There are two ways to recognize sub-ingredients of a nutrient:
   - 1st: the list of sub-ingredients can be list as consecutive intended nutrient rows at below the nutrient name
   - 2nd: the list of sub-ingredients is the statement with a lot of sub-ingredient at below the nutrient name
 
