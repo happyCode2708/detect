@@ -79,7 +79,14 @@ const NutritionTable = ({ data }: { data: any }) => {
                       <div className='mt-6'>
                         <div className='pl-[8px]'>
                           {nutrient?.contain_sub_ingredients
-                            ?.map((item: any) => item?.full_name)
+                            ?.map(
+                              (item: any) =>
+                                `${item?.full_name}${
+                                  item?.quantity
+                                    ? ' ' + item?.quantity + item?.uom
+                                    : ''
+                                }`
+                            )
                             ?.join(', ')}
                         </div>
                       </div>
