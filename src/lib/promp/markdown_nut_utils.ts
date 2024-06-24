@@ -8,13 +8,13 @@ export const make_markdown_nut_prompt = ({
   return `OCR texts from ${imageCount} provided images:
 ${ocrText}
 
-carefully read from provided images of one product and return info from provided images in markdown tables format
+carefully examine  provided images above. They are captured images of one product, and return info from provided images in markdown tables format
 
 1) Nutrition fact info recorded in table
 + TABLE_NAME = "NUTRITION_FACT_TABLE [index number] " (example: NUTRITION_FACT_TABLE [1])
 + Table format:
 TABLE_NAME
-| Nutrient Name  | Amount per Serving  |  parentheses content explain for amount per serving | % Daily Value | parentheses content for nutrition name (nullable) (such as "as something") | blend ingredients (if nutrient is a blend/mix)  (nullable) | symbol |
+| Nutrient Name  | Amount per Serving  |  parentheses content explain for amount per serving | % Daily Value | parentheses content for nutrition name (nullable) (such as "as something") | blend ingredients (if nutrient is a blend/mix)  (nullable) | symbol symbol (such as *, **, †, ¥, ‡, †††, ...) (symbol could be next to Daily Value, or next to amount per serving) |
 | ------- | -------- | -------- | -------- | -------- | -------- | -------- |
 
 2) Header info of each nutrition fact recorded in a sub-table
@@ -59,6 +59,9 @@ important requirements:
 17) include [number]g added sugars should be recorded as "nutrient name" = "added sugars" and  "amount per serving" = "[number]g" with number is the amount per serving value.
 18) some time footnote content could be displayed in multiple languages, the "footnote content in english" is the content in english only, and remember "footnote content in english" still include special symbols if they are available
 19) blend ingredients could be also a list of sub-blends and each sub-blend could also display a list of sub-ingredients of those sub-blends. So you should record  info of all sub-blends to a table cell of "blend ingredients"
+20) if a nutrient name spans multiple lines and includes additional information like brand names or descriptions, consider it as a single nutrient and combine the information into a single cell for 'nutrient name'
+21) only give me actual info visibly by human eyes from provided product image
+22) only return me the product info if you see image i provided
 
 markdown rules:
 1) do not bold nutrient name
@@ -67,6 +70,8 @@ markdown rules:
 debug list:
 1) gemini answer me  how many nutrition fact tables from provided images? are they the same one ?
 2) are they in dual-column format?  and tell me why? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. I see you do not separated nutrition fact label to multiple nutrition fact table for dual-column format panel
+3) why you put "(as naturally occurring calcium)" in column "parentheses content explain for amount per serving" ?
+
 `;
 };
 

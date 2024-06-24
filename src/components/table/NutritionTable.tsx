@@ -69,7 +69,7 @@ const NutritionTable = ({ data }: { data: any }) => {
                       </div>
                     )}
                     {nutrient?.blendIngredients && (
-                      <div className='mt-6'>
+                      <div className='mt-6 whitespace-pre-line'>
                         <div className='pl-[8px]'>
                           {nutrient?.blendIngredients}
                         </div>
