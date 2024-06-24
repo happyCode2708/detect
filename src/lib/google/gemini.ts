@@ -10,6 +10,8 @@ import { historyDir, resultsDir } from '../../server';
 // import { makePrompt, make_nut_prompt } from '../constants';
 import sharp from 'sharp';
 import { ImageAnnotatorClient } from '@google-cloud/vision';
+import { make_markdown_nut_prompt } from '../promp/markdown_nut_utils';
+import { mapMarkdownNutToObject } from '../mapper/mapMarkdonwDataToObject';
 
 export const generateContent = async (images: any[], text: any) => {
   if (!(global as any)?.generativeModel) return;
@@ -44,6 +46,7 @@ export const onProcessGemini = async ({
   collatedOuputPath,
   prefix = '',
   prompt,
+  isMarkdown,
 }: {
   req: any;
   res: any;
@@ -52,6 +55,7 @@ export const onProcessGemini = async ({
   collatedOuputPath: string[];
   prefix?: string;
   prompt: string;
+  isMarkdown?: boolean;
 }) => {
   // const base64Image = encodeImageToBase64(collatedOuputPath);
 
@@ -113,17 +117,43 @@ export const onProcessGemini = async ({
 
     const procResult = gemini_result?.includes('```json')
       ? gemini_result?.split('```json\n')[1].split('```')[0]
+      : gemini_result?.includes('```markdown')
+      ? gemini_result?.split('```markdown\n')[1].split('```')[0]
       : gemini_result;
 
-    const result = JSON.parse(procResult);
-    writeJsonToFile(
-      resultsDir + `/${sessionId}`,
-      resultFileName,
-      JSON.stringify({
-        isSuccess: true,
-        data: result,
-      })
-    );
+    if (!isMarkdown) {
+      const result = JSON.parse(procResult);
+      writeJsonToFile(
+        resultsDir + `/${sessionId}`,
+        resultFileName,
+        JSON.stringify({
+          isSuccess: true,
+          data: result,
+        })
+      );
+
+      return;
+    }
+
+    if (isMarkdown) {
+      writeJsonToFile(
+        resultsDir + `/${sessionId}`,
+        'raw-' + resultFileName,
+        JSON.stringify({
+          isSuccess: true,
+          data: procResult,
+        })
+      );
+      const jsonResult = mapMarkdownNutToObject(procResult);
+      writeJsonToFile(
+        resultsDir + `/${sessionId}`,
+        resultFileName,
+        JSON.stringify({
+          isSuccess: true,
+          data: jsonResult,
+        })
+      );
+    }
   } catch (e) {
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
@@ -326,11 +356,37 @@ export const onProcessNut = async ({
     res,
     sessionId,
     collateImageName,
-    collatedOuputPath: invalidatedInput.nutIncluded,
-    prompt: make_nut_prompt({
-      ocrText: JSON.stringify(new_nutText),
-      imageCount: invalidatedInput.nutIncluded?.length,
-    }),
     prefix,
+    // collatedOuputPath: invalidatedInput.nutIncluded,
+    // prompt: make_nut_prompt({
+    //   ocrText: JSON.stringify(new_nutText),
+    //   imageCount: invalidatedInput.nutIncluded?.length,
+    // }),
+    //* flash
+    // collatedOuputPath: [
+    //   ...invalidatedInput.nutIncluded,
+    //   ...invalidatedInput.nutExcluded,
+    // ],
+    // prompt: make_nut_prompt({
+    //   ocrText: JSON.stringify(new_nutText),
+    //   imageCount: [
+    //     ...invalidatedInput.nutIncluded,
+    //     ...invalidatedInput.nutExcluded,
+    //   ]?.length,
+    // }),
+
+    //* markdown nut
+    collatedOuputPath: [
+      ...invalidatedInput.nutIncluded,
+      ...invalidatedInput.nutExcluded,
+    ],
+    prompt: make_markdown_nut_prompt({
+      ocrText: JSON.stringify(new_nutText),
+      imageCount: [
+        ...invalidatedInput.nutIncluded,
+        ...invalidatedInput.nutExcluded,
+      ]?.length,
+    }),
+    isMarkdown: true,
   });
 };

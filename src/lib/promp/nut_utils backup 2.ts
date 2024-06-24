@@ -28,8 +28,10 @@ Requirements:
 + always consider intended nutrient row as sub ingredient of nutrient.
 + sub-ingredient's full name of nutrient must not contain text about quantity or percent daily value info.
 + please check "fullNutrientInfo" you (gemini) might see "nutrient.value" and "nutrient.uom" there.
++ gemini stop give me the assumed value of "footnote" i only want the "footnote" statement that can be read on product images.
 
 Questions And Fix bugs:
++ why i see you (gemini) keep providing me the info that is not visibly seen on image? stop giving me the info that not visibly seen on provided images. I see you get footnote statement from elsewhere not seen on provided images.
 + why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value.
 + why i see you keep removing the mix of ingredients out of nutrients list ? remember nutrient could be also an ingredient, or a mix of ingredient, or a blend of something.
 + I told you if you see a nutrient in type of Extract so its descriptor must be the text after word "Extract"?
@@ -93,7 +95,8 @@ json
             "footnoteIndicator": string?, // value must be chosen from FOOTNOTE_INDICATORS,
           }
         ],
-        "nutrition_fact_bottom_note": null | string,
+        "footnote": null | string, //* give factual footnote seen on provided images,
+        "footnote_english_only": null | string,
       },
       ...
     ]
@@ -175,7 +178,18 @@ Ex 2: "Holy Basil (Ocimum sanctum) (herb) Extract standardized to banana 20gram"
 + There are two ways to recognize sub-ingredients of a nutrient:
   - 1st: the list of sub-ingredients can be list as consecutive intended nutrient rows at below the nutrient name
   - 2nd: the list of sub-ingredients is the statement with a lot of sub-ingredient at below the nutrient name
-  
+
+9) "footnote":
++ could be null. if its value is empty or null just left it value "null"
++ "footnote" is usually the last statement of nutrition fact panel (the note statement may contain some special characters from FOOTNOTE_INDICATORS).
++ you can easily recognize the "footnote" when see texts such as "%Daily Value....", or "Not a significant source...", or "the % daily value...".
++ "footnote" is only one section, and is not multiple sections.
+
+Ex 1: if footnote info not found. It should be recorded as {"footnote": null}
+
+10) "footnote_english_only" rule:
++ "footnote" value could contain multiple languages so "footnote_english_only" is the "footnote" content in english only.
+
 10) "nutrients.footnoteIndicator":
 + "nutrients.footnoteIndicator" is a special symbol such as "*", "†" or is a group of special symbol such as "**" beside the nutrient percent value. Sometimes nutrient percent value is left empty but still have footnoteIndicator right there.
 + be careful "nutrients.footnoteIndicator" is not symbol before nutrient quantity.
@@ -220,20 +234,8 @@ if you see a nutrient text like 'Includes Xg of Added Sugars  10%' this is the n
 and it should be recorded as a nutrient =  {"name": "Added Sugars", "value": 7, "uom": "g", "percentDailyValue": 10,...}
 
 ex 1: Total Sugars 100g (Include 100g Added Sugars) must be recorded as two different nutrients (total sugar and added sugar).
-ex 2: Total Sugars 100g Includes 100g Added Sugars must be recorded as two different nutrients (total sugar and added sugar).
 `;
 };
-
-// 10) "footnote_english_only" rule:
-// + "footnote" value could contain multiple languages so "footnote_english_only" is the "footnote" content in english only.
-
-// 9) "footnote":
-// + could be null. if its value is empty or null just left it value "null"
-// + "footnote" is usually the last statement of nutrition fact panel (the note statement may contain some special characters from FOOTNOTE_INDICATORS).
-// + you can easily recognize the "footnote" when see texts such as "%Daily Value....", or "Not a significant source...", or "the % daily value...".
-// + "footnote" is only one section, and is not multiple sections.
-
-// Ex 1: if footnote info not found. It should be recorded as {"footnote": null}
 
 // 2nd - total sugar and added sugar are two separated nutrient
 // "intended_level": number, // from 0 to 3

@@ -14,32 +14,41 @@ import {
 const NutritionTable = ({ data }: { data: any }) => {
   return (
     <div className='pb-4'>
-      <div className='text-2xl font-bold mb-2'>{data?.title}</div>
+      <div className='text-2xl font-bold mb-2'>{data.panelName}</div>
       <div>
         <span className='font-bold'>Serving Per Container:</span>
-        {data?.servingInfo?.servingPerContainer && (
-          <span>{data?.servingInfo?.servingPerContainer}</span>
-        )}
+        <span>
+          {data?.servingPerContainer?.description}
+          {data?.servingPerContainer?.value} {data?.servingPerContainer?.uom}
+        </span>
       </div>
       <div>
         <span className='font-bold'>Serving Size:</span>
-        <span>{data?.servingInfo?.servingSize}</span>
-        {data?.servingInfo?.equivalentServingSize && (
+        <span>
+          {data?.servingSize?.value}
+          {data?.servingSize?.uom !== null && (
+            <>
+              <span> {data?.servingSize?.uom}</span>
+            </>
+          )}
+        </span>
+        {data?.servingSize?.equivalent && (
           <>
             <span> __ </span>
-            <span>{data?.servingInfo?.equivalentServingSize}</span>
+            <span>{data?.servingSize?.equivalent?.value}</span>
+            <span>{data?.servingSize?.equivalent?.uom}</span>
           </>
         )}
       </div>
-      {data?.servingInfo?.amountPerServingName && (
+      {data?.amountPerServing?.percentDailyValueFor && (
         <div>
-          <span className='font-bold'>Amount Per Serving:</span>
-          <span>{data?.servingInfo?.amountPerServingName} </span>
+          <span className='font-bold'>Amout Per Serving:</span>
+          <span>{data?.amountPerServing?.percentDailyValueFor} </span>
         </div>
       )}
       <div>
         <span className='font-bold'>Calories:</span>
-        <span>{data?.servingInfo?.calories} </span>
+        <span>{data?.calories?.value} </span>
       </div>
       <Table>
         {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
@@ -53,41 +62,60 @@ const NutritionTable = ({ data }: { data: any }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data?.nutritionFacts?.map((nutrient: any, index: number) => {
+          {data.nutrients.map((nutrient: any, index: number) => {
             return (
               <>
                 <TableRow>
                   <TableCell>
-                    <div>{nutrient?.nutrientName}</div>
+                    <div>{nutrient.name}</div>
                   </TableCell>
                   <TableCell>
-                    {nutrient?.parenthesesDescriptor && (
+                    {nutrient?.descriptor && (
                       <div className='mt-6'>
-                        <div className='pl-[8px]'>
-                          {nutrient?.parenthesesDescriptor}
-                        </div>
+                        <div className='pl-[8px]'>{nutrient?.descriptor}</div>
                       </div>
                     )}
-                    {nutrient?.blendIngredients && (
+                    {nutrient?.contain_sub_ingredients?.length > 0 && (
                       <div className='mt-6'>
                         <div className='pl-[8px]'>
-                          {nutrient?.blendIngredients}
+                          {nutrient?.contain_sub_ingredients
+                            ?.map(
+                              (item: any) =>
+                                `${item?.full_name}${
+                                  item?.quantity
+                                    ? ' ' + item?.quantity + item?.uom
+                                    : ''
+                                }`
+                            )
+                            ?.join(', ')}
                         </div>
                       </div>
                     )}
                   </TableCell>
                   <TableCell key={index}>
-                    <span>{nutrient?.amountPerServing}</span>
-                    {nutrient?.amountPerServingDescriptor && (
-                      <span>{nutrient?.amountPerServingDescriptor}</span>
+                    {![null, undefined].includes(
+                      nutrient?.quantityComparisonOperator
+                    ) && <span>{nutrient.quantityComparisonOperator}</span>}
+                    {nutrient?.quantityComparisonOperator === 'less than' && (
+                      <span>&nbsp;</span>
                     )}
+                    {nutrient?.value}
+                    {nutrient?.uom ?? <span>{nutrient?.uom}</span>}
+                    {![null, undefined].includes(
+                      nutrient?.quantityEquivalent
+                    ) && <span>({nutrient?.quantityEquivalent})</span>}
                   </TableCell>
                   <TableCell>
-                    <span>{nutrient?.dailyValue}</span>
+                    {![null, undefined].includes(
+                      nutrient?.dailyPercentComparisonOperator
+                    ) && <span>{nutrient.dailyPercentComparisonOperator}</span>}
+                    {![null, undefined].includes(
+                      nutrient?.percentDailyValue
+                    ) && <span> {nutrient.percentDailyValue}%</span>}
                   </TableCell>
                   <TableCell>
-                    {nutrient?.symbol !== null && (
-                      <span> {nutrient?.symbol}</span>
+                    {nutrient.footnoteIndicator !== null && (
+                      <span> {nutrient.footnoteIndicator}</span>
                     )}
                   </TableCell>
                 </TableRow>
@@ -183,11 +211,7 @@ const NutritionTable = ({ data }: { data: any }) => {
       </Table>
       <div>
         <div className='font-bold'>Footnote: </div>
-        <p>
-          {data?.footnotes?.map((footnote: any) => {
-            return <span> {footnote?.footnoteContentEnglish}, </span>;
-          })}
-        </p>
+        <p>{data?.footnote_english_only || data?.footnote} </p>
       </div>
     </div>
   );

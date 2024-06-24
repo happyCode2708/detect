@@ -120,7 +120,12 @@ json
       "containerType": string,
       "packagingDescriptors": string[],
       "recyclingInfo": any,
+      "recyclable": [{
+        name: string,
+        recyclable: boolean,
+      },...],
       "forestStewardshipCouncilClaim": boolean,
+      "packaging_ancillaryInformation": string[]
     },
     "attributesAndCertifiers": {
       "claims": {

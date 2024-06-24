@@ -71,6 +71,8 @@ router.post(
     // const collatedOuputPath = path.join(uploadsDir, collateImageName);
     // const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
 
+    console.log('run on model ', (global as any).generativeModelName);
+
     console.log('filePath', JSON.stringify(filePaths));
 
     const biasForm = JSON.parse(req.body?.biasForm);
@@ -116,7 +118,9 @@ router.post(
       req,
       res,
       invalidatedInput,
-      ocrList: nutImagesOCRresult,
+      //* flash version
+      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+      // ocrList: nutImagesOCRresult,
       sessionId,
       collateImageName,
       outputConfig,

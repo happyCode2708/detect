@@ -24,7 +24,7 @@ export const responseValidator = async (response: any, ocrClaims: any) => {
 
   console.log('start validator');
 
-  factPanelValidator(validatedResponse);
+  // factPanelValidator(validatedResponse);
   await validateProductDataPoints(validatedResponse, ocrClaims);
 
   console.log('finish');

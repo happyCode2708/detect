@@ -18,16 +18,15 @@ Remember (important):
 + the provided images could contain or could not contain nutrition fact/supplement fact.
 + nutrition info must be visibly seen by human eyes not from other source data
 + do not provide data that you cannot see it by human eyes on provided images.
-+ "added sugars" is a separated nutrient from "total sugar".
   
 Requirements:
 + gemini avoid adding spanish contents to JSON Object (such as 'footnote').
 + gemini remember 'trans fat', 'total sugar' and 'added sugar/include added sugar' are separated nutrient even though they could be intended row.
 + percent daily value of total sugars is always null.
++ protein does not have percent daily value.
 + added sugar is not sub ingredient of total sugar. Added sugar is considered as a separated nutrient.
 + always consider intended nutrient row as sub ingredient of nutrient.
 + sub-ingredient's full name of nutrient must not contain text about quantity or percent daily value info.
-+ please check "fullNutrientInfo" you (gemini) might see "nutrient.value" and "nutrient.uom" there.
 
 Questions And Fix bugs:
 + why i see you keep adding 0% of percent daily value to trans fat or total sugars? trans fat, and total sugars do not have percent daily value.
@@ -65,7 +64,6 @@ json
             "value": string, 
             "uom": string,
           }, 
-          "debug" string // gemini tell me why you get the "equivalent" above?
         },
         "servingPerContainer":" {
           "value": float | number, 
@@ -84,16 +82,17 @@ json
               },
               ...
             ],
-            "quantity_less_than": boolean, 
-            "value": string,
+            "quantityComparisonOperator": string?, 
+            "value": float?, 
             "uom": string, 
             "quantityEquivalent": string?,
-            "percent_daily_less_than": boolean, 
-            "percentDailyValue": string,  
+            "dailyPercentComparisonOperator": string?, 
+            "percentDailyValue": float?,  
             "footnoteIndicator": string?, // value must be chosen from FOOTNOTE_INDICATORS,
           }
         ],
-        "nutrition_fact_bottom_note": null | string,
+        "footnote": string,
+        "footnote_english_only": string
       },
       ...
     ]
@@ -104,7 +103,6 @@ The Most Important rule:
 + Only get data that visibly seen by normal eyes not from other sources on internet
 + Remind again if you see fact panel just give detail data that could be seen by human eyes not from other source like internet.
 + Remind you again only provide the data visibly on provided image, and must be detected by human eyes not from other source on internet.
-+ Remind that "quantity_less_than" is different from "percent_daily_less_than" ("quantity_less_than" is for quantity and "percent_daily_less_than" is for percent daily value).
 
 Some definitions:
 1) about the "Fact Panel"
@@ -118,32 +116,30 @@ Some common rules:
 + "nutrients" and "footnote" are also separated by a line on nutrition fact panel.
 + Read "Fact Panel" from left to right and from top to bottom. If the nutrient in vertical layout just start to read with the first nutrient which is at below the header of "Nutrition Facts" or "Supplement Facts".
 + content in prompt can be similar to typescript and nodejs syntax.
-+ be careful the last "nutrient row" could be misread to be a part of "footnote". Remember "footnote" content usually about "Daily value" or "percent daily value" note.
++ be careful the last "nutrient row" could be misread to be a part of "footnote". Remember "footnote" content ususally about "Daily value" or "percent daily value" note.
 + do not return json in format [{product: {...}}] since the result is only for one product
 
 Nutrient rule:
 1) sometimes nutrients could be put vertically and separated by • symbol and • symbol is not the 'nutrients.footnoteIndicator'
 
 2) The nutrition fact panel could be in the "dual-column" layout showing both "per serving" and "per container" information, or different "% Daily value" by age. Let's to break down and separate into two different fact panels one is for 'per serving'
-and other for 'per container' just if "amountPerServing.percentDailyValueFor" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "nutrients" but each "nutrients" could have different "footnoteIndicator".
+and other for 'per container' just if "amoutPerServing.percentDailyValueFor" of them are different or "servingSize" of them are different. These two fact panels have the same value of "servingPerContainer", "footnote', "nutrients" but each "nutrients" could have different "footnoteIndicator".
 
 3) "factPanels.panelName":
 + if there is text on image contain "Nutrition Facts" or "Supplement Facts". If not it should be null
 
 4) "nutrients" rules: 
-+ some nutrients such as ("Total Carbohydrate", "total sugar", "Includes 0g Added Sugars", ...) and they are must be separated nutrients
-+ Most of the time the each nutrient will be separated by horizontal line for vertical layout. So that the content between two line is definitely belong to one nutrient and the content could be multiple lines of info. So be careful when you list the nutrient.
++ some nutrients such as ("Total Carbohydrate", "total sugar", "Includes... Added Sugars", ...) and they are must be separated nutrients
++ Most of the time the each nutrient will be seperated by horizontal line for vertical layout. So that the content between two line is definitely belong to one nutrient and the content could be multiple lines of info. So be careful when you list the nutrient.
 
 6) "nutrients.servingSize":
-+ is info about serving size on nutrition fact panel. if serving size info have the parentheses the "servingSize.value" and "servingSize.uom" will be between the parentheses
-+ you may found the equivalent text of "nutrients.servingSize" in different language but it is definitely not the "equivalent". Please check the text in the parentheses, it is truly the "servingSize.equivalent".
-
-Ex 1: "10 tablespoons(80g)" = {servingSize: { "value": "10", "uom": "tablespoons", "equivalent": {"value": "80", "uom": "g"}}}
-Ex 2: "10 tablespoons" = {servingSize: {"value": "10", "uom": "tablespoons"}}
-Ex 3: "10 bars(200g)" = {servingSize: { "value": "10", "uom": "bars"}, "equivalent": {"value": "200", "uom": "g"}}
-Ex 4: "10 cups(10 ml)" = {servingSize: {"value": "10", "uom": "cups"}, "equivalent": {"value": "10", "uom": "ml"}}
-Ex 5: "1 cup(4 fl oz/120ml)" = {servingSize: {"value": "1", "uom": "cup"}, "equivalent": {"value": "4", "uom": "fl oz"}}
-Ex 6: "3 tbsp(60ml)" = {servingSize: {"value": "3", "uom": "tbsp"}, "equivalent": {"value": "60", "uom": "ml"}}
++ is info about serving size on nutrition fact panel. if serving size info have the parentheses the "servingsize.value" and "servingSize.uom" will be between the parentheses
+Ex 1: "10 tablespoons(80g)" = {servingSize: { "value": 10, "uom": "tablespoons", equivalent: {"value": 80, "uom": "g"}}}
+Ex 2: "10 tablespoons" = {servingSize: {"value": 10, "uom": "tablespoons"}}
+Ex 3: "10 bars(200g)" = {servingSize: { "value": 10, "uom": "bars"}, equivalent: {"value": 200, "uom": "g"}}
+Ex 4: "10 cups(10 ml)" = {servingSize: {"value": 10, "uom": "cups"}, equivalent: {"value": 10, "uom": "ml"}}
+Ex 5: "1 cup(4 fl oz/120ml)" = {servingSize: {"value": 1, "uom": "cup"}, equivalent: {"value": 4, "uom": "fl oz"}}
+Ex 6: "3 tbsp(60ml)" = {servingSize: {"value": 3, "uom": "tbsp"}, equivalent: {"value": 60, "uom": "ml"}}
 
 7) "nutrient.descriptor":
 + "nutrient.descriptor" is very complicated to extract so please follow all example below to learn how to extract
@@ -175,10 +171,19 @@ Ex 2: "Holy Basil (Ocimum sanctum) (herb) Extract standardized to banana 20gram"
 + There are two ways to recognize sub-ingredients of a nutrient:
   - 1st: the list of sub-ingredients can be list as consecutive intended nutrient rows at below the nutrient name
   - 2nd: the list of sub-ingredients is the statement with a lot of sub-ingredient at below the nutrient name
-  
+
+9) "footnote":
++ "footnote" must be the last part of fact panel (the note may contain some special characters from FOOTNOTE_INDICATORS),
+and usually start with "%Daily Value....", "Not a significant source...", or "the % daily value...".
++ "footnote" is only one section, and is not multiple sections.
+
+Ex 1: "**Not a significant source of saturated fat, trans fat. *Daily Value not established. = {footnote: {value :"**Not a significant source of saturated fat, trans fat. *Daily Value not established."}}
+Ex 2: "*Daily Value not established." = {footnote: "*Daily Value not established."}
+Ex 3: "†Daily Value not established." = {footnote: "†Daily Value not established."}
+Ex 4: "Not a significant source of saturated fat, trans fat." = {footnote: "Not a significant source of saturated fat, trans fat."}
+
 10) "nutrients.footnoteIndicator":
 + "nutrients.footnoteIndicator" is a special symbol such as "*", "†" or is a group of special symbol such as "**" beside the nutrient percent value. Sometimes nutrient percent value is left empty but still have footnoteIndicator right there.
-+ be careful "nutrients.footnoteIndicator" is not symbol before nutrient quantity.
 
 11) "amountPerServing.percentDailyValueFor" rules:
 + "amountPerServing.percentDailyValueFor" is a text and usually stay above the "calories value number".
@@ -187,6 +192,16 @@ Ex 1: "Per container" = {amountPerServing: {percentDailyValueFor: "Per container
 Ex 2: "Per serving" = {amountPerServing: {percentDailyValueFor: "Per serving"}}
 Ex 3: "%dv for children > 18 years" = {amountPerServing: {percentDailyValueFor: "for children > 18 years"}}
 Ex 4: "%dv for adults" = {amountPerServing: {percentDailyValueFor: "for adults"}}
+
+12) "nutrient.quantityComparisonOperator" and "nutrient.dailyPercentComparisonOperator" rules:
++ "nutrient.quantityComparisonOperator" is a comparison operator at the left side of "nutrient.value" and "nutrient.uom"
++ "nutrient.dailyPercentComparisonOperator" is a comparison operator at the left side of "nutrient.percentDailyValue".
++ "nutrient.dailyPercentComparisonOperator" is not "nutrient.quantityComparisonOperator".
+Ex 1: "10g    <10%" = {quantityComparisonOperator: null, dailyPercentComparisonOperator: "<", ...}
+Ex 2: "<10g    10%" = {quantityComparisonOperator: "<", dailyPercentComparisonOperator: null, ...}
+Ex 3: "<10g    <10%" ={quantityComparisonOperator: "<", dailyPercentComparisonOperator: "<", ...}
+Ex 4: "less than 1g" ={quantityComparisonOperator: "less than", ...}
+
 
 13) "nutrients.quantityEquivalent":
 + "nutrients.quantityEquivalent" is usually additional text right next to "nutrient.uom" and inside the parentheses.
@@ -206,53 +221,20 @@ Ex 2: "Molybdenum(as fermented molybdenum bisglycinate)" should be recorded as {
 Ex 3: "Medium Chain Triglyceride (MCT) Oil" should be recorded as {"name": "Medium Chain Triglyceride (MCT) Oil", "descriptor": null, ...} 
 
 15) "nutrients.uom" rules:
-+ some possible "nutrients.uom" such as "MCG DFE".
++ some possible "nutrients.uom" such as "MCG DFE"
 
 16) "nutrients.percentDailyValue"
 + could be null or empty. if its value is empty or null just left it value "null"
 + nutrient "trans fat" do not have "percent daily value" and its "nutrients.percentDailyValue" must be null 
-Ex 1: "100g 10%" should be recorded as {"percentDailyValue": "10", ...}
+Ex 1: "100g 10%" should be recorded as {"percentDailyValue": 10, ...}
 Ex 2: "100g    " should be recorded as {"percentDailyValue": null, ...}
-Ex 2: "1g  <1%" should be recorded as {"percentDailyValue": "1", ...}
+Ex 2: "1g  <1%" should be recorded as {"percentDailyValue": 1, ...}
 
 17) nutrient of "added sugars" rules": 
 if you see a nutrient text like 'Includes Xg of Added Sugars  10%' this is the nutrient name = "added sugar" and "X" is its "value" and "g" is its "uom".
 and it should be recorded as a nutrient =  {"name": "Added Sugars", "value": 7, "uom": "g", "percentDailyValue": 10,...}
-
-ex 1: Total Sugars 100g (Include 100g Added Sugars) must be recorded as two different nutrients (total sugar and added sugar).
-ex 2: Total Sugars 100g Includes 100g Added Sugars must be recorded as two different nutrients (total sugar and added sugar).
 `;
 };
 
-// 10) "footnote_english_only" rule:
-// + "footnote" value could contain multiple languages so "footnote_english_only" is the "footnote" content in english only.
-
-// 9) "footnote":
-// + could be null. if its value is empty or null just left it value "null"
-// + "footnote" is usually the last statement of nutrition fact panel (the note statement may contain some special characters from FOOTNOTE_INDICATORS).
-// + you can easily recognize the "footnote" when see texts such as "%Daily Value....", or "Not a significant source...", or "the % daily value...".
-// + "footnote" is only one section, and is not multiple sections.
-
-// Ex 1: if footnote info not found. It should be recorded as {"footnote": null}
-
 // 2nd - total sugar and added sugar are two separated nutrient
 // "intended_level": number, // from 0 to 3
-
-// 12) "nutrient.quantity_comparison_symbol" and "nutrient.dailyPercentComparisonOperator" rules:
-// + "nutrient.quantityComparisonOperator" is a comparison operator at the left side of "nutrient.value" and "nutrient.uom"
-// + "nutrient.dailyPercentComparisonOperator" is a comparison operator at the left side of "nutrient.percentDailyValue".
-// + "nutrient.dailyPercentComparisonOperator" is not "nutrient.quantityComparisonOperator".
-// Ex 1: "10g    <10%" = {quantityComparisonOperator: null, dailyPercentComparisonOperator: "<", ...}
-// Ex 2: "<10g    10%" = {quantityComparisonOperator: "<", dailyPercentComparisonOperator: null, ...}
-// Ex 3: "<10g    <10%" ={quantityComparisonOperator: "<", dailyPercentComparisonOperator: "<", ...}
-// Ex 4: "less than 1g" ={quantityComparisonOperator: "less than", ...}
-
-// Ex 3: "*Daily Value not established." should be recorded as {footnote: "*Daily Value not established."}
-// Ex 4: "†Daily Value not established." should be recorded as {footnote: "†Daily Value not established."}
-// Ex 5: "Not a significant source of saturated fat, trans fat." should be recorded as {footnote: "Not a significant source of saturated fat, trans fat."}
-// Ex 2: if the footnote statement visibly seen on images is  "**Not a significant source of saturated fat, trans fat. *Daily Value not established" so it should be recorded as {"footnote": "**Not a significant source of saturated fat, trans fat. *Daily Value not established."}
-// "footnote_english_only": string
-
-//
-
-// "footnoteValidator": gemini answer me do you see nutrition fact footnote from provided image? and where is it? and what is the footnote statement you see?,
