@@ -1,9 +1,13 @@
+import logger from '../logger/index';
+
 export const mapMarkdownNutToObject = (markdown: string) => {
   const nutritionSections = markdown.split('NUTRITION_FACT_TABLE').slice(1);
   return nutritionSections.map((section) => {
     const [nutrientSection, headerToRest] = section.split('HEADER_TABLE');
     const [nutHeader, footnoteToRest] = headerToRest.split('FOOTNOTE_TABLE');
-    const [footnoteSection, __] = footnoteToRest.split('DEBUG_TABLE');
+    const [footnoteSection, debugSection] = footnoteToRest.split('DEBUG_TABLE');
+    logger.error('debug section');
+    logger.info(debugSection);
 
     const [headerTitle, ...nutritionLines] = nutrientSection
       .trim()
@@ -15,10 +19,10 @@ export const mapMarkdownNutToObject = (markdown: string) => {
       .map((line) => {
         const [
           nutrientName,
-          amountPerServing,
-          amountPerSeringDescriptor,
-          dailyValue,
           parenthesesDescriptor,
+          amountPerServing,
+          amountPerServingDescriptor,
+          dailyValue,
           blendIngredients,
           symbol,
         ] = line
@@ -28,10 +32,10 @@ export const mapMarkdownNutToObject = (markdown: string) => {
 
         return {
           nutrientName,
-          amountPerServing,
-          amountPerSeringDescriptor,
-          dailyValue,
           parenthesesDescriptor: parenthesesDescriptor || null,
+          amountPerServing,
+          amountPerServingDescriptor,
+          dailyValue,
           blendIngredients: blendIngredients || null,
           symbol: symbol || null,
         };
@@ -68,7 +72,8 @@ export const mapMarkdownNutToObject = (markdown: string) => {
       calories,
     };
 
-    console.log('footnote section --', footnoteSection);
+    logger.error('footnote');
+    logger.info(footnoteSection);
 
     const footnoteLines = footnoteSection
       .trim()
@@ -83,7 +88,6 @@ export const mapMarkdownNutToObject = (markdown: string) => {
         .filter((item) => item !== '')
         .map((item) => item.trim());
 
-      console.log('footnote line', line);
       return {
         footnoteSymbol: footnoteSymbol || null,
         footnoteContent: footnoteContent || null,
@@ -91,35 +95,45 @@ export const mapMarkdownNutToObject = (markdown: string) => {
       };
     });
 
-    // const debugTableSection = section.split('Debug table')[1];
+    let debugTable;
 
-    // console.log('debug --', debugTableSection);
+    logger.error('debug');
+    logger.info(debugSection);
 
-    // const debugLines = debugTableSection
-    //   .trim()
-    //   .split('\n')
-    //   .filter((item) => item !== '')
-    //   .slice(2)
-    //   .filter((line) => line.trim().length > 0);
+    if (debugSection) {
+      const debugLines = debugSection
+        .trim()
+        .split('\n')
+        .filter((item) => item !== '')
+        .slice(1)
+        .filter((line) => line.trim().length > 0);
 
-    // const debugTable = debugLines.map((line) => {
-    //   const [question, geminiAnswer] = line
-    //     .split('|')
-    //     .filter((item) => item !== '')
-    //     .map((item) => item.trim());
-    //   return {
-    //     question,
-    //     geminiAnswer,
-    //   };
-    // });
+      debugTable = debugLines.map((line) => {
+        const [question, geminiAnswer] = line
+          .split('|')
+          .filter((item) => item !== '')
+          .map((item) => item.trim());
+        return {
+          question,
+          geminiAnswer,
+        };
+      });
+    }
 
-    let result = {
+    logger.error('debug table');
+    logger.info(debugTable);
+
+    let result: any = {
       title: headerTitle.trim(),
       servingInfo,
       nutritionFacts: nutrients,
       footnotes: footnoteData,
-      // debugTable,
+      markdown,
     };
+
+    if (debugTable) {
+      result = { ...result, debugTable: debugTable };
+    }
 
     console.log('result ---', JSON.stringify(result));
 

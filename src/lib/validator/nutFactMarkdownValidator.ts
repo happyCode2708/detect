@@ -23,18 +23,18 @@ const transformFactPanels = (factPanels: any) => {
 const transformOneFactPanel = (factPanelItem: any) => {
   let cloneFactPanelItem = { ...factPanelItem };
 
-  cloneFactPanelItem.nutritionFacts = cloneFactPanelItem.nutritionFacts.map(
-    (nutrientItem: any) => {
+  cloneFactPanelItem.nutritionFacts = cloneFactPanelItem.nutritionFacts
+    .map((nutrientItem: any) => {
       let modifiedNutrient = { ...nutrientItem };
 
       // validateNutrientName(modifiedNutrient);
       // validateSubIngredient(modifiedNutrient);
       validateBlendIngredients(modifiedNutrient);
-      validateFootnote(modifiedNutrient);
+      validateNutrientSymbol(modifiedNutrient);
 
       return modifiedNutrient;
-    }
-  );
+    })
+    .filter((nutrient: any) => nutrient?.nutrientName !== '##');
 
   return cloneFactPanelItem;
 };
@@ -49,13 +49,20 @@ const validateBlendIngredients = (modifiedNutrient: any) => {
   );
 };
 
-const validateFootnote = (modifiedNutrient: any) => {
+const validateNutrientSymbol = (modifiedNutrient: any) => {
   const symbolList = ['*', '**', '†', '¥', '‡', '†††'];
   let dailyValue = modifiedNutrient?.dailyValue;
   let symbol = modifiedNutrient?.symbol;
 
   if (!dailyValue && !symbol) return;
 
+  // if (!symbol && dailyValue && symbolList.find(dailyValue === '')) {
+  //   modifiedNutrient['symbol'] = dailyValue;
+  // }
+};
+
+//* in-progress
+const validateFootnote = (modifiedNutrient: any) => {
   // if (!symbol && dailyValue && symbolList.find(dailyValue === '')) {
   //   modifiedNutrient['symbol'] = dailyValue;
   // }

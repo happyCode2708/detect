@@ -354,6 +354,11 @@ export default function Home() {
                 )}
               </SectionWrapper>
             )}
+            <SectionWrapper title='reader'>
+              <div className='whitespace-pre-line'>
+                <span></span>
+              </div>
+            </SectionWrapper>
           </div>
 
           {productInfo && (
