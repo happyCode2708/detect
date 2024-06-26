@@ -17,8 +17,7 @@ important requirements:
 2) "added sugar"/ "include n gram of added sugar" is a separated nutrient (its "nutrient name" is "added sugar")
 3) text "include [number]g added sugars" should be recorded as "nutrient name" = "added sugars" and "amount per serving" = "[number]g" with number is the amount per serving value.
 4) do not provide me the info not seen on provided images
-5) only provide me the info that visibly seen from provided images
-6) total sugars do not have % Daily Value  
+5) only provide me the info that visibly seen from provided images 
 7) There are some cases to recognized an dual-column nutrition fact panel format:
 + case 1 - see nutrition fact panel with two or more than two percent daily value columns and quantity columns for different serving sizes or different amount per serving name 
 + case 2 - see nutrition fact panel with two or more than two percent daily value columns for different age groups
@@ -76,6 +75,9 @@ nutrient name descriptor = standardized to 20% multi-vitamin
 Ex 3: "yogurt (29 billions living cultures)" recorded as
 nutrient name = yogurt
 nutrient name descriptor = 29 billions living cultures
+
+2) total sugar rules:
++ total sugars do not have % Daily Value number, but it can have footnote symbol (such as **, *, +, ...) at "% Daily Value" column
 
 markdown rules:
 1) do not bold nutrient name
