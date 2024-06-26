@@ -21,15 +21,25 @@ export const Result = ({ productInfo }: { productInfo: any }) => {
       className='w-full overflow-hidden'
       onValueChange={onValueChange}
     >
-      <TabsList className='grid w-full grid-cols-2'>
+      <TabsList className='grid w-full grid-cols-3'>
         <TabsTrigger value='table'>Table</TabsTrigger>
         <TabsTrigger value='json'>Json</TabsTrigger>
+        <TabsTrigger value='markdown'>markdown</TabsTrigger>
       </TabsList>
       <TabsContent value='table' forceMount hidden={tabActive !== 'table'}>
         <TableResult productInfo={productInfo?.product} />
       </TabsContent>
       <TabsContent value='json' forceMount hidden={tabActive !== 'json'}>
         <JsonRender productInfo={productInfo} />
+      </TabsContent>
+      <TabsContent
+        value='markdown'
+        forceMount
+        hidden={tabActive !== 'markdown'}
+      >
+        <div className='whitespace-pre-line'>
+          {productInfo?.product?.nutMark}
+        </div>
       </TabsContent>
     </Tabs>
   );

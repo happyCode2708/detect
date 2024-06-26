@@ -35,7 +35,8 @@ export const responseValidator = async (response: any, ocrClaims: any) => {
 };
 
 const validateProductDataPoints = async (response: any, ocrClaims: any) => {
-  const { factPanels, ...productDataPoints } = response?.product || {};
+  const { factPanels, nutMark, allMark, ...productDataPoints } =
+    response?.product || {};
 
   let modifiedProductDataPoints = { ...productDataPoints };
 

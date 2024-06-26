@@ -46,10 +46,9 @@ const NutritionTable = ({ data }: { data: any }) => {
         <TableHeader>
           <TableRow>
             <TableHead>NAME</TableHead>
-            <TableHead>ANCILARRRY INFO</TableHead>
-            <TableHead>QUANTITY</TableHead>
-            <TableHead>DAILY PERCENT</TableHead>
-            <TableHead>FOOTNOTE</TableHead>
+            <TableHead>ANCILLARY INFO</TableHead>
+            <TableHead>AMOUNT PER SERVING</TableHead>
+            <TableHead>% DAILY VALUE</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -85,11 +84,11 @@ const NutritionTable = ({ data }: { data: any }) => {
                   <TableCell>
                     <span>{nutrient?.dailyValue}</span>
                   </TableCell>
-                  <TableCell>
+                  {/* <TableCell>
                     {nutrient?.symbol !== null && (
                       <span> {nutrient?.symbol}</span>
                     )}
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
 
                 {/* {nutrient?.nutrient_sub_ingredients?.map(
@@ -184,9 +183,15 @@ const NutritionTable = ({ data }: { data: any }) => {
       <div>
         <div className='font-bold'>Footnote: </div>
         <p>
-          {data?.footnotes?.map((footnote: any) => {
-            return <span> {footnote?.footnoteContentEnglish}, </span>;
-          })}
+          {data?.footnotes?.length > 0 &&
+            data?.footnotes?.map((footnote: any) => {
+              return (
+                <span>
+                  {footnote?.footnoteContentEnglish ||
+                    footnote?.footnoteContent}
+                </span>
+              );
+            })}
         </p>
       </div>
     </div>

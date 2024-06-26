@@ -91,7 +91,8 @@ router.get('/get-result/:sessionId', async (req, res) => {
       },
       product: {
         ...allRes.data.product,
-        factPanels: nutRes?.data, //* markdown converted
+        factPanels: nutRes?.data?.factPanels, //* markdown converted
+        nutMark: nutRes?.data?.nutMark,
       },
     };
 

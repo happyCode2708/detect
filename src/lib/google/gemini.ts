@@ -150,7 +150,7 @@ export const onProcessGemini = async ({
         resultFileName,
         JSON.stringify({
           isSuccess: true,
-          data: jsonResult,
+          data: { factPanels: jsonResult, nutMark: procResult },
         })
       );
     }

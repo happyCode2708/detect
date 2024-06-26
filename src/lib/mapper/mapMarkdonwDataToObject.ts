@@ -24,7 +24,6 @@ export const mapMarkdownNutToObject = (markdown: string) => {
           amountPerServingDescriptor,
           dailyValue,
           blendIngredients,
-          symbol,
         ] = line
           .split('|')
           .filter((item) => item !== '')
@@ -37,7 +36,6 @@ export const mapMarkdownNutToObject = (markdown: string) => {
           amountPerServingDescriptor,
           dailyValue,
           blendIngredients: blendIngredients || null,
-          symbol: symbol || null,
         };
       })
       .filter((nutrient) => nutrient.nutrientName !== '-------');
@@ -83,13 +81,12 @@ export const mapMarkdownNutToObject = (markdown: string) => {
       .filter((line) => line.trim().length > 0);
 
     const footnoteData = footnoteLines.map((line) => {
-      const [footnoteSymbol, footnoteContent, footnoteContentEnglish] = line
+      const [footnoteContent, footnoteContentEnglish] = line
         .split('|')
         .filter((item) => item !== '')
         .map((item) => item.trim());
 
       return {
-        footnoteSymbol: footnoteSymbol || null,
         footnoteContent: footnoteContent || null,
         footnoteContentEnglish: footnoteContentEnglish || null,
       };
