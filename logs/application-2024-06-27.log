@@ -1,0 +1,372 @@
+2024-06-27 08:51:09 [31merror[39m: debug section
+2024-06-27 08:51:09 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  They appear to be the same table, just captured from different angles of the product packaging. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although it has two columns of numbers, they represent the actual amounts and the % Daily Value for a single serving size. There are no indicators of different serving sizes, age groups, or "per container" amounts that would suggest a dual-column format.  Therefore, I have extracted the data as a single nutrition fact table. |
+
+2024-06-27 08:51:09 [31merror[39m: footnote
+2024-06-27 08:51:09 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+
+
+## 
+2024-06-27 08:51:09 [31merror[39m: debug
+2024-06-27 08:51:09 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  They appear to be the same table, just captured from different angles of the product packaging. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although it has two columns of numbers, they represent the actual amounts and the % Daily Value for a single serving size. There are no indicators of different serving sizes, age groups, or "per container" amounts that would suggest a dual-column format.  Therefore, I have extracted the data as a single nutrition fact table. |
+
+2024-06-27 08:51:09 [31merror[39m: debug table
+2024-06-27 08:51:09 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 10:46:44 [31merror[39m: debug section
+2024-06-27 10:46:44 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although the information is displayed in two columns, it is a single table with one column for each nutrient and its corresponding values. I have extracted the data into a single nutrition fact table. |
+
+2024-06-27 10:46:44 [31merror[39m: footnote
+2024-06-27 10:46:44 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+
+
+2024-06-27 10:46:44 [31merror[39m: debug
+2024-06-27 10:46:44 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although the information is displayed in two columns, it is a single table with one column for each nutrient and its corresponding values. I have extracted the data into a single nutrition fact table. |
+
+2024-06-27 10:46:44 [31merror[39m: debug table
+2024-06-27 10:46:44 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 11:20:19 [31merror[39m: debug section
+2024-06-27 11:20:19 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the nutrient information is displayed on two lines to save space, it does not meet the criteria for a dual-column format. I have extracted the information and presented it in a single, easy-to-read table. |
+
+2024-06-27 11:20:19 [31merror[39m: footnote
+2024-06-27 11:20:19 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+
+
+
+2024-06-27 11:20:19 [31merror[39m: debug
+2024-06-27 11:20:19 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the nutrient information is displayed on two lines to save space, it does not meet the criteria for a dual-column format. I have extracted the information and presented it in a single, easy-to-read table. |
+
+2024-06-27 11:20:19 [31merror[39m: debug table
+2024-06-27 11:20:19 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 12:00:12 [31merror[39m: debug section
+2024-06-27 12:00:12 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images. It is the same table, just captured from different angles. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Dual-column formats typically have two sets of "% Daily Value" columns for different serving sizes or age groups. This table only has one set of "% Daily Value" columns. Therefore, only one nutrition fact table is needed. |
+
+2024-06-27 12:00:12 [31merror[39m: footnote
+2024-06-27 12:00:12 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+
+
+2024-06-27 12:00:12 [31merror[39m: debug
+2024-06-27 12:00:12 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images. It is the same table, just captured from different angles. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Dual-column formats typically have two sets of "% Daily Value" columns for different serving sizes or age groups. This table only has one set of "% Daily Value" columns. Therefore, only one nutrition fact table is needed. |
+
+2024-06-27 12:00:12 [31merror[39m: debug table
+2024-06-27 12:00:12 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 12:04:20 [31merror[39m: debug section
+2024-06-27 12:04:20 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the nutrients are listed in two columns to save space, this is not considered a true dual-column format because there is only one column for "% Daily Value".  |
+
+2024-06-27 12:04:20 [31merror[39m: footnote
+2024-06-27 12:04:20 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+
+
+2024-06-27 12:04:20 [31merror[39m: debug
+2024-06-27 12:04:20 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the nutrients are listed in two columns to save space, this is not considered a true dual-column format because there is only one column for "% Daily Value".  |
+
+2024-06-27 12:04:20 [31merror[39m: debug table
+2024-06-27 12:04:20 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 12:12:43 [31merror[39m: debug section
+2024-06-27 12:12:43 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the nutrients are listed in two columns to save space, this is not considered a true dual-column format because there is only one column for "% Daily Value".  |
+
+2024-06-27 12:12:43 [31merror[39m: footnote
+2024-06-27 12:12:43 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+
+
+2024-06-27 12:12:43 [31merror[39m: debug
+2024-06-27 12:12:43 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the nutrients are listed in two columns to save space, this is not considered a true dual-column format because there is only one column for "% Daily Value".  |
+
+2024-06-27 12:12:43 [31merror[39m: debug table
+2024-06-27 12:12:43 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 12:13:47 [31merror[39m: debug section
+2024-06-27 12:13:47 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the nutrient information is arranged in two columns to save space, it does not meet the criteria for a dual-column format. I know to look for multiple columns of "% Daily Value" with corresponding "Amount Per Serving" values, which is not present in this table.  |
+
+2024-06-27 12:13:47 [31merror[39m: footnote
+2024-06-27 12:13:47 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+
+
+2024-06-27 12:13:47 [31merror[39m: debug
+2024-06-27 12:13:47 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the nutrient information is arranged in two columns to save space, it does not meet the criteria for a dual-column format. I know to look for multiple columns of "% Daily Value" with corresponding "Amount Per Serving" values, which is not present in this table.  |
+
+2024-06-27 12:13:47 [31merror[39m: debug table
+2024-06-27 12:13:47 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 12:56:25 [31merror[39m: debug section
+2024-06-27 12:56:25 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is only one nutrition fact table present in the provided images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although it appears to have two columns, it's simply a space-saving design. There's only one "Amount Per Serving" column, and the "% Daily Value" column applies to that single serving size. Dual-column formats typically have different values for different serving sizes or age groups. |
+
+2024-06-27 12:56:25 [31merror[39m: footnote
+2024-06-27 12:56:25 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| ** The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | ** The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+
+
+
+2024-06-27 12:56:25 [31merror[39m: debug
+2024-06-27 12:56:25 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is only one nutrition fact table present in the provided images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although it appears to have two columns, it's simply a space-saving design. There's only one "Amount Per Serving" column, and the "% Daily Value" column applies to that single serving size. Dual-column formats typically have different values for different serving sizes or age groups. |
+
+2024-06-27 12:56:25 [31merror[39m: debug table
+2024-06-27 12:56:25 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 13:05:38 [31merror[39m: debug section
+2024-06-27 13:05:38 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is one nutrition fact table in the provided images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is in a dual-column format because it presents the "% Daily Value" in a separate column from the "Amount/serving." Although it is in a two-column format, it can be represented in a single table by listing the nutrients for each column sequentially. |
+
+2024-06-27 13:05:38 [31merror[39m: footnote
+2024-06-27 13:05:38 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * The % Daily Value tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | * The % Daily Value tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+
+
+## 
+2024-06-27 13:05:38 [31merror[39m: debug
+2024-06-27 13:05:38 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is one nutrition fact table in the provided images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is in a dual-column format because it presents the "% Daily Value" in a separate column from the "Amount/serving." Although it is in a two-column format, it can be represented in a single table by listing the nutrients for each column sequentially. |
+
+2024-06-27 13:05:38 [31merror[39m: debug table
+2024-06-27 13:05:38 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 13:31:04 [31merror[39m: debug section
+2024-06-27 13:31:04 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although it has two columns of data, they both correspond to the same serving size (1 bar (43g)). Dual-column formats are used to display information for different serving sizes or different groups (like children and adults).  |
+
+2024-06-27 13:31:04 [31merror[39m: footnote
+2024-06-27 13:31:04 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+| * 14g Carbs - 7g Fiber - 2g Erythritol = 5g Net Carbs | * 14g Carbs - 7g Fiber - 2g Erythritol = 5g Net Carbs |
+
+## 
+2024-06-27 13:31:04 [31merror[39m: debug
+2024-06-27 13:31:04 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although it has two columns of data, they both correspond to the same serving size (1 bar (43g)). Dual-column formats are used to display information for different serving sizes or different groups (like children and adults).  |
+
+2024-06-27 13:31:04 [31merror[39m: debug table
+2024-06-27 13:31:04 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 13:36:17 [31merror[39m: debug section
+2024-06-27 13:36:17 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images. It is the same table captured from different angles. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some nutrients are displayed in two columns to save space, it doesn't meet the criteria for a dual-column format. Dual-column formats typically involve different serving sizes, age groups, or "per serving" and "per container" information presented side-by-side. This table presents all information for a single serving size. |
+
+2024-06-27 13:36:17 [31merror[39m: footnote
+2024-06-27 13:36:17 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+
+
+
+2024-06-27 13:36:17 [31merror[39m: debug
+2024-06-27 13:36:17 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images. It is the same table captured from different angles. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some nutrients are displayed in two columns to save space, it doesn't meet the criteria for a dual-column format. Dual-column formats typically involve different serving sizes, age groups, or "per serving" and "per container" information presented side-by-side. This table presents all information for a single serving size. |
+
+2024-06-27 13:36:17 [31merror[39m: debug table
+2024-06-27 13:36:17 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 13:43:24 [31merror[39m: debug section
+2024-06-27 13:43:24 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided image. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although the nutrients are arranged in two columns, this is done to save space and does not represent a dual-column format as defined by the FDA. Dual-column formats typically involve different serving sizes, age groups, or other variations that necessitate separate tables. |
+
+2024-06-27 13:43:24 [31merror[39m: footnote
+2024-06-27 13:43:24 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+|  |  |
+
+
+2024-06-27 13:43:24 [31merror[39m: debug
+2024-06-27 13:43:24 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided image. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although the nutrients are arranged in two columns, this is done to save space and does not represent a dual-column format as defined by the FDA. Dual-column formats typically involve different serving sizes, age groups, or other variations that necessitate separate tables. |
+
+2024-06-27 13:43:24 [31merror[39m: debug table
+2024-06-27 13:43:24 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 13:52:53 [31merror[39m: debug section
+2024-06-27 13:52:53 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images. It appears twice, but they are the same. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the nutrient information is arranged in two columns to save space, this is not considered a true dual-column format. Dual-column formats are used to display information for different serving sizes or different groups (like children and adults). This nutrition label only provides information for a single serving size. |
+
+2024-06-27 13:52:53 [31merror[39m: footnote
+2024-06-27 13:52:53 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+
+
+
+2024-06-27 13:52:53 [31merror[39m: debug
+2024-06-27 13:52:53 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images. It appears twice, but they are the same. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the nutrient information is arranged in two columns to save space, this is not considered a true dual-column format. Dual-column formats are used to display information for different serving sizes or different groups (like children and adults). This nutrition label only provides information for a single serving size. |
+
+2024-06-27 13:52:53 [31merror[39m: debug table
+2024-06-27 13:52:53 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 14:00:02 [31merror[39m: debug section
+2024-06-27 14:00:02 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in these images.  All images appear to show the same nutrition fact table. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although it has two columns of data, these represent the amount and %DV for a single serving size.  A dual-column format would have different values for some nutrients, such as different serving sizes or different values for different age groups. |
+
+2024-06-27 14:00:02 [31merror[39m: footnote
+2024-06-27 14:00:02 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+
+
+2024-06-27 14:00:02 [31merror[39m: debug
+2024-06-27 14:00:02 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in these images.  All images appear to show the same nutrition fact table. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although it has two columns of data, these represent the amount and %DV for a single serving size.  A dual-column format would have different values for some nutrients, such as different serving sizes or different values for different age groups. |
+
+2024-06-27 14:00:02 [31merror[39m: debug table
+2024-06-27 14:00:02 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 14:09:25 [31merror[39m: debug section
+2024-06-27 14:09:25 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There are two images of the nutrition fact table from this product, but they are the same table, just captured from different angles. I have extracted the information into a single nutrition fact table. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although it has two columns of data, they represent the same serving size and are not separated for different age groups or serving options. Therefore, it is a single nutrition fact table with a standard format. |
+
+2024-06-27 14:09:25 [31merror[39m: footnote
+2024-06-27 14:09:25 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| *The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | *The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+
+
+2024-06-27 14:09:25 [31merror[39m: debug
+2024-06-27 14:09:25 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There are two images of the nutrition fact table from this product, but they are the same table, just captured from different angles. I have extracted the information into a single nutrition fact table. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although it has two columns of data, they represent the same serving size and are not separated for different age groups or serving options. Therefore, it is a single nutrition fact table with a standard format. |
+
+2024-06-27 14:09:25 [31merror[39m: debug table
+2024-06-27 14:09:25 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-06-27 14:15:55 [31merror[39m: debug section
+2024-06-27 14:15:55 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in these images. All the images appear to be of the same product, just showing different angles. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is in a dual-column format because it has two columns of "% Daily Value". However, it does not need to be split into two separate tables because it only has one column for "Amount/Serving". The two "% Daily Value" columns are just a way to fit all the information on the label. |
+
+2024-06-27 14:15:55 [31merror[39m: footnote
+2024-06-27 14:15:55 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * The % Daily Value tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | * The % Daily Value tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+
+
+2024-06-27 14:15:55 [31merror[39m: debug
+2024-06-27 14:15:55 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in these images. All the images appear to be of the same product, just showing different angles. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is in a dual-column format because it has two columns of "% Daily Value". However, it does not need to be split into two separate tables because it only has one column for "Amount/Serving". The two "% Daily Value" columns are just a way to fit all the information on the label. |
+
+2024-06-27 14:15:55 [31merror[39m: debug table
+2024-06-27 14:15:55 [32minfo[39m: [object Object],[object Object],[object Object]

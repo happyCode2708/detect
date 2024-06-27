@@ -12,6 +12,7 @@ import sharp from 'sharp';
 import { ImageAnnotatorClient } from '@google-cloud/vision';
 import { make_markdown_nut_prompt } from '../promp/markdown_nut_utils';
 import { mapMarkdownNutToObject } from '../mapper/mapMarkdonwDataToObject';
+import { make_markdown_all_prompt } from '../promp/markdown_all_utils';
 
 export const generateContent = async (images: any[], text: any) => {
   if (!(global as any)?.generativeModel) return;
@@ -47,6 +48,7 @@ export const onProcessGemini = async ({
   prefix = '',
   prompt,
   isMarkdown,
+  mapMdToObjectFunct,
 }: {
   req: any;
   res: any;
@@ -56,6 +58,7 @@ export const onProcessGemini = async ({
   prefix?: string;
   prompt: string;
   isMarkdown?: boolean;
+  mapMdToObjectFunct?: any;
 }) => {
   // const base64Image = encodeImageToBase64(collatedOuputPath);
 
@@ -144,7 +147,21 @@ export const onProcessGemini = async ({
           data: procResult,
         })
       );
-      const jsonResult = mapMarkdownNutToObject(procResult);
+      // const jsonResult = mapMarkdownNutToObject(procResult);
+      if (!mapMdToObjectFunct) {
+        writeJsonToFile(
+          resultsDir + `/${sessionId}`,
+          resultFileName,
+          JSON.stringify({
+            isSuccess: true,
+            data: { allMark: procResult },
+          })
+        );
+        return;
+      }
+
+      const jsonResult = mapMdToObjectFunct(procResult);
+
       writeJsonToFile(
         resultsDir + `/${sessionId}`,
         resultFileName,
@@ -259,19 +276,34 @@ export const onProcessOther = async ({
     res,
     sessionId,
     collateImageName,
+
+    prefix,
+    // collatedOuputPath: [
+    //   ...invalidatedInput.nutIncluded,
+    //   ...invalidatedInput.nutExcluded,
+    // ],
+    // prompt: makePrompt({
+    //   ocrText: JSON.stringify(new_allText),
+    //   imageCount: [
+    //     ...invalidatedInput.nutIncluded,
+    //     ...invalidatedInput.nutExcluded,
+    //   ]?.length,
+    //   detectedClaims: JSON.stringify(ocr_claims),
+    // }),
+
+    //* markdown all
     collatedOuputPath: [
       ...invalidatedInput.nutIncluded,
       ...invalidatedInput.nutExcluded,
     ],
-    prompt: makePrompt({
+    prompt: make_markdown_all_prompt({
       ocrText: JSON.stringify(new_allText),
       imageCount: [
         ...invalidatedInput.nutIncluded,
         ...invalidatedInput.nutExcluded,
       ]?.length,
-      detectedClaims: JSON.stringify(ocr_claims),
     }),
-    prefix,
+    isMarkdown: true,
   });
 };
 
@@ -388,5 +420,6 @@ export const onProcessNut = async ({
       ]?.length,
     }),
     isMarkdown: true,
+    mapMdToObjectFunct: mapMarkdownNutToObject,
   });
 };
