@@ -155,7 +155,7 @@ EXTRA_CLAIM_TABLE
 2) Sugar claim info recorded in markdown table format below (only return row item with "does product claim that sugar claim" = true )
 
 SUGAR_CLAIM_TABLE
-| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") |
+| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)|
 | ------- | -------- | -------- |
 | contain acesulfame k | ...
 | contain agave | ...
@@ -206,7 +206,7 @@ SUGAR_CLAIM_TABLE
 3) Fat claim info of product images recorded in markdown table format below (only return row item with "does product claim that fat claim" = true )
 
 FAT_CLAIM_TABLE
-| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") |
+| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
 | ------- | -------- | -------- |
 | fat free | ...
 | free of saturated fat | ...
@@ -222,7 +222,7 @@ FAT_CLAIM_TABLE
 4) other claim list info recorded in markdown table format below (only return row item with "does product explicitly claim this claim" = true )
 
 OTHER_CLAIM_TABLE
-| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") | 
+| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | 
 | ------- | -------- | -------- |
 | 100% natural | ...
 | 100% natural ingredients | ...
