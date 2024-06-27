@@ -15,13 +15,33 @@ Ex 1: if product have something in ingredient list. That cannot conclude that pr
 3) Only return all markdown tables that i require you to return.
 
 IMPORTANT RULES:
-1) "does not contain allergen statement" rules:
-+ This is allergen list as references : "corn", "crustacean shellfish", "dairy", "egg", "fish", "milk", "oats", "peanuts / peanut oil", "phenylalanine", "seeds", "sesame", "soy / soybeans", "tree nuts", "wheat".
-Ex 1: "non-dairy" text mean no allergen "dairy"
+1) "allergen" rules:
++ below is the standardized allergen list: 
+"corn"
+"crustacean shellfish"
+"dairy"
+"egg"
+"fish"
+"milk"
+"oats"
+"peanuts / peanut oil"
+"phenylalanine", "seeds"
+"sesame"
+"soy / soybeans"
+"tree nuts"
+"wheat".
+
++ "allergen does-not-contain statement" is the statement about the allergen ingredient that product does not contain (such as "free of ...", "do not contain ...", "non-...", ...)
+Ex 1: "non-dairy" text mean does not contain allergen ingredient of "dairy"
 
 2) "extra claim list" rules:
 + "added color" claim does not mean product claim "artificial color".
 + "added color" claim does not mean product claim "artificial color".
++ "vegan" text only does not mean "vegan ingredients"
++ "natural" text only does not mean "natural ingredients"
+
+3) "sugar claim list" rules:
++ "contain unsweetened" claim does not mean "no contain sugar added"
 
 RESULT THAT I NEED:
 Please carefully examine provided images above. They are captured images of one product, and return info from provided images that match all listed requirements and rules above with all markdown tables format below
@@ -155,7 +175,7 @@ EXTRA_CLAIM_TABLE
 2) Sugar claim info recorded in markdown table format below (only return row item with "does product claim that sugar claim" = true )
 
 SUGAR_CLAIM_TABLE
-| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)|
+| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)| how do you know that ? and give me you explain (answer in string) |
 | ------- | -------- | -------- |
 | contain acesulfame k | ...
 | contain agave | ...
@@ -206,7 +226,7 @@ SUGAR_CLAIM_TABLE
 3) Fat claim info of product images recorded in markdown table format below (only return row item with "does product claim that fat claim" = true )
 
 FAT_CLAIM_TABLE
-| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
 | ------- | -------- | -------- |
 | fat free | ...
 | free of saturated fat | ...
@@ -222,7 +242,7 @@ FAT_CLAIM_TABLE
 4) other claim list info recorded in markdown table format below (only return row item with "does product explicitly claim this claim" = true )
 
 OTHER_CLAIM_TABLE
-| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | 
+| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
 | ------- | -------- | -------- |
 | 100% natural | ...
 | 100% natural ingredients | ...
@@ -288,7 +308,7 @@ OTHER_CLAIM_TABLE
 5) Allergen info recorded in markdown table format below
  
 ALLERGEN_TABLE
-| allergen contain statement (usually text after "contain:") (answer is exact texts  on product)  | does not contain allergen statement (answer is statement about allergen on product that say product does not contain)  | allergen statement about things contain on manufacture equipments | 
+| allergen contain statement (usually text after "contain:") (answer is exact texts  on product)  | allergen does-not-contain statement (answer is exact texts on product) | allergen statement about things contain on manufacture equipments | 
 | ------- | -------- | -------- |
 
 6) Debug table is gemini answer recorded in markdown table format below
@@ -300,6 +320,7 @@ DEBUG_TABLE
 DEBUG LIST:
 1) i see you think too deeply for example when you see "free from artificial flavor" and you think product claim "does not contain added flavor". That is not what i want it must say that product claim "does not contain artificial flavor". I do not how to prompt and make you understand that so next time you will no make same mistake help me write prompt sentences to fix that
 2) the problem is that some claim you concluded from ingredient list? but the product claim is not retrieved from ingredient list
-3) i only require the result of table with nutrient row that match my conditions but i see you actually created row with initial data not provided by me ? i do not want that can you help me with write prompt to fix that?
 `;
 };
+
+// 3) i only require the result of table with nutrient row that match my conditions but i see you actually created row with initial data not provided by me ? i do not want that can you help me with write prompt to fix that?
