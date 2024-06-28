@@ -12,7 +12,10 @@ VALIDATION AND FIX BUGS:
 1) To avoid any deduction and ensure accuracy, if the product explicitly states that it "does not contain [specific ingredient]" or "is free from [specific ingredient]". Do not infer or deduce information from similar phrases. For example, if the product says "free from artificial flavors," do not assume it also means "does not contain added flavors." Only report what the text directly states.
 2) Only be using the information explicitly provided in the product images and not drawing conclusions based on the ingredient list. I will focus on directly extracting product claims from the text on the packaging and avoid making deductions based on the presence or absence of specific ingredients.
 Ex 1: if product have something in ingredient list. That cannot conclude that product claim to have this thing. Claim must be a statement or texts on the packaging make claim on a thing.
-3) Only return all markdown tables that i require you to return.
+3) "NON GMO Project VERIFIED" does not claim "not fried". It is about non-GMO food and products.
+5) Product info could contain multiple languages info. Only return provided info in english.
+4) Only return all markdown tables that i require you to return.
+5) There are some tables that i require return row items with specific given condition. Please check it carefully.
 
 IMPORTANT RULES:
 1) "allergen" rules:
@@ -31,8 +34,13 @@ IMPORTANT RULES:
 "tree nuts"
 "wheat".
 
-+ "allergen does-not-contain statement" is the statement about the allergen ingredient that product does not contain (such as "free of ...", "do not contain ...", "non-...", ...)
++ "allergen does-not-contain statement" is the exact context that you found on provided images about allergen info, that product claim not to contain.
 Ex 1: "non-dairy" text mean does not contain allergen ingredient of "dairy"
+
++ "allergen contain statement" is the exact context that you found on provided images about allergen info, ususally start with "contains", "contains:", "may contains:", ....
+
++ "allergen contain on equipment statement" is the exact context that you found on provided images about list of allergen ingredients that is said they may be contained in/on manufacturing equipments.
+ex 1: "manufactured on equipment that also processes product containing ..."
 
 2) "extra claim list" rules:
 + "added color" claim does not mean product claim "artificial color".
@@ -43,10 +51,32 @@ Ex 1: "non-dairy" text mean does not contain allergen ingredient of "dairy"
 3) "sugar claim list" rules:
 + "contain unsweetened" claim does not mean "no contain sugar added"
 
-RESULT THAT I NEED:
-Please carefully examine provided images above. They are captured images of one product, and return info from provided images that match all listed requirements and rules above with all markdown tables format below
+4) "header" table rules:
++ header table only have 1 row item so you must carefully examine the images.
++ "primary size" and "secondary size" and "third size" is a quantity measurement of product in two different unit of measurement. They are not info from "serving size" in nutrition fact.
++ "count" is the count number of smaller unit inside a package, or a display shipper, or a case, or a box.
++ "full size text description" is the whole quantity measurement description statement of the product on image. It is usually appear on the front face of product.
 
-1) extra claim list info recorded in markdown table format below (only return row item with "mentioned in product info" = true )
+5) "ingredient" table rules:
++ is the list of statements about ingredients of product (since product can have many ingredients list)
++ "ingredient statement" is content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "other ingredients:".
+
+6) "marketing" table rules:
++ "social media list" is the list of social media method mentioned on product images (such as "facebook", "google", "instagram", "pinterest", "snapchat", "tiktok", "youtube", "twitter", ...).
++ "website list" is all website link found on product (website link exclude "nongmoproject.org") and be careful the content after slash could be phone number.
++ "social media text" is a list of text usually start with "@", or "#" those can be used to search the product on social media. Hint, it is usually next to social media icons.
++ "enlarge to show" is true if statement such as "enlarged to show..." seen on product image.
+
+7) "instruction" table rules:
++ "other instruction" such as "best if consumed ..."
++ "storage instruction" such as "keep refrigerated"
++ "usage time instruction" such "use by a time", "use within a time", "use before a time"
+Ex 1: "use within 30 days ..."
+
+RESULT THAT I NEED:
+Carefully examine provided images above. They are captured images of one product, and return info from provided images that match all listed requirements and rules above with all markdown tables format below
+
+1) extra claim list info recorded in markdown table format below (only return row item if "explicitly and directly mentioned in product info without implied from other text" value = true )
 
 EXTRA_CLAIM_TABLE
 | extra item |  explicitly and directly mentioned in product info without implied from other text (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
@@ -172,7 +202,8 @@ EXTRA_CLAIM_TABLE
 | yeast | ...
 | yolks | ...
 
-2) Sugar claim info recorded in markdown table format below (only return row item with "does product claim that sugar claim" = true )
+2) Sugar claim info recorded in markdown table format below 
+(ROW RETURN CONDITION: only return row item if "does product claim that sugar claim" value = true )
 
 SUGAR_CLAIM_TABLE
 | sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)| how do you know that ? and give me you explain (answer in string) |
@@ -223,7 +254,8 @@ SUGAR_CLAIM_TABLE
 | contain unsweetened | ...
 | contain xylitol | ...
 
-3) Fat claim info of product images recorded in markdown table format below (only return row item with "does product claim that fat claim" = true )
+3) Fat claim info of product images recorded in markdown table format below 
+(ROW RETURN CONDITION: only return row item if "does product claim that fat claim" value = true )
 
 FAT_CLAIM_TABLE
 | fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
@@ -239,7 +271,8 @@ FAT_CLAIM_TABLE
 | zero grams trans fat per serving | ...
 | zero trans fat | ...
 
-4) other claim list info recorded in markdown table format below (only return row item with "does product explicitly claim this claim" = true )
+4) other claim list info recorded in markdown table format below 
+(ROW RETURN CONDITION: only return row item if "does product explicitly claim this claim" value = true )
 
 OTHER_CLAIM_TABLE
 | other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
@@ -305,13 +338,69 @@ OTHER_CLAIM_TABLE
 | wild | ...
 | wild caught | ...
 
-5) Allergen info recorded in markdown table format below
+5) calorie claim info recorded in markdown table format below 
+(ROW RETURN CONDITION: only return row item if "does product explicitly claim this claim" value = true )
+
+CALORIE_CLAIM_TABLE
+| calorie claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- |
+| low calorie | ...
+| reduced calorie | ...
+| zero calorie | ...
+
+6) salt claim info recorded in markdown table format below 
+(ROW RETURN CONDITION: only return row item if "does product explicitly claim this claim" value = true )
+
+SALT_CLAIM_TABLE
+| salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| lightly salted | ...
+| low sodium | ...
+| no salt | ...
+| no salt added | ...
+| reduced sodium | ...
+| salt free | ...
+| sodium free | ...
+| unsalted | ...
+| very low sodium | ...
+
+7) Allergen info recorded in markdown table format below
  
 ALLERGEN_TABLE
-| allergen contain statement (usually text after "contain:") (answer is exact texts  on product)  | allergen does-not-contain statement (answer is exact texts on product) | allergen statement about things contain on manufacture equipments | 
-| ------- | -------- | -------- |
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+| ------- | -------- | -------- | ------- | -------- | -------- |
 
-6) Debug table is gemini answer recorded in markdown table format below
+8) Header info with table format below 
+(remember header table only have one row item)
+
+HEADER_TABLE
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+| ------- | -------- | -------- | ------- | -------- | -------- | -------- |
+
+9) Ingredient info with table format below
+
+INGREDIENT_TABLE
+| is product supplement ? (answer boolean) | ingredient statement | 
+| ------- | -------- |
+
+10) Marketing info with table format below
+
+MARKETING_TABLE
+| have QR code (answer is boolean) | social media list | website list | social media text list | enlarged to show (answer is boolean) |
+| ------- | -------- | -------- | ------- | ------- |
+
+11) Physical info with table format below
+
+PHYSICAL_TABLE
+| upc-12 or gtin-12 |
+| ------- |
+
+12) Instruction info with table format below
+
+INSTRUCTION_TABLE
+| storage instructions (answer are multiple string) | cooking instructions  (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string)| other instructions (answer are multiple string)|
+| ------- | -------- | -------- | ------- |
+
+13) Debug table is gemini answer recorded in markdown table format below
 
 DEBUG_TABLE
 | question (question from DEBUG LIST below) | gemini answer |
@@ -319,8 +408,8 @@ DEBUG_TABLE
 
 DEBUG LIST:
 1) i see you think too deeply for example when you see "free from artificial flavor" and you think product claim "does not contain added flavor". That is not what i want it must say that product claim "does not contain artificial flavor". I do not how to prompt and make you understand that so next time you will no make same mistake help me write prompt sentences to fix that
-2) the problem is that some claim you concluded from ingredient list? but the product claim is not retrieved from ingredient list
 `;
 };
 
+// 2) the problem is that some claim you concluded from ingredient list? but the product claim is not retrieved from ingredient list
 // 3) i only require the result of table with nutrient row that match my conditions but i see you actually created row with initial data not provided by me ? i do not want that can you help me with write prompt to fix that?

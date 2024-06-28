@@ -9,10 +9,10 @@ export const make_markdown_nut_prompt = ({
 OCR texts from ${imageCount} provided images:
 ${ocrText}  
 
-fix bugs and validation:
+VALIDATION AND FIX BUGS:
 1) why you keep not separating the dual-column nutrition fact panel? please please help me always separated into multiple table of info for dual-column nutrition fact panel.
 
-important requirements:
+IMPORTANT REQUIREMENTS:
 1) do not provide data that you cannot see it by human eyes on provided images.
 2) "added sugar"/ "include n gram of added sugar" is a separated nutrient (its "nutrient name" is "added sugar")
 3) text "include [number]g added sugars" should be recorded as "nutrient name" = "added sugars" and "amount per serving" = "[number]g" with number is the amount per serving value.
@@ -79,12 +79,13 @@ nutrient name descriptor = 29 billions living cultures
 2) total sugar rules:
 + total sugars do not have % Daily Value number, but it can have footnote symbol (such as **, *, +, ...) at "% Daily Value" column
 
-markdown rules:
+MARKDOWN RULES:
 1) do not bold nutrient name
 2) all nutrients must return all markdown defined columns above
 3) do not use bold or heading markdown syntax for table_name
 4) content in a markdown table cell can only use <br> as line break instead of "\n"
 
+RESULT THAT I NEED:
 carefully examine provided images above. They are captured images of one product, and return info from provided images that match all listed requirements and rules above with markdown tables format below
 
 1) Nutrition fact info recorded in table
