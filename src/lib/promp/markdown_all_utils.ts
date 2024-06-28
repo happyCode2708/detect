@@ -13,9 +13,10 @@ VALIDATION AND FIX BUGS:
 2) Only be using the information explicitly provided in the product images and not drawing conclusions based on the ingredient list. I will focus on directly extracting product claims from the text on the packaging and avoid making deductions based on the presence or absence of specific ingredients.
 Ex 1: if product have something in ingredient list. That cannot conclude that product claim to have this thing. Claim must be a statement or texts on the packaging make claim on a thing.
 3) "NON GMO Project VERIFIED" does not claim "not fried". It is about non-GMO food and products.
-5) Product info could contain multiple languages info. Only return provided info in english.
-4) Only return all markdown tables that i require you to return.
-5) There are some tables that i require return row items with specific given condition. Please check it carefully.
+4) Product info could contain multiple languages info. Only return provided info in english.
+5) Only return all markdown tables that i require you to return.
+6) There are some tables that i require return row items with specific given condition. Please check it carefully.
+7) you keep return only 10 or 11 digits for upc-12. It is wrong. 
 
 IMPORTANT RULES:
 1) "allergen" rules:
@@ -45,11 +46,15 @@ ex 1: "manufactured on equipment that also processes product containing ..."
 2) "extra claim list" rules:
 + "added color" claim does not mean product claim "artificial color".
 + "added color" claim does not mean product claim "artificial color".
-+ "vegan" text only does not mean "vegan ingredients"
-+ "natural" text only does not mean "natural ingredients"
++ "vegan" text only does not mean "vegan ingredients".
++ "natural" text only does not mean "natural ingredients".
++ "gluten free" does not mean product not contain "allergen". 
++ "allergen" claim detected from text such as "allergen free", "do not contain allergen", "product contain allergen", ...
++ "real ingredient" not mean "natural flavor" or "naturally flavored".
 
 3) "sugar claim list" rules:
 + "contain unsweetened" claim does not mean "no contain sugar added"
++ "low sweet" not mean "no contain sugar added"
 
 4) "header" table rules:
 + header table only have 1 row item so you must carefully examine the images.
@@ -67,16 +72,24 @@ ex 1: "manufactured on equipment that also processes product containing ..."
 + "social media text" is a list of text usually start with "@", or "#" those can be used to search the product on social media. Hint, it is usually next to social media icons.
 + "enlarge to show" is true if statement such as "enlarged to show..." seen on product image.
 
-7) "instruction" table rules:
-+ "other instruction" such as "best if consumed ..."
+7) "physical" rules:
++ "upc-12 or gtin-12" is a code contain 12 digit numbers, it usually appear on product image with structure that have 10 digit numbers at between two other digit numbers.
+Ex: "0   4562342221   5" as you can see there are two digit numbers at the start is 0 and at the end is 5. And the "upc-12 or gtin-12" here = 045623422215
+
+8) "instruction" table rules:
++ "other instruction" such as
+ex 1: "best if consumed ..."
+ex 2: "use it with lemon..."
 + "storage instruction" such as "keep refrigerated"
 + "usage time instruction" such "use by a time", "use within a time", "use before a time"
 Ex 1: "use within 30 days ..."
 
+
 RESULT THAT I NEED:
 Carefully examine provided images above. They are captured images of one product, and return info from provided images that match all listed requirements and rules above with all markdown tables format below
 
-1) extra claim list info recorded in markdown table format below (only return row item if "explicitly and directly mentioned in product info without implied from other text" value = true )
+1) extra claim list info recorded in markdown table format below 
+(ROW RETURN CONDITION: only return row item if "explicitly and directly mentioned in product info without implied from other text" value = true )
 
 EXTRA_CLAIM_TABLE
 | extra item |  explicitly and directly mentioned in product info without implied from other text (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
@@ -338,7 +351,7 @@ OTHER_CLAIM_TABLE
 | wild | ...
 | wild caught | ...
 
-5) calorie claim info recorded in markdown table format below 
+5) calorie claim info recorded in markdown table format below:
 (ROW RETURN CONDITION: only return row item if "does product explicitly claim this claim" value = true )
 
 CALORIE_CLAIM_TABLE
@@ -348,7 +361,7 @@ CALORIE_CLAIM_TABLE
 | reduced calorie | ...
 | zero calorie | ...
 
-6) salt claim info recorded in markdown table format below 
+6) salt claim info recorded in markdown table format below:
 (ROW RETURN CONDITION: only return row item if "does product explicitly claim this claim" value = true )
 
 SALT_CLAIM_TABLE
@@ -363,30 +376,39 @@ SALT_CLAIM_TABLE
 | unsalted | ...
 | very low sodium | ...
 
-7) Allergen info recorded in markdown table format below
+7) salt claim info recorded in markdown table format below:
+(ROW RETURN CONDITION: only return row item if "does product explicitly claim this claim" value = true )
+
+SALT_CLAIM_TABLE
+| salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| lightly salted | ...
+| low sodium | ...
+| no salt | ...
+| no salt added | ...
+| reduced sodium | ...
+| salt free | ...
+| sodium free | ...
+| unsalted | ...
+| very low sodium | ...
+
+8) Allergen info recorded in markdown table format below:
  
 ALLERGEN_TABLE
 | allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
 | ------- | -------- | -------- | ------- | -------- | -------- |
 
-8) Header info with table format below 
-(remember header table only have one row item)
+9) Header info with table format below:
+(IMPORTANT NOTE: remember header table only have one row item)
 
 HEADER_TABLE
 | product name | brand name | primary size | secondary size | third size | full size text description | count |
 | ------- | -------- | -------- | ------- | -------- | -------- | -------- |
 
-9) Ingredient info with table format below
+10) Ingredient info with table format below:
 
 INGREDIENT_TABLE
 | is product supplement ? (answer boolean) | ingredient statement | 
 | ------- | -------- |
-
-10) Marketing info with table format below
-
-MARKETING_TABLE
-| have QR code (answer is boolean) | social media list | website list | social media text list | enlarged to show (answer is boolean) |
-| ------- | -------- | -------- | ------- | ------- |
 
 11) Physical info with table format below
 
@@ -394,13 +416,27 @@ PHYSICAL_TABLE
 | upc-12 or gtin-12 |
 | ------- |
 
-12) Instruction info with table format below
+12) Marketing info with table format below:
+
+MARKETING_TABLE
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | social media list | website list | social media text list | enlarged to show (answer is boolean) |
+| ------- | -------- | -------- | ------- | ------- |
+
+13) Instruction info with table format below:
 
 INSTRUCTION_TABLE
 | storage instructions (answer are multiple string) | cooking instructions  (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string)| other instructions (answer are multiple string)|
 | ------- | -------- | -------- | ------- |
 
-13) Debug table is gemini answer recorded in markdown table format below
+14) supply chain info with table format below:
+
+SUPPLY_CHAIN_TABLE
+| country of origin | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+| ------- | -------- | -------- | ------- | ------- | -------- | -------- | ------- |
+
+
+
+15) Debug table is gemini answer recorded in markdown table format below:
 
 DEBUG_TABLE
 | question (question from DEBUG LIST below) | gemini answer |
