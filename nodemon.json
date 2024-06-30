@@ -4,7 +4,8 @@
     "src/router/*",
     "src/utils/*",
     "src/constants/*",
-    "src/lib/*"
+    "src/lib/*",
+    "src/middleware/*"
   ],
   "exec": "ts-node --project tsconfig.server.json src/server.ts -- -I",
   "ext": "js ts",

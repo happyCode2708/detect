@@ -88,7 +88,7 @@ Ex 1: "use within 30 days ..."
 RESULT THAT I NEED:
 Carefully examine provided images above. They are captured images of one product, and return info from provided images that match all listed requirements and rules above with all markdown tables format below
 
-1) extra claim list info recorded in markdown table format below 
++ extra claim list info recorded in markdown table format below 
 (ROW RETURN CONDITION: only return row item if "explicitly and directly mentioned in product info without implied from other text" value = true )
 
 EXTRA_CLAIM_TABLE
@@ -267,7 +267,7 @@ SUGAR_CLAIM_TABLE
 | contain unsweetened | ...
 | contain xylitol | ...
 
-3) Fat claim info of product images recorded in markdown table format below 
++ Fat claim info of product images recorded in markdown table format below 
 (ROW RETURN CONDITION: only return row item if "does product claim that fat claim" value = true )
 
 FAT_CLAIM_TABLE
@@ -284,7 +284,7 @@ FAT_CLAIM_TABLE
 | zero grams trans fat per serving | ...
 | zero trans fat | ...
 
-4) other claim list info recorded in markdown table format below 
++ other claim list info recorded in markdown table format below 
 (ROW RETURN CONDITION: only return row item if "does product explicitly claim this claim" value = true )
 
 OTHER_CLAIM_TABLE
@@ -351,7 +351,7 @@ OTHER_CLAIM_TABLE
 | wild | ...
 | wild caught | ...
 
-5) calorie claim info recorded in markdown table format below:
++ calorie claim info recorded in markdown table format below:
 (ROW RETURN CONDITION: only return row item if "does product explicitly claim this claim" value = true )
 
 CALORIE_CLAIM_TABLE
@@ -361,7 +361,7 @@ CALORIE_CLAIM_TABLE
 | reduced calorie | ...
 | zero calorie | ...
 
-6) salt claim info recorded in markdown table format below:
++ salt claim info recorded in markdown table format below:
 (ROW RETURN CONDITION: only return row item if "does product explicitly claim this claim" value = true )
 
 SALT_CLAIM_TABLE
@@ -376,59 +376,44 @@ SALT_CLAIM_TABLE
 | unsalted | ...
 | very low sodium | ...
 
-7) salt claim info recorded in markdown table format below:
-(ROW RETURN CONDITION: only return row item if "does product explicitly claim this claim" value = true )
-
-SALT_CLAIM_TABLE
-| salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
-| lightly salted | ...
-| low sodium | ...
-| no salt | ...
-| no salt added | ...
-| reduced sodium | ...
-| salt free | ...
-| sodium free | ...
-| unsalted | ...
-| very low sodium | ...
-
-8) Allergen info recorded in markdown table format below:
++ Allergen info recorded in markdown table format below:
  
 ALLERGEN_TABLE
 | allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
 | ------- | -------- | -------- | ------- | -------- | -------- |
 
-9) Header info with table format below:
++ Header info with table format below:
 (IMPORTANT NOTE: remember header table only have one row item)
 
 HEADER_TABLE
 | product name | brand name | primary size | secondary size | third size | full size text description | count |
 | ------- | -------- | -------- | ------- | -------- | -------- | -------- |
 
-10) Ingredient info with table format below:
++ Ingredient info with table format below:
 
 INGREDIENT_TABLE
 | is product supplement ? (answer boolean) | ingredient statement | 
 | ------- | -------- |
 
-11) Physical info with table format below
++ Physical info with table format below
 
 PHYSICAL_TABLE
 | upc-12 or gtin-12 |
 | ------- |
 
-12) Marketing info with table format below:
++ Marketing info with table format below:
 
 MARKETING_TABLE
 | have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | social media list | website list | social media text list | enlarged to show (answer is boolean) |
 | ------- | -------- | -------- | ------- | ------- |
 
-13) Instruction info with table format below:
++ Instruction info with table format below:
 
 INSTRUCTION_TABLE
 | storage instructions (answer are multiple string) | cooking instructions  (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string)| other instructions (answer are multiple string)|
 | ------- | -------- | -------- | ------- |
 
-14) supply chain info with table format below:
++ supply chain info with table format below:
 
 SUPPLY_CHAIN_TABLE
 | country of origin | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
@@ -436,7 +421,7 @@ SUPPLY_CHAIN_TABLE
 
 
 
-15) Debug table is gemini answer recorded in markdown table format below:
++ Debug table is gemini answer recorded in markdown table format below:
 
 DEBUG_TABLE
 | question (question from DEBUG LIST below) | gemini answer |

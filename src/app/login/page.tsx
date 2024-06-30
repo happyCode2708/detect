@@ -20,6 +20,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import { FluidContainer } from '@/components/container/FluidContainer';
+import { useMutateLogin } from '@/queries/auth';
 
 interface IFormInput {
   email: string;
@@ -27,7 +28,7 @@ interface IFormInput {
 }
 
 const formSchema = z.object({
-  username: z.string().min(2, {
+  email: z.string().min(2, {
     message: 'Username must be at least 2 characters.',
   }),
   password: z.string().min(3, {
@@ -46,19 +47,15 @@ const LoginPage: React.FC = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  };
+  const mutateLogin = useMutateLogin();
 
   // const mutation = useMutation(
-  //   async (data: IFormInput) => {
+  //   async (data: any) => {
   //     const response = await fetch('/api/login', {
   //       method: 'POST',
   //       headers: {
@@ -75,13 +72,20 @@ const LoginPage: React.FC = () => {
   //   },
   //   {
   //     onSuccess: () => {
-  //       router.push('/dashboard');
+  //       // router.push('/dashboard');
   //     },
   //     onError: (error: Error) => {
   //       console.error(error.message);
   //     },
   //   }
   // );
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+    mutateLogin.mutate(values);
+  };
 
   // const onSubmit: SubmitHandler<IFormInput> = (data) => {
   //   mutation.mutate(data);
@@ -98,7 +102,7 @@ const LoginPage: React.FC = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
             <FormField
               control={form.control}
-              name='username'
+              name='email'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>

@@ -13,6 +13,7 @@ import { ImageAnnotatorClient } from '@google-cloud/vision';
 import { make_markdown_nut_prompt } from '../promp/markdown_nut_utils';
 import { mapMarkdownNutToObject } from '../mapper/mapMarkdonwDataToObject';
 import { make_markdown_all_prompt } from '../promp/markdown_all_utils';
+import { mapMarkdownAllToObject } from '../mapper/mapMdAllToObject';
 
 export const generateContent = async (images: any[], text: any) => {
   if (!(global as any)?.generativeModel) return;
@@ -60,15 +61,6 @@ export const onProcessGemini = async ({
   isMarkdown?: boolean;
   mapMdToObjectFunct?: any;
 }) => {
-  // const base64Image = encodeImageToBase64(collatedOuputPath);
-
-  // const base64Full = `data:image/jpeg;base64,${base64Image}`;
-  // const image1 = {
-  //   inlineData: {
-  //     mimeType: 'image/png',
-  //     data: base64Image,
-  //   },
-  // };
   const images = collatedOuputPath.map((path) => {
     const base64Image = encodeImageToBase64(path);
     return {
@@ -167,7 +159,7 @@ export const onProcessGemini = async ({
         resultFileName,
         JSON.stringify({
           isSuccess: true,
-          data: { factPanels: jsonResult, nutMark: procResult },
+          data: { jsonData: jsonResult, nutMark: procResult },
         })
       );
     }
@@ -304,6 +296,7 @@ export const onProcessOther = async ({
       ]?.length,
     }),
     isMarkdown: true,
+    mapMdToObjectFunct: mapMarkdownAllToObject,
   });
 };
 

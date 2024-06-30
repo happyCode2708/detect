@@ -27,7 +27,7 @@ export const responseValidator = async (response: any, ocrClaims: any) => {
 
   // factPanelValidator(validatedResponse);
   nutFactMarkdownValidator(validatedResponse);
-  await validateProductDataPoints(validatedResponse, ocrClaims);
+  // await validateProductDataPoints(validatedResponse, ocrClaims);
 
   console.log('finish');
 
@@ -40,26 +40,26 @@ const validateProductDataPoints = async (response: any, ocrClaims: any) => {
 
   let modifiedProductDataPoints = { ...productDataPoints };
 
-  ingredientsValidator(modifiedProductDataPoints);
-  highRichExcellentClaimsValidator(modifiedProductDataPoints);
-  acidityClaimsValidator(modifiedProductDataPoints);
-  certifierAndClaimsValidator(modifiedProductDataPoints);
-  gradeClaimsValidator(modifiedProductDataPoints);
-  await allergenValidator(modifiedProductDataPoints);
-  await containValidatorOcr(modifiedProductDataPoints);
-  await containValidator(modifiedProductDataPoints);
+  // ingredientsValidator(modifiedProductDataPoints);
+  // highRichExcellentClaimsValidator(modifiedProductDataPoints);
+  // acidityClaimsValidator(modifiedProductDataPoints);
+  // certifierAndClaimsValidator(modifiedProductDataPoints);
+  // gradeClaimsValidator(modifiedProductDataPoints);
+  // await allergenValidator(modifiedProductDataPoints);
+  // await containValidatorOcr(modifiedProductDataPoints);
+  // await containValidator(modifiedProductDataPoints);
   // await nonCertifierClaimValidator(modifiedProductDataPoints);
-  await nonCertifierOcrValidator(modifiedProductDataPoints);
+  // await nonCertifierOcrValidator(modifiedProductDataPoints);
 
   // await saltClaimValidator(modifiedProductDataPoints);
-  await saltOrSodiumValidatorOcr(modifiedProductDataPoints);
-  await sugarAndSweetClaimValidator(modifiedProductDataPoints);
-  await sugarAndSweetValidatorOcr(modifiedProductDataPoints);
+  // await saltOrSodiumValidatorOcr(modifiedProductDataPoints);
+  // await sugarAndSweetClaimValidator(modifiedProductDataPoints);
+  // await sugarAndSweetValidatorOcr(modifiedProductDataPoints);
   // await calorieClaimValidator(modifiedProductDataPoints);
-  await calorieClaimValidatorOcr(modifiedProductDataPoints);
+  // await calorieClaimValidatorOcr(modifiedProductDataPoints);
   // await wholeGrainClaimValidator(modifiedProductDataPoints);
   // await fatContentClaimValidatordsa(modifiedProductDataPoints);
-  await fatClaimValidatorOcr(modifiedProductDataPoints);
+  // await fatClaimValidatorOcr(modifiedProductDataPoints);
   // validateContainAndDoesNotContain(productDataPoints); //* attribute
 
   response['product'] = { ...response.product, ...modifiedProductDataPoints };

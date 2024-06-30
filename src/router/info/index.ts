@@ -1,6 +1,6 @@
 import express from 'express';
 import fs from 'fs';
-import { resultsDir, historyDir } from '../../server';
+import { resultsDir, historyDir, prisma } from '../../server';
 import path from 'path';
 import { writeJsonToFile } from '../../lib/json';
 import { responseValidator } from '../../lib/validator/main';
@@ -85,10 +85,10 @@ router.get('/get-result/:sessionId', async (req, res) => {
     let response = {
       // ...allRes.data,
       // ...nutRes.data,
-      validatorAndFixBug: {
-        // ...allRes.data.validatorAndFixBug,
-        // ...nutRes.data.validatorAndFixBug,
-      },
+      // validatorAndFixBug: {
+      // ...allRes.data.validatorAndFixBug,
+      // ...nutRes.data.validatorAndFixBug,
+      // },
       product: {
         // ...allRes.data.product,
         mdFactPanels: nutRes?.data?.factPanels, //* markdown converted
@@ -133,6 +133,13 @@ router.get('/get-result/:sessionId', async (req, res) => {
       .status(500)
       .json({ isSuccess: false, message: 'Something went wrong' });
   }
+});
+
+router.get('/get-user', async (req, res) => {
+  const user = await prisma.user.findMany();
+  console.log('user', user);
+
+  return res.json({ isSuccess: true });
 });
 
 // router.get('/get-result/:sessionId', async (req, res) => {

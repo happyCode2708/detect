@@ -17,8 +17,6 @@ const RootLayout = async ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const { user } = await server_useUserInfo();
-
   return (
     <Provider>
       <html lang='en'>

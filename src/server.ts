@@ -1,11 +1,18 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import next from 'next';
 import path from 'path';
+
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
 
 import apiRouter from './router';
 import { getGenerative } from './lib/google/get-generative';
 import { getGoogleApiOcr } from './lib/google/get-gg-api-ocr';
 import nextBuild from 'next/dist/build';
+import { nextMiddleware } from './middleware/nextMiddleware';
+import { PrismaClient } from '@prisma/client';
+// import { nextMiddleware } from './middleware/nextMiddleware';
+export const prisma = new PrismaClient();
 
 const env = process.env.NODE_ENV || 'development';
 require('dotenv').config({ path: `.env.${env}` });
@@ -28,6 +35,9 @@ export const historyDir = path.join(__dirname, 'data/history');
 export const pythonPath = path.join(__dirname, 'python');
 
 const startServer = async () => {
+  app.use(cookieParser());
+  app.use(bodyParser.json());
+
   if (process.env.NEXT_BUILD) {
     app.listen(port, async () => {
       console.log('Next.js is building for production');
@@ -42,7 +52,10 @@ const startServer = async () => {
 
   app.use('/api', apiRouter);
 
-  app.use((req, res) => nextHandler(req, res));
+  app.use(
+    nextMiddleware,
+    async (req: Request, res: Response) => await nextHandler(req, res)
+  );
 
   nextApp.prepare().then(() => {
     app.listen(port, async () => {

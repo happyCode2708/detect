@@ -20,95 +20,90 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import { FluidContainer } from '@/components/container/FluidContainer';
+import { useMutateRegisterAccount } from '@/queries/auth';
 
 interface IFormInput {
   email: string;
+  name: string;
   password: string;
+  retypePassword: string;
 }
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-  password: z.string().min(3, {
-    message: 'password cannot be null',
-  }),
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Email is invalid'),
+  password: z.string().min(1, 'Password is required'),
+  // retypePassword: z.string().min(1, 'retype password is required'),
 });
+// .refine((data) => data.password === data.retypePassword, {
+//   path: ['retypePassword'],
+//   message: 'Passwords must match',
+// });
 
 const CreateAccountPage = () => {
   // const router = useRouter();
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<IFormInput>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
   });
+
+  const password = watch('password', '');
+
+  const mutateRegister = useMutateRegisterAccount();
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+    mutateRegister.mutate(values);
   };
-
-  // const mutation = useMutation(
-  //   async (data: IFormInput) => {
-  //     const response = await fetch('/api/login', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(data),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Login failed');
-  //     }
-
-  //     return response.json();
-  //   },
-  //   {
-  //     onSuccess: () => {
-  //       router.push('/dashboard');
-  //     },
-  //     onError: (error: Error) => {
-  //       console.error(error.message);
-  //     },
-  //   }
-  // );
-
-  // const onSubmit: SubmitHandler<IFormInput> = (data) => {
-  //   mutation.mutate(data);
-  // };
 
   return (
     <FluidContainer>
       <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
         <div className='text-center text-2xl text-muted-foreground mb-6'>
-          CREATE FIRST ACCOUNT
+          CREATE ACCOUNT
         </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
             <FormField
               control={form.control}
-              name='username'
+              name='name'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder='username' {...field} />
+                    <Input placeholder='name' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name='email'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder='email' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name='password'
@@ -122,19 +117,21 @@ const CreateAccountPage = () => {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
-              name='rePassword'
+              name='retypePassword'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Re-type Password</FormLabel>
+                  <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input placeholder='password' {...field} />
+                    <Input placeholder='retype Password' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <Button type='submit'>Submit</Button>
           </form>
         </Form>
