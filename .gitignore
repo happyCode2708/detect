@@ -50,3 +50,4 @@ output.txt
 service_account.json
 
 /ref/*
+/assets/*

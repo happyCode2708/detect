@@ -22,6 +22,16 @@ import { Input } from '@/components/ui/input';
 import { FluidContainer } from '@/components/container/FluidContainer';
 import { useMutateRegisterAccount } from '@/queries/auth';
 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
 interface IFormInput {
   email: string;
   name: string;
@@ -33,6 +43,7 @@ const formSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   email: z.string().email('Email is invalid'),
   password: z.string().min(1, 'Password is required'),
+  role: z.enum(['USER', 'ADMIN']),
   // retypePassword: z.string().min(1, 'retype password is required'),
 });
 // .refine((data) => data.password === data.retypePassword, {
@@ -118,7 +129,7 @@ const CreateAccountPage = () => {
               )}
             />
 
-            <FormField
+            {/* <FormField
               control={form.control}
               name='retypePassword'
               render={({ field }) => (
@@ -126,6 +137,34 @@ const CreateAccountPage = () => {
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
                     <Input placeholder='retype Password' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
+
+            <FormField
+              control={form.control}
+              name='role'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <Select
+                      {...field}
+                      onValueChange={(value) => field.onChange(value)}
+                    >
+                      <SelectTrigger className='w-[180px]'>
+                        <SelectValue placeholder='Select a role' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Role</SelectLabel>
+                          <SelectItem value='ADMIN'>Admin</SelectItem>
+                          <SelectItem value='USER'>User</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

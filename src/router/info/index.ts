@@ -16,23 +16,17 @@ router.get('/get-result/:sessionId', async (req, res) => {
     return res.json({ isSuccess: false });
   }
 
-  const allFilePath = path.join(
-    resultsDir + `/${sessionId}`,
-    'all-' + sessionId + '.json'
-  );
-  const nutFilePath = path.join(
-    resultsDir + `/${sessionId}`,
-    'nut-' + sessionId + '.json'
-  );
+  const allFilePath = path.join(resultsDir + `/${sessionId}`, 'all.json');
+  const nutFilePath = path.join(resultsDir + `/${sessionId}`, 'nut.json');
 
   const allOcrFilePath = path.join(
     resultsDir + `/${sessionId}`,
-    'all-orc-' + sessionId + '.json'
+    'all-orc.json'
   );
 
   const finalResultPath = path.join(
     resultsDir + `/${sessionId}`,
-    'validated-output-' + sessionId + '.json'
+    'validated-output.json'
   );
 
   try {
@@ -93,7 +87,7 @@ router.get('/get-result/:sessionId', async (req, res) => {
 
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
-      'validated-output-' + sessionId + '.json',
+      'validated-output.json',
       JSON.stringify({
         isSuccess: 'unknown',
         status: 'validating',
@@ -113,7 +107,7 @@ router.get('/get-result/:sessionId', async (req, res) => {
 
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
-      'validated-output-' + sessionId + '.json',
+      'validated-output.json',
       JSON.stringify({
         isSuccess: true,
         data: validatedResponse,

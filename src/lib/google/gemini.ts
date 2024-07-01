@@ -75,7 +75,7 @@ export const onProcessGemini = async ({
     text: prompt,
   };
 
-  const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
+  const resultFileName = (prefix ? `${prefix}` : '') + '.json';
 
   // addNewExtractionToHistory(sessionId, {
   //   collateImage: { name: collateImageName, url: collatedOuputPath },
@@ -192,7 +192,7 @@ export const onProcessOther = async ({
   outputConfig: any;
 }) => {
   if (!outputConfig.other) {
-    const resultFileName = 'all-' + sessionId + '.json';
+    const resultFileName = 'all.json';
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
       resultFileName,
@@ -201,22 +201,22 @@ export const onProcessOther = async ({
 
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
-      'all-orc-' + sessionId + '.json',
+      'all-orc.json',
       JSON.stringify({})
     );
 
-    writeJsonToFile(
-      resultsDir + `/${sessionId}`,
-      'orc-claims' + sessionId + '.json',
-      JSON.stringify({})
-    );
+    // writeJsonToFile(
+    //   resultsDir + `/${sessionId}`,
+    //   'orc-claims.json',
+    //   JSON.stringify({})
+    // );
 
     return;
   }
 
   const prefix = 'all';
 
-  const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
+  const resultFileName = (prefix ? `${prefix}` : '') + '.json';
 
   writeJsonToFile(
     resultsDir + `/${sessionId}`,
@@ -249,19 +249,19 @@ export const onProcessOther = async ({
     {}
   );
 
-  const { ocr_claims } = (await mapOcrToPredictDataPoint(new_allText)) || {};
+  // const { ocr_claims } = (await mapOcrToPredictDataPoint(new_allText)) || {};
 
   writeJsonToFile(
     resultsDir + `/${sessionId}`,
-    'all-orc-' + sessionId + '.json',
+    'all-orc.json',
     JSON.stringify(new_allText)
   );
 
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    'orc-claims' + sessionId + '.json',
-    JSON.stringify(ocr_claims)
-  );
+  // writeJsonToFile(
+  //   resultsDir + `/${sessionId}`,
+  //   'orc-claims.json',
+  //   JSON.stringify(ocr_claims)
+  // );
 
   onProcessGemini({
     req,
@@ -318,17 +318,15 @@ export const onProcessNut = async ({
   outputConfig: any;
 }) => {
   if (invalidatedInput?.nutIncluded?.length === 0 || !outputConfig.nut) {
-    const resultFileName = 'nut-' + sessionId + '.json';
-
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
-      resultFileName,
+      'nut.json',
       JSON.stringify({ isSuccess: true, data: { product: { factPanel: [] } } })
     );
 
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
-      'nut-orc-' + sessionId + '.json',
+      'nut-orc.json',
       JSON.stringify({})
     );
 
@@ -337,7 +335,7 @@ export const onProcessNut = async ({
 
   const prefix = 'nut';
 
-  const resultFileName = (prefix ? `${prefix}-` : '') + sessionId + '.json';
+  const resultFileName = (prefix ? `${prefix}` : '') + '.json';
 
   writeJsonToFile(
     resultsDir + `/${sessionId}`,
@@ -372,7 +370,7 @@ export const onProcessNut = async ({
 
   writeJsonToFile(
     resultsDir + `/${sessionId}`,
-    'nut-orc-' + sessionId + '.json',
+    'nut-orc.json',
     JSON.stringify(new_nutText)
   );
 

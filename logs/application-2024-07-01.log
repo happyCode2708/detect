@@ -8142,3 +8142,1340 @@ For instance, you could rephrase the "extra claim list" instructions as:
 2024-07-01 14:38:14 [32minfo[39m: [{"storageInstruction":"","cookingInstruction":"","usageInstruction":"","usageTimeInstruction":"","otherInstructions":""}]
 2024-07-01 14:38:14 [31merror[39m: supplyChain
 2024-07-01 14:38:14 [32minfo[39m: [{"countryOfOrigin":"891077002253","manufacturerName":"","manufacturerDate":"","manufacturerPhoneNumber":"","manufacturerStreetAddress":"","manufacturerCity":"","manufacturerState":"","manufactureZipCode":""}]
+2024-07-01 14:43:35 [31merror[39m: extra 1
+2024-07-01 14:43:35 [32minfo[39m: **
+
+| extra item | item explicitly and directly state in a text on product without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it? (answer is yes/no) | Does the product explicitly state to not contain it? (answer is yes/no) | do you know it through which info? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that? and give me you explain (answer in string) |
+|---|---|---|---|---|---|
+| dry roasted | true | yes |  | ingredient list | The ingredient list states "Dry Roasted Hazelnuts". |
+
+**
+2024-07-01 14:43:35 [31merror[39m: extra 2
+2024-07-01 14:43:35 [32minfo[39m: **
+
+| extra item | item explicitly and directly state in a text on product without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it? (answer is yes/no) | Does the product explicitly state to not contain it? (answer is yes/no) | do you know it through which info? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that? and give me you explain (answer in string) |
+|---|---|---|---|---|---|
+| cholesterol | true | yes |  | nutrition fact | The nutrition facts label states "Cholesterol 15mg". |
+
+**
+2024-07-01 14:43:35 [31merror[39m: sugar
+2024-07-01 14:43:35 [32minfo[39m: **
+
+| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources) | how do you know that? and give me you explain (answer in string) |
+|---|---|---|---|
+| contain cane sugar | true | ingredient list | The ingredient list includes "Turbinado Cane Sugar". |
+| no contain sugar added | unknown |  |  |
+
+**
+2024-07-01 14:43:35 [31merror[39m: fat
+2024-07-01 14:43:35 [32minfo[39m: **
+
+| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that? and give me you explain (answer in string) |
+|---|---|---|---|
+| trans fat free | true | nutrition fact | The nutrition facts label states "Trans Fat 0g". |
+
+**
+2024-07-01 14:43:35 [31merror[39m: other
+2024-07-01 14:43:35 [32minfo[39m: **
+
+| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that? and give me you explain (answer in string) |
+|---|---|---|---|
+| baked | true | marketing text on product | The packaging describes the product as "lovingly baked delights". |
+
+**
+2024-07-01 14:43:35 [31merror[39m: calorie
+2024-07-01 14:43:35 [32minfo[39m: **
+
+| calorie claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+|---|---|---|
+| low calorie | unknown |  |
+
+**
+2024-07-01 14:43:35 [31merror[39m: salt
+2024-07-01 14:43:35 [32minfo[39m: **
+
+| salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+|---|---|---|
+| lightly salted | unknown |  |
+
+**
+2024-07-01 14:43:35 [31merror[39m: allergen
+2024-07-01 14:43:35 [32minfo[39m: **
+
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list |
+|---|---|---|---|---|---|
+| CONTAINS MILK, WHEAT, HAZELNUTS. Made in a facility that also processes eggs, milk, peanuts, sesame, soy and tree nuts. | milk, wheat, hazelnuts, eggs, peanuts, sesame, soy, tree nuts |  |  | Made in a facility that also processes eggs, milk, peanuts, sesame, soy and tree nuts. | eggs, milk, peanuts, sesame, soy, tree nuts | 
+
+**
+2024-07-01 14:43:35 [31merror[39m: header
+2024-07-01 14:43:35 [32minfo[39m: **
+
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+|---|---|---|---|---|---|---|
+| Crisp & Buttery Not Too Sweet Biscuits HAZELNUT | Effie's Homemade | 7.2 oz | 204g |  | 7.2 oz (204g) |  |
+
+**
+2024-07-01 14:43:35 [31merror[39m: ingredient
+2024-07-01 14:43:35 [32minfo[39m: **
+
+| is product supplement? (answer boolean) | ingredient statement |
+|---|---|
+| false | Wheat Flour, Oats, Butter, Turbinado Cane Sugar, Dry Roasted Hazelnuts, Water, Kosher Salt, Baking Soda. |
+
+**
+2024-07-01 14:43:35 [31merror[39m: physical
+2024-07-01 14:43:35 [32minfo[39m: **
+
+| upc-12 or gtin-12 |
+|---|
+| 891077002253 |
+
+**
+2024-07-01 14:43:35 [31merror[39m: marketing
+2024-07-01 14:43:35 [32minfo[39m: **
+
+| have QR code (answer is boolean) | have Instagram icon? | have Pinterest icon? | have Youtube icon? | have Facebook icon? | have twitter icon? | social media list | website list | social media text list | enlarged to show (answer is boolean) |
+|---|---|---|---|---|---|---|---|---|---|
+| false | true | true | true | true | false | Instagram, Pinterest, Youtube, Facebook | EFFIESHOMEMADE.COM |  | false |
+
+**
+2024-07-01 14:43:35 [31merror[39m: instruction
+2024-07-01 14:43:35 [32minfo[39m: **
+
+| storage instructions (answer are multiple string) | cooking instructions (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string) | other instructions (answer are multiple string) |
+|---|---|---|---|---|
+|  |  |  |  |  |
+
+**
+2024-07-01 14:43:35 [31merror[39m: supply chain
+2024-07-01 14:43:35 [32minfo[39m: **
+
+| country of origin | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+|---|---|---|---|---|---|---|---|
+| USA | Effie's Homemade, LLC |  |  |  | Hyde Park | MA | 02136 |
+
+**
+2024-07-01 14:43:35 [31merror[39m: extra claim object list 1
+2024-07-01 14:43:35 [32minfo[39m: [{"claim":"dry roasted","mentioned":"true","contain":"yes","notContain":"","source":"ingredient list","reason":"The ingredient list states \"Dry Roasted Hazelnuts\"."}]
+2024-07-01 14:43:35 [31merror[39m: extra claim object list 2
+2024-07-01 14:43:35 [32minfo[39m: [{"claim":"cholesterol","mentioned":"true","contain":"yes","notContain":"","source":"nutrition fact","reason":"The nutrition facts label states \"Cholesterol 15mg\"."}]
+2024-07-01 14:43:35 [31merror[39m: sugar claim list
+2024-07-01 14:43:35 [32minfo[39m: [{"claim":"contain cane sugar","isClaimed":"true","source":"ingredient list","reason":"The ingredient list includes \"Turbinado Cane Sugar\"."},{"claim":"no contain sugar added","isClaimed":"unknown","source":"","reason":""}]
+2024-07-01 14:43:35 [31merror[39m: fat claim list
+2024-07-01 14:43:35 [32minfo[39m: [{"claim":"trans fat free","isClaimed":"true","source":"nutrition fact","reason":"The nutrition facts label states \"Trans Fat 0g\"."}]
+2024-07-01 14:43:35 [31merror[39m: other claim list
+2024-07-01 14:43:35 [32minfo[39m: [{"claim":"baked","isClaimed":"true","source":"marketing text on product","reason":"The packaging describes the product as \"lovingly baked delights\"."}]
+2024-07-01 14:43:35 [31merror[39m: calorie claim list
+2024-07-01 14:43:35 [32minfo[39m: [{"claim":"low calorie","isClaimed":"unknown","source":""}]
+2024-07-01 14:43:35 [31merror[39m: salt claim list
+2024-07-01 14:43:35 [32minfo[39m: [{"claim":"lightly salted","isClaimed":"unknown","source":""}]
+2024-07-01 14:43:35 [31merror[39m: allergen list
+2024-07-01 14:43:35 [32minfo[39m: [{"containStatement":"CONTAINS MILK, WHEAT, HAZELNUTS. Made in a facility that also processes eggs, milk, peanuts, sesame, soy and tree nuts.","containList":"milk, wheat, hazelnuts, eggs, peanuts, sesame, soy, tree nuts","notContainStatement":"","notContainList":"","containOnEquipmentStatement":"Made in a facility that also processes eggs, milk, peanuts, sesame, soy and tree nuts.","containOnEquipmentList":"eggs, milk, peanuts, sesame, soy, tree nuts"}]
+2024-07-01 14:43:35 [31merror[39m: header list
+2024-07-01 14:43:35 [32minfo[39m: [{"productName":"Crisp & Buttery Not Too Sweet Biscuits HAZELNUT","brandName":"Effie's Homemade","primarySize":"7.2 oz","secondarySize":"204g","thirdSize":"","fullSizeTextDescription":"7.2 oz (204g)","count":""}]
+2024-07-01 14:43:35 [31merror[39m: ingredient list
+2024-07-01 14:43:35 [32minfo[39m: [{"isProductSupplement":"false","ingredientStatement":"Wheat Flour, Oats, Butter, Turbinado Cane Sugar, Dry Roasted Hazelnuts, Water, Kosher Salt, Baking Soda."}]
+2024-07-01 14:43:35 [31merror[39m: physical
+2024-07-01 14:43:35 [32minfo[39m: [{"upc12":"891077002253"}]
+2024-07-01 14:43:35 [31merror[39m: marketing
+2024-07-01 14:43:35 [32minfo[39m: [{"haveQrCode":"false","instagram":"true","pinterest":"true","youtube":"true","facebook":"true","twitter":"false","socialMediaList":"Instagram, Pinterest, Youtube, Facebook","website":"EFFIESHOMEMADE.COM","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-01 14:43:35 [31merror[39m: instruction
+2024-07-01 14:43:35 [32minfo[39m: [{"storageInstruction":"","cookingInstruction":"","usageInstruction":"","usageTimeInstruction":"","otherInstructions":""}]
+2024-07-01 14:43:35 [31merror[39m: supplyChain
+2024-07-01 14:43:35 [32minfo[39m: [{"countryOfOrigin":"891077002253","manufacturerName":"","manufacturerDate":"","manufacturerPhoneNumber":"","manufacturerStreetAddress":"","manufacturerCity":"","manufacturerState":"","manufactureZipCode":""}]
+2024-07-01 14:55:37 [31merror[39m: extra 1
+2024-07-01 14:55:37 [32minfo[39m: **
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|---|---|
+| dry roasted | true | yes |  | ingredient list | The ingredient list states "Dry Roasted Hazelnuts". |
+
+**
+2024-07-01 14:55:37 [31merror[39m: extra 2
+2024-07-01 14:55:37 [32minfo[39m: **
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|---|---|
+| cholesterol | true | yes |  | nutrition fact | The nutrition facts label states "Cholesterol 15mg". |
+
+**
+2024-07-01 14:55:37 [31merror[39m: sugar
+2024-07-01 14:55:37 [32minfo[39m: **
+| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)| how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+| contain cane sugar | true | ingredient list | The ingredient list states "Turbinado Cane Sugar". |
+| no contain sugar added | unknown |  |  |
+
+**
+2024-07-01 14:55:37 [31merror[39m: fat
+2024-07-01 14:55:37 [32minfo[39m: **
+| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+| no trans fat | true | nutrition fact | The nutrition facts label states "Trans Fat 0g". |
+
+**
+2024-07-01 14:55:37 [31merror[39m: other
+2024-07-01 14:55:37 [32minfo[39m: **
+| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+| baked | true | marketing text on product | The packaging describes the product as "lovingly baked delights". |
+
+**
+2024-07-01 14:55:37 [31merror[39m: calorie
+2024-07-01 14:55:37 [32minfo[39m: **
+| calorie claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+|---|---|---|
+| low calorie | unknown |  |
+
+**
+2024-07-01 14:55:37 [31merror[39m: salt
+2024-07-01 14:55:37 [32minfo[39m: **
+| salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+|---|---|---|
+| lightly salted | unknown |  |
+
+**
+2024-07-01 14:55:37 [31merror[39m: allergen
+2024-07-01 14:55:37 [32minfo[39m: **
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+|---|---|---|---|---|---|
+| CONTAINS MILK , WHEAT , HAZELNUTS . | milk, wheat, hazelnuts |  |  | Made in a facility that also processes eggs , milk , peanuts , sesame , soy and tree nuts . | eggs, milk, peanuts, sesame, soy, tree nuts |
+
+**
+2024-07-01 14:55:37 [31merror[39m: header
+2024-07-01 14:55:37 [32minfo[39m: **
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+|---|---|---|---|---|---|---|
+| Crisp & Buttery Biscuits HAZELNUT | Effie's HOMEMADE | 7.2 oz | 204g |  |  |  |
+
+**
+2024-07-01 14:55:37 [31merror[39m: ingredient
+2024-07-01 14:55:37 [32minfo[39m: **
+| is product supplement ? (answer boolean) | ingredient statement | 
+|---|---|
+| false | Wheat Flour, Oats, Butter, Turbinado Cane Sugar, Dry Roasted Hazelnuts, Water, Kosher Salt, Baking Soda. |
+
+**
+2024-07-01 14:55:37 [31merror[39m: physical
+2024-07-01 14:55:37 [32minfo[39m: **
+| upc-12 or gtin-12 |
+|---|
+| 891077002253 |
+
+**
+2024-07-01 14:55:37 [31merror[39m: marketing
+2024-07-01 14:55:37 [32minfo[39m: **
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | have twitter icon ? | social media list | website list | social media text list | enlarged to show (answer is boolean) |
+|---|---|---|---|---|---|---|---|---|---|
+| false | true | true | true | true | false | Instagram, Pinterest, Youtube, Facebook | EFFIESHOMEMADE.COM |  | false |
+
+**
+2024-07-01 14:55:37 [31merror[39m: instruction
+2024-07-01 14:55:37 [32minfo[39m: **
+| storage instructions (answer are multiple string) | cooking instructions  (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string)| other instructions (answer are multiple string)|
+|---|---|---|---|---|
+|  |  |  |  |  |
+
+**
+2024-07-01 14:55:37 [31merror[39m: supply chain
+2024-07-01 14:55:37 [32minfo[39m: **
+| country of origin | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+|---|---|---|---|---|---|---|---|
+| USA | Effie's Homemade, LLC |  |  |  | Hyde Park | MA | 02136 |
+
+**
+2024-07-01 14:55:37 [31merror[39m: extra claim object list 1
+2024-07-01 14:55:37 [32minfo[39m: [{"claim":"dry roasted","mentioned":"true","contain":"yes","notContain":"","source":"ingredient list","reason":"The ingredient list states \"Dry Roasted Hazelnuts\"."}]
+2024-07-01 14:55:37 [31merror[39m: extra claim object list 2
+2024-07-01 14:55:37 [32minfo[39m: [{"claim":"cholesterol","mentioned":"true","contain":"yes","notContain":"","source":"nutrition fact","reason":"The nutrition facts label states \"Cholesterol 15mg\"."}]
+2024-07-01 14:55:37 [31merror[39m: sugar claim list
+2024-07-01 14:55:37 [32minfo[39m: [{"claim":"contain cane sugar","isClaimed":"true","source":"ingredient list","reason":"The ingredient list states \"Turbinado Cane Sugar\"."},{"claim":"no contain sugar added","isClaimed":"unknown","source":"","reason":""}]
+2024-07-01 14:55:37 [31merror[39m: fat claim list
+2024-07-01 14:55:37 [32minfo[39m: [{"claim":"no trans fat","isClaimed":"true","source":"nutrition fact","reason":"The nutrition facts label states \"Trans Fat 0g\"."}]
+2024-07-01 14:55:37 [31merror[39m: other claim list
+2024-07-01 14:55:37 [32minfo[39m: [{"claim":"baked","isClaimed":"true","source":"marketing text on product","reason":"The packaging describes the product as \"lovingly baked delights\"."}]
+2024-07-01 14:55:37 [31merror[39m: calorie claim list
+2024-07-01 14:55:37 [32minfo[39m: [{"claim":"low calorie","isClaimed":"unknown","source":""}]
+2024-07-01 14:55:37 [31merror[39m: salt claim list
+2024-07-01 14:55:37 [32minfo[39m: [{"claim":"lightly salted","isClaimed":"unknown","source":""}]
+2024-07-01 14:55:37 [31merror[39m: allergen list
+2024-07-01 14:55:37 [32minfo[39m: [{"containStatement":"CONTAINS MILK , WHEAT , HAZELNUTS .","containList":"milk, wheat, hazelnuts","notContainStatement":"","notContainList":"","containOnEquipmentStatement":"Made in a facility that also processes eggs , milk , peanuts , sesame , soy and tree nuts .","containOnEquipmentList":"eggs, milk, peanuts, sesame, soy, tree nuts"}]
+2024-07-01 14:55:37 [31merror[39m: header list
+2024-07-01 14:55:37 [32minfo[39m: [{"productName":"Crisp & Buttery Biscuits HAZELNUT","brandName":"Effie's HOMEMADE","primarySize":"7.2 oz","secondarySize":"204g","thirdSize":"","fullSizeTextDescription":"","count":""}]
+2024-07-01 14:55:37 [31merror[39m: ingredient list
+2024-07-01 14:55:37 [32minfo[39m: [{"isProductSupplement":"false","ingredientStatement":"Wheat Flour, Oats, Butter, Turbinado Cane Sugar, Dry Roasted Hazelnuts, Water, Kosher Salt, Baking Soda."}]
+2024-07-01 14:55:37 [31merror[39m: physical
+2024-07-01 14:55:37 [32minfo[39m: [{"upc12":"891077002253"}]
+2024-07-01 14:55:37 [31merror[39m: marketing
+2024-07-01 14:55:37 [32minfo[39m: [{"haveQrCode":"false","instagram":"true","pinterest":"true","youtube":"true","facebook":"true","twitter":"false","socialMediaList":"Instagram, Pinterest, Youtube, Facebook","website":"EFFIESHOMEMADE.COM","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-01 14:55:37 [31merror[39m: instruction
+2024-07-01 14:55:37 [32minfo[39m: [{"storageInstruction":"","cookingInstruction":"","usageInstruction":"","usageTimeInstruction":"","otherInstructions":""}]
+2024-07-01 14:55:37 [31merror[39m: supplyChain
+2024-07-01 14:55:37 [32minfo[39m: [{"countryOfOrigin":"891077002253","manufacturerName":"","manufacturerDate":"","manufacturerPhoneNumber":"","manufacturerStreetAddress":"","manufacturerCity":"","manufacturerState":"","manufactureZipCode":""}]
+2024-07-01 14:58:17 [31merror[39m: extra 1
+2024-07-01 14:58:17 [32minfo[39m: **
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|---|---|
+| dry roasted | true | yes |  | ingredient list | The ingredient list states "Dry Roasted Hazelnuts". |
+
+**
+2024-07-01 14:58:17 [31merror[39m: extra 2
+2024-07-01 14:58:17 [32minfo[39m: **
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|---|---|
+| cholesterol | true | yes | no | nutrition fact | The nutrition facts label states "Cholesterol 15mg". |
+
+**
+2024-07-01 14:58:17 [31merror[39m: sugar
+2024-07-01 14:58:17 [32minfo[39m: **
+| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)| how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+| contain cane sugar | true | ingredient list | The ingredient list includes "Turbinado Cane Sugar". |
+| no contain sugar added | unknown |  |  |
+
+**
+2024-07-01 14:58:17 [31merror[39m: fat
+2024-07-01 14:58:17 [32minfo[39m: **
+| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+| trans fat free | true | nutrition fact | The nutrition facts label states "Trans Fat 0g". |
+
+**
+2024-07-01 14:58:17 [31merror[39m: other
+2024-07-01 14:58:17 [32minfo[39m: **
+| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+| baked | true | marketing text on product | The packaging describes the product as "lovingly baked delights". |
+
+**
+2024-07-01 14:58:17 [31merror[39m: calorie
+2024-07-01 14:58:17 [32minfo[39m: **
+| calorie claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+|---|---|---|
+| low calorie | unknown |  |
+
+**
+2024-07-01 14:58:17 [31merror[39m: salt
+2024-07-01 14:58:17 [32minfo[39m: **
+| salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+|---|---|---|
+| lightly salted | unknown |  |
+
+**
+2024-07-01 14:58:17 [31merror[39m: allergen
+2024-07-01 14:58:17 [32minfo[39m: **
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+|---|---|---|---|---|---|
+| CONTAINS MILK , WHEAT , HAZELNUTS . | milk, wheat, tree nuts |  |  | Made in a facility that also processes eggs , milk , peanuts , sesame , soy and tree nuts . | eggs, milk, peanuts, sesame, soy, tree nuts |
+
+**
+2024-07-01 14:58:17 [31merror[39m: header
+2024-07-01 14:58:17 [32minfo[39m: **
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+|---|---|---|---|---|---|---|
+| HAZELNUT BISCUITS | Effie's HOMEMADE | 7.2 oz | 204g |  |  |  |
+
+**
+2024-07-01 14:58:17 [31merror[39m: ingredient
+2024-07-01 14:58:17 [32minfo[39m: **
+| is product supplement ? (answer boolean) | ingredient statement | 
+|---|---|
+| false | Wheat Flour, Oats, Butter, Turbinado Cane Sugar, Dry Roasted Hazelnuts, Water, Kosher Salt, Baking Soda. |
+
+**
+2024-07-01 14:58:17 [31merror[39m: physical
+2024-07-01 14:58:17 [32minfo[39m: **
+| upc-12 or gtin-12 |
+|---|
+| 891077002253 |
+
+**
+2024-07-01 14:58:17 [31merror[39m: marketing
+2024-07-01 14:58:17 [32minfo[39m: **
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | have twitter icon ? | social media list | website list | social media text list | enlarged to show (answer is boolean) |
+|---|---|---|---|---|---|---|---|---|---|
+| false | true | true | true | true | false | Instagram, Pinterest, Youtube, Facebook | EFFIESHOMEMADE.COM |  | false |
+
+**
+2024-07-01 14:58:17 [31merror[39m: instruction
+2024-07-01 14:58:17 [32minfo[39m: **
+| storage instructions (answer are multiple string) | cooking instructions  (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string)| other instructions (answer are multiple string)|
+|---|---|---|---|---|
+|  |  |  |  |  |
+
+**
+2024-07-01 14:58:17 [31merror[39m: supply chain
+2024-07-01 14:58:17 [32minfo[39m: **
+| country of origin | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+|---|---|---|---|---|---|---|---|
+| USA | Effie's Homemade, LLC |  |  |  | Hyde Park | MA | 02136 |
+
+**
+2024-07-01 14:58:17 [31merror[39m: extra claim object list 1
+2024-07-01 14:58:17 [32minfo[39m: [{"claim":"dry roasted","mentioned":"true","contain":"yes","notContain":"","source":"ingredient list","reason":"The ingredient list states \"Dry Roasted Hazelnuts\"."}]
+2024-07-01 14:58:17 [31merror[39m: extra claim object list 2
+2024-07-01 14:58:17 [32minfo[39m: [{"claim":"cholesterol","mentioned":"true","contain":"yes","notContain":"no","source":"nutrition fact","reason":"The nutrition facts label states \"Cholesterol 15mg\"."}]
+2024-07-01 14:58:17 [31merror[39m: sugar claim list
+2024-07-01 14:58:17 [32minfo[39m: [{"claim":"contain cane sugar","isClaimed":"true","source":"ingredient list","reason":"The ingredient list includes \"Turbinado Cane Sugar\"."},{"claim":"no contain sugar added","isClaimed":"unknown","source":"","reason":""}]
+2024-07-01 14:58:17 [31merror[39m: fat claim list
+2024-07-01 14:58:17 [32minfo[39m: [{"claim":"trans fat free","isClaimed":"true","source":"nutrition fact","reason":"The nutrition facts label states \"Trans Fat 0g\"."}]
+2024-07-01 14:58:17 [31merror[39m: other claim list
+2024-07-01 14:58:17 [32minfo[39m: [{"claim":"baked","isClaimed":"true","source":"marketing text on product","reason":"The packaging describes the product as \"lovingly baked delights\"."}]
+2024-07-01 14:58:17 [31merror[39m: calorie claim list
+2024-07-01 14:58:17 [32minfo[39m: [{"claim":"low calorie","isClaimed":"unknown","source":""}]
+2024-07-01 14:58:17 [31merror[39m: salt claim list
+2024-07-01 14:58:17 [32minfo[39m: [{"claim":"lightly salted","isClaimed":"unknown","source":""}]
+2024-07-01 14:58:17 [31merror[39m: allergen list
+2024-07-01 14:58:17 [32minfo[39m: [{"containStatement":"CONTAINS MILK , WHEAT , HAZELNUTS .","containList":"milk, wheat, tree nuts","notContainStatement":"","notContainList":"","containOnEquipmentStatement":"Made in a facility that also processes eggs , milk , peanuts , sesame , soy and tree nuts .","containOnEquipmentList":"eggs, milk, peanuts, sesame, soy, tree nuts"}]
+2024-07-01 14:58:17 [31merror[39m: header list
+2024-07-01 14:58:17 [32minfo[39m: [{"productName":"HAZELNUT BISCUITS","brandName":"Effie's HOMEMADE","primarySize":"7.2 oz","secondarySize":"204g","thirdSize":"","fullSizeTextDescription":"","count":""}]
+2024-07-01 14:58:17 [31merror[39m: ingredient list
+2024-07-01 14:58:17 [32minfo[39m: [{"isProductSupplement":"false","ingredientStatement":"Wheat Flour, Oats, Butter, Turbinado Cane Sugar, Dry Roasted Hazelnuts, Water, Kosher Salt, Baking Soda."}]
+2024-07-01 14:58:17 [31merror[39m: physical
+2024-07-01 14:58:17 [32minfo[39m: [{"upc12":"891077002253"}]
+2024-07-01 14:58:17 [31merror[39m: marketing
+2024-07-01 14:58:17 [32minfo[39m: [{"haveQrCode":"false","instagram":"true","pinterest":"true","youtube":"true","facebook":"true","twitter":"false","socialMediaList":"Instagram, Pinterest, Youtube, Facebook","website":"EFFIESHOMEMADE.COM","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-01 14:58:17 [31merror[39m: instruction
+2024-07-01 14:58:17 [32minfo[39m: [{"storageInstruction":"","cookingInstruction":"","usageInstruction":"","usageTimeInstruction":"","otherInstructions":""}]
+2024-07-01 14:58:17 [31merror[39m: supplyChain
+2024-07-01 14:58:17 [32minfo[39m: [{"countryOfOrigin":"891077002253","manufacturerName":"","manufacturerDate":"","manufacturerPhoneNumber":"","manufacturerStreetAddress":"","manufacturerCity":"","manufacturerState":"","manufactureZipCode":""}]
+2024-07-01 15:34:08 [31merror[39m: debug section
+2024-07-01 15:34:08 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. I know to look for multiple columns with different serving sizes or different % Daily Values. This table only has one column for % Daily Value. | 
+
+2024-07-01 15:34:08 [31merror[39m: footnote
+2024-07-01 15:34:08 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| † Daily Value (DV) not established | † Daily Value (DV) not established |
+
+
+
+2024-07-01 15:34:08 [31merror[39m: debug
+2024-07-01 15:34:08 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. I know to look for multiple columns with different serving sizes or different % Daily Values. This table only has one column for % Daily Value. | 
+
+2024-07-01 15:34:08 [31merror[39m: debug table
+2024-07-01 15:34:08 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-01 15:34:37 [31merror[39m: extra 1
+2024-07-01 15:34:37 [32minfo[39m: **
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | ------- | ------- | -------- | -------- |
+| allergen | true | no | yes | marketing text on product | The product states "Gluten & Dairy Free" on the label. |
+| amino acids | true | yes | no | marketing text on product | The product is named "Perfect Amino" and states "Essential Amino Acids" on the packaging. |
+
+**
+2024-07-01 15:34:37 [31merror[39m: extra 2
+2024-07-01 15:34:37 [32minfo[39m: **
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | ------- | ------- | -------- | -------- |
+| vegan ingredients | true | yes | no | marketing text on product | The product is labeled as a "VEGAN DIETARY SUPPLEMENT". |
+
+**
+2024-07-01 15:34:37 [31merror[39m: sugar
+2024-07-01 15:34:37 [32minfo[39m: **
+| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)| how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| no contain sugar added | false | ingredient list | While the product doesn't explicitly state "no sugar added," it does list "Stevia" as an ingredient. |
+
+**
+2024-07-01 15:34:37 [31merror[39m: fat
+2024-07-01 15:34:37 [32minfo[39m: **
+| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+
+**
+2024-07-01 15:34:37 [31merror[39m: other
+2024-07-01 15:34:37 [32minfo[39m: **
+| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| gluten free | true | marketing text on product | The product states "Gluten & Dairy Free" on the label. |
+| paleo | true | marketing text on product | The product states "Paleo & Keto-Friendly" on the label. |
+| keto-friendly | true | marketing text on product | The product states "Paleo & Keto-Friendly" on the label. |
+
+**
+2024-07-01 15:34:37 [31merror[39m: calorie
+2024-07-01 15:34:37 [32minfo[39m: **
+| calorie claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+
+**
+2024-07-01 15:34:37 [31merror[39m: salt
+2024-07-01 15:34:37 [32minfo[39m: **
+| salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+
+**
+2024-07-01 15:34:37 [31merror[39m: allergen
+2024-07-01 15:34:37 [32minfo[39m: **
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+| ------- | -------- | -------- | ------- | -------- | -------- |
+| | | Gluten & Dairy Free | Gluten, Dairy |  |  |
+
+**
+2024-07-01 15:34:37 [31merror[39m: header
+2024-07-01 15:34:37 [32minfo[39m: **
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+| ------- | -------- | -------- | ------- | -------- | -------- | -------- |
+| PERFECT AMINO™ MIXED BERRY | BODYHEALTH | 4.64 oz | 131.6g |  | NET WT 4.64 oz (131.6g) 20 Servings | 20 |
+
+**
+2024-07-01 15:34:37 [31merror[39m: ingredient
+2024-07-01 15:34:37 [32minfo[39m: **
+| is product supplement ? (answer boolean) | ingredient statement | 
+| ------- | -------- |
+| true | Other Ingredients : Natural Flavors , Citric Acid ( from Cassava ) , L - Malic Acid , Stevia ( Rebaudioside M ) ( Thaumatococcus Daniellii ) Extract , Monk Fruit ( Luo Han Guo ) , Himalayan Pink Salt , Katemfe Fruit Extract . |
+
+**
+2024-07-01 15:34:37 [31merror[39m: physical
+2024-07-01 15:34:37 [32minfo[39m: **
+| upc-12 or gtin-12 |
+| ------- |
+
+**
+2024-07-01 15:34:37 [31merror[39m: marketing
+2024-07-01 15:34:37 [32minfo[39m: **
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | have twitter icon ? | social media list | website list | social media text list | enlarged to show (answer is boolean) |
+| ------- | -------- | -------- | ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| false |  |  |  |  |  |  | BodyHealth.com |  | false |
+
+**
+2024-07-01 15:34:37 [31merror[39m: instruction
+2024-07-01 15:34:37 [32minfo[39m: **
+| storage instructions (answer are multiple string) | cooking instructions  (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string)| other instructions (answer are multiple string)|
+| ------- | -------- | -------- | ------- | -------- |
+|  |  |  |  |  |
+
+**
+2024-07-01 15:34:37 [31merror[39m: supply chain
+2024-07-01 15:34:37 [32minfo[39m: **
+| country of origin | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+| ------- | -------- | -------- | ------- | ------- | -------- | -------- | ------- |
+|  | BodyHealth.com |  |  |  |  |  |  |
+
+**
+2024-07-01 15:34:37 [31merror[39m: extra claim object list 1
+2024-07-01 15:34:37 [32minfo[39m: [{"claim":"allergen","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"The product states \"Gluten & Dairy Free\" on the label."},{"claim":"amino acids","mentioned":"true","contain":"yes","notContain":"no","source":"marketing text on product","reason":"The product is named \"Perfect Amino\" and states \"Essential Amino Acids\" on the packaging."}]
+2024-07-01 15:34:37 [31merror[39m: extra claim object list 2
+2024-07-01 15:34:37 [32minfo[39m: [{"claim":"vegan ingredients","mentioned":"true","contain":"yes","notContain":"no","source":"marketing text on product","reason":"The product is labeled as a \"VEGAN DIETARY SUPPLEMENT\"."}]
+2024-07-01 15:34:37 [31merror[39m: sugar claim list
+2024-07-01 15:34:37 [32minfo[39m: [{"claim":"no contain sugar added","isClaimed":"false","source":"ingredient list","reason":"While the product doesn't explicitly state \"no sugar added,\" it does list \"Stevia\" as an ingredient."}]
+2024-07-01 15:34:37 [31merror[39m: fat claim list
+2024-07-01 15:34:37 [32minfo[39m: []
+2024-07-01 15:34:37 [31merror[39m: other claim list
+2024-07-01 15:34:37 [32minfo[39m: [{"claim":"gluten free","isClaimed":"true","source":"marketing text on product","reason":"The product states \"Gluten & Dairy Free\" on the label."},{"claim":"paleo","isClaimed":"true","source":"marketing text on product","reason":"The product states \"Paleo & Keto-Friendly\" on the label."},{"claim":"keto-friendly","isClaimed":"true","source":"marketing text on product","reason":"The product states \"Paleo & Keto-Friendly\" on the label."}]
+2024-07-01 15:34:37 [31merror[39m: calorie claim list
+2024-07-01 15:34:37 [32minfo[39m: []
+2024-07-01 15:34:37 [31merror[39m: salt claim list
+2024-07-01 15:34:37 [32minfo[39m: []
+2024-07-01 15:34:37 [31merror[39m: allergen list
+2024-07-01 15:34:37 [32minfo[39m: [{"containStatement":"","containList":"","notContainStatement":"Gluten & Dairy Free","notContainList":"Gluten, Dairy","containOnEquipmentStatement":"","containOnEquipmentList":""}]
+2024-07-01 15:34:37 [31merror[39m: header list
+2024-07-01 15:34:37 [32minfo[39m: [{"productName":"PERFECT AMINO™ MIXED BERRY","brandName":"BODYHEALTH","primarySize":"4.64 oz","secondarySize":"131.6g","thirdSize":"","fullSizeTextDescription":"NET WT 4.64 oz (131.6g) 20 Servings","count":"20"}]
+2024-07-01 15:34:37 [31merror[39m: ingredient list
+2024-07-01 15:34:37 [32minfo[39m: [{"isProductSupplement":"true","ingredientStatement":"Other Ingredients : Natural Flavors , Citric Acid ( from Cassava ) , L - Malic Acid , Stevia ( Rebaudioside M ) ( Thaumatococcus Daniellii ) Extract , Monk Fruit ( Luo Han Guo ) , Himalayan Pink Salt , Katemfe Fruit Extract ."}]
+2024-07-01 15:34:37 [31merror[39m: physical
+2024-07-01 15:34:37 [32minfo[39m: []
+2024-07-01 15:34:37 [31merror[39m: marketing
+2024-07-01 15:34:37 [32minfo[39m: [{"haveQrCode":"false","instagram":"","pinterest":"","youtube":"","facebook":"","twitter":"","socialMediaList":"","website":"BodyHealth.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-01 15:34:37 [31merror[39m: instruction
+2024-07-01 15:34:37 [32minfo[39m: [{"storageInstruction":"","cookingInstruction":"","usageInstruction":"","usageTimeInstruction":"","otherInstructions":""}]
+2024-07-01 15:34:37 [31merror[39m: supplyChain
+2024-07-01 15:34:37 [32minfo[39m: []
+2024-07-01 15:42:51 [31merror[39m: debug section
+2024-07-01 15:42:51 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  All images appear to show the same nutrition fact table. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not a dual-column format.  Dual-column formats are used to display information for different serving sizes or different life-stages/groups. This nutrition fact table only displays information for one serving size. | 
+
+2024-07-01 15:42:51 [31merror[39m: footnote
+2024-07-01 15:42:51 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| † Daily Value (DV) not established | † Daily Value (DV) not established |
+
+
+
+2024-07-01 15:42:51 [31merror[39m: debug
+2024-07-01 15:42:51 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  All images appear to show the same nutrition fact table. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not a dual-column format.  Dual-column formats are used to display information for different serving sizes or different life-stages/groups. This nutrition fact table only displays information for one serving size. | 
+
+2024-07-01 15:42:51 [31merror[39m: debug table
+2024-07-01 15:42:51 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-01 15:43:16 [31merror[39m: extra 1
+2024-07-01 15:43:16 [32minfo[39m: **
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|---|---|
+| amino acids | true | yes | no | marketing text on product | The product description states "Essential Amino Acids" and "Contains Nucleic Acid Building Blocks". |
+| dairy | true | no | yes | marketing text on product | The product is labeled as "Gluten & Dairy Free". |
+| gluten | true | no | yes | marketing text on product | The product is labeled as "Gluten & Dairy Free". |
+
+**
+2024-07-01 15:43:16 [31merror[39m: extra 2
+2024-07-01 15:43:16 [32minfo[39m: **
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|---|---|
+| vegan ingredients | true | yes | no | marketing text on product | The product is labeled as a "VEGAN DIETARY SUPPLEMENT". |
+
+**
+2024-07-01 15:43:16 [31merror[39m: sugar
+2024-07-01 15:43:16 [32minfo[39m: **
+| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)| how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+| no contain sugar added | unknown | ingredient list | While the ingredient list mentions "Natural Flavors", it doesn't explicitly state "No Sugar Added". |
+
+**
+2024-07-01 15:43:16 [31merror[39m: fat
+2024-07-01 15:43:16 [32minfo[39m: **
+| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+
+**
+2024-07-01 15:43:16 [31merror[39m: other
+2024-07-01 15:43:16 [32minfo[39m: **
+| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+| keto-friendly | true | marketing text on product | The product is labeled as "Paleo & Keto-Friendly". |
+| paleo | true | marketing text on product | The product is labeled as "Paleo & Keto-Friendly". |
+
+**
+2024-07-01 15:43:16 [31merror[39m: calorie
+2024-07-01 15:43:16 [32minfo[39m: **
+| calorie claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+|---|---|---|
+
+**
+2024-07-01 15:43:16 [31merror[39m: salt
+2024-07-01 15:43:16 [32minfo[39m: **
+| salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+|---|---|---|
+
+**
+2024-07-01 15:43:16 [31merror[39m: allergen
+2024-07-01 15:43:16 [32minfo[39m: **
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+|---|---|---|---|---|---|
+|  |  | Gluten & Dairy Free | Gluten, Dairy |  |  |
+
+**
+2024-07-01 15:43:16 [31merror[39m: header
+2024-07-01 15:43:16 [32minfo[39m: **
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+|---|---|---|---|---|---|---|
+| PERFECT AMINO™ | BODYHEALTH | 4.64 oz | 131.6g |  | NET WT 4.64 oz (131.6g) 20 Servings | 20 |
+
+**
+2024-07-01 15:43:16 [31merror[39m: ingredient
+2024-07-01 15:43:16 [32minfo[39m: **
+| is product supplement ? (answer boolean) | ingredient statement | 
+|---|---|
+| true | Other Ingredients: Natural Flavors, Citric Acid (from Cassava), L-Malic Acid, Monk Fruit (Luo Han Guo) Extract, Stevia (Rebaudioside M) (Thaumatococcus Daniellii) Extract, Himalayan Pink Salt, Katemfe Fruit Extract. |
+
+**
+2024-07-01 15:43:16 [31merror[39m: physical
+2024-07-01 15:43:16 [32minfo[39m: **
+| upc-12 or gtin-12 |
+|---|
+
+**
+2024-07-01 15:43:16 [31merror[39m: marketing
+2024-07-01 15:43:16 [32minfo[39m: **
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | have twitter icon ? | social media list | website list | social media text list | enlarged to show (answer is boolean) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| false |  |  |  |  |  |  | PerfectAmino.com, BodyHealth.com |  | false |
+
+**
+2024-07-01 15:43:16 [31merror[39m: instruction
+2024-07-01 15:43:16 [32minfo[39m: **
+| storage instructions (answer are multiple string) | cooking instructions  (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string)| other instructions (answer are multiple string)|
+|---|---|---|---|---|
+|  |  |  |  |  |
+
+**
+2024-07-01 15:43:16 [31merror[39m: supply chain
+2024-07-01 15:43:16 [32minfo[39m: **
+| country of origin | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+|---|---|---|---|---|---|---|---|
+|  | BodyHealth.com |  |  |  |  |  |  |
+
+**
+2024-07-01 15:43:16 [31merror[39m: extra claim object list 1
+2024-07-01 15:43:16 [32minfo[39m: [{"claim":"amino acids","mentioned":"true","contain":"yes","notContain":"no","source":"marketing text on product","reason":"The product description states \"Essential Amino Acids\" and \"Contains Nucleic Acid Building Blocks\"."},{"claim":"dairy","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"The product is labeled as \"Gluten & Dairy Free\"."},{"claim":"gluten","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"The product is labeled as \"Gluten & Dairy Free\"."}]
+2024-07-01 15:43:16 [31merror[39m: extra claim object list 2
+2024-07-01 15:43:16 [32minfo[39m: [{"claim":"vegan ingredients","mentioned":"true","contain":"yes","notContain":"no","source":"marketing text on product","reason":"The product is labeled as a \"VEGAN DIETARY SUPPLEMENT\"."}]
+2024-07-01 15:43:16 [31merror[39m: sugar claim list
+2024-07-01 15:43:16 [32minfo[39m: [{"claim":"no contain sugar added","isClaimed":"unknown","source":"ingredient list","reason":"While the ingredient list mentions \"Natural Flavors\", it doesn't explicitly state \"No Sugar Added\"."}]
+2024-07-01 15:43:16 [31merror[39m: fat claim list
+2024-07-01 15:43:16 [32minfo[39m: []
+2024-07-01 15:43:16 [31merror[39m: other claim list
+2024-07-01 15:43:16 [32minfo[39m: [{"claim":"keto-friendly","isClaimed":"true","source":"marketing text on product","reason":"The product is labeled as \"Paleo & Keto-Friendly\"."},{"claim":"paleo","isClaimed":"true","source":"marketing text on product","reason":"The product is labeled as \"Paleo & Keto-Friendly\"."}]
+2024-07-01 15:43:16 [31merror[39m: calorie claim list
+2024-07-01 15:43:16 [32minfo[39m: []
+2024-07-01 15:43:16 [31merror[39m: salt claim list
+2024-07-01 15:43:16 [32minfo[39m: []
+2024-07-01 15:43:16 [31merror[39m: allergen list
+2024-07-01 15:43:16 [32minfo[39m: [{"containStatement":"","containList":"","notContainStatement":"Gluten & Dairy Free","notContainList":"Gluten, Dairy","containOnEquipmentStatement":"","containOnEquipmentList":""}]
+2024-07-01 15:43:16 [31merror[39m: header list
+2024-07-01 15:43:16 [32minfo[39m: [{"productName":"PERFECT AMINO™","brandName":"BODYHEALTH","primarySize":"4.64 oz","secondarySize":"131.6g","thirdSize":"","fullSizeTextDescription":"NET WT 4.64 oz (131.6g) 20 Servings","count":"20"}]
+2024-07-01 15:43:16 [31merror[39m: ingredient list
+2024-07-01 15:43:16 [32minfo[39m: [{"isProductSupplement":"true","ingredientStatement":"Other Ingredients: Natural Flavors, Citric Acid (from Cassava), L-Malic Acid, Monk Fruit (Luo Han Guo) Extract, Stevia (Rebaudioside M) (Thaumatococcus Daniellii) Extract, Himalayan Pink Salt, Katemfe Fruit Extract."}]
+2024-07-01 15:43:16 [31merror[39m: physical
+2024-07-01 15:43:16 [32minfo[39m: []
+2024-07-01 15:43:16 [31merror[39m: marketing
+2024-07-01 15:43:16 [32minfo[39m: [{"haveQrCode":"false","instagram":"","pinterest":"","youtube":"","facebook":"","twitter":"","socialMediaList":"","website":"PerfectAmino.com, BodyHealth.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-01 15:43:16 [31merror[39m: instruction
+2024-07-01 15:43:16 [32minfo[39m: [{"storageInstruction":"","cookingInstruction":"","usageInstruction":"","usageTimeInstruction":"","otherInstructions":""}]
+2024-07-01 15:43:16 [31merror[39m: supplyChain
+2024-07-01 15:43:16 [32minfo[39m: []
+2024-07-01 15:45:42 [31merror[39m: debug section
+2024-07-01 15:45:42 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images. All images appear to be of the same product. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not a dual-column format. Although it has two columns for information, it doesn't meet the criteria for a dual-column format. Dual-column formats typically present information for different serving sizes, age groups, or "per serving" and "per container" values in separate columns with their own headings. This table simply uses two columns for better organization and readability. | 
+
+2024-07-01 15:45:42 [31merror[39m: footnote
+2024-07-01 15:45:42 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| † Daily Value (DV) not established | † Daily Value (DV) not established |
+
+
+
+2024-07-01 15:45:42 [31merror[39m: debug
+2024-07-01 15:45:42 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images. All images appear to be of the same product. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not a dual-column format. Although it has two columns for information, it doesn't meet the criteria for a dual-column format. Dual-column formats typically present information for different serving sizes, age groups, or "per serving" and "per container" values in separate columns with their own headings. This table simply uses two columns for better organization and readability. | 
+
+2024-07-01 15:45:42 [31merror[39m: debug table
+2024-07-01 15:45:42 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-01 15:46:11 [31merror[39m: extra 1
+2024-07-01 15:46:11 [32minfo[39m: **
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|---|---|
+| amino acids | true | yes |  | marketing text on product | "Essential Amino Acids" is stated on the product label. |
+| dairy | true | no | yes | marketing text on product | "Gluten & Dairy Free" is stated on the product label. |
+| gluten | true | no | yes | marketing text on product | "Gluten & Dairy Free" is stated on the product label. |
+| vegan ingredients | true | yes | no | marketing text on product | "VEGAN DIETARY SUPPLEMENT" is stated on the product label. |
+
+**
+2024-07-01 15:46:11 [31merror[39m: extra 2
+2024-07-01 15:46:11 [32minfo[39m: **
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|---|---|
+| natural flavors | true | yes | no | ingredient list | "Natural Flavors" is listed in the ingredients. |
+
+**
+2024-07-01 15:46:11 [31merror[39m: sugar
+2024-07-01 15:46:11 [32minfo[39m: **
+| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)| how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+| no contain sugar added | unknown |  |  |
+
+**
+2024-07-01 15:46:11 [31merror[39m: fat
+2024-07-01 15:46:11 [32minfo[39m: **
+| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+| fat free | unknown |  |  |
+
+**
+2024-07-01 15:46:11 [31merror[39m: other
+2024-07-01 15:46:11 [32minfo[39m: **
+| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+| keto-friendly | true | marketing text on product | "Keto-Friendly" is stated on the product label. |
+| paleo | true | marketing text on product | "Paleo & Keto-Friendly" is stated on the product label. |
+
+**
+2024-07-01 15:46:11 [31merror[39m: calorie
+2024-07-01 15:46:11 [32minfo[39m: **
+| calorie claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+|---|---|---|
+| low calorie | unknown |  |
+
+**
+2024-07-01 15:46:11 [31merror[39m: salt
+2024-07-01 15:46:11 [32minfo[39m: **
+| salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+|---|---|---|
+| salt free | unknown |  |
+
+**
+2024-07-01 15:46:11 [31merror[39m: allergen
+2024-07-01 15:46:11 [32minfo[39m: **
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+|---|---|---|---|---|---|
+|  |  | Gluten & Dairy Free | ['dairy'] |  |  | 
+
+**
+2024-07-01 15:46:11 [31merror[39m: header
+2024-07-01 15:46:11 [32minfo[39m: **
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+|---|---|---|---|---|---|---|
+| PERFECT AMINO™ MIXED BERRY | BODYHEALTH | 4.64 oz | 131.6g |  | NET WT 4.64 oz (131.6g) | 20 |
+
+**
+2024-07-01 15:46:11 [31merror[39m: ingredient
+2024-07-01 15:46:11 [32minfo[39m: **
+| is product supplement ? (answer boolean) | ingredient statement | 
+|---|---|
+| true | Other Ingredients : Natural Flavors , Citric Acid ( from Cassava ) , L - Malic Acid , Stevia ( Rebaudioside M ) ( Thaumatococcus Daniellii ) Extract , Monk Fruit ( Luo Han Guo ) , Himalayan Pink Salt , Katemfe Fruit Extract . |
+
+**
+2024-07-01 15:46:11 [31merror[39m: physical
+2024-07-01 15:46:11 [32minfo[39m: **
+| upc-12 or gtin-12 |
+|---|
+|  |
+
+**
+2024-07-01 15:46:11 [31merror[39m: marketing
+2024-07-01 15:46:11 [32minfo[39m: **
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | have twitter icon ? | social media list | website list | social media text list | enlarged to show (answer is boolean) |
+|---|---|---|---|---|---|---|---|---|---|
+| false |  |  |  |  |  |  | PerfectAmino.com |  | false |
+
+**
+2024-07-01 15:46:11 [31merror[39m: instruction
+2024-07-01 15:46:11 [32minfo[39m: **
+| storage instructions (answer are multiple string) | cooking instructions  (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string)| other instructions (answer are multiple string)|
+|---|---|---|---|---|
+|  |  |  |  |  |
+
+**
+2024-07-01 15:46:11 [31merror[39m: supply chain
+2024-07-01 15:46:11 [32minfo[39m: **
+| country of origin | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+|---|---|---|---|---|---|---|---|
+|  | BodyHealth.com |  |  |  |  |  |  |
+
+**
+2024-07-01 15:46:11 [31merror[39m: extra claim object list 1
+2024-07-01 15:46:11 [32minfo[39m: [{"claim":"amino acids","mentioned":"true","contain":"yes","notContain":"","source":"marketing text on product","reason":"\"Essential Amino Acids\" is stated on the product label."},{"claim":"dairy","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"\"Gluten & Dairy Free\" is stated on the product label."},{"claim":"gluten","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"\"Gluten & Dairy Free\" is stated on the product label."},{"claim":"vegan ingredients","mentioned":"true","contain":"yes","notContain":"no","source":"marketing text on product","reason":"\"VEGAN DIETARY SUPPLEMENT\" is stated on the product label."}]
+2024-07-01 15:46:11 [31merror[39m: extra claim object list 2
+2024-07-01 15:46:11 [32minfo[39m: [{"claim":"natural flavors","mentioned":"true","contain":"yes","notContain":"no","source":"ingredient list","reason":"\"Natural Flavors\" is listed in the ingredients."}]
+2024-07-01 15:46:11 [31merror[39m: sugar claim list
+2024-07-01 15:46:11 [32minfo[39m: [{"claim":"no contain sugar added","isClaimed":"unknown","source":"","reason":""}]
+2024-07-01 15:46:11 [31merror[39m: fat claim list
+2024-07-01 15:46:11 [32minfo[39m: [{"claim":"fat free","isClaimed":"unknown","source":"","reason":""}]
+2024-07-01 15:46:11 [31merror[39m: other claim list
+2024-07-01 15:46:11 [32minfo[39m: [{"claim":"keto-friendly","isClaimed":"true","source":"marketing text on product","reason":"\"Keto-Friendly\" is stated on the product label."},{"claim":"paleo","isClaimed":"true","source":"marketing text on product","reason":"\"Paleo & Keto-Friendly\" is stated on the product label."}]
+2024-07-01 15:46:11 [31merror[39m: calorie claim list
+2024-07-01 15:46:11 [32minfo[39m: [{"claim":"low calorie","isClaimed":"unknown","source":""}]
+2024-07-01 15:46:11 [31merror[39m: salt claim list
+2024-07-01 15:46:11 [32minfo[39m: [{"claim":"salt free","isClaimed":"unknown","source":""}]
+2024-07-01 15:46:11 [31merror[39m: allergen list
+2024-07-01 15:46:11 [32minfo[39m: [{"containStatement":"","containList":"","notContainStatement":"Gluten & Dairy Free","notContainList":"['dairy']","containOnEquipmentStatement":"","containOnEquipmentList":""}]
+2024-07-01 15:46:11 [31merror[39m: header list
+2024-07-01 15:46:11 [32minfo[39m: [{"productName":"PERFECT AMINO™ MIXED BERRY","brandName":"BODYHEALTH","primarySize":"4.64 oz","secondarySize":"131.6g","thirdSize":"","fullSizeTextDescription":"NET WT 4.64 oz (131.6g)","count":"20"}]
+2024-07-01 15:46:11 [31merror[39m: ingredient list
+2024-07-01 15:46:11 [32minfo[39m: [{"isProductSupplement":"true","ingredientStatement":"Other Ingredients : Natural Flavors , Citric Acid ( from Cassava ) , L - Malic Acid , Stevia ( Rebaudioside M ) ( Thaumatococcus Daniellii ) Extract , Monk Fruit ( Luo Han Guo ) , Himalayan Pink Salt , Katemfe Fruit Extract ."}]
+2024-07-01 15:46:11 [31merror[39m: physical
+2024-07-01 15:46:11 [32minfo[39m: [{"upc12":""}]
+2024-07-01 15:46:11 [31merror[39m: marketing
+2024-07-01 15:46:11 [32minfo[39m: [{"haveQrCode":"false","instagram":"","pinterest":"","youtube":"","facebook":"","twitter":"","socialMediaList":"","website":"PerfectAmino.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-01 15:46:11 [31merror[39m: instruction
+2024-07-01 15:46:11 [32minfo[39m: [{"storageInstruction":"","cookingInstruction":"","usageInstruction":"","usageTimeInstruction":"","otherInstructions":""}]
+2024-07-01 15:46:11 [31merror[39m: supplyChain
+2024-07-01 15:46:11 [32minfo[39m: [{"countryOfOrigin":"","manufacturerName":"","manufacturerDate":"","manufacturerPhoneNumber":"","manufacturerStreetAddress":"","manufacturerCity":"","manufacturerState":"","manufactureZipCode":""}]
+2024-07-01 15:51:42 [31merror[39m: debug section
+2024-07-01 15:51:42 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  All images appear to be of the same product label. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format.  Dual-column formats are used to display information for different serving sizes, age groups, or other variations. This label only presents information for a single serving size and does not meet the criteria for a dual-column format. | 
+
+2024-07-01 15:51:42 [31merror[39m: footnote
+2024-07-01 15:51:42 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| † Daily Value (DV) not established | † Daily Value (DV) not established |
+
+
+
+2024-07-01 15:51:42 [31merror[39m: debug
+2024-07-01 15:51:42 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  All images appear to be of the same product label. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format.  Dual-column formats are used to display information for different serving sizes, age groups, or other variations. This label only presents information for a single serving size and does not meet the criteria for a dual-column format. | 
+
+2024-07-01 15:51:42 [31merror[39m: debug table
+2024-07-01 15:51:42 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-01 15:52:10 [31merror[39m: extra 1
+2024-07-01 15:52:10 [32minfo[39m: 
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | ------- | ------- | -------- | -------- |
+| added colors | true | no | yes | marketing text on product | Text on the product states "Gluten & Dairy Free" |
+| added dyes | true | no | yes | marketing text on product | Text on the product states "Gluten & Dairy Free" |
+| allergen | true | no | yes | marketing text on product | Text on the product states "Gluten & Dairy Free" |
+| amino acids | true | yes | no | marketing text on product |  States "Essential Amino Acids" and "Contains Nucleic Acid Building Blocks" |
+| animal products | true | no | yes | marketing text on product | Product is labeled as "VEGAN" |
+
+## 
+2024-07-01 15:52:10 [31merror[39m: extra 2
+2024-07-01 15:52:10 [32minfo[39m: 
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | ------- | ------- | -------- | -------- |
+| dairy | true | no | yes | marketing text on product | Text on the product states "Gluten & Dairy Free" |
+| fillers | true | no | yes | marketing text on product | It is stated that the product is "supplemented with Nucleic Acid building blocks to help direct the process of Protein Synthesis." implying no fillers are used. |
+| gluten | true | no | yes | marketing text on product | Text on the product states "Gluten & Dairy Free" |
+| vegan ingredients | true | yes | no | marketing text on product | Product is labeled as "VEGAN" |
+
+## 
+2024-07-01 15:52:10 [31merror[39m: sugar
+2024-07-01 15:52:10 [32minfo[39m: 
+| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)| how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| no contain sugar added | false | ingredient list | Ingredient list contains Monk Fruit, Stevia, and Himalayan Pink Salt, which can add sweetness. |
+
+## 
+2024-07-01 15:52:10 [31merror[39m: fat
+2024-07-01 15:52:10 [32minfo[39m: 
+| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+
+## 
+2024-07-01 15:52:10 [31merror[39m: other
+2024-07-01 15:52:10 [32minfo[39m: 
+| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| gluten free | true | marketing text on product | Text on the product states "Gluten & Dairy Free" |
+| keto-friendly | true | marketing text on product | Text on the product states "Paleo & Keto-Friendly" |
+| paleo | true | marketing text on product | Text on the product states "Paleo & Keto-Friendly" |
+| vegan | true | marketing text on product | Product is labeled as "VEGAN" |
+
+## 
+2024-07-01 15:52:10 [31merror[39m: calorie
+2024-07-01 15:52:10 [32minfo[39m: 
+| calorie claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+
+## 
+2024-07-01 15:52:10 [31merror[39m: salt
+2024-07-01 15:52:10 [32minfo[39m: 
+| salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| lightly salted | ...
+| low sodium | ...
+| no salt | ...
+| no salt added | ...
+| reduced sodium | ...
+| salt free | ...
+| sodium free | ...
+| unsalted | ...
+| very low sodium | ...
+
+## 
+2024-07-01 15:52:10 [31merror[39m: allergen
+2024-07-01 15:52:10 [32minfo[39m: 
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+| ------- | -------- | -------- | ------- | -------- | -------- |
+|  |  | Gluten & Dairy Free | gluten, dairy |  |  |
+
+## 
+2024-07-01 15:52:10 [31merror[39m: header
+2024-07-01 15:52:10 [32minfo[39m: 
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+| ------- | -------- | -------- | ------- | -------- | -------- | -------- |
+| PERFECT AMINO | BODYHEALTH | 4.64 oz | 131.6g |  | NET WT 4.64 oz (131.6g) | 20 |
+
+## 
+2024-07-01 15:52:10 [31merror[39m: ingredient
+2024-07-01 15:52:10 [32minfo[39m: 
+| is product supplement ? (answer boolean) | ingredient statement | 
+| ------- | -------- |
+| true | Other Ingredients : Natural Flavors , Citric Acid ( from Cassava ) , L - Malic Acid , Stevia ( Rebaudioside M ) ( Thaumatococcus Daniellii ) Extract , Monk Fruit ( Luo Han Guo ) , Himalayan Pink Salt , Katemfe Fruit Extract . |
+
+## 
+2024-07-01 15:52:10 [31merror[39m: physical
+2024-07-01 15:52:10 [32minfo[39m: 
+| upc-12 or gtin-12 |
+| ------- |
+
+## 
+2024-07-01 15:52:10 [31merror[39m: marketing
+2024-07-01 15:52:10 [32minfo[39m: 
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | have twitter icon ? | social media list | website list | social media text list | enlarged to show (answer is boolean) |
+| ------- | -------- | -------- | ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| false | false | false | false | false | false |  | BodyHealth.com |  | false |
+
+## 
+2024-07-01 15:52:10 [31merror[39m: instruction
+2024-07-01 15:52:10 [32minfo[39m: 
+| storage instructions (answer are multiple string) | cooking instructions  (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string)| other instructions (answer are multiple string)|
+| ------- | -------- | -------- | ------- | -------- |
+|  |  |  |  | Manufactured in a cGMP certified facility for BodyHealth.com . |
+
+## 
+2024-07-01 15:52:10 [31merror[39m: supply chain
+2024-07-01 15:52:10 [32minfo[39m: 
+| country of origin | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+| ------- | -------- | -------- | ------- | ------- | -------- | -------- | ------- |
+
+
+## 
+2024-07-01 15:52:10 [31merror[39m: extra claim object list 1
+2024-07-01 15:52:10 [32minfo[39m: [{"claim":"added colors","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"Text on the product states \"Gluten & Dairy Free\""},{"claim":"added dyes","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"Text on the product states \"Gluten & Dairy Free\""},{"claim":"allergen","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"Text on the product states \"Gluten & Dairy Free\""},{"claim":"amino acids","mentioned":"true","contain":"yes","notContain":"no","source":"marketing text on product","reason":"States \"Essential Amino Acids\" and \"Contains Nucleic Acid Building Blocks\""},{"claim":"animal products","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"Product is labeled as \"VEGAN\""}]
+2024-07-01 15:52:10 [31merror[39m: extra claim object list 2
+2024-07-01 15:52:10 [32minfo[39m: [{"claim":"dairy","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"Text on the product states \"Gluten & Dairy Free\""},{"claim":"fillers","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"It is stated that the product is \"supplemented with Nucleic Acid building blocks to help direct the process of Protein Synthesis.\" implying no fillers are used."},{"claim":"gluten","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"Text on the product states \"Gluten & Dairy Free\""},{"claim":"vegan ingredients","mentioned":"true","contain":"yes","notContain":"no","source":"marketing text on product","reason":"Product is labeled as \"VEGAN\""}]
+2024-07-01 15:52:10 [31merror[39m: sugar claim list
+2024-07-01 15:52:10 [32minfo[39m: [{"claim":"no contain sugar added","isClaimed":"false","source":"ingredient list","reason":"Ingredient list contains Monk Fruit, Stevia, and Himalayan Pink Salt, which can add sweetness."}]
+2024-07-01 15:52:10 [31merror[39m: fat claim list
+2024-07-01 15:52:10 [32minfo[39m: []
+2024-07-01 15:52:10 [31merror[39m: other claim list
+2024-07-01 15:52:10 [32minfo[39m: [{"claim":"gluten free","isClaimed":"true","source":"marketing text on product","reason":"Text on the product states \"Gluten & Dairy Free\""},{"claim":"keto-friendly","isClaimed":"true","source":"marketing text on product","reason":"Text on the product states \"Paleo & Keto-Friendly\""},{"claim":"paleo","isClaimed":"true","source":"marketing text on product","reason":"Text on the product states \"Paleo & Keto-Friendly\""},{"claim":"vegan","isClaimed":"true","source":"marketing text on product","reason":"Product is labeled as \"VEGAN\""}]
+2024-07-01 15:52:10 [31merror[39m: calorie claim list
+2024-07-01 15:52:10 [32minfo[39m: []
+2024-07-01 15:52:10 [31merror[39m: salt claim list
+2024-07-01 15:52:10 [32minfo[39m: [{"claim":"low sodium","isClaimed":"...","source":""},{"claim":"no salt","isClaimed":"...","source":""},{"claim":"no salt added","isClaimed":"...","source":""},{"claim":"reduced sodium","isClaimed":"...","source":""},{"claim":"salt free","isClaimed":"...","source":""},{"claim":"sodium free","isClaimed":"...","source":""},{"claim":"unsalted","isClaimed":"...","source":""},{"claim":"very low sodium","isClaimed":"...","source":""}]
+2024-07-01 15:52:10 [31merror[39m: allergen list
+2024-07-01 15:52:10 [32minfo[39m: [{"containStatement":"","containList":"","notContainStatement":"Gluten & Dairy Free","notContainList":"gluten, dairy","containOnEquipmentStatement":"","containOnEquipmentList":""}]
+2024-07-01 15:52:10 [31merror[39m: header list
+2024-07-01 15:52:10 [32minfo[39m: [{"productName":"PERFECT AMINO","brandName":"BODYHEALTH","primarySize":"4.64 oz","secondarySize":"131.6g","thirdSize":"","fullSizeTextDescription":"NET WT 4.64 oz (131.6g)","count":"20"}]
+2024-07-01 15:52:10 [31merror[39m: ingredient list
+2024-07-01 15:52:10 [32minfo[39m: [{"isProductSupplement":"true","ingredientStatement":"Other Ingredients : Natural Flavors , Citric Acid ( from Cassava ) , L - Malic Acid , Stevia ( Rebaudioside M ) ( Thaumatococcus Daniellii ) Extract , Monk Fruit ( Luo Han Guo ) , Himalayan Pink Salt , Katemfe Fruit Extract ."}]
+2024-07-01 15:52:10 [31merror[39m: physical
+2024-07-01 15:52:10 [32minfo[39m: []
+2024-07-01 15:52:10 [31merror[39m: marketing
+2024-07-01 15:52:10 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","facebook":"false","twitter":"false","socialMediaList":"","website":"BodyHealth.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-01 15:52:10 [31merror[39m: instruction
+2024-07-01 15:52:10 [32minfo[39m: [{"storageInstruction":"","cookingInstruction":"","usageInstruction":"","usageTimeInstruction":"","otherInstructions":"Manufactured in a cGMP certified facility for BodyHealth.com ."}]
+2024-07-01 15:52:10 [31merror[39m: supplyChain
+2024-07-01 15:52:10 [32minfo[39m: []
+2024-07-01 15:56:40 [31merror[39m: debug section
+2024-07-01 15:56:40 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  All images appear to be of the same product. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not a dual-column format.  Dual-column formats are used to display information for different serving sizes, age groups, or other variations. This table presents information for a single serving size and does not meet the criteria for a dual-column format. | 
+
+2024-07-01 15:56:40 [31merror[39m: footnote
+2024-07-01 15:56:40 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| † Daily Value (DV) not established | † Daily Value (DV) not established |
+
+
+
+2024-07-01 15:56:40 [31merror[39m: debug
+2024-07-01 15:56:40 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  All images appear to be of the same product. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not a dual-column format.  Dual-column formats are used to display information for different serving sizes, age groups, or other variations. This table presents information for a single serving size and does not meet the criteria for a dual-column format. | 
+
+2024-07-01 15:56:40 [31merror[39m: debug table
+2024-07-01 15:56:40 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-01 15:57:07 [31merror[39m: extra 1
+2024-07-01 15:57:07 [32minfo[39m: **
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | ------- | ------- | -------- | -------- |
+| amino acids | true | yes | no | marketing text on product | The product description states "Essential Amino Acids". |
+| gluten | true | no | yes | marketing text on product | The product label states "Gluten & Dairy Free". |
+| dairy | true | no | yes | marketing text on product | The product label states "Gluten & Dairy Free". |
+
+**
+2024-07-01 15:57:07 [31merror[39m: extra 2
+2024-07-01 15:57:07 [32minfo[39m: **
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | ------- | ------- | -------- | -------- |
+| vegan ingredients | true | yes | no | marketing text on product | The product is labeled as a "VEGAN DIETARY SUPPLEMENT". |
+
+**
+2024-07-01 15:57:07 [31merror[39m: sugar
+2024-07-01 15:57:07 [32minfo[39m: **
+| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)| how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| no contain sugar added | unknown | ingredient list | While the ingredient list mentions "Natural Flavors", it does not explicitly state "no sugar added". |
+
+**
+2024-07-01 15:57:07 [31merror[39m: fat
+2024-07-01 15:57:07 [32minfo[39m: **
+| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+
+**
+2024-07-01 15:57:07 [31merror[39m: other
+2024-07-01 15:57:07 [32minfo[39m: **
+| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| paleo | true | marketing text on product | The product label states "Paleo & Keto-Friendly". |
+| keto-friendly | true | marketing text on product | The product label states "Paleo & Keto-Friendly". |
+
+**
+2024-07-01 15:57:07 [31merror[39m: calorie
+2024-07-01 15:57:07 [32minfo[39m: **
+| calorie claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+
+**
+2024-07-01 15:57:07 [31merror[39m: salt
+2024-07-01 15:57:07 [32minfo[39m: **
+| salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+
+**
+2024-07-01 15:57:07 [31merror[39m: allergen
+2024-07-01 15:57:07 [32minfo[39m: **
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+| ------- | -------- | -------- | ------- | -------- | -------- |
+|  |  | Gluten & Dairy Free | gluten, dairy |  |  | 
+
+**
+2024-07-01 15:57:07 [31merror[39m: header
+2024-07-01 15:57:07 [32minfo[39m: **
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+| ------- | -------- | -------- | ------- | -------- | -------- | -------- |
+| PERFECT AMINO™ MIXED BERRY | BODYHEALTH | 4.64 oz | 131.6g |  | NET WT 4.64 oz (131.6g) 20 Servings | 20 |
+
+**
+2024-07-01 15:57:07 [31merror[39m: ingredient
+2024-07-01 15:57:07 [32minfo[39m: **
+| is product supplement ? (answer boolean) | ingredient statement | 
+| ------- | -------- |
+| true | Other Ingredients: Natural Flavors, Citric Acid (from Cassava), L-Malic Acid, Monk Fruit (Luo Han Guo) Extract, Stevia (Rebaudioside M) (Thaumatococcus Daniellii) Extract, Himalayan Pink Salt, Katemfe Fruit Extract. |
+
+**
+2024-07-01 15:57:07 [31merror[39m: physical
+2024-07-01 15:57:07 [32minfo[39m: **
+| upc-12 or gtin-12 |
+| ------- |
+
+**
+2024-07-01 15:57:07 [31merror[39m: marketing
+2024-07-01 15:57:07 [32minfo[39m: **
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | have twitter icon ? | social media list | website list | social media text list | enlarged to show (answer is boolean) |
+| ------- | -------- | -------- | ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| false | false | false | false | false | false |  | BodyHealth.com, PerfectAmino.com |  | false |
+
+**
+2024-07-01 15:57:07 [31merror[39m: instruction
+2024-07-01 15:57:07 [32minfo[39m: **
+| storage instructions (answer are multiple string) | cooking instructions  (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string)| other instructions (answer are multiple string)|
+| ------- | -------- | -------- | ------- | -------- |
+|  |  |  |  | Manufactured in a cGMP certified facility for BodyHealth.com. |
+
+**
+2024-07-01 15:57:07 [31merror[39m: supply chain
+2024-07-01 15:57:07 [32minfo[39m: **
+| country of origin | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+| ------- | -------- | -------- | ------- | ------- | -------- | -------- | ------- |
+|  | BodyHealth |  |  |  |  |  |  |
+
+**
+2024-07-01 15:57:07 [31merror[39m: extra claim object list 1
+2024-07-01 15:57:07 [32minfo[39m: [{"claim":"amino acids","mentioned":"true","contain":"yes","notContain":"no","source":"marketing text on product","reason":"The product description states \"Essential Amino Acids\"."},{"claim":"gluten","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"The product label states \"Gluten & Dairy Free\"."},{"claim":"dairy","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"The product label states \"Gluten & Dairy Free\"."}]
+2024-07-01 15:57:07 [31merror[39m: extra claim object list 2
+2024-07-01 15:57:07 [32minfo[39m: [{"claim":"vegan ingredients","mentioned":"true","contain":"yes","notContain":"no","source":"marketing text on product","reason":"The product is labeled as a \"VEGAN DIETARY SUPPLEMENT\"."}]
+2024-07-01 15:57:07 [31merror[39m: sugar claim list
+2024-07-01 15:57:07 [32minfo[39m: [{"claim":"no contain sugar added","isClaimed":"unknown","source":"ingredient list","reason":"While the ingredient list mentions \"Natural Flavors\", it does not explicitly state \"no sugar added\"."}]
+2024-07-01 15:57:07 [31merror[39m: fat claim list
+2024-07-01 15:57:07 [32minfo[39m: []
+2024-07-01 15:57:07 [31merror[39m: other claim list
+2024-07-01 15:57:07 [32minfo[39m: [{"claim":"paleo","isClaimed":"true","source":"marketing text on product","reason":"The product label states \"Paleo & Keto-Friendly\"."},{"claim":"keto-friendly","isClaimed":"true","source":"marketing text on product","reason":"The product label states \"Paleo & Keto-Friendly\"."}]
+2024-07-01 15:57:07 [31merror[39m: calorie claim list
+2024-07-01 15:57:07 [32minfo[39m: []
+2024-07-01 15:57:07 [31merror[39m: salt claim list
+2024-07-01 15:57:07 [32minfo[39m: []
+2024-07-01 15:57:07 [31merror[39m: allergen list
+2024-07-01 15:57:07 [32minfo[39m: [{"containStatement":"","containList":"","notContainStatement":"Gluten & Dairy Free","notContainList":"gluten, dairy","containOnEquipmentStatement":"","containOnEquipmentList":""}]
+2024-07-01 15:57:07 [31merror[39m: header list
+2024-07-01 15:57:07 [32minfo[39m: [{"productName":"PERFECT AMINO™ MIXED BERRY","brandName":"BODYHEALTH","primarySize":"4.64 oz","secondarySize":"131.6g","thirdSize":"","fullSizeTextDescription":"NET WT 4.64 oz (131.6g) 20 Servings","count":"20"}]
+2024-07-01 15:57:07 [31merror[39m: ingredient list
+2024-07-01 15:57:07 [32minfo[39m: [{"isProductSupplement":"true","ingredientStatement":"Other Ingredients: Natural Flavors, Citric Acid (from Cassava), L-Malic Acid, Monk Fruit (Luo Han Guo) Extract, Stevia (Rebaudioside M) (Thaumatococcus Daniellii) Extract, Himalayan Pink Salt, Katemfe Fruit Extract."}]
+2024-07-01 15:57:07 [31merror[39m: physical
+2024-07-01 15:57:07 [32minfo[39m: []
+2024-07-01 15:57:07 [31merror[39m: marketing
+2024-07-01 15:57:07 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","facebook":"false","twitter":"false","socialMediaList":"","website":"BodyHealth.com, PerfectAmino.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-01 15:57:07 [31merror[39m: instruction
+2024-07-01 15:57:07 [32minfo[39m: [{"storageInstruction":"","cookingInstruction":"","usageInstruction":"","usageTimeInstruction":"","otherInstructions":"Manufactured in a cGMP certified facility for BodyHealth.com."}]
+2024-07-01 15:57:07 [31merror[39m: supplyChain
+2024-07-01 15:57:07 [32minfo[39m: []
+2024-07-01 15:59:21 [31merror[39m: debug section
+2024-07-01 15:59:21 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  All images appear to be of the same product label. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not a dual-column format. Although it has two columns for the nutrient list, it lacks a second set of "Amount Per Serving", "% Daily Value", or separate serving size information that would indicate a true dual-column structure. |
+
+2024-07-01 15:59:21 [31merror[39m: footnote
+2024-07-01 15:59:21 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| † Daily Value (DV) not established | † Daily Value (DV) not established |
+
+
+
+2024-07-01 15:59:21 [31merror[39m: debug
+2024-07-01 15:59:21 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  All images appear to be of the same product label. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not a dual-column format. Although it has two columns for the nutrient list, it lacks a second set of "Amount Per Serving", "% Daily Value", or separate serving size information that would indicate a true dual-column structure. |
+
+2024-07-01 15:59:21 [31merror[39m: debug table
+2024-07-01 15:59:21 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-01 15:59:49 [31merror[39m: extra 1
+2024-07-01 15:59:49 [32minfo[39m: **
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|---|---|
+| amino acids | true | yes |  | marketing text on product | "Essential Amino Acids" is stated on the front of the product label. |
+| gluten | true | no | yes | marketing text on product | "Gluten & Dairy Free" is stated on the product label. |
+| dairy | true | no | yes | marketing text on product | "Gluten & Dairy Free" is stated on the product label. |
+
+**
+2024-07-01 15:59:49 [31merror[39m: extra 2
+2024-07-01 15:59:49 [32minfo[39m: **
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|---|---|
+| vegan ingredients | true | yes |  | marketing text on product | "VEGAN DIETARY SUPPLEMENT" is stated on the front of the product label. |
+
+**
+2024-07-01 15:59:49 [31merror[39m: sugar
+2024-07-01 15:59:49 [32minfo[39m: **
+| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)| how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+| no contain sugar added | unknown |  | Although the product contains ingredients that could be considered sweeteners, there is no explicit claim stating "no sugar added". |
+
+**
+2024-07-01 15:59:49 [31merror[39m: fat
+2024-07-01 15:59:49 [32minfo[39m: **
+| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+| fat free | unknown |  | There is no explicit claim about the product being "fat free". |
+
+**
+2024-07-01 15:59:49 [31merror[39m: other
+2024-07-01 15:59:49 [32minfo[39m: **
+| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+|---|---|---|---|
+| paleo | true | marketing text on product | "Paleo & Keto-Friendly" is stated on the product label. |
+| keto-friendly | true | marketing text on product | "Paleo & Keto-Friendly" is stated on the product label. |
+
+**
+2024-07-01 15:59:49 [31merror[39m: calorie
+2024-07-01 15:59:49 [32minfo[39m: **
+| calorie claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+|---|---|---|
+| low calorie | unknown |  | 
+
+**
+2024-07-01 15:59:49 [31merror[39m: salt
+2024-07-01 15:59:49 [32minfo[39m: **
+| salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+|---|---|---|
+| salt free | unknown |  | 
+
+**
+2024-07-01 15:59:49 [31merror[39m: allergen
+2024-07-01 15:59:49 [32minfo[39m: **
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+|---|---|---|---|---|---|
+|  |  |  |  | Manufactured in a cGMP certified facility for BodyHealth.com. |  | 
+
+**
+2024-07-01 15:59:49 [31merror[39m: header
+2024-07-01 15:59:49 [32minfo[39m: **
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+|---|---|---|---|---|---|---|
+| PERFECT AMINO™ | BODYHEALTH | 4.64 oz | 131.6g |  | NET WT 4.64 oz (131.6g) | 20 |
+
+**
+2024-07-01 15:59:49 [31merror[39m: ingredient
+2024-07-01 15:59:49 [32minfo[39m: **
+| is product supplement ? (answer boolean) | ingredient statement | 
+|---|---|
+| true | Other Ingredients: Natural Flavors, Citric Acid (from Cassava), L-Malic Acid, Monk Fruit (Luo Han Guo) Extract, Stevia (Rebaudioside M) (Thaumatococcus Daniellii) Extract, Himalayan Pink Salt, Katemfe Fruit Extract. |
+
+**
+2024-07-01 15:59:49 [31merror[39m: physical
+2024-07-01 15:59:49 [32minfo[39m: **
+| upc-12 or gtin-12 |
+|---|
+|  | 
+
+**
+2024-07-01 15:59:49 [31merror[39m: marketing
+2024-07-01 15:59:49 [32minfo[39m: **
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | have twitter icon ? | social media list | website list | social media text list | enlarged to show (answer is boolean) |
+|---|---|---|---|---|---|---|---|---|---|
+| false | false | false | false | false | false |  | BodyHealth.com |  | false |
+
+**
+2024-07-01 15:59:49 [31merror[39m: instruction
+2024-07-01 15:59:49 [32minfo[39m: **
+| storage instructions (answer are multiple string) | cooking instructions  (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string)| other instructions (answer are multiple string)|
+|---|---|---|---|---|
+|  |  |  |  |  | 
+
+**
+2024-07-01 15:59:49 [31merror[39m: supply chain
+2024-07-01 15:59:49 [32minfo[39m: **
+| country of origin | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+|---|---|---|---|---|---|---|---|
+|  | BodyHealth.com |  |  |  |  |  |  |
+
+**
+2024-07-01 15:59:49 [31merror[39m: extra claim object list 1
+2024-07-01 15:59:49 [32minfo[39m: [{"claim":"amino acids","mentioned":"true","contain":"yes","notContain":"","source":"marketing text on product","reason":"\"Essential Amino Acids\" is stated on the front of the product label."},{"claim":"gluten","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"\"Gluten & Dairy Free\" is stated on the product label."},{"claim":"dairy","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"\"Gluten & Dairy Free\" is stated on the product label."}]
+2024-07-01 15:59:49 [31merror[39m: extra claim object list 2
+2024-07-01 15:59:49 [32minfo[39m: [{"claim":"vegan ingredients","mentioned":"true","contain":"yes","notContain":"","source":"marketing text on product","reason":"\"VEGAN DIETARY SUPPLEMENT\" is stated on the front of the product label."}]
+2024-07-01 15:59:49 [31merror[39m: sugar claim list
+2024-07-01 15:59:49 [32minfo[39m: [{"claim":"no contain sugar added","isClaimed":"unknown","source":"","reason":"Although the product contains ingredients that could be considered sweeteners, there is no explicit claim stating \"no sugar added\"."}]
+2024-07-01 15:59:49 [31merror[39m: fat claim list
+2024-07-01 15:59:49 [32minfo[39m: [{"claim":"fat free","isClaimed":"unknown","source":"","reason":"There is no explicit claim about the product being \"fat free\"."}]
+2024-07-01 15:59:49 [31merror[39m: other claim list
+2024-07-01 15:59:49 [32minfo[39m: [{"claim":"paleo","isClaimed":"true","source":"marketing text on product","reason":"\"Paleo & Keto-Friendly\" is stated on the product label."},{"claim":"keto-friendly","isClaimed":"true","source":"marketing text on product","reason":"\"Paleo & Keto-Friendly\" is stated on the product label."}]
+2024-07-01 15:59:49 [31merror[39m: calorie claim list
+2024-07-01 15:59:49 [32minfo[39m: [{"claim":"low calorie","isClaimed":"unknown","source":""}]
+2024-07-01 15:59:49 [31merror[39m: salt claim list
+2024-07-01 15:59:49 [32minfo[39m: [{"claim":"salt free","isClaimed":"unknown","source":""}]
+2024-07-01 15:59:49 [31merror[39m: allergen list
+2024-07-01 15:59:49 [32minfo[39m: [{"containStatement":"","containList":"","notContainStatement":"","notContainList":"","containOnEquipmentStatement":"Manufactured in a cGMP certified facility for BodyHealth.com.","containOnEquipmentList":""}]
+2024-07-01 15:59:49 [31merror[39m: header list
+2024-07-01 15:59:49 [32minfo[39m: [{"productName":"PERFECT AMINO™","brandName":"BODYHEALTH","primarySize":"4.64 oz","secondarySize":"131.6g","thirdSize":"","fullSizeTextDescription":"NET WT 4.64 oz (131.6g)","count":"20"}]
+2024-07-01 15:59:49 [31merror[39m: ingredient list
+2024-07-01 15:59:49 [32minfo[39m: [{"isProductSupplement":"true","ingredientStatement":"Other Ingredients: Natural Flavors, Citric Acid (from Cassava), L-Malic Acid, Monk Fruit (Luo Han Guo) Extract, Stevia (Rebaudioside M) (Thaumatococcus Daniellii) Extract, Himalayan Pink Salt, Katemfe Fruit Extract."}]
+2024-07-01 15:59:49 [31merror[39m: physical
+2024-07-01 15:59:49 [32minfo[39m: [{"upc12":""}]
+2024-07-01 15:59:49 [31merror[39m: marketing
+2024-07-01 15:59:49 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","facebook":"false","twitter":"false","socialMediaList":"","website":"BodyHealth.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-01 15:59:49 [31merror[39m: instruction
+2024-07-01 15:59:49 [32minfo[39m: [{"storageInstruction":"","cookingInstruction":"","usageInstruction":"","usageTimeInstruction":"","otherInstructions":""}]
+2024-07-01 15:59:49 [31merror[39m: supplyChain
+2024-07-01 15:59:49 [32minfo[39m: [{"countryOfOrigin":"","manufacturerName":"","manufacturerDate":"","manufacturerPhoneNumber":"","manufacturerStreetAddress":"","manufacturerCity":"","manufacturerState":"","manufactureZipCode":""}]
+2024-07-01 16:14:24 [31merror[39m: debug section
+2024-07-01 16:14:24 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in these images. All images appear to show the same table. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not a dual-column format. Although it has two columns for the nutrient amount and %DV, it doesn't meet the criteria for a dual-column format as outlined in the requirements. Dual-column formats typically involve different serving sizes, age groups, or comparisons ("per serving" vs. "per container"). This table presents information for a single serving size only. | 
+
+2024-07-01 16:14:24 [31merror[39m: footnote
+2024-07-01 16:14:24 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| † Daily Value (DV) not established | † Daily Value (DV) not established |
+
+
+
+2024-07-01 16:14:24 [31merror[39m: debug
+2024-07-01 16:14:24 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in these images. All images appear to show the same table. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not a dual-column format. Although it has two columns for the nutrient amount and %DV, it doesn't meet the criteria for a dual-column format as outlined in the requirements. Dual-column formats typically involve different serving sizes, age groups, or comparisons ("per serving" vs. "per container"). This table presents information for a single serving size only. | 
+
+2024-07-01 16:14:24 [31merror[39m: debug table
+2024-07-01 16:14:24 [32minfo[39m: [object Object],[object Object],[object Object]

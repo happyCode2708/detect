@@ -12,7 +12,8 @@ import {
 
 import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
 
-import { uploadsDir } from '../../server';
+import { uploadsDir, resultsDir } from '../../server';
+import { writeJsonToFile } from '../../lib/json';
 
 // import OpenAI from 'openai';
 
@@ -38,10 +39,9 @@ const Storage = multer.diskStorage({
     const uniqueSuffix = Date.now();
     cb(
       null,
-      file.fieldname +
-        '_' +
+      (sessionId ? `${sessionId}` : '') +
+        '__' +
         uniqueSuffix +
-        (sessionId ? `_${sessionId}` : '') +
         path.extname(file.originalname)
     );
   },
@@ -66,6 +66,19 @@ router.post(
     const files = req.files as Express.Multer.File[];
 
     const filePaths = files?.map((file: any) => file.path);
+
+    const fileLists = files?.map((file: any) => {
+      return {
+        name: file?.filename,
+        path: file?.path,
+      };
+    });
+
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      'images-list.json',
+      JSON.stringify(fileLists)
+    );
 
     const collateImageName = `${sessionId}.jpeg`;
     // const collatedOuputPath = path.join(uploadsDir, collateImageName);

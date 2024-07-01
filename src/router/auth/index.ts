@@ -1,24 +1,24 @@
-import { v4 as uuidv4 } from 'uuid';
-import multer from 'multer';
-import fs from 'fs';
-import path from 'path';
+// import { v4 as uuidv4 } from 'uuid';
+// import multer from 'multer';
+// import fs from 'fs';
+// import path from 'path';
 import express from 'express';
 
-import {
-  getOcrTextAllImages,
-  findImagesContainNutFact,
-  addUniqueString,
-} from '../../lib/server_utils';
+// import {
+//   getOcrTextAllImages,
+//   findImagesContainNutFact,
+//   addUniqueString,
+// } from '../../lib/server_utils';
 import { prisma } from '../../server';
-import bodyParser from 'body-parser';
-import { PrismaClient } from '@prisma/client';
+// import bodyParser from 'body-parser';
+// import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 
-import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
+// import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
 
-import { uploadsDir } from '../../server';
+// import { uploadsDir } from '../../server';
 import { error } from 'console';
 
 const router = express.Router();
@@ -65,7 +65,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-  const { email, password, name } = req.body;
+  const { email, password, name, role } = req.body;
 
   const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -75,9 +75,17 @@ router.post('/register', async (req, res) => {
         email,
         password: hashedPassword,
         name,
+        role,
       },
     });
-    res.status(201).json(user);
+
+    const { password, ...createdUser } = user;
+
+    res.status(201).json({
+      data: createdUser,
+      isSuccess: true,
+      message: 'user created',
+    });
   } catch (error) {
     console.log('err', error);
     res.status(400).json({ message: 'User registration failed', error });

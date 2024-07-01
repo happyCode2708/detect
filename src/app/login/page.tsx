@@ -54,32 +54,6 @@ const LoginPage: React.FC = () => {
 
   const mutateLogin = useMutateLogin();
 
-  // const mutation = useMutation(
-  //   async (data: any) => {
-  //     const response = await fetch('/api/login', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(data),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Login failed');
-  //     }
-
-  //     return response.json();
-  //   },
-  //   {
-  //     onSuccess: () => {
-  //       // router.push('/dashboard');
-  //     },
-  //     onError: (error: Error) => {
-  //       console.error(error.message);
-  //     },
-  //   }
-  // );
-
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -105,9 +79,9 @@ const LoginPage: React.FC = () => {
               name='email'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder='username' {...field} />
+                    <Input placeholder='email' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -66,6 +66,9 @@ Ex 1: "non-dairy" text mean does not contain allergen ingredient of "dairy"
 ex 1: "manufactured on equipment that also processes product containing ..."
 ex 2: "made in a facility that also processes ... "
 
++ "allergen break-down list" is a string list
+ex 1: "oats, milk"
+
 2) "extra claim list" rules:
 + "added color" claim does not mean product claim "artificial color".
 + "added color" claim does not mean product claim "artificial color".

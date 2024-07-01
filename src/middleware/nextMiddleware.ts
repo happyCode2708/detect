@@ -8,23 +8,23 @@ export const nextMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  const { session } = req.cookies;
+  const { token } = req.cookies;
 
   const path = req.path;
 
-  return next();
+  // return next();
 
-  // if (path?.startsWith('_next/')) {
-  //   next();
-  //   return;
-  // }
+  if (path?.startsWith('_next/')) {
+    next();
+    return;
+  }
 
-  // const isProtectedRoute = protectedRoutes.includes(path);
-  // const isPublicRoute = publicRoutes.includes(path);
+  const isProtectedRoute = protectedRoutes.includes(path);
+  const isPublicRoute = publicRoutes.includes(path);
 
-  // if (isProtectedRoute && !session?.userId) {
-  //   return res.redirect('/login');
-  // }
+  if (isProtectedRoute && !token) {
+    return res.redirect('/login');
+  }
 
-  // next();
+  next();
 };
