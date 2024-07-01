@@ -32,8 +32,6 @@ const ProductImageUploadDialog: React.FC<ImageUploadDialogProps> = ({
   toggleDialog,
   ixoneID,
 }) => {
-  console.log('test', ixoneID);
-
   return (
     <Dialog
       open={isOpen}
@@ -41,7 +39,7 @@ const ProductImageUploadDialog: React.FC<ImageUploadDialogProps> = ({
     >
       <DialogTrigger asChild>
         <Button onClick={() => toggleDialog(ixoneID)} className='mb-4'>
-          Upload Images
+          Upload
         </Button>
       </DialogTrigger>
       <DialogContent>

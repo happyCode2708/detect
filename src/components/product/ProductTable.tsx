@@ -11,7 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import Image from 'next/image';
 import { Button, buttonVariants } from '../ui/button';
 import Link from 'next/link';
 import ProductImageUploadDialog from './ProductImageUploadDialog';
@@ -79,14 +78,14 @@ const ProductTable = ({
                     className={buttonVariants({ variant: 'default' })}
                     href={'/product/ixone/' + product?.ixoneID}
                   >
-                    View Product
+                    View
                   </Link>
                   <ProductImageUploadDialog
                     isOpen={uploadDialogActive === product?.ixoneID}
                     toggleDialog={toggleUploadDialog}
                     ixoneID={product?.ixoneID}
-                  />
-                  <Button>Re-extract</Button>
+                  ></ProductImageUploadDialog>
+                  <Button>Extract</Button>
                   <Button variant='destructive'>Validate</Button>
                 </div>
               </TableCell>
