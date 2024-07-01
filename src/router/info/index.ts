@@ -83,18 +83,11 @@ router.get('/get-result/:sessionId', async (req, res) => {
     }
 
     let response = {
-      // ...allRes.data,
-      // ...nutRes.data,
-      // validatorAndFixBug: {
-      // ...allRes.data.validatorAndFixBug,
-      // ...nutRes.data.validatorAndFixBug,
-      // },
       product: {
-        // ...allRes.data.product,
-        mdFactPanels: nutRes?.data?.factPanels, //* markdown converted
-        factPanels: nutRes?.data?.factPanels, //* markdown converted
-        nutMark: nutRes?.data?.nutMark,
-        allMark: allRes?.data?.allMark,
+        ...allRes?.data?.jsonData,
+        factPanels: nutRes?.data?.jsonData, //* markdown converted
+        nutMark: nutRes?.data?.markdownContent,
+        allMark: allRes?.data?.markdownContent,
       },
     };
 

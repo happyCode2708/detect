@@ -130,22 +130,36 @@ export const removeFieldByPath = (obj: AnyObject, path: string): AnyObject => {
 };
 
 export const removeRawFieldData = (rawResponse: object) => {
+  // const fields = [
+  //   'validatorAndFixBug',
+  //   'product.validatorAndFixBug',
+  //   'product.certifierAndLogo',
+  //   'product.content_in_spanish_must_be_prohibited',
+  //   'product.allergen.allergen_freeOf',
+  //   'product.allergen.allergen_contain',
+  //   'product.allergen.allergen_containOnEquipment',
+  //   'product.contain_and_notContain.product_contain',
+  //   'product.contain_and_notContain.product_does_not_contain',
+  //   'product.process',
+  //   'product.marketingAll.social_media_check',
+  //   'product.analysis_detected_claims',
+  //   'product.ingredients_group',
+  //   'product.other_ingredients_group',
+  //   'ingredients',
+  // ];
+
   const fields = [
-    'validatorAndFixBug',
-    'product.validatorAndFixBug',
-    'product.certifierAndLogo',
-    'product.content_in_spanish_must_be_prohibited',
-    'product.allergen.allergen_freeOf',
-    'product.allergen.allergen_contain',
-    'product.allergen.allergen_containOnEquipment',
-    'product.contain_and_notContain.product_contain',
-    'product.contain_and_notContain.product_does_not_contain',
-    'product.process',
-    'product.marketingAll.social_media_check',
-    'product.analysis_detected_claims',
-    'product.ingredients_group',
-    'product.other_ingredients_group',
-    'ingredients',
+    'product.attributes.containAndNotContain',
+    'product.attributes.fatClaims',
+    'product.attributes.nonCertificateClaims',
+    'product.attributes.calorieClaims',
+    'product.attributes.saltClaims',
+    'product.attributes.sugarClaims',
+    'product.marketing.instagram',
+    'product.marketing.pinterest',
+    'product.marketing.youtube',
+    'product.marketing.facebook',
+    'product.marketing.twitter',
   ];
 
   fields.forEach((removeField) => {

@@ -19,6 +19,12 @@ import { saltOrSodiumValidatorOcr } from './ocrScanValidator/saltOrSodiumClaimOc
 import { calorieClaimValidatorOcr } from './ocrScanValidator/calorieClaimValidatorOcr';
 import { fatClaimValidatorOcr } from './ocrScanValidator/fatClaimValidatorOcr';
 import { nutFactMarkdownValidator } from './nutFactMarkdownValidator';
+import { containAndNotContainClaimValidate } from './markdownObjectValidator/containAndNotContainValidate';
+import { fatClaimValidate } from './markdownObjectValidator/fatClaimValidate';
+import { nonCertifierClaimValidate } from './markdownObjectValidator/nonCertifierClaimValidate';
+import { saltClaimValidate } from './markdownObjectValidator/saltClaimValidate';
+import { sugarClaimValidate } from './markdownObjectValidator/sugarClaimValidate';
+import { calorieClaimValidate } from './markdownObjectValidator/calorieClaimValidate';
 
 export const responseValidator = async (response: any, ocrClaims: any) => {
   let validatedResponse = { ...response };
@@ -27,7 +33,7 @@ export const responseValidator = async (response: any, ocrClaims: any) => {
 
   // factPanelValidator(validatedResponse);
   nutFactMarkdownValidator(validatedResponse);
-  // await validateProductDataPoints(validatedResponse, ocrClaims);
+  await validateProductDataPoints(validatedResponse, ocrClaims);
 
   console.log('finish');
 
@@ -35,10 +41,17 @@ export const responseValidator = async (response: any, ocrClaims: any) => {
 };
 
 const validateProductDataPoints = async (response: any, ocrClaims: any) => {
-  const { factPanels, mdFactPanels, nutMark, allMark, ...productDataPoints } =
+  const { factPanels, nutMark, allMark, ...productDataPoints } =
     response?.product || {};
 
   let modifiedProductDataPoints = { ...productDataPoints };
+
+  await calorieClaimValidate(modifiedProductDataPoints);
+  await containAndNotContainClaimValidate(modifiedProductDataPoints, ocrClaims);
+  await fatClaimValidate(modifiedProductDataPoints);
+  await nonCertifierClaimValidate(modifiedProductDataPoints);
+  await saltClaimValidate(modifiedProductDataPoints);
+  await sugarClaimValidate(modifiedProductDataPoints);
 
   // ingredientsValidator(modifiedProductDataPoints);
   // highRichExcellentClaimsValidator(modifiedProductDataPoints);

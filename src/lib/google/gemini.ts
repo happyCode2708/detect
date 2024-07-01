@@ -140,17 +140,17 @@ export const onProcessGemini = async ({
         })
       );
       // const jsonResult = mapMarkdownNutToObject(procResult);
-      if (!mapMdToObjectFunct) {
-        writeJsonToFile(
-          resultsDir + `/${sessionId}`,
-          resultFileName,
-          JSON.stringify({
-            isSuccess: true,
-            data: { allMark: procResult },
-          })
-        );
-        return;
-      }
+      // if (!mapMdToObjectFunct) {
+      //   writeJsonToFile(
+      //     resultsDir + `/${sessionId}`,
+      //     resultFileName,
+      //     JSON.stringify({
+      //       isSuccess: true,
+      //       data: { allMark: procResult },
+      //     })
+      //   );
+      //   return;
+      // }
 
       const jsonResult = mapMdToObjectFunct(procResult);
 
@@ -159,7 +159,7 @@ export const onProcessGemini = async ({
         resultFileName,
         JSON.stringify({
           isSuccess: true,
-          data: { jsonData: jsonResult, nutMark: procResult },
+          data: { jsonData: jsonResult, markdownContent: procResult },
         })
       );
     }

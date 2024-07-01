@@ -1,12 +1,19 @@
 import logger from '../logger/index';
 
 export const mapMarkdownAllToObject = (markdown: string) => {
-  const extraClaimSection = markdown
-    .split('EXTRA_CLAIM_TABLE')?.[1]
+  const extraClaimSection_1 = markdown
+    .split('FIRST_EXTRA_CLAIM_TABLE')?.[1]
+    ?.split('SECOND_EXTRA_CLAIM_TABLE')?.[0];
+
+  logger.error('extra 1');
+  logger.info(extraClaimSection_1);
+
+  const extraClaimSection_2 = markdown
+    .split('SECOND_EXTRA_CLAIM_TABLE')?.[1]
     ?.split('SUGAR_CLAIM_TABLE')?.[0];
 
-  logger.error('extra');
-  logger.info(extraClaimSection);
+  logger.error('extra 2');
+  logger.info(extraClaimSection_2);
 
   const sugarClaimSection = markdown
     .split('SUGAR_CLAIM_TABLE')?.[1]
@@ -93,7 +100,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   logger.info(supplyChainSection);
 
   //? EXTRA
-  const extraClaimsObjList = getObjectDataFromTable(extraClaimSection, [
+  const extraClaimsObjList_1 = getObjectDataFromTable(extraClaimSection_1, [
     'claim',
     'mentioned',
     'contain',
@@ -101,8 +108,19 @@ export const mapMarkdownAllToObject = (markdown: string) => {
     'source',
     'reason',
   ]);
-  logger.error('extra claim object list');
-  logger.info(JSON.stringify(extraClaimsObjList));
+  logger.error('extra claim object list 1');
+  logger.info(JSON.stringify(extraClaimsObjList_1));
+
+  const extraClaimsObjList_2 = getObjectDataFromTable(extraClaimSection_2, [
+    'claim',
+    'mentioned',
+    'contain',
+    'notContain',
+    'source',
+    'reason',
+  ]);
+  logger.error('extra claim object list 2');
+  logger.info(JSON.stringify(extraClaimsObjList_2));
 
   //? SUGAR
   const sugarClaimsObjList = getObjectDataFromTable(sugarClaimSection, [
@@ -125,14 +143,12 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   logger.info(JSON.stringify(fatClaimsObjList));
 
   //? OTHER
-  const otherClaimsObjList = getObjectDataFromTable(otherClaimSection, [
-    'claim',
-    'isClaimed',
-    'source',
-    'reason',
-  ]);
+  const nonCertificateClaimsObjList = getObjectDataFromTable(
+    otherClaimSection,
+    ['claim', 'isClaimed', 'source', 'reason']
+  );
   logger.error('other claim list');
-  logger.info(JSON.stringify(otherClaimsObjList));
+  logger.info(JSON.stringify(nonCertificateClaimsObjList));
 
   //? CALORIE
   const calorieClaimsObjList = getObjectDataFromTable(calorieClaimSection, [
@@ -197,6 +213,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
     'pinterest',
     'youtube',
     'facebook',
+    'twitter',
     'socialMediaList',
     'website',
     'socialMediaText',
@@ -234,11 +251,12 @@ export const mapMarkdownAllToObject = (markdown: string) => {
     header: headerObjList,
     physical: physicalObjList,
     attributes: {
-      containAndNotContain: extraClaimsObjList,
+      containAndNotContain: [...extraClaimsObjList_1, ...extraClaimsObjList_2],
       fatClaims: fatClaimsObjList,
-      nonCertificateClaims: otherClaimsObjList,
+      nonCertificateClaims: nonCertificateClaimsObjList,
       calorieClaims: calorieClaimsObjList,
       saltClaims: saltClaimsObjList,
+      sugarClaims: sugarClaimsObjList,
     },
     ingredients: ingredientObjList,
     allergens: allergenObjList,
@@ -256,7 +274,8 @@ const getObjectDataFromTable = (
     .trim()
     .split('\n')
     .filter((line) => line.trim().length > 0)
-    .filter((line) => line.trim() !== '##');
+    .filter((line) => line.trim() !== '##')
+    .filter((line) => line.trim() !== '**');
 
   return itemStringList.map((line) => {
     const values = line
