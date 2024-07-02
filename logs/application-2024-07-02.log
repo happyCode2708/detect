@@ -5274,3 +5274,421 @@
 2024-07-02 16:46:52 [32minfo[39m: [{"storageInstruction":"DO NOT EXPOSE TO HEAT . STORE IN A COOL DRY PLACE .","cookingInstruction":"","usageInstruction":"","usageTimeInstruction":"","otherInstructions":""}]
 2024-07-02 16:46:52 [31merror[39m: supplyChain
 2024-07-02 16:46:52 [32minfo[39m: [{"countryOfOrigin":"083468748218","manufacturerName":"","manufacturerDate":"","manufacturerPhoneNumber":"","manufacturerStreetAddress":"","manufacturerCity":"","manufacturerState":"","manufactureZipCode":""}]
+2024-07-02 16:59:49 [31merror[39m: extra 1
+2024-07-02 16:59:49 [32minfo[39m: 
+| extra item | is mentioned on product ?  | mentioned on which text on product ? | do you know it through which source of info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | product contain it ? (answer is yes/no) |
+| ------- | -------- | -------- | -------- | -------- |
+| additives | false |  |  | 
+| added colors | false |  |  | 
+| artificial additives | false |  |  | 
+| chemical additives | false |  |  | 
+| synthetic additives | false |  |  | 
+| natural additives | false |  |  | 
+| artificial colors | false |  |  | 
+| chemical colors | false |  |  | 
+| synthetic colors | false |  |  | 
+| natural colors | false |  |  | 
+| dyes | false |  |  | 
+| added dyes | false |  |  | 
+| artificial dyes | false |  |  | 
+| chemical dyes | false |  |  | 
+| synthetic dyes | false |  |  | 
+| natural dyes | false |  |  | 
+| added flavors | false |  |  | 
+| artificial flavors | true | FREE from ARTIFICIAL FLAVORS, COLORS | marketing text on product | no |
+| chemical flavors | false |  |  | 
+| synthetic flavors | false |  |  | 
+| natural flavors | false |  |  | 
+| naturally flavored | true | Peanut Butter Chocolate NATURALLY FLAVORED | marketing text on product | yes |
+| added fragrances | false |  |  | 
+| artificial fragrance | false |  |  | 
+| chemical fragrances | false |  |  | 
+| synthetic fragrance | false |  |  | 
+| preservatives | false |  |  | 
+| added preservatives | false |  |  | 
+| artificial preservatives | false |  |  | 
+| chemical preservatives | false |  |  | 
+| synthetic preservatives | false |  |  | 
+| natural preservatives | false |  |  | 
+| artificial ingredients | true | FREE from ... ARTIFICIAL INGREDIENTS | marketing text on product | no |
+| chemical ingredients | true | MANUFACTURED IN THE USA FROM DOMESTIC AND INTERNATIONAL INGREDIENTS | marketing text on product | yes |
+| synthetic ingredients | false |  |  | 
+| natural ingredients | false |  |  | 
+| animal ingredients | false |  |  | 
+| chemical sunscreens | false |  |  | 
+| animal by-products | false |  |  | 
+| animal derivatives | false |  |  | 
+| animal products | false |  |  | 
+| animal rennet | false |  |  | 
+| antibiotics | false |  |  | 
+| added antibiotics | false |  |  | 
+| synthetics | false |  |  | 
+| chemicals | false |  |  | 
+| hormones | false |  |  | 
+| added hormones | false |  |  | 
+| nitrates/nitrites | false |  |  | 
+| added nitrates | false |  |  | 
+| added nitrites | false |  |  | 
+| yeast | false |  |  | 
+| active yeast | false |  |  | 
+
+## 
+2024-07-02 16:59:49 [31merror[39m: extra 2
+2024-07-02 16:59:49 [32minfo[39m: 
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | ------- | ------- | -------- | -------- |
+| gluten | true | no | yes | marketing text on product | Text states "FREE from GLUTEN" |
+| cholesterol | true | yes | no | nutrition fact | "Cholesterol Omg" is mentioned in the nutrition fact table |
+
+## 
+2024-07-02 16:59:49 [31merror[39m: extra 3
+2024-07-02 16:59:49 [32minfo[39m: 
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) | do match exact text on product ? (answer is yes/no) |
+| ------- | -------- | ------- | ------- | ------- | -------- | -------- |
+| sucralose | true | no | yes | marketing text on product | Text states "DOES NOT CONTAIN SUCRALOSE" | yes |
+| saccharin | true | no | yes | marketing text on product | Text states "DOES NOT CONTAIN ... SACCHARIN" | yes |
+| aspartame | true | no | yes | marketing text on product | Text states "DOES NOT CONTAIN ... ASPARTAME" | yes |
+| acesulfame potassium | true | no | yes | marketing text on product | Text states "DOES NOT CONTAIN ... ACESULFAME POTASSIUM" | yes |
+| neotame | true | no | yes | marketing text on product | Text states "DOES NOT CONTAIN ... NEOTAME" | yes |
+| advantame | true | no | yes | marketing text on product | Text states "DOES NOT CONTAIN ... ADVANTAME" | yes |
+
+## 
+2024-07-02 16:59:49 [31merror[39m: sugar
+2024-07-02 16:59:49 [32minfo[39m: 
+| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)| how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| contain artificial sweetener | true | marketing text on product | Text states "FREE from ... ARTIFICIAL SWEETENERS" |
+| no contain saccharin | true | marketing text on product | Text states "DOES NOT CONTAIN ... SACCHARIN" |
+| no contain sucralose | true | marketing text on product | Text states "DOES NOT CONTAIN SUCRALOSE" |
+| no contain aspartame | true | marketing text on product | Text states "DOES NOT CONTAIN ... ASPARTAME" |
+
+## 
+2024-07-02 16:59:49 [31merror[39m: fat
+2024-07-02 16:59:49 [32minfo[39m: 
+| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| trans fat free | true | nutrition fact | "Trans Fat 0g" is mentioned in the nutrition fact table |
+
+## 
+2024-07-02 16:59:49 [31merror[39m: other
+2024-07-02 16:59:49 [32minfo[39m: 
+| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| low carbohydrate or low-carb | true | marketing text on product | The product description emphasizes "low - carb" and "ketogenic nutrition" |
+| keto | true | marketing text on product | The product is described as "SlimFast® Keto" and promotes a "ketogenic lifestyle" |
+
+## 
+2024-07-02 16:59:49 [31merror[39m: calorie
+2024-07-02 16:59:49 [32minfo[39m: 
+| calorie claim | does product explicitly claim the calorie claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+
+## 
+2024-07-02 16:59:49 [31merror[39m: salt
+2024-07-02 16:59:49 [32minfo[39m: 
+| salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+
+## 
+2024-07-02 16:59:49 [31merror[39m: allergen
+2024-07-02 16:59:49 [32minfo[39m: 
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+| ------- | -------- | -------- | ------- | -------- | -------- |
+| CONTAINS MILK, PEANUTS, COCONUT, AND SOY. | milk, peanuts / peanut oil, coconut, soy / soybeans |  |  | MADE IN A FACILITY THAT PROCESSES PEANUTS, TREE NUTS, DAIRY, EGGS, WHEAT, AND SOY. | peanuts / peanut oil, tree nuts, dairy, egg, wheat, soy / soybeans |
+
+## 
+2024-07-02 16:59:49 [31merror[39m: header
+2024-07-02 16:59:49 [32minfo[39m: 
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+| ------- | -------- | -------- | ------- | -------- | -------- | -------- |
+| Peanut Butter Chocolate FAT BOMB™ SNACK CUP | SlimFast KETO | 8.4 OZ | 238g |  | 14-0.6 OZ ( 17g ) CUPS | 14 |
+
+## 
+2024-07-02 16:59:49 [31merror[39m: ingredient
+2024-07-02 16:59:49 [32minfo[39m: 
+| is product supplement ? (answer boolean) | ingredient statement | 
+| ------- | -------- |
+| false | MILK CHOCOLATE COATING [ CHOCOLATE , ERYTHRITOL , COCOA BUTTER , WHOLE MILK POWDER , INULIN ( NATURAL VEGETABLE FIBER ) , NONFAT DRY MILK , SOY LECITHIN , NATURAL VANILLA EXTRACT , SALT , STEVIA LEAF EXTRACT ] , MCT OIL BLEND ( PALM KERNEL , PALM , COCONUT ) , INULIN , PEANUT BUTTER ( PEANUTS ) , ERYTHRITOL , MILK PROTEIN ISOLATE , PEANUT FLOUR , PEANUT OIL , SOY LECITHIN , STEVIA LEAF EXTRACT , SALT . |
+
+## 
+2024-07-02 16:59:49 [31merror[39m: physical
+2024-07-02 16:59:49 [32minfo[39m: 
+| upc-12 or gtin-12 |
+| ------- |
+| 083468748218 |
+
+## 
+2024-07-02 16:59:49 [31merror[39m: marketing
+2024-07-02 16:59:49 [32minfo[39m: 
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | have twitter icon ? | social media list | website list | social media text list | enlarged to show (answer is boolean) |
+| ------- | -------- | -------- | ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| false | true | true | true | true | false | Instagram, Pinterest, Youtube, Facebook | slimfastketo.com |  | false |
+
+## 
+2024-07-02 16:59:49 [31merror[39m: instruction
+2024-07-02 16:59:49 [32minfo[39m: 
+| storage instructions (answer are multiple string) | cooking instructions  (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string)| other instructions (answer are multiple string)|
+| ------- | -------- | -------- | ------- | -------- |
+| DO NOT EXPOSE TO HEAT . STORE IN A COOL DRY PLACE. |  |  |  |  |
+
+## 
+2024-07-02 16:59:49 [31merror[39m: supply chain
+2024-07-02 16:59:49 [32minfo[39m: 
+| country of origin | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+| ------- | -------- | -------- | ------- | ------- | -------- | -------- | ------- |
+| USA | SlimFast® |  | 1-800 - SLIMFAST | 11780 U.S. Highway One , Suite 400N | Palm Beach Gardens | FL | 33408 |
+
+## 
+2024-07-02 16:59:49 [31merror[39m: extra claim object list 1
+2024-07-02 16:59:49 [32minfo[39m: [{"claim":"additives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added colors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"artificial additives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemical additives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetic additives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"natural additives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"artificial colors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemical colors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetic colors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"natural colors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"dyes","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added dyes","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"artificial dyes","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemical dyes","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetic dyes","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"natural dyes","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added flavors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"artificial flavors","mentioned":"true","reason":"FREE from ARTIFICIAL FLAVORS, COLORS","source":"marketing text on product","containOrNot":"no"},{"claim":"chemical flavors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetic flavors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"natural flavors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"naturally flavored","mentioned":"true","reason":"Peanut Butter Chocolate NATURALLY FLAVORED","source":"marketing text on product","containOrNot":"yes"},{"claim":"added fragrances","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"artificial fragrance","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemical fragrances","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetic fragrance","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"preservatives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added preservatives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"artificial preservatives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemical preservatives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetic preservatives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"natural preservatives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"artificial ingredients","mentioned":"true","reason":"FREE from ... ARTIFICIAL INGREDIENTS","source":"marketing text on product","containOrNot":"no"},{"claim":"chemical ingredients","mentioned":"true","reason":"MANUFACTURED IN THE USA FROM DOMESTIC AND INTERNATIONAL INGREDIENTS","source":"marketing text on product","containOrNot":"yes"},{"claim":"synthetic ingredients","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"natural ingredients","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"animal ingredients","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemical sunscreens","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"animal by-products","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"animal derivatives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"animal products","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"animal rennet","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"antibiotics","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added antibiotics","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetics","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemicals","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"hormones","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added hormones","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"nitrates/nitrites","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added nitrates","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added nitrites","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"yeast","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"active yeast","mentioned":"false","reason":"","source":"","containOrNot":""}]
+2024-07-02 16:59:49 [31merror[39m: extra claim object list 2
+2024-07-02 16:59:49 [32minfo[39m: [{"claim":"gluten","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"Text states \"FREE from GLUTEN\""},{"claim":"cholesterol","mentioned":"true","contain":"yes","notContain":"no","source":"nutrition fact","reason":"\"Cholesterol Omg\" is mentioned in the nutrition fact table"}]
+2024-07-02 16:59:49 [31merror[39m: extra claim object list 3
+2024-07-02 16:59:49 [32minfo[39m: [{"claim":"sucralose","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"Text states \"DOES NOT CONTAIN SUCRALOSE\""},{"claim":"saccharin","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"Text states \"DOES NOT CONTAIN ... SACCHARIN\""},{"claim":"aspartame","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"Text states \"DOES NOT CONTAIN ... ASPARTAME\""},{"claim":"acesulfame potassium","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"Text states \"DOES NOT CONTAIN ... ACESULFAME POTASSIUM\""},{"claim":"neotame","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"Text states \"DOES NOT CONTAIN ... NEOTAME\""},{"claim":"advantame","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"Text states \"DOES NOT CONTAIN ... ADVANTAME\""}]
+2024-07-02 16:59:49 [31merror[39m: sugar claim list
+2024-07-02 16:59:49 [32minfo[39m: [{"claim":"contain artificial sweetener","isClaimed":"true","source":"marketing text on product","reason":"Text states \"FREE from ... ARTIFICIAL SWEETENERS\""},{"claim":"no contain saccharin","isClaimed":"true","source":"marketing text on product","reason":"Text states \"DOES NOT CONTAIN ... SACCHARIN\""},{"claim":"no contain sucralose","isClaimed":"true","source":"marketing text on product","reason":"Text states \"DOES NOT CONTAIN SUCRALOSE\""},{"claim":"no contain aspartame","isClaimed":"true","source":"marketing text on product","reason":"Text states \"DOES NOT CONTAIN ... ASPARTAME\""}]
+2024-07-02 16:59:49 [31merror[39m: fat claim list
+2024-07-02 16:59:49 [32minfo[39m: [{"claim":"trans fat free","isClaimed":"true","source":"nutrition fact","reason":"\"Trans Fat 0g\" is mentioned in the nutrition fact table"}]
+2024-07-02 16:59:49 [31merror[39m: other claim list
+2024-07-02 16:59:49 [32minfo[39m: [{"claim":"low carbohydrate or low-carb","isClaimed":"true","source":"marketing text on product","reason":"The product description emphasizes \"low - carb\" and \"ketogenic nutrition\""},{"claim":"keto","isClaimed":"true","source":"marketing text on product","reason":"The product is described as \"SlimFast® Keto\" and promotes a \"ketogenic lifestyle\""}]
+2024-07-02 16:59:49 [31merror[39m: calorie claim list
+2024-07-02 16:59:49 [32minfo[39m: []
+2024-07-02 16:59:49 [31merror[39m: salt claim list
+2024-07-02 16:59:49 [32minfo[39m: []
+2024-07-02 16:59:49 [31merror[39m: allergen list
+2024-07-02 16:59:49 [32minfo[39m: [{"containStatement":"CONTAINS MILK, PEANUTS, COCONUT, AND SOY.","containList":"milk, peanuts / peanut oil, coconut, soy / soybeans","notContainStatement":"","notContainList":"","containOnEquipmentStatement":"MADE IN A FACILITY THAT PROCESSES PEANUTS, TREE NUTS, DAIRY, EGGS, WHEAT, AND SOY.","containOnEquipmentList":"peanuts / peanut oil, tree nuts, dairy, egg, wheat, soy / soybeans"}]
+2024-07-02 16:59:49 [31merror[39m: header list
+2024-07-02 16:59:49 [32minfo[39m: [{"productName":"Peanut Butter Chocolate FAT BOMB™ SNACK CUP","brandName":"SlimFast KETO","primarySize":"8.4 OZ","secondarySize":"238g","thirdSize":"","fullSizeTextDescription":"14-0.6 OZ ( 17g ) CUPS","count":"14"}]
+2024-07-02 16:59:49 [31merror[39m: ingredient list
+2024-07-02 16:59:49 [32minfo[39m: [{"isProductSupplement":"false","ingredientStatement":"MILK CHOCOLATE COATING [ CHOCOLATE , ERYTHRITOL , COCOA BUTTER , WHOLE MILK POWDER , INULIN ( NATURAL VEGETABLE FIBER ) , NONFAT DRY MILK , SOY LECITHIN , NATURAL VANILLA EXTRACT , SALT , STEVIA LEAF EXTRACT ] , MCT OIL BLEND ( PALM KERNEL , PALM , COCONUT ) , INULIN , PEANUT BUTTER ( PEANUTS ) , ERYTHRITOL , MILK PROTEIN ISOLATE , PEANUT FLOUR , PEANUT OIL , SOY LECITHIN , STEVIA LEAF EXTRACT , SALT ."}]
+2024-07-02 16:59:49 [31merror[39m: physical
+2024-07-02 16:59:49 [32minfo[39m: [{"upc12":"083468748218"}]
+2024-07-02 16:59:49 [31merror[39m: marketing
+2024-07-02 16:59:49 [32minfo[39m: [{"haveQrCode":"false","instagram":"true","pinterest":"true","youtube":"true","facebook":"true","twitter":"false","socialMediaList":"Instagram, Pinterest, Youtube, Facebook","website":"slimfastketo.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-02 16:59:49 [31merror[39m: instruction
+2024-07-02 16:59:49 [32minfo[39m: [{"storageInstruction":"DO NOT EXPOSE TO HEAT . STORE IN A COOL DRY PLACE.","cookingInstruction":"","usageInstruction":"","usageTimeInstruction":"","otherInstructions":""}]
+2024-07-02 16:59:49 [31merror[39m: supplyChain
+2024-07-02 16:59:49 [32minfo[39m: [{"countryOfOrigin":"083468748218","manufacturerName":"","manufacturerDate":"","manufacturerPhoneNumber":"","manufacturerStreetAddress":"","manufacturerCity":"","manufacturerState":"","manufactureZipCode":""}]
+2024-07-02 17:15:04 [31merror[39m: debug section
+2024-07-02 17:15:04 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table from the images provided. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not a dual-column format. There is only 1 column for "% Daily Value" and 1 column for "amount per serving".  |
+
+2024-07-02 17:15:04 [31merror[39m: footnote
+2024-07-02 17:15:04 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| † Daily Value (DV) not established | † Daily Value (DV) not established |
+
+
+
+2024-07-02 17:15:04 [31merror[39m: debug
+2024-07-02 17:15:04 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table from the images provided. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not a dual-column format. There is only 1 column for "% Daily Value" and 1 column for "amount per serving".  |
+
+2024-07-02 17:15:04 [31merror[39m: debug table
+2024-07-02 17:15:04 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-02 17:16:10 [31merror[39m: extra 1
+2024-07-02 17:16:10 [32minfo[39m: 
+| extra item | is mentioned on product ?  | mentioned on which text on product ? | do you know it through which source of info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | product contain it ? (answer is yes/no) |
+| ------- | -------- | -------- | -------- | -------- |
+| additives | false |  |  |  |
+| added colors | false |  |  |  |
+| artificial additives | false |  |  |  |
+| chemical additives | false |  |  |  |
+| synthetic additives | false |  |  |  |
+| natural additives | false |  |  |  |
+| artificial colors | false |  |  |  |
+| chemical colors | false |  |  |  |
+| synthetic colors | false |  |  |  |
+| natural colors | false |  |  |  |
+| dyes | false |  |  |  |
+| added dyes | false |  |  |  |
+| artificial dyes | false |  |  |  |
+| chemical dyes | false |  |  |  |
+| synthetic dyes | false |  |  |  |
+| natural dyes | false |  |  |  |
+| added flavors | false |  |  |  |
+| artificial flavors | false |  |  |  |
+| chemical flavors | false |  |  |  |
+| synthetic flavors | false |  |  |  |
+| natural flavors | true | Other Ingredients: Natural Flavors | ingredient list | yes |
+| naturally flavored | false |  |  |  |
+| added fragrances | false |  |  |  |
+| artificial fragrance | false |  |  |  |
+| chemical fragrances | false |  |  |  |
+| synthetic fragrance | false |  |  |  |
+| preservatives | false |  |  |  |
+| added preservatives | false |  |  |  |
+| artificial preservatives | false |  |  |  |
+| chemical preservatives | false |  |  |  |
+| synthetic preservatives | false |  |  |  |
+| natural preservatives | false |  |  |  |
+| artificial ingredients | false |  |  |  |
+| chemical ingredients | false |  |  |  |
+| synthetic ingredients | false |  |  |  |
+| natural ingredients | false |  |  |  |
+| animal ingredients | false |  |  |  |
+| chemical sunscreens | false |  |  |  |
+| animal by-products | false |  |  |  |
+| animal derivatives | false |  |  |  |
+| animal products | false |  |  |  |
+| animal rennet | false |  |  |  |
+| antibiotics | false |  |  |  |
+| added antibiotics | false |  |  |  |
+| synthetics | false |  |  |  |
+| chemicals | false |  |  |  |
+| hormones | false |  |  |  |
+| added hormones | false |  |  |  |
+| nitrates/nitrites | false |  |  |  |
+| added nitrates | false |  |  |  |
+| added nitrites | false |  |  |  |
+| yeast | false |  |  |  |
+| active yeast | false |  |  |  |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: extra 2
+2024-07-02 17:16:10 [32minfo[39m: 
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | ------- | ------- | -------- | -------- |
+| amino acids | true | yes |  | marketing text on product | "PERFECT AMINO™ dietary supplement is utilized up to 99% to help build new protein, muscle & collagen without the caloric impact & without breaking a fast." |
+| gluten | true | no | yes | marketing text on product | "Gluten & Dairy Free" |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: extra 3
+2024-07-02 17:16:10 [32minfo[39m: 
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) | do match exact text on product ? (answer is yes/no) |
+| ------- | -------- | ------- | ------- | -------- | -------- | -------- |
+| vegan ingredients | true | yes |  | marketing text on product | "VEGAN DIETARY SUPPLEMENT" | yes |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: sugar
+2024-07-02 17:16:10 [32minfo[39m: 
+| sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)| how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| no contain sugar added | false |  |  |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: fat
+2024-07-02 17:16:10 [32minfo[39m: 
+| fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| fat free | false |  |  |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: other
+2024-07-02 17:16:10 [32minfo[39m: 
+| other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| gluten free | true | marketing text on product | "Gluten & Dairy Free" |
+| dairy free | true | marketing text on product | "Gluten & Dairy Free" |
+| paleo | true | marketing text on product | "Paleo & Keto-Friendly" |
+| keto-friendly | true | marketing text on product | "Paleo & Keto-Friendly" |
+| vegan | true | marketing text on product | "VEGAN DIETARY SUPPLEMENT" |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: calorie
+2024-07-02 17:16:10 [32minfo[39m: 
+| calorie claim | does product explicitly claim the calorie claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+| have low calorie | false |  |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: salt
+2024-07-02 17:16:10 [32minfo[39m: 
+| salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| lightly salted | false |  |
+| low sodium | false |  |
+| no salt | false |  |
+| no salt added | false |  |
+| reduced sodium | false |  |
+| salt free | false |  |
+| sodium free | false |  |
+| unsalted | false |  |
+| very low sodium | false |  |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: allergen
+2024-07-02 17:16:10 [32minfo[39m: 
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+| ------- | -------- | -------- | ------- | -------- | -------- |
+|  |  | Gluten & Dairy Free | dairy |  |  |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: header
+2024-07-02 17:16:10 [32minfo[39m: 
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+| ------- | -------- | -------- | ------- | -------- | -------- | -------- |
+| PERFECT AMINO MIXED BERRY | BODYHEALTH | 4.64 oz | 131.6g |  | NET WT 4.64 oz (131.6g) | 20 |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: ingredient
+2024-07-02 17:16:10 [32minfo[39m: 
+| is product supplement ? (answer boolean) | ingredient statement | 
+| ------- | -------- |
+| true | Other Ingredients: Natural Flavors, Citric Acid (from Cassava), L-Malic Acid, Stevia (Rebaudioside M) Extract, Monk Fruit (Luo Han Guo), Himalayan Pink Salt, Katemfe Fruit (Thaumatococcus Daniellii) Extract. |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: physical
+2024-07-02 17:16:10 [32minfo[39m: 
+| upc-12 or gtin-12 |
+| ------- |
+| 500557560817 |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: marketing
+2024-07-02 17:16:10 [32minfo[39m: 
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | have twitter icon ? | social media list | website list | social media text list | enlarged to show (answer is boolean) |
+| ------- | -------- | -------- | ------- | ------- | -------- | -------- | -------- | -------- | -------- |
+| true | false | false | false | false | false |  | BodyHealth.com |  | false |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: instruction
+2024-07-02 17:16:10 [32minfo[39m: 
+| storage instructions (answer are multiple string) | cooking instructions  (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string)| other instructions (answer are multiple string)|
+| ------- | -------- | -------- | ------- | -------- |
+|  |  | Take 1 scoop, 1-3 times daily. Mix with 8-12 oz. of cold water. |  |  |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: supply chain
+2024-07-02 17:16:10 [32minfo[39m: 
+| country of origin | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+| ------- | -------- | -------- | ------- | ------- | -------- | -------- | ------- |
+|  | BodyHealth.com, LLC |  | 877-804-3258 | 745 Main Street | Dunedin | FL | 34698 |
+
+## 
+2024-07-02 17:16:10 [31merror[39m: extra claim object list 1
+2024-07-02 17:16:10 [32minfo[39m: [{"claim":"additives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added colors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"artificial additives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemical additives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetic additives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"natural additives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"artificial colors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemical colors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetic colors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"natural colors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"dyes","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added dyes","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"artificial dyes","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemical dyes","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetic dyes","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"natural dyes","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added flavors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"artificial flavors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemical flavors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetic flavors","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"natural flavors","mentioned":"true","reason":"Other Ingredients: Natural Flavors","source":"ingredient list","containOrNot":"yes"},{"claim":"naturally flavored","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added fragrances","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"artificial fragrance","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemical fragrances","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetic fragrance","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"preservatives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added preservatives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"artificial preservatives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemical preservatives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetic preservatives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"natural preservatives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"artificial ingredients","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemical ingredients","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetic ingredients","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"natural ingredients","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"animal ingredients","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemical sunscreens","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"animal by-products","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"animal derivatives","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"animal products","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"animal rennet","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"antibiotics","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added antibiotics","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"synthetics","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"chemicals","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"hormones","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added hormones","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"nitrates/nitrites","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added nitrates","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"added nitrites","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"yeast","mentioned":"false","reason":"","source":"","containOrNot":""},{"claim":"active yeast","mentioned":"false","reason":"","source":"","containOrNot":""}]
+2024-07-02 17:16:10 [31merror[39m: extra claim object list 2
+2024-07-02 17:16:10 [32minfo[39m: [{"claim":"amino acids","mentioned":"true","contain":"yes","notContain":"","source":"marketing text on product","reason":"\"PERFECT AMINO™ dietary supplement is utilized up to 99% to help build new protein, muscle & collagen without the caloric impact & without breaking a fast.\""},{"claim":"gluten","mentioned":"true","contain":"no","notContain":"yes","source":"marketing text on product","reason":"\"Gluten & Dairy Free\""}]
+2024-07-02 17:16:10 [31merror[39m: extra claim object list 3
+2024-07-02 17:16:10 [32minfo[39m: [{"claim":"vegan ingredients","mentioned":"true","contain":"yes","notContain":"","source":"marketing text on product","reason":"\"VEGAN DIETARY SUPPLEMENT\""}]
+2024-07-02 17:16:10 [31merror[39m: sugar claim list
+2024-07-02 17:16:10 [32minfo[39m: [{"claim":"no contain sugar added","isClaimed":"false","source":"","reason":""}]
+2024-07-02 17:16:10 [31merror[39m: fat claim list
+2024-07-02 17:16:10 [32minfo[39m: [{"claim":"fat free","isClaimed":"false","source":"","reason":""}]
+2024-07-02 17:16:10 [31merror[39m: other claim list
+2024-07-02 17:16:10 [32minfo[39m: [{"claim":"gluten free","isClaimed":"true","source":"marketing text on product","reason":"\"Gluten & Dairy Free\""},{"claim":"dairy free","isClaimed":"true","source":"marketing text on product","reason":"\"Gluten & Dairy Free\""},{"claim":"paleo","isClaimed":"true","source":"marketing text on product","reason":"\"Paleo & Keto-Friendly\""},{"claim":"keto-friendly","isClaimed":"true","source":"marketing text on product","reason":"\"Paleo & Keto-Friendly\""},{"claim":"vegan","isClaimed":"true","source":"marketing text on product","reason":"\"VEGAN DIETARY SUPPLEMENT\""}]
+2024-07-02 17:16:10 [31merror[39m: calorie claim list
+2024-07-02 17:16:10 [32minfo[39m: [{"claim":"have low calorie","isClaimed":"false","source":""}]
+2024-07-02 17:16:10 [31merror[39m: salt claim list
+2024-07-02 17:16:10 [32minfo[39m: [{"claim":"low sodium","isClaimed":"false","source":""},{"claim":"no salt","isClaimed":"false","source":""},{"claim":"no salt added","isClaimed":"false","source":""},{"claim":"reduced sodium","isClaimed":"false","source":""},{"claim":"salt free","isClaimed":"false","source":""},{"claim":"sodium free","isClaimed":"false","source":""},{"claim":"unsalted","isClaimed":"false","source":""},{"claim":"very low sodium","isClaimed":"false","source":""}]
+2024-07-02 17:16:10 [31merror[39m: allergen list
+2024-07-02 17:16:10 [32minfo[39m: [{"containStatement":"","containList":"","notContainStatement":"Gluten & Dairy Free","notContainList":"dairy","containOnEquipmentStatement":"","containOnEquipmentList":""}]
+2024-07-02 17:16:10 [31merror[39m: header list
+2024-07-02 17:16:10 [32minfo[39m: [{"productName":"PERFECT AMINO MIXED BERRY","brandName":"BODYHEALTH","primarySize":"4.64 oz","secondarySize":"131.6g","thirdSize":"","fullSizeTextDescription":"NET WT 4.64 oz (131.6g)","count":"20"}]
+2024-07-02 17:16:10 [31merror[39m: ingredient list
+2024-07-02 17:16:10 [32minfo[39m: [{"isProductSupplement":"true","ingredientStatement":"Other Ingredients: Natural Flavors, Citric Acid (from Cassava), L-Malic Acid, Stevia (Rebaudioside M) Extract, Monk Fruit (Luo Han Guo), Himalayan Pink Salt, Katemfe Fruit (Thaumatococcus Daniellii) Extract."}]
+2024-07-02 17:16:10 [31merror[39m: physical
+2024-07-02 17:16:10 [32minfo[39m: [{"upc12":"500557560817"}]
+2024-07-02 17:16:10 [31merror[39m: marketing
+2024-07-02 17:16:10 [32minfo[39m: [{"haveQrCode":"true","instagram":"false","pinterest":"false","youtube":"false","facebook":"false","twitter":"false","socialMediaList":"","website":"BodyHealth.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-02 17:16:10 [31merror[39m: instruction
+2024-07-02 17:16:10 [32minfo[39m: [{"storageInstruction":"","cookingInstruction":"","usageInstruction":"Take 1 scoop, 1-3 times daily. Mix with 8-12 oz. of cold water.","usageTimeInstruction":"","otherInstructions":""}]
+2024-07-02 17:16:10 [31merror[39m: supplyChain
+2024-07-02 17:16:10 [32minfo[39m: [{"countryOfOrigin":"500557560817","manufacturerName":"","manufacturerDate":"","manufacturerPhoneNumber":"","manufacturerStreetAddress":"","manufacturerCity":"","manufacturerState":"","manufactureZipCode":""}]

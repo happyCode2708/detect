@@ -251,7 +251,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   logger.info(JSON.stringify(instructionObjList));
 
   //? SUPPLY CHAIN
-  const supplyChainObjList = getObjectDataFromTable(physicalSection, [
+  const supplyChainObjList = getObjectDataFromTable(supplyChainSection, [
     'countryOfOrigin',
     'manufacturerName',
     'manufacturerDate',
