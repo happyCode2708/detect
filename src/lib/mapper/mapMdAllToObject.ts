@@ -10,10 +10,17 @@ export const mapMarkdownAllToObject = (markdown: string) => {
 
   const extraClaimSection_2 = markdown
     .split('SECOND_EXTRA_CLAIM_TABLE')?.[1]
-    ?.split('SUGAR_CLAIM_TABLE')?.[0];
+    ?.split('THIRD_EXTRA_CLAIM_TABLE')?.[0];
 
   logger.error('extra 2');
   logger.info(extraClaimSection_2);
+
+  const extraClaimSection_3 = markdown
+    .split('THIRD_EXTRA_CLAIM_TABLE')?.[1]
+    ?.split('SUGAR_CLAIM_TABLE')?.[0];
+
+  logger.error('extra 3');
+  logger.info(extraClaimSection_3);
 
   const sugarClaimSection = markdown
     .split('SUGAR_CLAIM_TABLE')?.[1]
@@ -103,10 +110,9 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   const extraClaimsObjList_1 = getObjectDataFromTable(extraClaimSection_1, [
     'claim',
     'mentioned',
-    'contain',
-    'notContain',
-    'source',
     'reason',
+    'source',
+    'containOrNot',
   ]);
   logger.error('extra claim object list 1');
   logger.info(JSON.stringify(extraClaimsObjList_1));
@@ -121,6 +127,17 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   ]);
   logger.error('extra claim object list 2');
   logger.info(JSON.stringify(extraClaimsObjList_2));
+
+  const extraClaimsObjList_3 = getObjectDataFromTable(extraClaimSection_3, [
+    'claim',
+    'mentioned',
+    'contain',
+    'notContain',
+    'source',
+    'reason',
+  ]);
+  logger.error('extra claim object list 3');
+  logger.info(JSON.stringify(extraClaimsObjList_3));
 
   //? SUGAR
   const sugarClaimsObjList = getObjectDataFromTable(sugarClaimSection, [
@@ -251,7 +268,15 @@ export const mapMarkdownAllToObject = (markdown: string) => {
     header: headerObjList,
     physical: physicalObjList,
     attributes: {
-      containAndNotContain: [...extraClaimsObjList_1, ...extraClaimsObjList_2],
+      containAndNotContain: [
+        ...extraClaimsObjList_1?.map((item: any) => ({
+          ...item,
+          contain: `${item?.containOrNot === 'yes'}`,
+          notContain: `${item?.containOrNot !== 'yes'}`,
+        })),
+        ...extraClaimsObjList_2,
+        ...extraClaimsObjList_3,
+      ],
       fatClaims: fatClaimsObjList,
       nonCertificateClaims: nonCertificateClaimsObjList,
       calorieClaims: calorieClaimsObjList,

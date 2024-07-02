@@ -6,14 +6,22 @@ export const containAndNotContainClaimValidate = async (
     modifiedProductDataPoints?.['attributes']?.['containAndNotContain'] || [];
 
   await validate(
-    [...claim_list.filter((item: any) => item?.contain === 'yes')],
+    [
+      ...claim_list.filter(
+        (item: any) => item?.contain === 'yes' || item?.contain === 'true'
+      ),
+    ],
     modifiedProductDataPoints,
     'validated_contain',
     ocrClaims
   );
 
   await validate(
-    [...claim_list.filter((item: any) => item?.notContain === 'yes')],
+    [
+      ...claim_list.filter(
+        (item: any) => item?.notContain === 'yes' || item?.notContain === 'true'
+      ),
+    ],
     modifiedProductDataPoints,
     'validated_notContain',
     ocrClaims
@@ -88,11 +96,11 @@ const check = async (
   analysisItem: any,
   ocrClaims: any
 ): Promise<boolean | string> => {
-  const { claim, isClaimed, source } = analysisItem;
+  const { claim, mentioned, source } = analysisItem;
 
   if (!claim) return Promise.resolve(false);
 
-  if (isClaimed === 'false' || isClaimed === 'unknown')
+  if (mentioned === 'false' || mentioned === 'unknown' || mentioned === 'no')
     return Promise.resolve(false);
 
   if (source === 'ingredient list' || source === 'nutrition fact') {
