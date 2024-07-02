@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://admin:congacon@localhost:5432/ocr"
+  url      = "postgresql://postgres:@localhost:5432/ocr"
 }
 
 generator client {
@@ -32,12 +32,11 @@ model Product {
 }
 
 model ExtractSession {
-  id         String   @id @default(uuid())
+  sessionId  String   @id @default(uuid())
   productId  String
   product    Product  @relation(fields: [productId], references: [id])
   createdAt  DateTime @default(now())
   status     String
-  folderPath String
 }
 
 model Image {

@@ -87,12 +87,38 @@ router.post('/create', async (req, res) => {
   }
 });
 
+// router.post('/create-session', async (req, res) => {
+//   const { ixoneId, session } = req.body;
+
+//   try {
+//     const product = await prisma.product.findUnique({
+//       where: { ixoneID: ixoneId },
+//       include: { images: true },
+//     });
+
+//     if (!product) {
+//       return res.status(404).json({ error: 'Product not found' });
+//     }
+
+//     const newSession = await prisma.extractSession.create({
+//       data: {
+//         productId: product?.productId,
+//         status: 'done',
+//         // folderPath: '/assets/'+ sessionm
+//       },
+//     });
+//     res.status(201).json(newSession);
+//   } catch (error) {
+//     res.status(500).json({ error: 'Failed to create product' });
+//   }
+// });
+
 router.get('/:ixoneid', async (req, res) => {
   const { ixoneid } = req.params;
   try {
     const product = await prisma.product.findUnique({
       where: { ixoneID: ixoneid },
-      include: { images: true },
+      include: { images: true, extractSessions: true },
     });
     if (product) {
       res.status(200).json({ isSuccess: true, data: product });

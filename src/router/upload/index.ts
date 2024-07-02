@@ -12,8 +12,10 @@ import {
 
 import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
 
-import { uploadsDir, resultsDir } from '../../server';
+import { uploadsDir, resultsDir, baseDir } from '../../server';
 import { writeJsonToFile } from '../../lib/json';
+
+import { prisma } from '../../server';
 
 // import OpenAI from 'openai';
 
@@ -150,6 +152,105 @@ router.post(
     });
   }
 );
+
+router.post('/process-product-image', async (req, res) => {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { ixoneID: req.body.ixoneId },
+      include: { images: true },
+    });
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    const filePaths = product?.images?.map((imageItem: any) =>
+      path.join(baseDir, imageItem?.url)
+    );
+
+    const newSession = await prisma.extractSession.create({
+      data: {
+        productId: product.id,
+        status: 'unknown',
+      },
+    });
+    const sessionId = newSession.sessionId;
+
+    const biasForm = JSON.parse(req.body?.biasForm);
+    const outputConfig = JSON.parse(req.body?.outputConfig);
+
+    const collateImageName = `${sessionId}.jpeg`;
+
+    console.log('run on model ', (global as any).generativeModelName);
+
+    console.log('filePath', JSON.stringify(filePaths));
+
+    let invalidatedInput = await findImagesContainNutFact(filePaths);
+
+    // await createCollage(filePaths, collatedOuputPath);
+
+    Object.entries(biasForm).forEach(([key, value]: any) => {
+      if (value?.haveNutFact === true) {
+        let newNutIncluded = addUniqueString(
+          invalidatedInput.nutIncluded,
+          filePaths[key]
+        );
+
+        invalidatedInput.nutIncluded = newNutIncluded;
+      }
+    });
+
+    console.log('result', JSON.stringify(invalidatedInput));
+
+    const nutImagesOCRresult = await getOcrTextAllImages(
+      invalidatedInput.nutIncluded
+    );
+
+    const nutExcludedImagesOCRresult = await getOcrTextAllImages(
+      invalidatedInput.nutExcluded
+    );
+
+    res.json({
+      sessionId,
+      images: [],
+      nutIncludedIdx: invalidatedInput?.nutIncludedIdx,
+      messages: [
+        invalidatedInput.nutIncluded?.length === 0
+          ? 'There is no nut/supp facts panel detected by nut/supp fact panel detector module. If nut/supp fact panels are on provided image. Please set up bias of nut/supp for image to extract info. (Nutrition and Supplement Panel detector is on development state)'
+          : null,
+      ],
+    });
+
+    onProcessNut({
+      req,
+      res,
+      invalidatedInput,
+      //* flash version
+      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+      // ocrList: nutImagesOCRresult,
+      sessionId,
+      collateImageName,
+      outputConfig,
+    });
+
+    onProcessOther({
+      req,
+      res,
+      invalidatedInput,
+      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+      sessionId,
+      collateImageName,
+      outputConfig,
+    });
+  } catch (error) {
+    console.log('error', error);
+    res.status(500).json({
+      isSuccess: false,
+      error: JSON.stringify(error),
+      message: 'Failed to create session',
+    });
+  }
+});
 
 // app.post('/api/upload', upload.single('file'), async (req, res) => {
 //   if (!req.file?.path) return res.json({ isSuccess: false, message: 'failed' });

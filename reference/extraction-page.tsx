@@ -5,10 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Loader, RefreshCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 // import ExtractionHistory from '@/components/extract-history/ExtractionHitory';
-import {
-  useMutateProductExtraction,
-  useMutateUploadFile,
-} from '@/queries/home';
+import { useMutateUploadFile } from '@/queries/home';
 import { FluidContainer } from '@/components/container/FluidContainer';
 import { Result } from '@/components/result/Result';
 import { useQueryClient } from '@tanstack/react-query';
@@ -36,7 +33,7 @@ const ProductDetailPage = () => {
     other: true,
   });
 
-  const [productIxone, setProductIxone] = useState<any>(null);
+  const [productIxone, setProductIxone] = useState(null);
 
   const [sessionId, setSessionId] = useState<any>();
 
@@ -47,12 +44,11 @@ const ProductDetailPage = () => {
   const refInterval = useRef<number | null>(null);
 
   const mutationUploadFile = useMutateUploadFile();
-  const mutateionProductExtract = useMutateProductExtraction();
   const queryClient = useQueryClient();
 
   const { toast } = useToast();
 
-  const imageUrls = productIxone?.images?.map((item: any) => item?.url);
+  console.log('ixoneid', ixoneid);
 
   useEffect(() => {
     if (ixoneid) {
@@ -60,105 +56,27 @@ const ProductDetailPage = () => {
         const response = await fetch(`/api/product/${ixoneid}`);
         const data = await response.json();
 
-        const productData = data?.data;
-
-        if (!productData) return;
-
-        setProductIxone(productData);
-        setSessionId(
-          productData?.extractSessions[productData?.extractSessions?.length - 1]
-            ?.sessionId
-        );
+        setProductIxone(data?.data);
       };
       fetchProduct();
     }
   }, [ixoneid]);
 
-  // const handleSubmit = async () => {
-  //   if (!files.length) return;
+  const handleSubmit = async () => {
+    if (!files.length) return;
 
-  //   const formData = new FormData();
-
-  //   files.forEach((file: any) => {
-  //     formData.append('file', file);
-  //   });
-  //   formData.append('biasForm', JSON.stringify(biasForm));
-  //   formData.append('outputConfig', JSON.stringify(outputConfig));
-
-  //   setLoading(true);
-  //   setProductInfo(null);
-
-  //   mutationUploadFile.mutate(formData, {
-  //     onError: (e) => {
-  //       console.log(e);
-  //     },
-  //     onSuccess: (res) => {
-  //       const { sessionId, images, messages } = res;
-  //       if (images?.length > 0) {
-  //         setProcImages(images);
-  //       }
-
-  //       if (
-  //         messages?.length > 0 &&
-  //         !!messages.find((item: string | null) => item !== null)
-  //       ) {
-  //         toast({
-  //           title: 'Info',
-  //           description: (
-  //             <div>
-  //               {messages?.map((messageItem: string | null) => {
-  //                 if (messageItem) {
-  //                   return <div className='mb-2'>{messageItem} </div>;
-  //                 }
-  //                 return null;
-  //               })}
-  //             </div>
-  //           ),
-  //           variant: 'destructive',
-  //           duration: 7000,
-  //         });
-  //       }
-  //       setSessionId(sessionId);
-  //       queryClient.invalidateQueries({ queryKey: ['history'] });
-  //     },
-  //   });
-  // };
-
-  const handleSubmitImageUrl = async () => {
     const formData = new FormData();
 
-    try {
-      // Fetch and append each image
-      // await Promise.all(
-      //   imageUrls.map(async (url, index) => {
-      //     const response = await fetch(url);
-      //     const blob = await response.blob();
-      //     const file = new File([blob], `image${index}.jpg`, {
-      //       type: blob.type,
-      //     });
-      //     formData.append('file', file);
-      //   })
-      // );
-    } catch (error) {
-      console.error('Error fetching the images: ', error);
-    }
-
-    formData.append('imageUrls', JSON.stringify(imageUrls));
-
-    // Append other form data
+    files.forEach((file: any) => {
+      formData.append('file', file);
+    });
     formData.append('biasForm', JSON.stringify(biasForm));
     formData.append('outputConfig', JSON.stringify(outputConfig));
-
-    const payload = {
-      biasForm: JSON.stringify(biasForm),
-      outputConfig: JSON.stringify(outputConfig),
-      ixoneId: ixoneid,
-    };
 
     setLoading(true);
     setProductInfo(null);
 
-    mutateionProductExtract.mutate(payload, {
+    mutationUploadFile.mutate(formData, {
       onError: (e) => {
         console.log(e);
       },
@@ -201,6 +119,46 @@ const ProductDetailPage = () => {
     if (refInterval.current) {
       window.clearInterval(refInterval.current);
     }
+  };
+
+  const onClearFile = () => {
+    setFiles([]);
+    setInputImages([]);
+    setProcImages([]);
+    if (!refInput.current) return;
+    refInput.current.value = '';
+  };
+
+  const handleSelectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+
+    const inputFiles = Array.from(event.target.files);
+    setFiles(inputFiles);
+    setBiasForm({});
+    if (inputFiles.length === 0) return;
+    const fileReaders = [];
+    let fileDataUrls: any = [];
+    let count = 0;
+
+    inputFiles.forEach((file, index) => {
+      const fileReader = new FileReader();
+
+      fileReaders.push(fileReader);
+
+      fileReader.onload = (e) => {
+        if (!e?.target) return;
+
+        fileDataUrls[index] = e.target.result;
+        count++;
+
+        // Only update state when all files are read
+        if (count === inputFiles.length) {
+          setInputImages(fileDataUrls);
+        }
+      };
+
+      fileReader.readAsDataURL(file);
+    });
   };
 
   const onSelectBias = (imgIdx: number, updateFormState: any) => {
@@ -285,7 +243,21 @@ const ProductDetailPage = () => {
     <FluidContainer>
       <div className='flex flex-col gap-4 py-4 px-4'>
         <div className='grid grid-cols-4 gap-2'>
-          <div className='col-span-4'>
+          <div className='col-span-1'>
+            <SectionWrapper title='Info'>
+              <span>Last update: 6/20/24</span>
+              <Link
+                href='/update'
+                className={cn(
+                  buttonVariants({ variant: 'default' }),
+                  'h-[30px] ml-2'
+                )}
+              >
+                View update
+              </Link>
+            </SectionWrapper>
+          </div>
+          <div className='col-span-3'>
             <SectionWrapper title='Output Config'>
               <div className='flex flex-row gap-4'>
                 <div className='flex flex-row gap-2'>
@@ -318,49 +290,42 @@ const ProductDetailPage = () => {
             </SectionWrapper>
           </div>
         </div>
-        <SectionWrapper
-          title={
-            'Input Images' +
-            (productIxone?.ixoneID ? ' - ' + productIxone?.ixoneID : '')
-          }
-        >
-          <div className='flex flex-wrap align-middle'>
-            {productIxone?.images?.map((imageItem) => {
-              return (
-                <div className='w-[80px] max-h-[80px] flex justify-center align-middle p-2'>
-                  <img className='object-fit' src={imageItem?.url}></img>
+        <SectionWrapper title='input image'>
+          <div className='flex flex-row gap-2 flex-1'>
+            <Input
+              ref={refInput}
+              type='file'
+              onChange={handleSelectFile}
+              required
+              multiple
+            />
+            <Button variant='destructive' onClick={onClearFile}>
+              Clear
+            </Button>
+            <Button
+              disabled={loading || files?.length <= 0}
+              onClick={handleSubmit}
+            >
+              {loading ? (
+                <div className='flex flex-row items-center'>
+                  <RefreshCcw className='mr-1 animate-spin' />
+                  <span>Processing</span>
                 </div>
-              );
-            })}
+              ) : (
+                'Extract'
+              )}
+            </Button>
+            {loading && (
+              <Button variant='secondary' onClick={onCancel}>
+                Cancel
+              </Button>
+            )}
           </div>
         </SectionWrapper>
-        <div className='block'>
-          <SectionWrapper title='Tool'>
-            <div className='flex flex-row gap-2 flex-1'>
-              <Button
-                disabled={loading || imageUrls?.length <= 0}
-                // onClick={handleSubmit}
-                onClick={handleSubmitImageUrl}
-              >
-                {loading ? (
-                  <div className='flex flex-row items-center'>
-                    <RefreshCcw className='mr-1 animate-spin' />
-                    <span>Processing</span>
-                  </div>
-                ) : (
-                  'Extract'
-                )}
-              </Button>
-              {loading && (
-                <Button variant='secondary' onClick={onCancel}>
-                  Cancel
-                </Button>
-              )}
-            </div>
-          </SectionWrapper>
-        </div>
 
-        <div className='flex flex-row'>
+        {/* <ExtractionHistory /> */}
+
+        <div className='flex flex-row gap-4'>
           <div>
             {inputImages?.length > 0 && (
               <SectionWrapper title='Input Images'>
@@ -416,7 +381,7 @@ const ProductDetailPage = () => {
 
           {productInfo && (
             <div className='flex-1 overflow-hidden'>
-              <SectionWrapper title={'Result - ' + sessionId}>
+              <SectionWrapper title='Result'>
                 <Result productInfo={productInfo} />
               </SectionWrapper>
             </div>

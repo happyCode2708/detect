@@ -35,6 +35,7 @@ export const generateContent = async (images: any[], text: any) => {
     if (!item?.candidates) return;
     finalResponse =
       finalResponse + item?.candidates[0]?.content?.parts?.[0]?.text;
+    console.log('chunk ...' + item?.candidates[0]?.content?.parts?.[0]?.text);
   }
 
   return { chunkResponse, finalResponse };
