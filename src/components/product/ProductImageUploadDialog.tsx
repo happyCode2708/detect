@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 // import {
 //   Dialog,
@@ -20,6 +21,7 @@ import {
 } from '../ui/dialog';
 import { Button } from '../ui/button';
 import ProductImageUploadForm from './ProductImageUploadForm';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface ImageUploadDialogProps {
   isOpen: boolean;
@@ -32,6 +34,13 @@ const ProductImageUploadDialog: React.FC<ImageUploadDialogProps> = ({
   toggleDialog,
   ixoneID,
 }) => {
+  const queryClient = useQueryClient();
+
+  const onSuccess = () => {
+    toggleDialog('');
+    queryClient.invalidateQueries({ queryKey: ['product', 'list'] });
+  };
+
   return (
     <Dialog
       open={isOpen}
@@ -49,12 +58,7 @@ const ProductImageUploadDialog: React.FC<ImageUploadDialogProps> = ({
             Select and upload images for the product.
           </DialogDescription>
         </DialogHeader>
-        <ProductImageUploadForm
-          ixoneID={ixoneID}
-          onSuccess={() => {
-            toggleDialog('');
-          }}
-        />
+        <ProductImageUploadForm ixoneID={ixoneID} onSuccess={onSuccess} />
       </DialogContent>
     </Dialog>
   );

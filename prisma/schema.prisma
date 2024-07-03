@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://admin:congacon@localhost:5432/ocr"
+  url      = "postgresql://postgres:@localhost:5432/ocr"
 }
 
 generator client {

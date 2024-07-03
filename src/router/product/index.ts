@@ -19,6 +19,9 @@ import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
 
 import { uploadsDir } from '../../server';
 import { error } from 'console';
+import { makePostPayloadProductTDC } from './utils';
+import axios from 'axios';
+import logger from '../../lib/logger';
 
 const router = express.Router();
 
@@ -206,6 +209,35 @@ router.post('/:ixoneid/images', upload.array('images'), async (req, res) => {
       .json({ isSuccess: true, message: 'Images uploaded successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Failed to upload images' });
+  }
+});
+
+router.post('/get-product-data-tdc', async (req, res) => {
+  const ixoneIDs = req.body.ixoneIDs || [];
+  const bearerToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6ImNBRUFBQUZ3QVkvK1ZLWUFublNvVjVlbXp5VWgxQlhPWUlZS1czOVJ2SFBqanhmTENscDhCNDNvenJNaWI2ZjdHMEMwemovdjN1cUg0MFlpUEQvSE9mSy93ckJhYmlFSHh4MkFPWnozVlBuQW9iVlExUDdJZ1ZBM2ZHVnpFcjV0QlpxbFZBeG5jWkpiZ1FSTEZGbzlyQ0IzUTdPWERZQ0lIWTNreFlyTkJ2cVM1TjUvN3d1dWlrNGJtV3FXdnVZdlBaL1VGazExWFU4a2dTdkxFdXpPMnJnQWEwNGpvaUo5UUJTTWNoa0ZibWwva0tHWG5QdXlVUW5DUVJiYXJNTFBUdGlJdkFmMzJWUkMwQ21nN1FUcDhGTHFrVjQrRWN0N3pmWExlUlNwQ1lCMVFZcTh3VExRa1ZwMFREVGZSN2xXUm8xOE94ajhkYnAvK0tKU2svNDVJMlkwbXFkbGlidkQyTDlhSjM1ZkJna0NkTEhhc3V2Z2x0bWkwSk1ubnhLL3prZUxhemlQbUNpVVJ4NjYwNUlWQVNKaTFSbzVPWU5iOXZIRVphSW84elV2OUpSKzM5SFVLanI0SU1BWFg1YlB0TVR5cFFYYW0rd0NHY2NlT1hYUlMySFN4M3RMSUVJU0xseUplS3B5SGNFTzNZVXY3aWUyMkFrPSIsIm5iZiI6MTcxOTgyMzU3OSwiZXhwIjoxNzUxMzU5NTc5LCJpYXQiOjE3MTk4MjM1Nzl9.NxaCMTHIuWB2GJHVSgHhNjFVg95EHaWtZkK2XJxVbdc';
+
+  const payload = makePostPayloadProductTDC(ixoneIDs);
+
+  try {
+    const response = await axios.post(
+      'https://exchange.ix-one.net/services/products/filtered',
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    res.json({
+      isSuccess: true,
+      data: response?.data,
+    });
+  } catch (error) {
+    logger.error(error);
+    res.status(500).json({ error: 'Failed to get products TDC' });
   }
 });
 

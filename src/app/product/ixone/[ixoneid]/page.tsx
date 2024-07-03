@@ -22,6 +22,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
 import { SectionWrapper } from '@/components/wrapper/SectionWrapper';
 import { useParams } from 'next/navigation';
+import { useQueryProductsFromTdc } from '@/queries/productDetailQuery';
 
 const ProductDetailPage = () => {
   const { ixoneid } = useParams();
@@ -39,17 +40,20 @@ const ProductDetailPage = () => {
   const [productIxone, setProductIxone] = useState<any>(null);
 
   const [sessionId, setSessionId] = useState<any>();
-  const [sessionIdFormProduct, setSessionIdFromProduct] = useState<any>();
+  const [pdSessionId, setPdSessionId] = useState<any>(null);
 
   const [loading, setLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState<null | string>(null);
 
-  const refInput = useRef() as React.RefObject<HTMLInputElement>;
   const refInterval = useRef<number | null>(null);
 
-  const mutationUploadFile = useMutateUploadFile();
-  const mutateionProductExtract = useMutateProductExtraction();
+  const mutationProductExtract = useMutateProductExtraction();
+  const { data: tdcData } = useQueryProductsFromTdc({
+    ixoneIDs: typeof ixoneid === 'string' ? [ixoneid] : [],
+  });
   const queryClient = useQueryClient();
+
+  console.log(tdcData);
 
   const { toast } = useToast();
 
@@ -66,64 +70,19 @@ const ProductDetailPage = () => {
         if (!productData) return;
 
         setProductIxone(productData);
-        setSessionId(
-          productData?.extractSessions[productData?.extractSessions?.length - 1]
-            ?.sessionId
-        );
+
+        const newestSessionData =
+          productData?.extractSessions[
+            productData?.extractSessions?.length - 1
+          ];
+        if (newestSessionData) {
+          setProductInfo(JSON.parse(newestSessionData?.result));
+          setPdSessionId(newestSessionData?.sessionId);
+        }
       };
       fetchProduct();
     }
   }, [ixoneid]);
-
-  // const handleSubmit = async () => {
-  //   if (!files.length) return;
-
-  //   const formData = new FormData();
-
-  //   files.forEach((file: any) => {
-  //     formData.append('file', file);
-  //   });
-  //   formData.append('biasForm', JSON.stringify(biasForm));
-  //   formData.append('outputConfig', JSON.stringify(outputConfig));
-
-  //   setLoading(true);
-  //   setProductInfo(null);
-
-  //   mutationUploadFile.mutate(formData, {
-  //     onError: (e) => {
-  //       console.log(e);
-  //     },
-  //     onSuccess: (res) => {
-  //       const { sessionId, images, messages } = res;
-  //       if (images?.length > 0) {
-  //         setProcImages(images);
-  //       }
-
-  //       if (
-  //         messages?.length > 0 &&
-  //         !!messages.find((item: string | null) => item !== null)
-  //       ) {
-  //         toast({
-  //           title: 'Info',
-  //           description: (
-  //             <div>
-  //               {messages?.map((messageItem: string | null) => {
-  //                 if (messageItem) {
-  //                   return <div className='mb-2'>{messageItem} </div>;
-  //                 }
-  //                 return null;
-  //               })}
-  //             </div>
-  //           ),
-  //           variant: 'destructive',
-  //           duration: 7000,
-  //         });
-  //       }
-  //       setSessionId(sessionId);
-  //       queryClient.invalidateQueries({ queryKey: ['history'] });
-  //     },
-  //   });
-  // };
 
   const handleSubmitImageUrl = async () => {
     const formData = new FormData();
@@ -159,7 +118,7 @@ const ProductDetailPage = () => {
     setLoading(true);
     setProductInfo(null);
 
-    mutateionProductExtract.mutate(payload, {
+    mutationProductExtract.mutate(payload, {
       onError: (e) => {
         console.log(e);
       },
@@ -326,7 +285,7 @@ const ProductDetailPage = () => {
           }
         >
           <div className='flex flex-wrap align-middle'>
-            {productIxone?.images?.map((imageItem) => {
+            {productIxone?.images?.map((imageItem: any) => {
               return (
                 <div className='w-[80px] max-h-[80px] flex justify-center align-middle p-2'>
                   <img className='object-fit' src={imageItem?.url}></img>
@@ -417,8 +376,11 @@ const ProductDetailPage = () => {
 
           {productInfo && (
             <div className='flex-1 overflow-hidden'>
-              <SectionWrapper title={'Result - ' + sessionId}>
-                <Result productInfo={productInfo} />
+              <SectionWrapper title={'Result - ' + (sessionId || pdSessionId)}>
+                <Result
+                  productInfo={productInfo}
+                  productTdcData={tdcData?.data?.Products?.[0]}
+                />
               </SectionWrapper>
             </div>
           )}
