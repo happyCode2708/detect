@@ -93,6 +93,7 @@ ex 1: "oats, milk"
 4) "header" table rules:
 + header table only have 1 row item so you must carefully examine the images.
 + "primary size" and "secondary size" and "third size" is a quantity measurement of product in two different unit of measurement. They are not info from "serving size" in nutrition fact.
+Ex: "primary size" = "100gram"
 + "count" is the count number of smaller unit inside a package, or a display shipper, or a case, or a box.
 + "full size text description" is the whole quantity measurement description statement of the product on image. It is usually appear on the front face of product.
 

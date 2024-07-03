@@ -18,13 +18,14 @@ import { sugarAndSweetValidatorOcr } from './ocrScanValidator/sugarAndSweetValid
 import { saltOrSodiumValidatorOcr } from './ocrScanValidator/saltOrSodiumClaimOcr';
 import { calorieClaimValidatorOcr } from './ocrScanValidator/calorieClaimValidatorOcr';
 import { fatClaimValidatorOcr } from './ocrScanValidator/fatClaimValidatorOcr';
-import { nutFactMarkdownValidator } from './nutFactMarkdownValidator';
+import { nutFactMarkdownValidator } from './markdownObjectValidator/nutFactMarkdownValidator';
 import { containAndNotContainClaimValidate } from './markdownObjectValidator/containAndNotContainValidate';
 import { fatClaimValidate } from './markdownObjectValidator/fatClaimValidate';
 import { nonCertifierClaimValidate } from './markdownObjectValidator/nonCertifierClaimValidate';
 import { saltClaimValidate } from './markdownObjectValidator/saltClaimValidate';
 import { sugarClaimValidate } from './markdownObjectValidator/sugarClaimValidate';
 import { calorieClaimValidate } from './markdownObjectValidator/calorieClaimValidate';
+import { HeaderValidate } from './markdownObjectValidator/HeaderValidate';
 
 export const responseValidator = async (response: any, ocrClaims: any) => {
   let validatedResponse = { ...response };
@@ -33,6 +34,7 @@ export const responseValidator = async (response: any, ocrClaims: any) => {
 
   // factPanelValidator(validatedResponse);
   nutFactMarkdownValidator(validatedResponse);
+  HeaderValidate(validatedResponse);
   await validateProductDataPoints(validatedResponse, ocrClaims);
 
   console.log('finish');
