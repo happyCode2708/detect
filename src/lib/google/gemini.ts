@@ -6,7 +6,7 @@ import { make_nut_prompt } from '../promp/nut_utils';
 
 import path, { resolve } from 'path';
 import fs from 'fs';
-import { historyDir, resultsDir } from '../../server';
+import { historyDir, prisma, resultsDir } from '../../server';
 // import { makePrompt, make_nut_prompt } from '../constants';
 import sharp from 'sharp';
 import { ImageAnnotatorClient } from '@google-cloud/vision';
@@ -51,6 +51,7 @@ export const onProcessGemini = async ({
   prompt,
   isMarkdown,
   mapMdToObjectFunct,
+  sessionPayload = {},
 }: {
   req: any;
   res: any;
@@ -61,6 +62,7 @@ export const onProcessGemini = async ({
   prompt: string;
   isMarkdown?: boolean;
   mapMdToObjectFunct?: any;
+  sessionPayload: any;
 }) => {
   const images = collatedOuputPath.map((path) => {
     const base64Image = encodeImageToBase64(path);
@@ -93,6 +95,11 @@ export const onProcessGemini = async ({
     text1.text
   );
 
+  sessionPayload = {
+    ...sessionPayload,
+    ['prompt-' + resultFileName]: text1.text,
+  };
+
   try {
     const { chunkResponse, finalResponse: gemini_result } =
       (await generateContent(images, text1)) || {};
@@ -110,6 +117,12 @@ export const onProcessGemini = async ({
       'chunk-' + resultFileName,
       JSON.stringify(chunkResponse)
     );
+
+    sessionPayload = {
+      ...sessionPayload,
+      ['full-' + resultFileName]: JSON.stringify(fullResult),
+      ['chunk-' + resultFileName]: JSON.stringify(chunkResponse),
+    };
 
     const procResult = gemini_result?.includes('```json')
       ? gemini_result?.split('```json\n')[1].split('```')[0]
@@ -132,25 +145,17 @@ export const onProcessGemini = async ({
     }
 
     if (isMarkdown) {
-      writeJsonToFile(
-        resultsDir + `/${sessionId}`,
-        'raw-' + resultFileName,
-        JSON.stringify({
-          isSuccess: true,
-          data: procResult,
-        })
-      );
       // const jsonResult = mapMarkdownNutToObject(procResult);
       // if (!mapMdToObjectFunct) {
-      //   writeJsonToFile(
-      //     resultsDir + `/${sessionId}`,
-      //     resultFileName,
-      //     JSON.stringify({
-      //       isSuccess: true,
-      //       data: { allMark: procResult },
-      //     })
-      //   );
-      //   return;
+      // writeJsonToFile(
+      //   resultsDir + `/${sessionId}`,
+      //   resultFileName,
+      //   JSON.stringify({
+      //     isSuccess: true,
+      //     data: { allMark: procResult },
+      //   })
+      // );
+      // return;
       // }
 
       const jsonResult = mapMdToObjectFunct(procResult);
@@ -163,6 +168,24 @@ export const onProcessGemini = async ({
           data: { jsonData: jsonResult, markdownContent: procResult },
         })
       );
+
+      sessionPayload = {
+        ...sessionPayload,
+        [resultFileName]: JSON.stringify({
+          isSuccess: true,
+          data: { jsonData: jsonResult, markdownContent: procResult },
+        }),
+      };
+
+      // const updatedSession = await prisma.extractSession.update({
+      //   where: { sessionId },
+      //   data: {
+      //     status: 'success',
+      //     ['result' + '_' + prefix]: JSON.stringify(sessionPayload),
+      //   },
+      // });
+
+      return Promise.resolve(sessionPayload);
     }
   } catch (e) {
     writeJsonToFile(
@@ -170,6 +193,14 @@ export const onProcessGemini = async ({
       resultFileName,
       JSON.stringify({ isSuccess: false })
     );
+
+    // sessionPayload = {
+    //   ...sessionPayload,
+    //   [resultFileName]: JSON.stringify({
+    //     isSuccess: true,
+    //     data: { jsonData: jsonResult, markdownContent: procResult },
+    //   }),
+    // };
 
     console.log('some thing went wrong', e);
   }
@@ -258,13 +289,17 @@ export const onProcessOther = async ({
     JSON.stringify(new_allText)
   );
 
+  let sessionPayload = {
+    'all-ocr': JSON.stringify(new_allText),
+  };
+
   // writeJsonToFile(
   //   resultsDir + `/${sessionId}`,
   //   'orc-claims.json',
   //   JSON.stringify(ocr_claims)
   // );
 
-  onProcessGemini({
+  const finalSessionPayload = await onProcessGemini({
     req,
     res,
     sessionId,
@@ -298,7 +333,10 @@ export const onProcessOther = async ({
     }),
     isMarkdown: true,
     mapMdToObjectFunct: mapMarkdownAllToObject,
+    sessionPayload,
   });
+
+  return Promise.resolve(finalSessionPayload);
 };
 
 export const onProcessNut = async ({
@@ -375,7 +413,11 @@ export const onProcessNut = async ({
     JSON.stringify(new_nutText)
   );
 
-  onProcessGemini({
+  let sessionPayload = {
+    'nut-ocr': JSON.stringify(new_nutText),
+  };
+
+  const finalSessionPayload = await onProcessGemini({
     req,
     res,
     sessionId,
@@ -413,5 +455,8 @@ export const onProcessNut = async ({
     }),
     isMarkdown: true,
     mapMdToObjectFunct: mapMarkdownNutToObject,
+    sessionPayload,
   });
+
+  return Promise.resolve(finalSessionPayload);
 };

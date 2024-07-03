@@ -30,7 +30,7 @@ const nextHandler = nextApp.getRequestHandler();
 const app = express();
 
 export const baseDir = path.join(__dirname, '..');
-export const uploadsDir = path.join(__dirname, '..', 'assets');
+export const uploadsDir = path.join(__dirname, '..', 'assets/upload');
 export const resultsDir = path.join(__dirname, '..', 'assets/result');
 export const historyDir = path.join(__dirname, '..', 'assets/history');
 export const pythonPath = path.join(__dirname, 'python');
@@ -39,7 +39,10 @@ const startServer = async () => {
   app.use(cookieParser());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
-  app.use('/assets', express.static(path.join(__dirname, '..', 'assets')));
+  app.use(
+    '/assets',
+    express.static(path.join(__dirname, '..', 'assets/upload'))
+  );
 
   if (process.env.NEXT_BUILD) {
     app.listen(port, async () => {

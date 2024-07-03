@@ -39,6 +39,7 @@ const ProductDetailPage = () => {
   const [productIxone, setProductIxone] = useState<any>(null);
 
   const [sessionId, setSessionId] = useState<any>();
+  const [sessionIdFormProduct, setSessionIdFromProduct] = useState<any>();
 
   const [loading, setLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState<null | string>(null);
@@ -223,7 +224,7 @@ const ProductDetailPage = () => {
     if (sessionId) {
       refInterval.current = window.setInterval(async () => {
         try {
-          const response = await fetch('/api/info/get-result/' + sessionId);
+          const response = await fetch('/api/info/pooling-result/' + sessionId);
           if (!response.ok) {
             throw new Error(
               'Network response was not ok ' + response.statusText
@@ -268,7 +269,7 @@ const ProductDetailPage = () => {
           }
           setLoading(false);
         }
-      }, 3000);
+      }, 4000);
     }
     return () => {
       if (!refInterval.current) return;

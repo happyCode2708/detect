@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
 import { useToast } from '../ui/use-toast';
+import { useQueryClient } from '@tanstack/react-query';
 
 const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const [ixoneID, setIxoneID] = useState('');

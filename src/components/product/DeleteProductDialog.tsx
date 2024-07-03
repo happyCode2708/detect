@@ -11,40 +11,39 @@ import {
 } from '@/components/ui/dialog';
 import AddProductForm from './AddProductForm';
 import { Button } from '../ui/button';
-import { useQueryClient } from '@tanstack/react-query';
 
-const AddProductDialog = ({
+const DeleteProductDialog = ({
   isOpen,
   toggleDialog,
+  handleDeleteProduct,
 }: {
   isOpen: boolean;
   toggleDialog: () => void;
+  handleDeleteProduct: () => void;
 }) => {
-  const queryClient = useQueryClient();
-
-  const onSuccess = () => {
-    toggleDialog();
-    queryClient.invalidateQueries({ queryKey: ['product', 'list'] });
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={toggleDialog}>
       <DialogTrigger asChild>
-        <Button className='mb-4' onClick={toggleDialog}>
-          Create New Product
+        <Button className='mb-4' onClick={toggleDialog} variant='destructive'>
+          Delete Products
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Product</DialogTitle>
+          <DialogTitle>Delete Product Confirm</DialogTitle>
           <DialogDescription>
-            Fill in the details below to create a new product.
+            Are you sure you want to delete all selected products?
           </DialogDescription>
         </DialogHeader>
-        <AddProductForm onSuccess={onSuccess} />
+        <div className='flex justify-end space-x-1'>
+          <Button variant='destructive' onClick={handleDeleteProduct}>
+            Delete products
+          </Button>
+          <Button onClick={toggleDialog}>Close</Button>
+        </div>
       </DialogContent>
     </Dialog>
   );
 };
 
-export default AddProductDialog;
+export default DeleteProductDialog;

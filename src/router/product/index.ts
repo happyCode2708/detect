@@ -63,6 +63,9 @@ router.post('/list', async (req, res) => {
               },
             }
           : {},
+      orderBy: {
+        createdAt: 'desc', // Order by creation date, newest first
+      },
       include: { images: true },
     });
 
@@ -84,6 +87,34 @@ router.post('/create', async (req, res) => {
     res.status(201).json(newProduct);
   } catch (error) {
     res.status(500).json({ error: 'Failed to create product' });
+  }
+});
+
+// New delete products endpoint
+router.delete('/delete-products', async (req, res) => {
+  const { ids } = req.body;
+
+  try {
+    // Delete images related to the products
+    await prisma.image.deleteMany({
+      where: {
+        productId: {
+          in: ids,
+        },
+      },
+    });
+
+    await prisma.product.deleteMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+    res.status(200).json({ message: 'Products deleted successfully' });
+  } catch (error) {
+    console.log(JSON.stringify(error));
+    res.status(500).json({ error: 'Failed to delete products' });
   }
 });
 
@@ -157,10 +188,12 @@ router.post('/:ixoneid/images', upload.array('images'), async (req, res) => {
     const files = req.files as Express.Multer.File[];
 
     const imagePromises = files.map((file) => {
-      const filePath = `/assets/${file.filename}`;
+      const imageUrl = `/assets/${file.filename}`;
+      const path = `/assets/upload/${file.filename}`;
       return prisma.image.create({
         data: {
-          url: filePath,
+          url: imageUrl,
+          path,
           productId: product.id,
         },
       });

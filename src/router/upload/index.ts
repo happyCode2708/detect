@@ -8,6 +8,7 @@ import {
   getOcrTextAllImages,
   findImagesContainNutFact,
   addUniqueString,
+  removeRawFieldData,
 } from '../../lib/server_utils';
 
 import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
@@ -16,6 +17,7 @@ import { uploadsDir, resultsDir, baseDir } from '../../server';
 import { writeJsonToFile } from '../../lib/json';
 
 import { prisma } from '../../server';
+import { responseValidator } from '../../lib/validator/main';
 
 // import OpenAI from 'openai';
 
@@ -165,7 +167,7 @@ router.post('/process-product-image', async (req, res) => {
     }
 
     const filePaths = product?.images?.map((imageItem: any) =>
-      path.join(baseDir, imageItem?.url)
+      path.join(baseDir, imageItem?.path)
     );
 
     const newSession = await prisma.extractSession.create({
@@ -221,36 +223,90 @@ router.post('/process-product-image', async (req, res) => {
       ],
     });
 
-    onProcessNut({
-      req,
-      res,
-      invalidatedInput,
-      //* flash version
-      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-      // ocrList: nutImagesOCRresult,
-      sessionId,
-      collateImageName,
-      outputConfig,
-    });
+    const [finalNut, finalAll] = await Promise.all([
+      onProcessNut({
+        req,
+        res,
+        invalidatedInput,
+        //* flash version
+        ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+        // ocrList: nutImagesOCRresult,
+        sessionId,
+        collateImageName,
+        outputConfig,
+      }),
+      onProcessOther({
+        req,
+        res,
+        invalidatedInput,
+        ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+        sessionId,
+        collateImageName,
+        outputConfig,
+      }),
+    ]);
 
-    onProcessOther({
-      req,
-      res,
-      invalidatedInput,
-      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-      sessionId,
-      collateImageName,
-      outputConfig,
-    });
+    await createFinalResult({ finalAll, finalNut, sessionId });
+
+    // console.log('test 1', final1);
+    // console.log('test 2', final2);
   } catch (error) {
     console.log('error', error);
-    res.status(500).json({
-      isSuccess: false,
-      error: JSON.stringify(error),
-      message: 'Failed to create session',
-    });
+    // res.status(500).json({
+    //   isSuccess: false,
+    //   error: JSON.stringify(error),
+    //   message: 'Failed to create session',
+    // });
   }
 });
+
+const createFinalResult = async ({
+  finalNut,
+  finalAll,
+  sessionId,
+}: {
+  finalNut: any;
+  finalAll: any;
+  sessionId: string;
+}) => {
+  try {
+    const allRes = JSON.parse(finalAll?.['all.json']);
+    const nutRes = JSON.parse(finalNut?.['nut.json']);
+    // const ocrClaims = JSON.parse(ocrClaimData);
+
+    const { isSuccess: allSuccess, status: allStatus } = allRes || {};
+    const { isSuccess: nutSuccess, status: nutStatus } = nutRes || {};
+
+    if (nutSuccess === false || allSuccess === false) {
+      return;
+    }
+
+    let finalResult = {
+      product: {
+        ...allRes?.data?.jsonData,
+        factPanels: nutRes?.data?.jsonData, //* markdown converted
+        nutMark: nutRes?.data?.markdownContent,
+        allMark: allRes?.data?.markdownContent,
+      },
+    };
+
+    let validatedResponse = await responseValidator(finalResult, '');
+
+    //! removeRawFieldData(validatedResponse);
+
+    const updatedSession = await prisma.extractSession.update({
+      where: { sessionId },
+      data: {
+        status: 'success',
+        result_all: JSON.stringify(finalAll),
+        result_nut: JSON.stringify(finalNut),
+        result: JSON.stringify(validatedResponse),
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 // app.post('/api/upload', upload.single('file'), async (req, res) => {
 //   if (!req.file?.path) return res.json({ isSuccess: false, message: 'failed' });

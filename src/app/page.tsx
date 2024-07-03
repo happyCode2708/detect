@@ -2,27 +2,43 @@
 import React, { useEffect, useState } from 'react';
 import ProductTable from '@/components/product/ProductTable';
 import { Button } from '@/components/ui/button';
-import ProductDialog from '@/components/product/AddProductDialog';
+import AddProductDialog from '@/components/product/AddProductDialog';
+import DeleteProductDialog from '@/components/product/DeleteProductDialog';
+import { toast } from '@/components/ui/use-toast';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const HomePage = () => {
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState<Set<string>>(
     new Set()
   );
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await fetch(`/api/product/list?ixoneID=${searchTerm}`, {
-        method: 'POST',
-      });
-      const data = await response.json();
-      setProducts(data);
-    };
+  const queryClient = useQueryClient();
 
-    fetchProducts();
-  }, [searchTerm]);
+  const fetchProducts = async (searchTerm: string) => {
+    const response = await fetch(`/api/product/list?ixoneID=${searchTerm}`, {
+      method: 'POST',
+    });
+    const data = await response.json();
+    // setProducts(data);
+    return data;
+  };
+  const {
+    data: products,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['product', 'list', searchTerm],
+    queryFn: async () => await fetchProducts(searchTerm),
+  });
+
+  // useEffect(() => {
+
+  //   fetchProducts();
+  // }, [searchTerm]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -31,24 +47,49 @@ const HomePage = () => {
   const toggleDialog = () => {
     setIsDialogOpen(!isDialogOpen);
   };
+  const toggleDeleteProductDialog = () => {
+    setIsDeleteDialogOpen(!isDeleteDialogOpen);
+  };
 
   const handleDeleteSelected = async () => {
     const idsToDelete = Array.from(selectedProducts);
     try {
-      await fetch('/api/products', {
+      const res = await fetch('/api/product/delete-products', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ ids: idsToDelete }),
       });
-      setProducts(
-        products.filter((product) => !selectedProducts.has(product.id))
-      );
-      setSelectedProducts(new Set());
-      alert('Selected products deleted successfully');
+
+      if (!res.ok) {
+        toast({
+          title: 'Something went wrong',
+          description: 'Fail to delete product',
+          variant: 'destructive',
+          duration: 2000,
+        });
+
+        return;
+      }
+
+      queryClient.invalidateQueries({ queryKey: ['product', 'list'] });
+
+      toast({
+        title: 'Successfully',
+        description: 'Deleted Products',
+        variant: 'success',
+        duration: 2000,
+      });
+
+      setIsDeleteDialogOpen(false);
     } catch (error) {
-      alert('Failed to delete selected products');
+      toast({
+        title: 'Something went wrong',
+        description: 'Fail to delete product',
+        variant: 'destructive',
+        duration: 2000,
+      });
     }
   };
 
@@ -74,13 +115,18 @@ const HomePage = () => {
           onChange={handleSearch}
           className='p-2 border border-gray-300 rounded'
         />
-        <div>
-          <ProductDialog isOpen={isDialogOpen} toggleDialog={toggleDialog} />
+        <div className='flex space-x-1'>
+          <DeleteProductDialog
+            isOpen={isDeleteDialogOpen}
+            toggleDialog={toggleDeleteProductDialog}
+            handleDeleteProduct={handleDeleteSelected}
+          />
+          <AddProductDialog isOpen={isDialogOpen} toggleDialog={toggleDialog} />
         </div>
       </div>
       <h1 className='text-2xl font-semibold mb-4'>Product List</h1>
       <ProductTable
-        products={products}
+        products={products || []}
         selectedProducts={selectedProducts}
         onProductSelect={handleProductSelect}
       />

@@ -73,7 +73,13 @@ const LoginPage: React.FC = () => {
         </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              form.handleSubmit(onSubmit)(e);
+            }}
+            className='space-y-8'
+          >
             <FormField
               control={form.control}
               name='email'
