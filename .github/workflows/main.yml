@@ -19,9 +19,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2.3.5
 
-      - name: Create env file
+      - name: Create env production file
         run: |
           echo "GOOGLE_CREDENTIALS=${{ secrets.GOOGLE_CREDENTIALS}}" >> .env.production
+        working-directory: ${{ github.workspace }}
+
+      - name: Create env file
+        run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL}}" >> .env
         working-directory: ${{ github.workspace }}
 
