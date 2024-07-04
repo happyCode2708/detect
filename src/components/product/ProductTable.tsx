@@ -57,7 +57,7 @@ const ProductTable = ({
               <TableCell>{product?.ixoneID}</TableCell>
               <TableCell>
                 <div className='flex space-x-2'>
-                  {product?.images?.map((imageItem) => {
+                  {product?.images?.map((imageItem: any) => {
                     return (
                       <div className='h-[40px] min-w-[28px] flex justify-center align-middle'>
                         <img
