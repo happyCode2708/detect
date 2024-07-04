@@ -11,7 +11,6 @@ import { getGoogleApiOcr } from './lib/google/get-gg-api-ocr';
 import nextBuild from 'next/dist/build';
 import { nextMiddleware } from './middleware/nextMiddleware';
 import { PrismaClient } from '@prisma/client';
-// import { nextMiddleware } from './middleware/nextMiddleware';
 export const prisma = new PrismaClient();
 
 const env = process.env.NODE_ENV || 'development';
