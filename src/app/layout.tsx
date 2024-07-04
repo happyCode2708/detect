@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Provider from '@/provider/Provider';
 import { Toaster } from '@/components/ui/toaster';
+import { server_useUserInfo } from '@/hooks/user';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -11,11 +12,11 @@ export const metadata: Metadata = {
   description: 'info',
 };
 
-export default function RootLayout({
+const RootLayout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <Provider>
       <html lang='en'>
@@ -26,4 +27,6 @@ export default function RootLayout({
       </html>
     </Provider>
   );
-}
+};
+
+export default RootLayout;

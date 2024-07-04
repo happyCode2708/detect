@@ -31,7 +31,7 @@ json
     "answerOfQuestion_1": your answer gemini ( why do you  keep providing me the info that is not visibly seen on provided image? I only need info that you can see on provided image),
     "require__1": "gemini stop keeping to put spanish contents to JSON Object (such as 'instructions', 'other_ingredients_group', 'ingredients_group')",
     "require__2": "gemini you must analyze, and validate all detected_claims, i see you only some items in detected_claims",
-    "end": true,
+    "end": true
   },
   "product": {
     "content_in_spanish_must_be_prohibited": true,
@@ -61,11 +61,11 @@ json
       },
       "allergen_containOnEquipment": {
         "allergen_containOnEquipment_list: string[] 
-      },
+      }
     },
     "contain_and_notContain": {
       "product_contain": string[],
-      "product_does_not_contain": string[],
+      "product_does_not_contain": string[]
     },
     "process": {
       "very_low": string[],
@@ -85,15 +85,15 @@ json
       "acidity_percent_statement": string[],
       "total_fat": {
         value: float,
-        "uom": string,
+        "uom": string
       },
       "grade": string[],
       "natural": string[],
       "live_and_active_cultures": {
         "statement": string,
-        "list_break_out": string[],
-      },
-    } 
+        "list_break_out": string[]
+      }
+    },
     "header": {
       "productName": string,
       "brandName": string,
@@ -120,12 +120,7 @@ json
       "containerType": string,
       "packagingDescriptors": string[],
       "recyclingInfo": any,
-      "recyclable": [{
-        name: string,
-        recyclable: boolean,
-      },...],
       "forestStewardshipCouncilClaim": boolean,
-      "packaging_ancillaryInformation": string[],
     },
     "attributesAndCertifiers": {
       "claims": {
@@ -196,11 +191,11 @@ json
         "plantBasedOrPlantDerived": {
           "plantBasedOrPlantDerived__Certifier": string,
           "plantBasedOrPlantDerivedClaim": boolean,
-        },
+        }
       },
       "otherClaims:{
-        "usdaInspectionMark": string,
-      },
+        "usdaInspectionMark": string
+      }
     },
     "physical": {
       "upc12": string, //find UPC12 in the provided image
@@ -222,7 +217,7 @@ json
         "socialList": string[],
         "socialMediaText": string[],
       },
-      "enlaredToShow": boolean,
+      "enlaredToShow": boolean
     },
     "supplyChain": {
       "CountryOfOrigin": string,
@@ -232,13 +227,13 @@ json
       "manufactureCity": string,
       "manufactureState": string,
       "manufactureZipcode": string,
-      "manufactureName": string,
+      "manufactureName": string
     }
     "instructions": {
       "otherInstruction": string[],
       "consumerStorageInstructions": string[],
       "cookingInstructions": string[],
-      "usageInstructions": string[], 
+      "usageInstructions": string[]
     },
     "analysis_detected_claims": {
       "non_certified_claim": [
@@ -291,8 +286,7 @@ json
       ],
       ...
     }
-  
-  },
+  }
 }
 
 The Most Important rule:

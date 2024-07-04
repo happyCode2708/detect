@@ -1,0 +1,16 @@
+2024-06-29 22:10:39 [31merror[39m: extra
+2024-06-29 22:10:39 [32minfo[39m: 
+| extra item |  explicitly and directly mentioned in product info without implied from other text (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | ------- | ------- | -------- | -------- |
+| allergen | true | yes | no | marketing text on product | The product packaging states "Gluten-Free". |
+| gluten free | true | yes | no | marketing text on product | The product packaging states "Gluten-Free". |
+
+## 
+2024-06-29 22:11:39 [31merror[39m: extra
+2024-06-29 22:11:39 [32minfo[39m: 
+| extra item |  explicitly and directly mentioned in product info without implied from other text (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | ------- | ------- | -------- | -------- |
+| allergen | true | yes | no | marketing text on product | The product packaging states "Gluten-Free". |
+| gluten free | true | yes | no | marketing text on product | The product packaging states "Gluten-Free". |
+
+## 

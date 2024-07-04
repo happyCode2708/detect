@@ -8,11 +8,16 @@ import {
   getOcrTextAllImages,
   findImagesContainNutFact,
   addUniqueString,
+  removeRawFieldData,
 } from '../../lib/server_utils';
 
 import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
 
-import { uploadsDir } from '../../server';
+import { uploadsDir, resultsDir, baseDir } from '../../server';
+import { writeJsonToFile } from '../../lib/json';
+
+import { prisma } from '../../server';
+import { responseValidator } from '../../lib/validator/main';
 
 // import OpenAI from 'openai';
 
@@ -38,10 +43,9 @@ const Storage = multer.diskStorage({
     const uniqueSuffix = Date.now();
     cb(
       null,
-      file.fieldname +
-        '_' +
+      (sessionId ? `${sessionId}` : '') +
+        '__' +
         uniqueSuffix +
-        (sessionId ? `_${sessionId}` : '') +
         path.extname(file.originalname)
     );
   },
@@ -67,9 +71,24 @@ router.post(
 
     const filePaths = files?.map((file: any) => file.path);
 
+    const fileLists = files?.map((file: any) => {
+      return {
+        name: file?.filename,
+        path: file?.path,
+      };
+    });
+
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      'images-list.json',
+      JSON.stringify(fileLists)
+    );
+
     const collateImageName = `${sessionId}.jpeg`;
     // const collatedOuputPath = path.join(uploadsDir, collateImageName);
     // const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
+
+    console.log('run on model ', (global as any).generativeModelName);
 
     console.log('filePath', JSON.stringify(filePaths));
 
@@ -116,7 +135,9 @@ router.post(
       req,
       res,
       invalidatedInput,
-      ocrList: nutImagesOCRresult,
+      //* flash version
+      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+      // ocrList: nutImagesOCRresult,
       sessionId,
       collateImageName,
       outputConfig,
@@ -133,6 +154,181 @@ router.post(
     });
   }
 );
+
+router.post('/process-product-image', async (req, res) => {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { ixoneID: req.body.ixoneId },
+      include: { images: true },
+    });
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    const filePaths = product?.images?.map((imageItem: any) =>
+      path.join(baseDir, imageItem?.path)
+    );
+
+    const newSession = await prisma.extractSession.create({
+      data: {
+        productId: product.id,
+        status: 'unknown',
+      },
+    });
+    const sessionId = newSession.sessionId;
+
+    const biasForm = JSON.parse(req.body?.biasForm);
+    const outputConfig = JSON.parse(req.body?.outputConfig);
+
+    const collateImageName = `${sessionId}.jpeg`;
+
+    console.log('run on model ', (global as any).generativeModelName);
+
+    console.log('filePath', JSON.stringify(filePaths));
+
+    let invalidatedInput = await findImagesContainNutFact(filePaths);
+
+    // await createCollage(filePaths, collatedOuputPath);
+
+    Object.entries(biasForm).forEach(([key, value]: any) => {
+      if (value?.haveNutFact === true) {
+        let newNutIncluded = addUniqueString(
+          invalidatedInput.nutIncluded,
+          filePaths[key]
+        );
+
+        invalidatedInput.nutIncluded = newNutIncluded;
+      }
+    });
+
+    console.log('result', JSON.stringify(invalidatedInput));
+
+    const nutImagesOCRresult = await getOcrTextAllImages(
+      invalidatedInput.nutIncluded
+    );
+
+    const nutExcludedImagesOCRresult = await getOcrTextAllImages(
+      invalidatedInput.nutExcluded
+    );
+
+    res.json({
+      sessionId,
+      images: [],
+      nutIncludedIdx: invalidatedInput?.nutIncludedIdx,
+      messages: [
+        invalidatedInput.nutIncluded?.length === 0
+          ? 'There is no nut/supp facts panel detected by nut/supp fact panel detector module. If nut/supp fact panels are on provided image. Please set up bias of nut/supp for image to extract info. (Nutrition and Supplement Panel detector is on development state)'
+          : null,
+      ],
+    });
+
+    try {
+      const [finalNut, finalAll] = await Promise.all([
+        onProcessNut({
+          req,
+          res,
+          invalidatedInput,
+          //* flash version
+          ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+          // ocrList: nutImagesOCRresult,
+          sessionId,
+          collateImageName,
+          outputConfig,
+        }),
+        onProcessOther({
+          req,
+          res,
+          invalidatedInput,
+          ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+          sessionId,
+          collateImageName,
+          outputConfig,
+        }),
+      ]);
+
+      await createFinalResult({ finalAll, finalNut, sessionId, res });
+    } catch (e) {
+      console.log(e);
+      const updatedSession = await prisma.extractSession.update({
+        where: { sessionId },
+        data: {
+          status: 'fail',
+          result_all: JSON.stringify({}),
+          result_nut: JSON.stringify({}),
+          result: JSON.stringify({}),
+        },
+      });
+    }
+
+    // console.log('test 1', final1);
+    // console.log('test 2', final2);
+  } catch (error) {
+    console.log('error', error);
+    // res.status(500).json({
+    //   isSuccess: false,
+    //   error: JSON.stringify(error),
+    //   message: 'Failed to create session',
+    // });
+  }
+});
+
+const createFinalResult = async ({
+  finalNut,
+  finalAll,
+  sessionId,
+  res,
+}: {
+  finalNut: any;
+  finalAll: any;
+  sessionId: string;
+  res: any;
+}) => {
+  try {
+    const allRes = JSON.parse(finalAll?.['all.json']);
+    const nutRes = JSON.parse(finalNut?.['nut.json']);
+    // const ocrClaims = JSON.parse(ocrClaimData);
+
+    const { isSuccess: allSuccess, status: allStatus } = allRes || {};
+    const { isSuccess: nutSuccess, status: nutStatus } = nutRes || {};
+
+    if (nutSuccess === false || allSuccess === false) {
+      return;
+    }
+
+    let finalResult = {
+      product: {
+        ...allRes?.data?.jsonData,
+        factPanels: nutRes?.data?.jsonData, //* markdown converted
+        nutMark: nutRes?.data?.markdownContent,
+        allMark: allRes?.data?.markdownContent,
+      },
+    };
+
+    let validatedResponse = await responseValidator(finalResult, '');
+
+    //! removeRawFieldData(validatedResponse);
+
+    const updatedSession = await prisma.extractSession.update({
+      where: { sessionId },
+      data: {
+        status: 'success',
+        result_all: JSON.stringify(finalAll),
+        result_nut: JSON.stringify(finalNut),
+        result: JSON.stringify(validatedResponse),
+      },
+    });
+
+    console.log('stored in ' + sessionId);
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).send({
+      isSuccess: false,
+      message: 'Something went wrong. Please try again',
+    });
+  }
+};
 
 // app.post('/api/upload', upload.single('file'), async (req, res) => {
 //   if (!req.file?.path) return res.json({ isSuccess: false, message: 'failed' });

@@ -5,9 +5,8 @@ import {
 } from '@google-cloud/vertexai';
 
 export const getGenerative = () => {
-  // const model = 'gemini-1.5-pro-preview-0514';
-  // const model = 'gemini-1.5-flash-preview-0514';
   const model = 'gemini-1.5-pro-001';
+  // const model = 'gemini-1.5-flash-001';
 
   const googleCredentialString = Buffer.from(
     process.env.GOOGLE_CREDENTIALS as string,
@@ -28,16 +27,35 @@ export const getGenerative = () => {
     model,
     generationConfig: {
       maxOutputTokens: 8192,
-      temperature: 0.1,
+      temperature: 0.2,
       topP: 0.95,
     },
+    // safetySettings: [
+    //   {
+    //     category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+    //     threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+    //   },
+    // ],
     safetySettings: [
       {
-        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-        threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+        category: 'HARM_CATEGORY_HATE_SPEECH',
+        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
       },
-    ],
+      {
+        category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+      },
+      {
+        category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+      },
+      {
+        category: 'HARM_CATEGORY_HARASSMENT',
+        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+      },
+    ] as any,
   });
 
   (global as any).generativeModel = generativeModel;
+  (global as any).generativeModelName = model;
 };

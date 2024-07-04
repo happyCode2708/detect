@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// "postgresql://postgres:@localhost:5432/ocr"
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id       String   @id @default(uuid())
+  email    String   @unique
+  password String
+  name     String?
+  role     Role     @default(USER)
+}
+
+model Product {
+  id              String    @id @default(uuid())
+  ixoneID         String    @unique
+  createdAt       DateTime  @default(now())
+  validationResult String?
+  images          Image[]
+  extractSessions ExtractSession[]
+}
+
+model ExtractSession {
+  sessionId  String   @id @default(uuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  status     String
+  result_nut String?
+  result_all String?
+  result     String?
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  url       String
+  path      String   @default("")
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
