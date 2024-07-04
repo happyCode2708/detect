@@ -144,7 +144,7 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
 
     const result = session?.result;
 
-    if (!result) {
+    if (!result && session?.status === 'unknown') {
       return res.status(200).send({
         isSuccess: 'unknown',
         status: 'processing',
@@ -152,11 +152,21 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       });
     }
 
-    res.status(200).json({
-      isSuccess: true,
-      data: JSON.parse(result),
-      message: 'Successfully process image',
-    });
+    if (!result && session?.status === 'fail') {
+      return res.status(200).send({
+        isSuccess: false,
+        status: 'fail',
+        message: 'something went wrong',
+      });
+    }
+
+    if (result && session?.status === 'success') {
+      return res.status(200).json({
+        isSuccess: true,
+        data: JSON.parse(result),
+        message: 'Successfully process image',
+      });
+    }
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch session details' });
   }

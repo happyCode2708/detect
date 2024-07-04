@@ -1,5 +1,9 @@
-const mapToTDCformat = (extractData: any) => {
+import { toUpper } from 'lodash';
+
+export const mapToTDCformat = (extractData: any) => {
   const productData = extractData?.product;
+
+  if (!productData) return {};
 
   const {
     ingredients,
@@ -10,149 +14,166 @@ const mapToTDCformat = (extractData: any) => {
     header,
     allergens,
     attributes,
+    physical,
   } = productData;
 
-  let mappingResult = {
+  const mappedResult = {
     //* header
-    ProductDescription: header?.productName,
-    BrandName: header?.brandName,
-    PrimarySize: header?.primarySizeValue,
-    PrimarySizeUOM: header?.primarySizeUOM,
-    PrimarySizeText: header?.fullSizeTextDescription,
-    SecondarySize: header?.secondarySizeValue,
-    SecondarySizeUOM: header?.secondarySizeUOM,
+    ProductDescription: toUpper(header?.[0].productName),
+    BrandName: toUpper(header?.[0]?.brandName),
+    PrimarySize: toUpper(header?.[0]?.primarySizeValue),
+    PrimarySizeUOM: toUpper(header?.[0]?.primarySizeUOM),
+    PrimarySizeText: toUpper(header?.[0].fullSizeTextDescription),
+    SecondarySize: toUpper(header?.[0].secondarySizeValue),
+    SecondarySizeUOM: toUpper(header?.[0].secondarySizeUOM),
+    UnitCount: header?.[0]?.count,
 
     //* panel
-    NutritionPanel: mapToNutritionPanels(factPanels),
-    SupplementPanel: mapToNutritionPanels(factPanels),
+    NutritionPanel:
+      ingredients?.[0]?.isProductSupplement !== 'true' && factPanels
+        ? mapToNutritionPanels(factPanels, 'NUTRITION FACTS')
+        : null,
+    SupplementPanel:
+      ingredients?.[0]?.isProductSupplement === 'true' && factPanels
+        ? mapToNutritionPanels(factPanels, 'SUPPLEMENT FACTS', ingredients)
+        : null,
 
     //* supply chain
-    ManufacturerNamePackaging: supplyChain?.manufacturerName || 'Unknown',
-    ManufacturerCityPackaging: supplyChain?.manufacturerCity,
-    ManufacturerPhoneNumberPackaging: supplyChain?.manufacturerPhoneNumber,
-    ManufacturerStatePackaging: supplyChain?.manufacturerState,
-    ManufacturerStreetPackaging: supplyChain?.manufacturerStreetAddress,
-    ManufacturerZipCodePackaging: supplyChain?.manufactureZipCode,
-    DistributedBy: supplyChain?.distributedBy, //? in progress
-    CountryOfOriginText: supplyChain?.countryOfOriginText,
-    CountryOfOriginName: supplyChain?.countryOfOrigin,
+    ManufacturerNamePackaging: toUpper(supplyChain?.[0]?.manufacturerName),
+    ManufacturerCityPackaging: toUpper(supplyChain?.[0]?.manufacturerCity),
+    ManufacturerPhoneNumberPackaging: toUpper(
+      supplyChain?.[0]?.manufacturerPhoneNumber
+    ),
+    ManufacturerStatePackaging: toUpper(
+      supplyChain?.[0]?.validated_manufacturerState
+    ),
+    ManufacturerStreetPackaging: toUpper(
+      supplyChain?.[0]?.manufacturerStreetAddress
+    ),
+    ManufacturerZipCodePackaging: toUpper(supplyChain?.[0]?.manufactureZipCode),
+    DistributedBy: supplyChain?.[0]?.distributedBy, //? in progress
+    // CountryOfOriginText: toUpper(supplyChain?.[0]?.countryOfOriginText),
+    CountryOfOriginName: toUpper(supplyChain?.[0]?.countryOfOrigin),
 
     //* instructions
-    UsageInstructions: instructions?.usageInstruction,
+    UsageInstructions: toUpper(instructions?.[0]?.usageInstruction),
 
     //* allergen
-    Allergens: allergens?.containList,
-    FreeOf: allergens?.notContainList,
-    AllergensAncillary: allergens?.containStatement,
-    ProcessedOnEquipment: allergens?.containOnEquipmentList,
-    ProcessedManufacturedInFacilityStatement:
-      allergens?.containOnEquipmentStatement,
+    Allergens: allergens?.[0]?.validated_containList,
 
-    //* marketing
-    Website: marketing?.website,
-    QRCode: marketing?.haveQrCode,
+    FreeOf: allergens?.[0]?.validated_notContainList,
+    AllergensAncillary: [toUpper(allergens?.[0]?.containStatement)], //? in progress
+    ProcessedOnEquipment: allergens?.[0]?.containOnEquipmentList,
+    ProcessedManufacturedInFacilityStatement:
+      allergens?.[0]?.containOnEquipmentStatement,
+
+    //* ingredients
+    SupplementIngredientStatement:
+      ingredients?.[0]?.isProductSupplement === 'true' &&
+      ingredients?.[0]?.ingredientStatement
+        ? [toUpper(ingredients[0].ingredientStatement)]
+        : undefined,
+
+    IngredientsStatement:
+      ingredients?.[0]?.isProductSupplement !== 'true' &&
+      ingredients?.[0]?.ingredientStatement
+        ? [toUpper(ingredients[0].ingredientStatement)]
+        : undefined,
 
     //* additional
-    // HasSupplementPanel:
-    //   factPanels?.some((panel) => panel.type === 'supplement') || false,
-    // HasNutritionPanel:
-    //   factPanels?.some((panel) => panel.type === 'nutrition') || false,
+    HasSupplementPanel:
+      ingredients?.[0]?.isProductSupplement === 'true' &&
+      factPanels?.length > 0,
+    HasNutritionPanel:
+      ingredients?.[0]?.isProductSupplement !== 'true' &&
+      factPanels?.length > 0,
+    HasPanel: factPanels?.length > 0,
 
-    //* attribute
-    SugarSweetener: attributes?.format_validated_sugarClaims,
-    Process: attributes?.format_validated_nonCertificateClaims,
-    Contains: attributes?.format_validated_contain,
-    DoesNotContain: attributes?.format_validated_notContain,
-  };
-
-  const mappingFormat = {
-    //* header
-    ProductDescription: 'header.productName',
-    BrandName: 'header.brandName',
-    PrimarySize: 'header.primarySizeValue', //? in progress
-    PrimarySizeUOM: 'header.primarySizeUOM', //? in progress
-    PrimarySizeText: 'header.fullSizeTextDescription', //? in progress - need recheck
-    SecondarySize: 'header.secondarySizeValue', //? in progress
-    SecondarySizeUOM: 'header.secondarySizeUOM', //? in progress
-
-    //* panel
-    SupplementPanel: [],
-
-    //* supply chain
-    ManufacturerNamePackaging: '??',
-    ManufacturerCityPackaging: 'supplyChain.manufacturerCity',
-    ManufacturerPhoneNumberPackaging: 'supplyChain.manufacturerPhoneNumber',
-    ManufacturerStatePackaging: 'supplyChain.manufacturerState',
-    ManufacturerStreetPackaging: 'supplyChain.manufacturerStreetAddress',
-    ManufacturerZipCodePackaging: 'supplyChain.manufactureZipCode',
-    DistributedBy: 'supplyChain.distributedBy', //? in progress
-    CountryOfOriginText: 'supplyChain.countryOfOriginText',
-    CountryOfOriginName: 'supplyChain.countryOfOrigin',
-
-    //* instructions
-    UsageInstructions: 'usageInstruction',
-
-    //* allergen
-    Allergens: 'allergens.containList',
-    FreeOf: 'allergens.notContainList',
-    AllergensAncillary: 'allergens.containStatement',
-    ProcessedOnEquipment: 'allergens.containOnEquipmentList',
-    ProcessedManufacturedInFacilityStatement:
-      'allergens.containOnEquipmentStatement',
+    //* Physical
+    UPC12: physical?.[0]?.upc12,
 
     //* marketing
-    Website: 'marketing.website',
-    QRCode: 'marketing.haveQrCode',
+    Website: marketing?.[0]?.website
+      ?.split(', ')
+      .map((item: string) => toUpper(item?.trim())),
+    QRCode: marketing?.[0]?.haveQrCode,
 
-    //* additional
-    HasSupplementPanel: '???', //? in progress,
-    HasNutritionPanel: '???', //? in progress,
-
-    //* attribute
-    SugarSweetener: 'attributes.format_validated_sugarClaims',
-    Process: 'attributes.format_validated_nonCertificateClaims',
-    Contains: 'attributes.format_validated_contain',
-    DoesNotContain: 'attributes.format_validated_notContain',
-    NutritionPanel: mapToNutritionPanels(factPanels),
+    // //* attribute
+    SugarSweetener: attributes?.validated_sugarClaims || [],
+    Process: attributes?.validated_nonCertificateClaims || [],
+    Contains: attributes?.validated_contain || [],
+    DoesNotContain: attributes?.validated_notContain || [],
   };
+
+  // console.log('result', JSON.stringify(mappedResult));
+  return mappedResult;
 };
 
-const mapToNutritionPanels = (factPanels: any) => {
+const mapToNutritionPanels = (
+  factPanels: any,
+  title: string,
+  ingredients?: any
+) => {
   return factPanels.map((factPanelItem: any) => {
-    let formatFactPanelPropertyList = [];
-    const { servingInfo, nutritionFacts } = factPanelItem;
+    let formatFactPanelPropertyList = [] as any;
+    const { servingInfo, nutritionFacts, footnotes } = factPanelItem;
     const {
       servingPerContainer,
       servingSize,
       equivalentServingSize,
       amountPerServingName,
       calories,
-    } = servingInfo;
+    } = servingInfo || {};
+
+    const { footnoteContentEnglish, footnoteContent } = footnotes?.[0] || {};
 
     formatFactPanelPropertyList.push({
       PropertyName: 'PANEL LABEL',
-      PropertySource: 'NUTRITION FACTS',
+      PropertySource: title,
       Amount: '',
       AmountUOM: '',
     });
+
+    if (
+      title === 'SUPPLEMENT FACTS' &&
+      !!ingredients?.[0]?.ingredientStatement
+    ) {
+      formatFactPanelPropertyList.push({
+        PropertyName: 'OTHER INGREDIENTS',
+        PropertySource: ingredients?.[0]?.ingredientStatement,
+        Amount: '',
+        AmountUOM: '',
+      });
+    }
+
+    if (servingPerContainer) {
+      formatFactPanelPropertyList.push({
+        PropertyName: 'PRIMARY SERVINGS PER CONTAINER',
+        PropertySource: '',
+        Amount: servingPerContainer,
+        AmountUOM: '',
+      });
+    }
 
     if (servingSize) {
       formatFactPanelPropertyList.push({
         PropertyName: 'PRIMARY SERVING SIZE',
         PropertySource: '',
-        Amount: servingSize,
+        Amount:
+          servingSize +
+          (equivalentServingSize ? ` ${equivalentServingSize}` : ''),
         AmountUOM: '',
       });
     }
 
-    if (equivalentServingSize) {
-      formatFactPanelPropertyList.push({
-        PropertyName: 'SECONDARY SERVING SIZE',
-        PropertySource: '',
-        Amount: equivalentServingSize,
-        AmountUOM: '',
-      });
-    }
+    // if (equivalentServingSize) {
+    //   formatFactPanelPropertyList.push({
+    //     PropertyName: 'SECONDARY SERVING SIZE',
+    //     PropertySource: '',
+    //     Amount: equivalentServingSize,
+    //     AmountUOM: '',
+    //   });
+    // }
     if (calories) {
       formatFactPanelPropertyList.push({
         PropertyName: 'CALORIES',
@@ -163,17 +184,30 @@ const mapToNutritionPanels = (factPanels: any) => {
       });
     }
 
+    if (footnoteContentEnglish || footnoteContent) {
+      formatFactPanelPropertyList.push({
+        PropertyName: 'DAILY VALUE STATEMENT',
+        PropertySource: footnoteContentEnglish || footnoteContent,
+        AnalyticalValue: '',
+        Amount: calories,
+        AmountUOM: '',
+      });
+    }
+
     nutritionFacts.forEach((nutrientItem: any) => {
       formatFactPanelPropertyList.push({
-        PropertyName: nutrientItem?.['validated_nutrientName'],
-        PropertySource: '',
-        AnalyticalValue: calories,
+        PropertyName: toUpper(nutrientItem?.['nutrientName']),
+        PropertySource: nutrientItem?.['blendIngredients'] || '',
+        AnalyticalValue: nutrientItem?.['amount'],
         Amount: nutrientItem?.['amount'],
         AmountUOM: nutrientItem?.['uom'],
         Percent: nutrientItem?.['percent'],
+        Indicators: nutrientItem?.['indicator']
+          ? [nutrientItem?.['indicator']]
+          : '',
       });
     });
 
-    return formatFactPanelPropertyList;
+    return { Property: formatFactPanelPropertyList };
   });
 };

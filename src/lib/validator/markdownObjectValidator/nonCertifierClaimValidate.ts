@@ -1,3 +1,5 @@
+import { toUpper } from 'lodash';
+
 export const nonCertifierClaimValidate = async (
   modifiedProductDataPoints: any
 ) => {
@@ -41,7 +43,10 @@ const check = async (analysisItem: any): Promise<boolean> => {
   if (isClaimed === 'false' || isClaimed === 'unknown')
     return Promise.resolve(false);
 
-  if (source === 'ingredient list' || source === 'nutrition fact') {
+  if (
+    source?.includes('ingredient list') ||
+    source?.includes('nutrition fact')
+  ) {
     return Promise.resolve(false);
   }
 
@@ -49,7 +54,11 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
   }
 
-  return Promise.resolve(true);
+  if (source?.includes('marketing text on product')) {
+    return Promise.resolve(true);
+  }
+
+  return Promise.resolve(false);
 };
 
 const NON_CERTIFICATE_CLAIMS = [

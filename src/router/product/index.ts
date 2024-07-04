@@ -9,7 +9,7 @@ import {
   findImagesContainNutFact,
   addUniqueString,
 } from '../../lib/server_utils';
-import { prisma } from '../../server';
+import { port, prisma } from '../../server';
 import bodyParser from 'body-parser';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -22,6 +22,8 @@ import { error } from 'console';
 import { makePostPayloadProductTDC } from './utils';
 import axios from 'axios';
 import logger from '../../lib/logger';
+import { mapToTDCformat } from '../../lib/mapper/mapToTDCFormat';
+import { compareWithTDC } from '../../lib/comparator/compareWithTDC';
 
 const router = express.Router();
 
@@ -155,6 +157,11 @@ router.get('/:ixoneid', async (req, res) => {
       include: { images: true, extractSessions: true },
     });
     if (product) {
+      product.extractSessions.sort(
+        (a: any, b: any) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
       res.status(200).json({ isSuccess: true, data: product });
     } else {
       res.status(404).json({ error: 'Product not found' });
@@ -237,6 +244,65 @@ router.post('/get-product-data-tdc', async (req, res) => {
     });
   } catch (error) {
     logger.error(error);
+    res.status(500).json({ error: 'Failed to get products TDC' });
+  }
+});
+
+router.post('/get-compare-result-tdc', async (req, res) => {
+  const ixoneid = req.body.ixoneid;
+
+  if (!ixoneid) {
+    res.status(404).json({ isSuccess: false, message: 'Ixoneid is required' });
+  }
+
+  const bearerToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6ImNBRUFBQUZ3QVkvK1ZLWUFublNvVjVlbXp5VWgxQlhPWUlZS1czOVJ2SFBqanhmTENscDhCNDNvenJNaWI2ZjdHMEMwemovdjN1cUg0MFlpUEQvSE9mSy93ckJhYmlFSHh4MkFPWnozVlBuQW9iVlExUDdJZ1ZBM2ZHVnpFcjV0QlpxbFZBeG5jWkpiZ1FSTEZGbzlyQ0IzUTdPWERZQ0lIWTNreFlyTkJ2cVM1TjUvN3d1dWlrNGJtV3FXdnVZdlBaL1VGazExWFU4a2dTdkxFdXpPMnJnQWEwNGpvaUo5UUJTTWNoa0ZibWwva0tHWG5QdXlVUW5DUVJiYXJNTFBUdGlJdkFmMzJWUkMwQ21nN1FUcDhGTHFrVjQrRWN0N3pmWExlUlNwQ1lCMVFZcTh3VExRa1ZwMFREVGZSN2xXUm8xOE94ajhkYnAvK0tKU2svNDVJMlkwbXFkbGlidkQyTDlhSjM1ZkJna0NkTEhhc3V2Z2x0bWkwSk1ubnhLL3prZUxhemlQbUNpVVJ4NjYwNUlWQVNKaTFSbzVPWU5iOXZIRVphSW84elV2OUpSKzM5SFVLanI0SU1BWFg1YlB0TVR5cFFYYW0rd0NHY2NlT1hYUlMySFN4M3RMSUVJU0xseUplS3B5SGNFTzNZVXY3aWUyMkFrPSIsIm5iZiI6MTcxOTgyMzU3OSwiZXhwIjoxNzUxMzU5NTc5LCJpYXQiOjE3MTk4MjM1Nzl9.NxaCMTHIuWB2GJHVSgHhNjFVg95EHaWtZkK2XJxVbdc';
+
+  const payload = makePostPayloadProductTDC([ixoneid]);
+
+  try {
+    const productDetailRes = await axios.get(
+      `http://localhost:${port}/api/product/${ixoneid}`
+    );
+
+    const productDetailData = productDetailRes?.data?.data;
+
+    const newestExtractedData = productDetailData?.extractSessions?.[0];
+
+    const mappedData = mapToTDCformat(JSON.parse(newestExtractedData?.result));
+
+    const response = await axios.post(
+      'https://exchange.ix-one.net/services/products/filtered',
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const foundTdcProduct = response?.data?.Products?.[0];
+
+    if (!foundTdcProduct) {
+      res.status(404).json({ isSuccess: false, message: 'Product not found' });
+    }
+
+    const compareResult = compareWithTDC({
+      tdcFormattedExtractData: mappedData,
+      tdcData: foundTdcProduct,
+    });
+
+    res.json({
+      isSuccess: true,
+      data: {
+        compareResult,
+        mappedExtractToTdc: mappedData,
+      },
+    });
+  } catch (error) {
+    // logger.error(error);
+    console.log(error);
     res.status(500).json({ error: 'Failed to get products TDC' });
   }
 });

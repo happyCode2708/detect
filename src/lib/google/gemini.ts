@@ -240,10 +240,19 @@ export const onProcessOther = async ({
     // writeJsonToFile(
     //   resultsDir + `/${sessionId}`,
     //   'orc-claims.json',
-    //   JSON.stringify({})
-    // );
+    //   JSON
 
-    return;
+    let sessionPayload = {
+      ['all.json']: JSON.stringify({
+        isSuccess: true,
+        data: {
+          jsonData: { isSuccess: true, data: { product: {} } },
+          markdownContent: '',
+        },
+      }),
+    };
+
+    return Promise.resolve(sessionPayload);
   }
 
   const prefix = 'all';
@@ -369,7 +378,20 @@ export const onProcessNut = async ({
       JSON.stringify({})
     );
 
-    return;
+    let sessionPayload = {
+      ['nut.json']: JSON.stringify({
+        isSuccess: true,
+        data: {
+          jsonData: {
+            isSuccess: true,
+            data: { product: { factPanel: [] } },
+          },
+          markdownContent: '',
+        },
+      }),
+    };
+
+    return Promise.resolve(sessionPayload);
   }
 
   const prefix = 'nut';

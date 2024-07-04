@@ -22,7 +22,7 @@ getGoogleApiOcr();
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
-const port = Number(process.env.PORT) || 3000;
+export const port = Number(process.env.PORT) || 3000;
 
 const nextApp = next({ dev, hostname, port });
 const nextHandler = nextApp.getRequestHandler();

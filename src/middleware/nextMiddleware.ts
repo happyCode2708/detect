@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-const protectedRoutes = ['/dashboard', '/'];
+const protectedRoutes = ['/dashboard', '/product/ixone'];
 const publicRoutes = ['/login', '/signup'];
 
 export const nextMiddleware = (
@@ -19,12 +19,23 @@ export const nextMiddleware = (
     return;
   }
 
-  const isProtectedRoute = protectedRoutes.includes(path);
   const isPublicRoute = publicRoutes.includes(path);
 
-  if (isProtectedRoute && !token) {
-    return res.redirect('/login');
+  if (isPublicRoute) {
+    next();
+    return;
   }
 
-  next();
+  const isProtectedRoute =
+    protectedRoutes.findIndex((protectedRouteItem: string) =>
+      path.startsWith(protectedRouteItem)
+    ) !== -1 || path === '/';
+
+  if (isProtectedRoute && !token) {
+    console.log('come here');
+
+    return res.redirect('/login');
+  } else {
+    next();
+  }
 };

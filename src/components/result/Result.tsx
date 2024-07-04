@@ -2,16 +2,20 @@
 import NutritionTable from '@/components/table/NutritionTable';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MetaInfo, SectionWrapper } from './common';
 import { ComparisonTabContent } from '../comparison-result/ComparisonTabContent';
+import { mapToTDCformat } from '@/lib/mapper/mapToTDCFormat';
+import { compareWithTDC } from '@/lib/comparator/compareWithTDC';
 
 export const Result = ({
   productInfo,
   productTdcData,
+  compareResultData,
 }: {
   productInfo: any;
   productTdcData: any;
+  compareResultData: any;
 }) => {
   if (!productInfo) return null;
 
@@ -20,6 +24,18 @@ export const Result = ({
   const onValueChange = (tabActive: string) => {
     setTabActive(tabActive);
   };
+
+  useEffect(() => {
+    try {
+      if (productInfo && productTdcData) {
+        const mappedData = mapToTDCformat(productInfo);
+        console.log('obj__1', mappedData);
+        console.log('obj__2', productTdcData);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }, [productInfo, productTdcData]);
 
   return (
     <Tabs
@@ -62,9 +78,9 @@ export const Result = ({
             hidden={tabActive !== 'compare'}
           >
             <ComparisonTabContent
-              productInfo1={productInfo?.product}
-              productInfo2={productInfo?.product}
+              productInfo={productInfo?.product}
               productTdcData={productTdcData}
+              compareResultData={compareResultData}
             />
           </TabsContent>
           <TabsContent

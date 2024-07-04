@@ -6,6 +6,7 @@ import { Loader, RefreshCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 // import ExtractionHistory from '@/components/extract-history/ExtractionHitory';
 import {
+  useMutateGetCompareResultWithTdc,
   useMutateProductExtraction,
   useMutateUploadFile,
 } from '@/queries/home';
@@ -48,12 +49,20 @@ const ProductDetailPage = () => {
   const refInterval = useRef<number | null>(null);
 
   const mutationProductExtract = useMutateProductExtraction();
+
+  const mutateGetCompareResultWithTdc = useMutateGetCompareResultWithTdc();
+
+  const { data: compareResultResponse } = mutateGetCompareResultWithTdc;
+  const compareResultData = compareResultResponse?.data;
+
+  console.log('haha', compareResultData);
+
   const { data: tdcData } = useQueryProductsFromTdc({
     ixoneIDs: typeof ixoneid === 'string' ? [ixoneid] : [],
   });
   const queryClient = useQueryClient();
 
-  console.log(tdcData);
+  // console.log(tdcData);
 
   const { toast } = useToast();
 
@@ -71,10 +80,7 @@ const ProductDetailPage = () => {
 
         setProductIxone(productData);
 
-        const newestSessionData =
-          productData?.extractSessions[
-            productData?.extractSessions?.length - 1
-          ];
+        const newestSessionData = productData?.extractSessions[0];
         if (newestSessionData) {
           setProductInfo(JSON.parse(newestSessionData?.result));
           setPdSessionId(newestSessionData?.sessionId);
@@ -84,24 +90,14 @@ const ProductDetailPage = () => {
     }
   }, [ixoneid]);
 
+  useEffect(() => {
+    if (pdSessionId || sessionId) {
+      mutateGetCompareResultWithTdc.mutate({ ixoneid });
+    }
+  }, [pdSessionId, ixoneid, sessionId]);
+
   const handleSubmitImageUrl = async () => {
     const formData = new FormData();
-
-    try {
-      // Fetch and append each image
-      // await Promise.all(
-      //   imageUrls.map(async (url, index) => {
-      //     const response = await fetch(url);
-      //     const blob = await response.blob();
-      //     const file = new File([blob], `image${index}.jpg`, {
-      //       type: blob.type,
-      //     });
-      //     formData.append('file', file);
-      //   })
-      // );
-    } catch (error) {
-      console.error('Error fetching the images: ', error);
-    }
 
     formData.append('imageUrls', JSON.stringify(imageUrls));
 
@@ -219,6 +215,8 @@ const ProductDetailPage = () => {
             if (refInterval.current) {
               clearInterval(refInterval.current);
             }
+
+            mutateGetCompareResultWithTdc.mutate({ ixoneid });
             setLoading(false);
           }
         } catch (error) {
@@ -380,6 +378,7 @@ const ProductDetailPage = () => {
                 <Result
                   productInfo={productInfo}
                   productTdcData={tdcData?.data?.Products?.[0]}
+                  compareResultData={compareResultData}
                 />
               </SectionWrapper>
             </div>

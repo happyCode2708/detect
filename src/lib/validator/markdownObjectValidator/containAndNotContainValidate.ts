@@ -103,7 +103,11 @@ const check = async (
   if (mentioned === 'false' || mentioned === 'unknown' || mentioned === 'no')
     return Promise.resolve(false);
 
-  if (source === 'ingredient list' || source === 'nutrition fact') {
+  if (
+    source?.includes('ingredient list') ||
+    source?.includes('nutrition fact')
+    // || source?.includes('allergen contain statement')
+  ) {
     return Promise.resolve(false);
   }
 
@@ -119,7 +123,11 @@ const check = async (
     return Promise.resolve(false);
   }
 
-  return Promise.resolve(true);
+  if (source.includes('marketing text on product')) {
+    return Promise.resolve(true);
+  }
+
+  return Promise.resolve(false);
 };
 
 const CONTAIN_AND_NOT_CONTAIN_CLAIMS = [

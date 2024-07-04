@@ -22,6 +22,7 @@ jobs:
       - name: Create env file
         run: |
           echo "GOOGLE_CREDENTIALS=${{ secrets.GOOGLE_CREDENTIALS}}" >> .env.production
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL}}" >> .env
         working-directory: ${{ github.workspace }}
 
       - name: Install dependencies

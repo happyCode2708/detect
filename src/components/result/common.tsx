@@ -39,7 +39,7 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     validated_nonCertificateClaims,
     validated_saltClaims,
     validated_sugarClaims,
-  } = attributes;
+  } = attributes || {};
 
   return (
     <div>
@@ -112,17 +112,17 @@ export const CamelFieldStringRender = ({
           const evaluationItem = evaluations?.[key];
 
           return (
-            <div key={key} className='grid grid-cols-6 mb-4'>
-              <div className='font-bold whitespace-nowrap col-span-3'>
+            <div key={key} className='flex flex-col mb-4'>
+              <div className='font-bold whitespace-nowrap'>
                 {camelCaseToSeparated(key) ?? 'N/A'}{' '}
                 {evaluationItem && (
                   <div className='inline-block rounded-md bg-green-600 text-white px-1'>
-                    {evaluationItem?.score}
+                    {evaluationItem}
                   </div>
                 )}
                 :
               </div>
-              <div className='col-span-3'>
+              <div>
                 {Array.isArray(value)
                   ? value?.map((childValue: any) => {
                       return (
@@ -132,7 +132,7 @@ export const CamelFieldStringRender = ({
                         </div>
                       );
                     })
-                  : value}
+                  : `${value}`}
               </div>
             </div>
           );
@@ -157,3 +157,59 @@ const camelCaseToSeparated = (name: string) => {
 
   return separatedName;
 };
+
+//! back up camel case render
+// export const CamelFieldStringRender = ({
+//   objectValues,
+//   evaluations,
+// }: {
+//   objectValues: Object;
+//   evaluations?: any;
+// }) => {
+//   if (!objectValues) return null;
+
+//   return (
+//     <>
+//       {Object.entries(objectValues)?.map(
+//         ([key, value]: [key: string, value: any]) => {
+//           if (
+//             value === null ||
+//             value === undefined ||
+//             isEqual(value, []) ||
+//             value === ''
+//           ) {
+//             return null;
+//           }
+
+//           const evaluationItem = evaluations?.[key];
+
+//           return (
+//             <div key={key} className='grid grid-cols-6 mb-4'>
+//               <div className='font-bold whitespace-nowrap col-span-3'>
+//                 {camelCaseToSeparated(key) ?? 'N/A'}{' '}
+//                 {evaluationItem && (
+//                   <div className='inline-block rounded-md bg-green-600 text-white px-1'>
+//                     {evaluationItem}
+//                   </div>
+//                 )}
+//                 :
+//               </div>
+//               <div className='col-span-3'>
+//                 {Array.isArray(value)
+//                   ? value?.map((childValue: any) => {
+//                       return (
+//                         <div>
+//                           +{' '}
+//                           {typeof value === 'boolean' ? `${value}` : childValue}{' '}
+//                         </div>
+//                       );
+//                     })
+//                   : value}
+//               </div>
+//             </div>
+//           );
+//         }
+//       )}
+//     </>
+//   );
+// };

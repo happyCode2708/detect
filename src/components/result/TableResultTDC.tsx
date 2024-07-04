@@ -2,7 +2,13 @@ import { metadata } from '@/app/layout';
 import NutritionTable from '../table/NutritionTable';
 import { CamelFieldStringRender, MetaInfo, SectionWrapper } from './common';
 
-export const TableResultTDC = ({ productTdcData }: { productTdcData: any }) => {
+export const TableResultTDC = ({
+  productTdcData,
+  evaluation = {},
+}: {
+  productTdcData: any;
+  evaluation?: any;
+}) => {
   const { SupplementPanel, NutritionPanel, ...metaData } =
     (productTdcData as any) || {};
 
@@ -16,25 +22,30 @@ export const TableResultTDC = ({ productTdcData }: { productTdcData: any }) => {
            */}
           <CamelFieldStringRender
             objectValues={metaData}
-            evaluations={{
-              BrandName: {
-                score: '100%',
-                note: 'test note',
-              },
-              Contains: {
-                score: '50%',
-                note: 'test note',
-              },
-            }}
+            evaluations={evaluation}
           />
 
-          {HasSupplementPanel && (
+          {SupplementPanel?.length > 0 && (
             <div>
-              {SupplementPanel?.map((panelData) => {
+              {SupplementPanel?.map((panelData: any, idx: number) => {
                 return (
                   <TdcNutPanelRender
                     propertyList={panelData?.Property}
                     title='Supplement Fact'
+                    evaluation={evaluation?.SupplementPanel?.[idx]?.Property}
+                  />
+                );
+              })}
+            </div>
+          )}
+          {NutritionPanel?.length > 0 && (
+            <div>
+              {NutritionPanel?.map((panelData: any, idx: number) => {
+                return (
+                  <TdcNutPanelRender
+                    propertyList={panelData?.Property}
+                    title='Supplement Fact'
+                    evaluation={evaluation?.NutritionPanel?.[idx]?.Property}
                   />
                 );
               })}
@@ -49,21 +60,25 @@ export const TableResultTDC = ({ productTdcData }: { productTdcData: any }) => {
 const TdcNutPanelRender = ({
   propertyList,
   title,
+  evaluation,
 }: {
   propertyList: any[];
   title: string;
+  evaluation?: any;
 }) => {
-  console.log('list', propertyList);
   return (
-    <div className='border p-2'>
+    <div className='border-2 p-2 rounded-md'>
       <div className='font-bold uppercase mb-2'>{title}</div>
-      {propertyList?.map((propertyItem) => {
+      {propertyList?.map((propertyItem, idx: number) => {
         const { PropertyName, ...restProperty } = propertyItem;
         return (
           <div>
             <div className=''>+{PropertyName}</div>
             <div className='pl-4'>
-              <CamelFieldStringRender objectValues={restProperty} />
+              <CamelFieldStringRender
+                objectValues={restProperty}
+                evaluations={evaluation?.[idx]}
+              />
             </div>
           </div>
         );

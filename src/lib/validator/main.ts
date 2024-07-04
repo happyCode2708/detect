@@ -26,6 +26,8 @@ import { saltClaimValidate } from './markdownObjectValidator/saltClaimValidate';
 import { sugarClaimValidate } from './markdownObjectValidator/sugarClaimValidate';
 import { calorieClaimValidate } from './markdownObjectValidator/calorieClaimValidate';
 import { HeaderValidate } from './markdownObjectValidator/HeaderValidate';
+import { allergenValidate } from './markdownObjectValidator/allergenValidator';
+import { supplyChainValidate } from './markdownObjectValidator/supplyChainValidate';
 
 export const responseValidator = async (response: any, ocrClaims: any) => {
   let validatedResponse = { ...response };
@@ -46,8 +48,14 @@ const validateProductDataPoints = async (response: any, ocrClaims: any) => {
   const { factPanels, nutMark, allMark, ...productDataPoints } =
     response?.product || {};
 
+  console.log('response ----', response);
+
   let modifiedProductDataPoints = { ...productDataPoints };
 
+  console.log('modifiedProductDataPoints ----', modifiedProductDataPoints);
+
+  allergenValidate(modifiedProductDataPoints);
+  supplyChainValidate(modifiedProductDataPoints);
   await calorieClaimValidate(modifiedProductDataPoints);
   await containAndNotContainClaimValidate(modifiedProductDataPoints, ocrClaims);
   await fatClaimValidate(modifiedProductDataPoints);

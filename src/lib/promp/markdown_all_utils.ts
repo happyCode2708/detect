@@ -10,19 +10,31 @@ ${ocrText}
 
 VALIDATION AND FIX BUGS:
 1) To avoid any deduction and ensure accuracy, if the product explicitly states that it "does not contain [specific ingredient]" or "is free from [specific ingredient]". Do not infer or deduce information from similar phrases. For example, if the product says "free from artificial flavors," do not assume it also means "does not contain added flavors." Only report what the text directly states.
+
 2) Only be using the information explicitly provided in the product images and not drawing conclusions based on the ingredient list. I will focus on directly extracting product claims from the text on the packaging and avoid making deductions based on the presence or absence of specific ingredients.
 Ex 1: if product have something in ingredient list. That cannot conclude that product claim to have this thing. Claim must be a statement or texts on the packaging make claim on a thing.
+
 3) "NON GMO Project VERIFIED" does not claim "not fried". It is about non-GMO food and products.
+
 4) Product info could contain multiple languages info. Only return provided info in english.
+
 5) Only return all markdown tables that i require you to return.
+
 6) There are some tables that i require return row items with specific given condition. Please check it carefully.
+
 7) you keep return only 10 or 11 digits for upc-12. It is wrong. 
-8) statement such as "contain ...", "does not contain ...", ... are "marketing text on product".
+
+8) text such as "Contain: ...", "Free of ...", ... are "marketing text on product".
+
 9) all table names must be in capital letters.
+
 10 "gluten" is not allergen.
+
 11) Each table have its own assert item list or claim list. Do not interchange item/claim between tables.
+
 12) inferred info is not accepted for claim:
 Ex: you are not allow to infer "no animal ingredients" from "organic certifier"
+
 13) result must be in order:
 FIRST_EXTRA_CLAIM_TABLE
 SECOND_EXTRA_CLAIM_TABLE
@@ -96,6 +108,7 @@ ex 1: "oats, milk"
 Ex: "primary size" = "100gram"
 + "count" is the count number of smaller unit inside a package, or a display shipper, or a case, or a box.
 + "full size text description" is the whole quantity measurement description statement of the product on image. It is usually appear on the front face of product.
+Ex: "Net WT 9.28oz(260g) 10 cups"
 
 5) "ingredient" table rules:
 + is the list of statements about ingredients of product (since product can have many ingredients list)
@@ -103,7 +116,7 @@ Ex: "primary size" = "100gram"
 
 6) "marketing" table rules:
 + "social media list" is the list of social media method mentioned on product images (such as "facebook", "google", "instagram", "pinterest", "snapchat", "tiktok", "youtube", "twitter", ...).
-+ "website list" is all website link found on product (website link exclude "nongmoproject.org") and be careful the content after slash could be phone number.
++ "website list" are all website links found on product (website link exclude "nongmoproject.org") and be careful the content after slash could be phone number.
 + "social media text" is a list of text usually start with "@", or "#" those can be used to search the product on social media. Hint, it is usually next to social media icons.
 + "enlarge to show" is true if statement such as "enlarged to show..." seen on product image.
 
@@ -115,9 +128,18 @@ Ex: "0   4562342221   5" as you can see there are two digit numbers at the start
 + "other instruction" such as
 ex 1: "best if consumed ..."
 ex 2: "use it with lemon..."
+
 + "storage instruction" such as "keep refrigerated"
+
++ "usage instructions"
+Ex 1: "suggested use: 2 cups at one time."
+
 + "usage time instruction" such "use by a time", "use within a time", "use before a time"
 Ex 1: "use within 30 days ..."
+
+9) "supply chain" table rules:
++ "manufacture name"
+Ex 1: "MANUFACTURED IN A CGMP CERTIFIED FACTORY FOR AMAZON".
 
 
 RESULT THAT I NEED:
@@ -471,7 +493,7 @@ PHYSICAL_TABLE
 13) Marketing info with table format below:
 
 MARKETING_TABLE
-| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | have twitter icon ? | social media list | website list | social media text list | enlarged to show (answer is boolean) |
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | have twitter icon ? | social media list | website list (multiple) | social media text list | enlarged to show (answer is boolean) |
 | ------- | -------- | -------- | ------- | ------- |
 
 14) Instruction info with table format below:

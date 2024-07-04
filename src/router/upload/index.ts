@@ -223,30 +223,43 @@ router.post('/process-product-image', async (req, res) => {
       ],
     });
 
-    const [finalNut, finalAll] = await Promise.all([
-      onProcessNut({
-        req,
-        res,
-        invalidatedInput,
-        //* flash version
-        ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-        // ocrList: nutImagesOCRresult,
-        sessionId,
-        collateImageName,
-        outputConfig,
-      }),
-      onProcessOther({
-        req,
-        res,
-        invalidatedInput,
-        ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-        sessionId,
-        collateImageName,
-        outputConfig,
-      }),
-    ]);
+    try {
+      const [finalNut, finalAll] = await Promise.all([
+        onProcessNut({
+          req,
+          res,
+          invalidatedInput,
+          //* flash version
+          ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+          // ocrList: nutImagesOCRresult,
+          sessionId,
+          collateImageName,
+          outputConfig,
+        }),
+        onProcessOther({
+          req,
+          res,
+          invalidatedInput,
+          ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+          sessionId,
+          collateImageName,
+          outputConfig,
+        }),
+      ]);
 
-    await createFinalResult({ finalAll, finalNut, sessionId });
+      await createFinalResult({ finalAll, finalNut, sessionId, res });
+    } catch (e) {
+      console.log(e);
+      const updatedSession = await prisma.extractSession.update({
+        where: { sessionId },
+        data: {
+          status: 'fail',
+          result_all: JSON.stringify({}),
+          result_nut: JSON.stringify({}),
+          result: JSON.stringify({}),
+        },
+      });
+    }
 
     // console.log('test 1', final1);
     // console.log('test 2', final2);
@@ -264,10 +277,12 @@ const createFinalResult = async ({
   finalNut,
   finalAll,
   sessionId,
+  res,
 }: {
   finalNut: any;
   finalAll: any;
   sessionId: string;
+  res: any;
 }) => {
   try {
     const allRes = JSON.parse(finalAll?.['all.json']);
@@ -303,8 +318,15 @@ const createFinalResult = async ({
         result: JSON.stringify(validatedResponse),
       },
     });
+
+    console.log('stored in ' + sessionId);
   } catch (err) {
     console.log(err);
+
+    res.status(500).send({
+      isSuccess: false,
+      message: 'Something went wrong. Please try again',
+    });
   }
 };
 

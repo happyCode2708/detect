@@ -99,6 +99,7 @@ const validateNutrientName = (modifiedNutrient: any) => {
     cal: 'CALORIES',
     kcal: 'KILOCALORIES',
     iu: 'INTERNATIONAL UNITS',
+    'total carbohydrate': 'TOTAL CARBOHYDRATES',
   } as any;
 
   const words = nutrientName.toLowerCase().split(/[\s,]+/);
@@ -141,7 +142,7 @@ const validatePercentDailyValue = (modifiedNutrient: any) => {
   if (!dailyValue) return;
 
   const numberMatch = dailyValue.match(/\d+/);
-  const indicatorMatch = dailyValue.match(/[*+]+/);
+  const indicatorMatch = dailyValue.match(/[*+†¥‡]+/g);
 
   modifiedNutrient['percent'] = numberMatch ? numberMatch[0] : null;
   modifiedNutrient['indicator'] = indicatorMatch ? indicatorMatch[0] : null;
