@@ -381,9 +381,9 @@ const ProductDetailPage = () => {
 
           {productInfo && (
             <div className='flex-1 overflow-hidden'>
-              <SectionWrapper title='Result'>
+              {/* <SectionWrapper title='Result'>
                 <Result productInfo={productInfo} />
-              </SectionWrapper>
+              </SectionWrapper> */}
             </div>
           )}
           {loading && (
