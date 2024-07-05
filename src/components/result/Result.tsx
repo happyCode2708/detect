@@ -47,7 +47,7 @@ export const Result = ({
         className={
           process.env.NODE_ENV !== 'production'
             ? 'grid w-full grid-cols-6'
-            : 'grid w-full grid-cols-2'
+            : 'grid w-full grid-cols-4'
         }
       >
         <TabsTrigger value='table'>Table</TabsTrigger>
