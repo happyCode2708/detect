@@ -16,15 +16,22 @@ const DeleteProductDialog = ({
   isOpen,
   toggleDialog,
   handleDeleteProduct,
+  disabled,
 }: {
   isOpen: boolean;
   toggleDialog: () => void;
   handleDeleteProduct: () => void;
+  disabled: boolean;
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={toggleDialog}>
       <DialogTrigger asChild>
-        <Button className='mb-4' onClick={toggleDialog} variant='destructive'>
+        <Button
+          className='mb-4'
+          onClick={toggleDialog}
+          variant='destructive'
+          disabled={disabled}
+        >
           Delete Products
         </Button>
       </DialogTrigger>

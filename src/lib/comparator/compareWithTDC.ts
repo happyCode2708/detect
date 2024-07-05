@@ -33,7 +33,7 @@ const compareFactPanel = (obj1: any, obj2: any) => {
   let factPanels = NutritionPanel_1 || SupplementPanel_1;
   let tdc_factPanels = NutritionPanel_2 || SupplementPanel_2;
 
-  let panelType;
+  let panelType: any;
 
   if (SupplementPanel_2?.length > 0) {
     panelType = 'SupplementPanel';
@@ -47,7 +47,7 @@ const compareFactPanel = (obj1: any, obj2: any) => {
     [panelType]: [],
   } as any;
 
-  tdc_factPanels.forEach((panelItem: any, idx: number) => {
+  tdc_factPanels?.forEach((panelItem: any, idx: number) => {
     const panelPropertyList = panelItem?.Property || [];
 
     matchResult[panelType].push({ Property: [] });
@@ -62,9 +62,12 @@ const compareFactPanel = (obj1: any, obj2: any) => {
 
       for (const key of Object.keys(propertyItem)) {
         if (samePropertyOnExtractData?.hasOwnProperty(key)) {
+          const value = `${propertyItem[key]}`;
+          const sameValue = `${samePropertyOnExtractData[key]}`;
+
           if (
-            propertyItem[key] === '' &&
-            samePropertyOnExtractData[key] === ''
+            (value === '' && sameValue === '') ||
+            (value === '0' && sameValue === '0')
           ) {
             comparisonResult[key] = '100%';
           } else {

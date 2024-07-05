@@ -45,7 +45,7 @@ const ProductTable = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {products.map((product) => (
+          {products?.map((product) => (
             <TableRow key={product?.id}>
               <TableCell>
                 <input
@@ -75,7 +75,7 @@ const ProductTable = ({
               <TableCell>
                 <div className='flex space-x-2'>
                   <Link
-                    className={buttonVariants({ variant: 'default' })}
+                    className={buttonVariants({ variant: 'destructive' })}
                     href={'/product/ixone/' + product?.ixoneID}
                   >
                     View
@@ -85,8 +85,8 @@ const ProductTable = ({
                     toggleDialog={toggleUploadDialog}
                     ixoneID={product?.ixoneID}
                   ></ProductImageUploadDialog>
-                  <Button>Extract</Button>
-                  <Button variant='destructive'>Validate</Button>
+                  {/* <Button>Extract</Button>
+                  <Button variant='destructive'>Validate</Button> */}
                 </div>
               </TableCell>
             </TableRow>

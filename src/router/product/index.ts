@@ -76,6 +76,7 @@ router.post('/list', async (req, res) => {
 
     res.status(200).json(products);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: 'Failed to fetch products' });
   }
 });
@@ -303,7 +304,7 @@ router.post('/get-compare-result-tdc', async (req, res) => {
   } catch (error) {
     // logger.error(error);
     console.log(error);
-    res.status(500).json({ error: 'Failed to get products TDC' });
+    res.status(500).json({ error: 'Failed to compare with TDC data' });
   }
 });
 

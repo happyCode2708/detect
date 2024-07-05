@@ -35,7 +35,7 @@ Ex 1: if product have something in ingredient list. That cannot conclude that pr
 12) inferred info is not accepted for claim:
 Ex: you are not allow to infer "no animal ingredients" from "organic certifier"
 
-13) result must be in order:
+13) result must be in order and include all tables below
 FIRST_EXTRA_CLAIM_TABLE
 SECOND_EXTRA_CLAIM_TABLE
 THIRD_EXTRA_CLAIM_TABLE
@@ -141,6 +141,9 @@ Ex 1: "use within 30 days ..."
 + "manufacture name"
 Ex 1: "MANUFACTURED IN A CGMP CERTIFIED FACTORY FOR AMAZON".
 
++ "distributed by" usually include address of distributor and text "distributed by".
+Ex 1: "distributed by: boiron inc. newtown square, PA 19073"
+
 
 RESULT THAT I NEED:
 Carefully examine provided images above. They are captured images of one product, and return info from provided images that match all listed requirements and rules above with all markdown tables format below
@@ -148,8 +151,8 @@ Carefully examine provided images above. They are captured images of one product
 1) first extra claim list info recorded in markdown table format below 
 
 FIRST_EXTRA_CLAIM_TABLE
-| extra item | is mentioned on product ?  | mentioned on which text on product ? | do you know it through which source of info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | product contain it ? (answer is yes/no) |
-| ------- | -------- | -------- | -------- |
+| extra item | is mentioned on product ?  | mentioned on which text on product ? | do you know it through which source of info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (multiple string) | product contain it ? (answer is yes/no) |
+| ------- | -------- | -------- | -------- | -------- |
 
 | additives | ...
 | added colors | ...
@@ -223,8 +226,8 @@ FIRST_EXTRA_CLAIM_TABLE
 (ROW RETURN CONDITION: only return row item if "explicitly and directly mentioned in product info without implied from other text" value = "true" )
 
 SECOND_EXTRA_CLAIM_TABLE
-| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
-| ------- | -------- | ------- | ------- |
+| extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (multiple) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | ------- | ------- | ------- | ------- |
 | 1,4-dioxane | ...
 | alcohol | ...
 | allergen | ...
@@ -262,7 +265,7 @@ SECOND_EXTRA_CLAIM_TABLE
 
 THIRD_EXTRA_CLAIM_TABLE
 | extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) | do match exact text on product ? (answer is yes/no) |
-| ------- | -------- | ------- | ------- | ------- |
+| ------- | -------- | ------- | ------- | ------- | ------- |
 | petro chemical | ...
 | petrolatum | ...
 | petroleum byproducts | ...
@@ -309,7 +312,7 @@ THIRD_EXTRA_CLAIM_TABLE
 
 SUGAR_CLAIM_TABLE
 | sugar claim | does product claim that sugar claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) (answer could be multiple string from many sources)| how do you know that ? and give me you explain (answer in string) |
-| ------- | -------- | -------- |
+| ------- | -------- | -------- | -------- |
 | contain acesulfame k | ...
 | contain agave | ...
 | contain allulose | ...
@@ -361,7 +364,7 @@ SUGAR_CLAIM_TABLE
 
 FAT_CLAIM_TABLE
 | fat claim | does product claim that fat claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
-| ------- | -------- | -------- |
+| ------- | -------- | -------- | -------- |
 | fat free | ...
 | free of saturated fat | ...
 | low fat | ...
@@ -378,7 +381,7 @@ FAT_CLAIM_TABLE
 
 OTHER_CLAIM_TABLE
 | other claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
-| ------- | -------- | -------- |
+| ------- | -------- | -------- | -------- |
 | 100% natural | ...
 | 100% natural ingredients | ...
 | 100% pure | ...
@@ -445,7 +448,7 @@ OTHER_CLAIM_TABLE
 
 CALORIE_CLAIM_TABLE
 | calorie claim | does product explicitly claim the calorie claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
-| ------- | -------- |
+| ------- | -------- | -------- |
 | have low calorie | ...
 | have reduced calorie | ...
 | have zero calorie | ...
@@ -455,6 +458,7 @@ CALORIE_CLAIM_TABLE
 
 SALT_CLAIM_TABLE
 | salt claim | does product explicitly claim this claim? (answer are true/false/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
 | lightly salted | ...
 | low sodium | ...
 | no salt | ...
@@ -494,19 +498,19 @@ PHYSICAL_TABLE
 
 MARKETING_TABLE
 | have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? | have Facebook icon ? | have twitter icon ? | social media list | website list (multiple) | social media text list | enlarged to show (answer is boolean) |
-| ------- | -------- | -------- | ------- | ------- |
+| ------- | -------- | -------- | ------- | ------- | ------- | -------- | -------- | ------- | ------- |
 
 14) Instruction info with table format below:
 
 INSTRUCTION_TABLE
 | storage instructions (answer are multiple string) | cooking instructions  (answer are multiple string) | usage instructions (answer are multiple string) | usage time instruction (answer are multiple string)| other instructions (answer are multiple string)|
-| ------- | -------- | -------- | ------- |
+| ------- | -------- | -------- | ------- | ------- |
 
 15) supply chain info with table format below:
 
 SUPPLY_CHAIN_TABLE
-| country of origin | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
-| ------- | -------- | -------- | ------- | ------- | -------- | -------- | ------- |
+| country of origin | distributed by | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+| ------- | -------- | -------- | -------- | ------- | ------- | -------- | -------- | ------- |
 
 16) Debug table is gemini answer recorded in markdown table format below:
 
@@ -516,9 +520,9 @@ DEBUG_TABLE
 
 DEBUG LIST:
 1) i see you think too deeply for example when you see "free from artificial flavor" and you think product claim "does not contain added flavor". That is not what i want it must say that product claim "does not contain artificial flavor". I do not how to prompt and make you understand that so next time you will no make same mistake help me write prompt sentences to fix that
-2) product does not say about antibiotics but you still include in extra claim list ? why ?
 `;
 };
+// 2) product does not say about antibiotics but you still include in extra claim list ? why ?
 
 // 2) the problem is that some claim you concluded from ingredient list? but the product claim is not retrieved from ingredient list
 // 3) i only require the result of table with nutrient row that match my conditions but i see you actually created row with initial data not provided by me ? i do not want that can you help me with write prompt to fix that?

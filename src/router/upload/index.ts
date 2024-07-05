@@ -322,10 +322,14 @@ const createFinalResult = async ({
     console.log('stored in ' + sessionId);
   } catch (err) {
     console.log(err);
-
-    res.status(500).send({
-      isSuccess: false,
-      message: 'Something went wrong. Please try again',
+    const updatedSession = await prisma.extractSession.update({
+      where: { sessionId },
+      data: {
+        status: 'fail',
+        result_all: JSON.stringify({}),
+        result_nut: JSON.stringify({}),
+        result: JSON.stringify({}),
+      },
     });
   }
 };

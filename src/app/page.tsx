@@ -22,9 +22,14 @@ const HomePage = () => {
     const response = await fetch(`/api/product/list?ixoneID=${searchTerm}`, {
       method: 'POST',
     });
-    const data = await response.json();
-    // setProducts(data);
-    return data;
+
+    if (!response.ok) {
+      return Promise.reject('some thing went wrong');
+    }
+
+    const res = await response.json();
+
+    return res;
   };
   const {
     data: products,
@@ -32,8 +37,12 @@ const HomePage = () => {
     isError,
   } = useQuery({
     queryKey: ['product', 'list', searchTerm],
-    queryFn: async () => await fetchProducts(searchTerm),
+    queryFn: async () => {
+      return await fetchProducts(searchTerm);
+    },
   });
+
+  console.log('products', products);
 
   // useEffect(() => {
 
@@ -105,6 +114,8 @@ const HomePage = () => {
     });
   };
 
+  console.log('test =--- ', Array.from(selectedProducts)?.length);
+
   return (
     <div className='container mx-auto py-8'>
       <div className='mb-4 flex justify-between align-middle'>
@@ -120,6 +131,7 @@ const HomePage = () => {
             isOpen={isDeleteDialogOpen}
             toggleDialog={toggleDeleteProductDialog}
             handleDeleteProduct={handleDeleteSelected}
+            disabled={Array.from(selectedProducts)?.length === 0}
           />
           <AddProductDialog isOpen={isDialogOpen} toggleDialog={toggleDialog} />
         </div>
