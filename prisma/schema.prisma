@@ -5,7 +5,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:@localhost:5432/ocr"
+  url      = "postgresql://duy:1234@localhost:5432/ocr"
 }
 
 generator client {
