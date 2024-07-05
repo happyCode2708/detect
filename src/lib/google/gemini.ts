@@ -80,15 +80,6 @@ export const onProcessGemini = async ({
 
   const resultFileName = (prefix ? `${prefix}` : '') + '.json';
 
-  // addNewExtractionToHistory(sessionId, {
-  //   collateImage: { name: collateImageName, url: collatedOuputPath },
-  //   inputFilePaths: collatedOuputPath,
-  //   result: {
-  //     name: resultFileName,
-  //     url: path.join(resultsDir, resultFileName),
-  //   },
-  // });
-
   writeJsonToFile(
     resultsDir + `/${sessionId}`,
     'prompt-' + resultFileName,
@@ -194,15 +185,17 @@ export const onProcessGemini = async ({
       JSON.stringify({ isSuccess: false })
     );
 
-    // sessionPayload = {
-    //   ...sessionPayload,
-    //   [resultFileName]: JSON.stringify({
-    //     isSuccess: true,
-    //     data: { jsonData: jsonResult, markdownContent: procResult },
-    //   }),
-    // };
+    console.log('on process gemini error', e);
 
-    console.log('some thing went wrong', e);
+    const updatedSession = await prisma.extractSession.update({
+      where: { sessionId },
+      data: {
+        status: 'fail',
+        result_all: JSON.stringify({}),
+        result_nut: JSON.stringify({}),
+        result: JSON.stringify({}),
+      },
+    });
   }
 };
 
@@ -307,45 +300,56 @@ export const onProcessOther = async ({
   //   'orc-claims.json',
   //   JSON.stringify(ocr_claims)
   // );
+  try {
+    const finalSessionPayload = await onProcessGemini({
+      req,
+      res,
+      sessionId,
+      collateImageName,
 
-  const finalSessionPayload = await onProcessGemini({
-    req,
-    res,
-    sessionId,
-    collateImageName,
+      prefix,
+      // collatedOuputPath: [
+      //   ...invalidatedInput.nutIncluded,
+      //   ...invalidatedInput.nutExcluded,
+      // ],
+      // prompt: makePrompt({
+      //   ocrText: JSON.stringify(new_allText),
+      //   imageCount: [
+      //     ...invalidatedInput.nutIncluded,
+      //     ...invalidatedInput.nutExcluded,
+      //   ]?.length,
+      //   detectedClaims: JSON.stringify(ocr_claims),
+      // }),
 
-    prefix,
-    // collatedOuputPath: [
-    //   ...invalidatedInput.nutIncluded,
-    //   ...invalidatedInput.nutExcluded,
-    // ],
-    // prompt: makePrompt({
-    //   ocrText: JSON.stringify(new_allText),
-    //   imageCount: [
-    //     ...invalidatedInput.nutIncluded,
-    //     ...invalidatedInput.nutExcluded,
-    //   ]?.length,
-    //   detectedClaims: JSON.stringify(ocr_claims),
-    // }),
-
-    //* markdown all
-    collatedOuputPath: [
-      ...invalidatedInput.nutIncluded,
-      ...invalidatedInput.nutExcluded,
-    ],
-    prompt: make_markdown_all_prompt({
-      ocrText: JSON.stringify(new_allText),
-      imageCount: [
+      //* markdown all
+      collatedOuputPath: [
         ...invalidatedInput.nutIncluded,
         ...invalidatedInput.nutExcluded,
-      ]?.length,
-    }),
-    isMarkdown: true,
-    mapMdToObjectFunct: mapMarkdownAllToObject,
-    sessionPayload,
-  });
+      ],
+      prompt: make_markdown_all_prompt({
+        ocrText: JSON.stringify(new_allText),
+        imageCount: [
+          ...invalidatedInput.nutIncluded,
+          ...invalidatedInput.nutExcluded,
+        ]?.length,
+      }),
+      isMarkdown: true,
+      mapMdToObjectFunct: mapMarkdownAllToObject,
+      sessionPayload,
+    });
 
-  return Promise.resolve(finalSessionPayload);
+    return Promise.resolve(finalSessionPayload);
+  } catch (e) {
+    // const updatedSession = await prisma.extractSession.update({
+    //   where: { sessionId },
+    //   data: {
+    //     status: 'fail',
+    //     result_all: JSON.stringify({}),
+    //     result_nut: JSON.stringify({}),
+    //     result: JSON.stringify({}),
+    //   },
+    // });
+  }
 };
 
 export const onProcessNut = async ({

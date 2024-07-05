@@ -253,6 +253,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   //? SUPPLY CHAIN
   const supplyChainObjList = getObjectDataFromTable(supplyChainSection, [
     'countryOfOrigin',
+    'distributedBy',
     'manufacturerName',
     'manufacturerDate',
     'manufacturerPhoneNumber',

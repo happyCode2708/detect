@@ -53,7 +53,7 @@ const validateBlendIngredients = (modifiedNutrient: any) => {
 };
 
 const validateNutrientName = (modifiedNutrient: any) => {
-  const nutrientName = modifiedNutrient?.nutrientName?.trim();
+  const nutrientName = toLower(modifiedNutrient?.nutrientName?.trim());
 
   const shortFormMap = {
     'vit. a': 'VITAMIN A',
@@ -69,6 +69,7 @@ const validateNutrientName = (modifiedNutrient: any) => {
     'vit. d': 'VITAMIN D',
     'vit. e': 'VITAMIN E',
     'vit. k': 'VITAMIN K',
+    'vit.': 'VITAMIN',
     ca: 'CALCIUM',
     fe: 'IRON',
     mg: 'MAGNESIUM',
@@ -98,21 +99,25 @@ const validateNutrientName = (modifiedNutrient: any) => {
     bcaas: 'BRANCHED-CHAIN AMINO ACIDS',
     cal: 'CALORIES',
     kcal: 'KILOCALORIES',
-    iu: 'INTERNATIONAL UNITS',
+    'Potas.': 'POTASSIUM',
+    'added sugars': 'ADDED SUGAR',
+    //   iu: 'INTERNATIONAL UNITS',
     'total carbohydrate': 'TOTAL CARBOHYDRATES',
   } as any;
 
-  const words = nutrientName.toLowerCase().split(/[\s,]+/);
-  const fullFormWords = words.map(
-    (word: any) => shortFormMap[word] || toUpper(word)
-  );
-  const mappedNutrientName = fullFormWords.join(' ');
+  // const words = nutrientName.toLowerCase().split(/[\s,]+/);
+  // const fullFormWords = words.map(
+  //   (word: any) => shortFormMap[word] || toUpper(word)
+  // );
+
+  const mappedNutrientName =
+    shortFormMap?.[nutrientName] || toUpper(nutrientName);
 
   modifiedNutrient['validated_nutrientName'] = mappedNutrientName;
 };
 
 const validateAmount = (modifiedNutrient: any) => {
-  let amountPerServing = modifiedNutrient?.amountPerServing.trim();
+  let amountPerServing = modifiedNutrient?.amountPerServing?.trim();
 
   if (!amountPerServing) return;
 
@@ -137,7 +142,7 @@ const validateAmount = (modifiedNutrient: any) => {
 };
 
 const validatePercentDailyValue = (modifiedNutrient: any) => {
-  let dailyValue = modifiedNutrient?.dailyValue.trim();
+  let dailyValue = modifiedNutrient?.dailyValue?.trim();
 
   if (!dailyValue) return;
 

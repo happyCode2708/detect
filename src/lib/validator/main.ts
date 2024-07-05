@@ -1,5 +1,5 @@
 import { acidityClaimsValidator } from './acidityClaimsValidator';
-import { allergenValidator } from './allergenValidator';
+// import { allergenValidator } from './allergenValidator';
 import { calorieClaimValidator } from './calorieClaimValidator';
 import { certifierAndClaimsValidator } from './certifierAndClaimsValidator';
 import { containValidator } from './containValidator';
@@ -26,7 +26,7 @@ import { saltClaimValidate } from './markdownObjectValidator/saltClaimValidate';
 import { sugarClaimValidate } from './markdownObjectValidator/sugarClaimValidate';
 import { calorieClaimValidate } from './markdownObjectValidator/calorieClaimValidate';
 import { HeaderValidate } from './markdownObjectValidator/HeaderValidate';
-import { allergenValidate } from './markdownObjectValidator/allergenValidator';
+import { allergenValidate } from './markdownObjectValidator/allergenValidate';
 import { supplyChainValidate } from './markdownObjectValidator/supplyChainValidate';
 
 export const responseValidator = async (response: any, ocrClaims: any) => {

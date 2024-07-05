@@ -22,7 +22,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
 import { SectionWrapper } from '@/components/wrapper/SectionWrapper';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useQueryProductsFromTdc } from '@/queries/productDetailQuery';
 
 const ProductDetailPage = () => {
@@ -49,8 +49,9 @@ const ProductDetailPage = () => {
   const refInterval = useRef<number | null>(null);
 
   const mutationProductExtract = useMutateProductExtraction();
-
   const mutateGetCompareResultWithTdc = useMutateGetCompareResultWithTdc();
+
+  const router = useRouter();
 
   const { data: compareResultResponse } = mutateGetCompareResultWithTdc;
   const compareResultData = compareResultResponse?.data;
@@ -242,8 +243,13 @@ const ProductDetailPage = () => {
   return (
     <FluidContainer>
       <div className='flex flex-col gap-4 py-4 px-4'>
-        <div className='grid grid-cols-4 gap-2'>
-          <div className='col-span-4'>
+        <div className='gap-2'>
+          <div>
+            <div className='flex justify-end'>
+              <Button variant={'outline'} onClick={() => router.push('/')}>
+                Close
+              </Button>
+            </div>
             <SectionWrapper title='Output Config'>
               <div className='flex flex-row gap-4'>
                 <div className='flex flex-row gap-2'>

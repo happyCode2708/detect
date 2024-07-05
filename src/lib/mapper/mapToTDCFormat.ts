@@ -53,17 +53,22 @@ export const mapToTDCformat = (extractData: any) => {
     ManufacturerZipCodePackaging: toUpper(supplyChain?.[0]?.manufactureZipCode),
     DistributedBy: supplyChain?.[0]?.distributedBy, //? in progress
     // CountryOfOriginText: toUpper(supplyChain?.[0]?.countryOfOriginText),
-    CountryOfOriginName: toUpper(supplyChain?.[0]?.countryOfOrigin),
+    CountryOfOriginName: toUpper(supplyChain?.[0]?.validated_countryOfOrigin),
 
     //* instructions
-    UsageInstructions: toUpper(instructions?.[0]?.usageInstruction),
+    UsageInstructions: instructions?.[0]?.usageInstruction
+      ?.split(', ')
+      .map((item: string) => toUpper(item?.trim())),
+    ConsumerStorage: instructions?.[0]?.storageInstruction
+      ?.split(', ')
+      .map((item: string) => toUpper(item?.trim())),
 
     //* allergen
     Allergens: allergens?.[0]?.validated_containList,
 
     FreeOf: allergens?.[0]?.validated_notContainList,
     AllergensAncillary: [toUpper(allergens?.[0]?.containStatement)], //? in progress
-    ProcessedOnEquipment: allergens?.[0]?.containOnEquipmentList,
+    ProcessedOnEquipment: allergens?.[0]?.validated_containOnEquipmentList,
     ProcessedManufacturedInFacilityStatement:
       allergens?.[0]?.containOnEquipmentStatement,
 
@@ -97,6 +102,9 @@ export const mapToTDCformat = (extractData: any) => {
       ?.split(', ')
       .map((item: string) => toUpper(item?.trim())),
     QRCode: marketing?.[0]?.haveQrCode,
+    SocialMedia: marketing?.[0]?.socialMediaList
+      ?.split(', ')
+      .map((item: string) => toUpper(item?.trim())),
 
     // //* attribute
     SugarSweetener: attributes?.validated_sugarClaims || [],
@@ -187,7 +195,7 @@ const mapToNutritionPanels = (
     if (footnoteContentEnglish || footnoteContent) {
       formatFactPanelPropertyList.push({
         PropertyName: 'DAILY VALUE STATEMENT',
-        PropertySource: footnoteContentEnglish || footnoteContent,
+        PropertySource: toUpper(footnoteContentEnglish || footnoteContent),
         AnalyticalValue: '',
         Amount: calories,
         AmountUOM: '',
@@ -196,8 +204,8 @@ const mapToNutritionPanels = (
 
     nutritionFacts.forEach((nutrientItem: any) => {
       formatFactPanelPropertyList.push({
-        PropertyName: toUpper(nutrientItem?.['nutrientName']),
-        PropertySource: nutrientItem?.['blendIngredients'] || '',
+        PropertyName: toUpper(nutrientItem?.['validated_nutrientName']),
+        PropertySource: toUpper(nutrientItem?.['blendIngredients'] || ''),
         AnalyticalValue: nutrientItem?.['amount'],
         Amount: nutrientItem?.['amount'],
         AmountUOM: nutrientItem?.['uom'],

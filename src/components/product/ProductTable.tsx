@@ -45,7 +45,7 @@ const ProductTable = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {products.map((product) => (
+          {products?.map((product) => (
             <TableRow key={product?.id}>
               <TableCell>
                 <input
