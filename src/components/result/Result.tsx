@@ -52,20 +52,20 @@ export const Result = ({
       >
         <TabsTrigger value='table'>Table</TabsTrigger>
         <TabsTrigger value='json'>Json</TabsTrigger>
+        <TabsTrigger value='jsonTDC'>Json TDC</TabsTrigger>
+        <TabsTrigger value='compare'>Compare</TabsTrigger>
         {process.env.NODE_ENV !== 'production' && (
           <>
-            <TabsTrigger value='jsonTDC'>Json TDC</TabsTrigger>
-            <TabsTrigger value='compare'>Compare</TabsTrigger>
             <TabsTrigger value='nut-md'>nut md</TabsTrigger>
             <TabsTrigger value='all-md'>all md</TabsTrigger>
           </>
         )}
       </TabsList>
-      <TabsContent value='table' forceMount hidden={tabActive !== 'table'}>
-        <TableResult productInfo={productInfo?.product} />
-      </TabsContent>
       <TabsContent value='json' forceMount hidden={tabActive !== 'json'}>
         <JsonRender productInfo={productInfo} />
+      </TabsContent>
+      <TabsContent value='table' forceMount hidden={tabActive !== 'table'}>
+        <TableResult productInfo={productInfo?.product} />
       </TabsContent>
       <TabsContent value='json tdc' forceMount hidden={tabActive !== 'jsonTDC'}>
         <JsonRender productInfo={productTdcData} />
