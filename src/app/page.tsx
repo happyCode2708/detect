@@ -114,6 +114,8 @@ const HomePage = () => {
     });
   };
 
+  console.log('test =--- ', Array.from(selectedProducts)?.length);
+
   return (
     <div className='container mx-auto py-8'>
       <div className='mb-4 flex justify-between align-middle'>
@@ -129,6 +131,7 @@ const HomePage = () => {
             isOpen={isDeleteDialogOpen}
             toggleDialog={toggleDeleteProductDialog}
             handleDeleteProduct={handleDeleteSelected}
+            disabled={Array.from(selectedProducts)?.length === 0}
           />
           <AddProductDialog isOpen={isDialogOpen} toggleDialog={toggleDialog} />
         </div>
