@@ -141,7 +141,7 @@ Ex 1: "use within 30 days ..."
 + "manufacture name"
 Ex 1: "MANUFACTURED IN A CGMP CERTIFIED FACTORY FOR AMAZON".
 
-+ "distributed by" value such as
++ "distributed by" usually include address of distributor and text "distributed by".
 Ex 1: "distributed by: boiron inc. newtown square, PA 19073"
 
 
