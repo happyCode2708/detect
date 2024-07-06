@@ -56,14 +56,10 @@ const ProductDetailPage = () => {
   const { data: compareResultResponse } = mutateGetCompareResultWithTdc;
   const compareResultData = compareResultResponse?.data;
 
-  console.log('haha', compareResultData);
-
   const { data: tdcData } = useQueryProductsFromTdc({
     ixoneIDs: typeof ixoneid === 'string' ? [ixoneid] : [],
   });
   const queryClient = useQueryClient();
-
-  // console.log(tdcData);
 
   const { toast } = useToast();
 
