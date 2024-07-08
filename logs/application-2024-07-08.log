@@ -3272,3 +3272,1038 @@
 2024-07-08 00:49:17 [31merror[39m: marketing text
 2024-07-08 00:49:17 [32minfo[39m: []
 2024-07-08 10:09:23 [31merror[39m: getaddrinfo ENOTFOUND exchange.ix-one.net
+2024-07-08 11:28:34 [31merror[39m: debug section
+2024-07-08 11:28:34 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in these images.  They appear to be the same table, just photographed from different angles. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although the information is displayed in two columns, this is just for visual presentation and to save space. There are not two different serving sizes or other criteria that would necessitate a true dual-column format. |
+
+2024-07-08 11:28:34 [31merror[39m: footnote
+2024-07-08 11:28:34 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+
+
+2024-07-08 11:28:34 [31merror[39m: debug
+2024-07-08 11:28:34 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in these images.  They appear to be the same table, just photographed from different angles. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although the information is displayed in two columns, this is just for visual presentation and to save space. There are not two different serving sizes or other criteria that would necessitate a true dual-column format. |
+
+2024-07-08 11:28:34 [31merror[39m: debug table
+2024-07-08 11:28:34 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-08 11:29:44 [31merror[39m: sugar
+2024-07-08 11:29:44 [32minfo[39m: 
+| sugar item | sugar item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ?  | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| acesulfame k | unknown |  |  |  |
+| acesulfame potassium | unknown |  |  |  |
+| agave | unknown |  |  |  |
+| allulose | unknown |  |  |  |
+| artificial sweetener | unknown |  |  |  |
+| aspartame | unknown |  |  |  |
+| beet sugar | unknown |  |  |  |
+| cane sugar | unknown |  |  |  |
+| coconut sugar | unknown |  |  |  |
+| coconut palm sugar | unknown |  |  |  |
+| fruit juice | unknown |  |  |  |
+| corn syrup | unknown |  |  |  |
+| high fructose corn syrup | unknown |  |  |  |
+| honey | unknown |  |  |  |
+| low sugar | unknown |  |  |  |
+| lower sugar | unknown |  |  |  |
+| monk fruit | unknown |  |  |  |
+| natural sweeteners | unknown |  |  |  |
+| added sugar | no |  | nutrition fact |  |
+| refined sugars | unknown |  |  |  |
+| saccharin | unknown |  |  |  |
+| splenda/sucralose | unknown |  |  |  |
+| splenda | unknown |  |  |  |
+| sucralose | unknown |  |  |  |
+| stevia | unknown |  |  |  |
+| sugar | yes | other | ingredient list | sugar is in ingredient list |
+| sugar added | unknown |  |  |  |
+| sugar alcohol | unknown |  |  |  |
+| tagatose | unknown |  |  |  |
+| xylitol | unknown |  |  |  |
+| reduced sugar | unknown |  |  |  |
+| sugar free | unknown |  |  |  |
+| unsweetened | unknown |  |  |  |
+| xylitol | unknown |  |  |  |
+
+## 
+2024-07-08 11:29:44 [31merror[39m: fat
+2024-07-08 11:29:44 [32minfo[39m: 
+| fat claim | does product claim that fat claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| is trans fat free | yes | nutrition fact | the product contains 0g of trans fat. |
+| have zero grams trans fat per serving | yes | nutrition fact | the product contains 0g of trans fat. |
+| have zero trans fat | yes | nutrition fact | the product contains 0g of trans fat. |
+
+## 
+2024-07-08 11:29:44 [31merror[39m: other
+2024-07-08 11:29:44 [32minfo[39m: 
+| other claim | does product explicitly claim this claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| not fried | yes | marketing text on product | "SEASONED & NON-FRIED RICE NOODLE" |
+
+## 
+2024-07-08 11:29:44 [31merror[39m: calorie
+2024-07-08 11:29:44 [32minfo[39m: 
+| calorie claim | does product explicitly claim the calorie claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+| have low calorie | no | marketing text on product |
+
+## 
+2024-07-08 11:29:44 [31merror[39m: salt
+2024-07-08 11:29:44 [32minfo[39m: 
+| salt claim | does product explicitly claim this claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+| low sodium | unknown |  |
+| no salt | unknown |  |
+| no salt added | unknown |  |
+| reduced sodium | unknown |  |
+| salt free | unknown |  |
+| sodium free | unknown |  |
+| unsalted | unknown |  |
+| very low sodium | unknown |  |
+
+## 
+2024-07-08 11:29:44 [31merror[39m: extra 1
+2024-07-08 11:29:44 [32minfo[39m: 
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| additives | unknown |  |  |  |
+| artificial additives | unknown |  |  |  |
+| chemical additives | unknown |  |  |  |
+| synthetic additives | unknown |  |  |  |
+| natural additives | unknown |  |  |  |
+| added colors | unknown |  |  |  |
+| artificial colors | unknown |  |  |  |
+| chemical colors | unknown |  |  |  |
+| synthetic colors | unknown |  |  |  |
+| natural colors | unknown |  |  |  |
+| dyes | unknown |  |  |  |
+| added dyes | unknown |  |  |  |
+| artificial dyes | unknown |  |  |  |
+| chemical dyes | unknown |  |  |  |
+| synthetic dyes | unknown |  |  |  |
+| natural dyes | unknown |  |  |  |
+| added flavors | unknown |  |  |  |
+| artificial flavors | unknown |  |  |  |
+| chemical flavors | unknown |  |  |  |
+| synthetic flavors | unknown |  |  |  |
+| natural flavors | unknown |  |  |  |
+| naturally flavored | unknown |  |  |  |
+| added fragrances | unknown |  |  |  |
+| artificial fragrance | unknown |  |  |  |
+| chemical fragrances | unknown |  |  |  |
+| synthetic fragrance | unknown |  |  |  |
+| preservatives | unknown |  |  |  |
+| added preservatives | unknown |  |  |  |
+| artificial preservatives | unknown |  |  |  |
+| chemical preservatives | unknown |  |  |  |
+| synthetic preservatives | unknown |  |  |  |
+| natural preservatives | unknown |  |  |  |
+| artificial ingredients | unknown |  |  |  |
+| chemical ingredients | unknown |  |  |  |
+| synthetic ingredients | unknown |  |  |  |
+| natural ingredients | yes | other | ingredient list | "RICE, STARCH (TAPIOCA, POTATO, CORN), SOY SAUCE (WATER, SOYBEANS, WHEAT, SALT), SALT, KELP EXTRACT, MONOSODIUM GLUTAMATE, FISH EXTRACT (MALTODEXTRIN, BONITO EXTRACT, SALT, FISH EXTRACT POWDER (EASTERN LITTLE TUNA, FRIGATE MACKEREL, SKIPJACK TUNA), YEAST EXTRACT), SUGAR, GINGER PASTE, MONO - AND DIGLYCERIDES OF FATTY ACIDS, SODIUM METAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, TETRASODIUM PYROPHOSPHATE, CARBOXYMETHYL CELLULOSE, GARLIC POWDER, ONION POWDER, DISODIUM 5' - RIBONUCLEOTIDE, CARAMEL COLOR, YEAST EXTRACT, PEPPER, SUCROSE ESTERS OF FATTY ACIDS, COLOR (RIBOFLAVIN), ROSEMARY EXTRACT." |
+| animal ingredients | unknown |  |  |  |
+| chemical sunscreens | unknown |  |  |  |
+| animal by-products | unknown |  |  |  |
+| animal derivatives | unknown |  |  |  |
+| animal products | unknown |  |  |  |
+| animal rennet | unknown |  |  |  |
+| antibiotics | unknown |  |  |  |
+| added antibiotics | unknown |  |  |  |
+| synthetics | unknown |  |  |  |
+| chemicals | unknown |  |  |  |
+| hormones | unknown |  |  |  |
+| added hormones | unknown |  |  |  |
+| nitrates/nitrites | unknown |  |  |  |
+| added nitrates | unknown |  |  |  |
+| added nitrites | unknown |  |  |  |
+| yeast | yes | other | ingredient list | "RICE, STARCH (TAPIOCA, POTATO, CORN), SOY SAUCE (WATER, SOYBEANS, WHEAT, SALT), SALT, KELP EXTRACT, MONOSODIUM GLUTAMATE, FISH EXTRACT (MALTODEXTRIN, BONITO EXTRACT, SALT, FISH EXTRACT POWDER (EASTERN LITTLE TUNA, FRIGATE MACKEREL, SKIPJACK TUNA), YEAST EXTRACT), SUGAR, GINGER PASTE, MONO - AND DIGLYCERIDES OF FATTY ACIDS, SODIUM METAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, TETRASODIUM PYROPHOSPHATE, CARBOXYMETHYL CELLULOSE, GARLIC POWDER, ONION POWDER, DISODIUM 5' - RIBONUCLEOTIDE, CARAMEL COLOR, YEAST EXTRACT, PEPPER, SUCROSE ESTERS OF FATTY ACIDS, COLOR (RIBOFLAVIN), ROSEMARY EXTRACT." |
+| active yeast | unknown |  |  |  |
+
+## 
+2024-07-08 11:29:44 [31merror[39m: extra 2
+2024-07-08 11:29:44 [32minfo[39m: 
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| gluten | yes | free from | marketing text on product | "Gluten-Free" |
+| msg | yes | contain | ingredient list | "MONOSODIUM GLUTAMATE" |
+
+## 
+2024-07-08 11:29:44 [31merror[39m: extra 3
+2024-07-08 11:29:44 [32minfo[39m: 
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| sulfites / sulphites | yes | contain | ingredient list,marketing text on product | "CONTAINS: SOYBEANS, SULFITES, FISH AND TREE NUTS (COCONUT)" |
+
+## 
+2024-07-08 11:29:44 [31merror[39m: allergen
+2024-07-08 11:29:44 [32minfo[39m: 
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+| ------- | -------- | -------- | ------- | -------- | -------- |
+| CONTAINS: SOYBEANS, SULFITES, FISH AND TREE NUTS (COCONUT) | soy / soybeans, sulfites, fish, tree nuts |  |  |  |  |
+
+## 
+2024-07-08 11:29:44 [31merror[39m: header
+2024-07-08 11:29:44 [32minfo[39m: 
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+| ------- | -------- | -------- | ------- | -------- | -------- | -------- |
+| Stir Fried Rice-Noodle Yaki Be-fun | KENMIN FOODS | 2.29 OZ | 65g |  | NET WT. 2.29 OZ (65g) |  |
+
+## 
+2024-07-08 11:29:44 [31merror[39m: ingredient
+2024-07-08 11:29:44 [32minfo[39m: 
+| is product supplement ? (answer is boolean) | ingredient statement |  ingredient break-down list |
+| ------- | -------- | -------- |
+| false | RICE, STARCH (TAPIOCA, POTATO, CORN), SOY SAUCE (WATER, SOYBEANS, WHEAT, SALT), SALT, KELP EXTRACT, MONOSODIUM GLUTAMATE, FISH EXTRACT (MALTODEXTRIN, BONITO EXTRACT, SALT, FISH EXTRACT POWDER (EASTERN LITTLE TUNA, FRIGATE MACKEREL, SKIPJACK TUNA), YEAST EXTRACT), SUGAR, GINGER PASTE, MONO - AND DIGLYCERIDES OF FATTY ACIDS, SODIUM METAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, TETRASODIUM PYROPHOSPHATE, CARBOXYMETHYL CELLULOSE, GARLIC POWDER, ONION POWDER, DISODIUM 5' - RIBONUCLEOTIDE, CARAMEL COLOR, YEAST EXTRACT, PEPPER, SUCROSE ESTERS OF FATTY ACIDS, COLOR (RIBOFLAVIN), ROSEMARY EXTRACT. | RICE, STARCH (TAPIOCA, POTATO, CORN), SOY SAUCE (WATER, SOYBEANS, WHEAT, SALT), SALT, KELP EXTRACT, MONOSODIUM GLUTAMATE, FISH EXTRACT (MALTODEXTRIN, BONITO EXTRACT, SALT, FISH EXTRACT POWDER (EASTERN LITTLE TUNA, FRIGATE MACKEREL, SKIPJACK TUNA), YEAST EXTRACT), SUGAR, GINGER PASTE, MONO - AND DIGLYCERIDES OF FATTY ACIDS, SODIUM METAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, TETRASODIUM PYROPHOSPHATE, CARBOXYMETHYL CELLULOSE, GARLIC POWDER, ONION POWDER, DISODIUM 5' - RIBONUCLEOTIDE, CARAMEL COLOR, YEAST EXTRACT, PEPPER, SUCROSE ESTERS OF FATTY ACIDS, COLOR (RIBOFLAVIN), ROSEMARY EXTRACT. |
+
+## 
+2024-07-08 11:29:44 [31merror[39m: physical
+2024-07-08 11:29:44 [32minfo[39m: 
+| upc-12 or gtin-12 |
+| ------- |
+| 50009312013 |
+
+## 
+2024-07-08 11:29:44 [31merror[39m: marketing
+2024-07-08 11:29:44 [32minfo[39m: 
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? |type | have Facebook icon ? | have twitter icon ? | social media list | website list (multiple) | social media text list | enlarged to show (answer is boolean) |
+| ------- | -------- | -------- | ------- | ------- | ------- | -------- | -------- | ------- | ------- | ------- |
+| false | false | false | false |  | false | false |  | http://www.kenmin.co.jp |  | false |
+
+## 
+2024-07-08 11:29:44 [31merror[39m: instruction
+2024-07-08 11:29:44 [32minfo[39m: 
+| instruction type | value 1  | value 2 | value 3 | ... (more columns if needed)
+| ------- | -------- | -------- | ------- | ...
+| storage instructions |  |  |  |  |
+| cooking instructions | Heat frying pan and add one and half table spoon of cooking oil . Lay down pork belly strips and layer with Yaki - Befun noodles , and ( vegetables in this particular order . | Add 6.7 ounces of water , seal with a lid and heat on high heat for 3 mins . | After 3 minutes , remove the lid and lightly mix the ingredients around and let the remaining water evaporate . Serve hot . | * 2 servings add 11.5 ounces of water . * sesame oil can be added for extra flavor |
+| usage instructions |  |  |  |  |
+| usage time instruction / freeze by instruction |  |  |  |  |
+| other instructions | Can change thin cut pork belly with bacon , cabbage to be cut in bite sizes , carrots to be cut in match sticks , the green bell peppers and onions to be cut into strips . |  |  |  |
+
+## 
+2024-07-08 11:29:44 [31merror[39m: supply chain
+2024-07-08 11:29:44 [32minfo[39m: 
+| country of origin text | country of origin | distributed by | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+| ------- | -------- | -------- | -------- | ------- | ------- | -------- | -------- | ------- | ------- |
+| PRODUCT OF Thailand | Thailand | IMPORTED BY: JFC INTERNATIONAL INC. LOS ANGELES, CA 90040 | KENMIN FOODS CO., LTD. |  |  |  |  |  |  |
+
+2024-07-08 11:29:44 [31merror[39m: marketingTextSection
+2024-07-08 11:29:44 [32minfo[39m: undefined
+2024-07-08 11:29:44 [31merror[39m: extra claim object list 1
+2024-07-08 11:29:44 [32minfo[39m: [{"claim":"additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"naturally flavored","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added fragrances","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial fragrance","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical fragrances","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic fragrance","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural ingredients","mentioned":"yes","statement":"other","source":"ingredient list","reason":"\"RICE, STARCH (TAPIOCA, POTATO, CORN), SOY SAUCE (WATER, SOYBEANS, WHEAT, SALT), SALT, KELP EXTRACT, MONOSODIUM GLUTAMATE, FISH EXTRACT (MALTODEXTRIN, BONITO EXTRACT, SALT, FISH EXTRACT POWDER (EASTERN LITTLE TUNA, FRIGATE MACKEREL, SKIPJACK TUNA), YEAST EXTRACT), SUGAR, GINGER PASTE, MONO - AND DIGLYCERIDES OF FATTY ACIDS, SODIUM METAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, TETRASODIUM PYROPHOSPHATE, CARBOXYMETHYL CELLULOSE, GARLIC POWDER, ONION POWDER, DISODIUM 5' - RIBONUCLEOTIDE, CARAMEL COLOR, YEAST EXTRACT, PEPPER, SUCROSE ESTERS OF FATTY ACIDS, COLOR (RIBOFLAVIN), ROSEMARY EXTRACT.\""},{"claim":"animal ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical sunscreens","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal by-products","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal derivatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal products","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal rennet","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"antibiotics","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added antibiotics","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetics","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemicals","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"hormones","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added hormones","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"nitrates/nitrites","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added nitrates","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added nitrites","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"yeast","mentioned":"yes","statement":"other","source":"ingredient list","reason":"\"RICE, STARCH (TAPIOCA, POTATO, CORN), SOY SAUCE (WATER, SOYBEANS, WHEAT, SALT), SALT, KELP EXTRACT, MONOSODIUM GLUTAMATE, FISH EXTRACT (MALTODEXTRIN, BONITO EXTRACT, SALT, FISH EXTRACT POWDER (EASTERN LITTLE TUNA, FRIGATE MACKEREL, SKIPJACK TUNA), YEAST EXTRACT), SUGAR, GINGER PASTE, MONO - AND DIGLYCERIDES OF FATTY ACIDS, SODIUM METAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, TETRASODIUM PYROPHOSPHATE, CARBOXYMETHYL CELLULOSE, GARLIC POWDER, ONION POWDER, DISODIUM 5' - RIBONUCLEOTIDE, CARAMEL COLOR, YEAST EXTRACT, PEPPER, SUCROSE ESTERS OF FATTY ACIDS, COLOR (RIBOFLAVIN), ROSEMARY EXTRACT.\""},{"claim":"active yeast","mentioned":"unknown","statement":"","source":"","reason":""}]
+2024-07-08 11:29:44 [31merror[39m: extra claim object list 2
+2024-07-08 11:29:44 [32minfo[39m: [{"claim":"gluten","mentioned":"yes","statement":"free from","source":"marketing text on product","reason":"\"Gluten-Free\""},{"claim":"msg","mentioned":"yes","statement":"contain","source":"ingredient list","reason":"\"MONOSODIUM GLUTAMATE\""}]
+2024-07-08 11:29:44 [31merror[39m: extra claim object list 3
+2024-07-08 11:29:44 [32minfo[39m: [{"claim":"sulfites / sulphites","mentioned":"yes","statement":"contain","source":"ingredient list,marketing text on product","reason":"\"CONTAINS: SOYBEANS, SULFITES, FISH AND TREE NUTS (COCONUT)\""}]
+2024-07-08 11:29:44 [31merror[39m: sugar claim list
+2024-07-08 11:29:44 [32minfo[39m: [{"claim":"acesulfame k","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"acesulfame potassium","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"agave","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"allulose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"artificial sweetener","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"aspartame","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"beet sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"cane sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"coconut sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"coconut palm sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"fruit juice","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"corn syrup","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"high fructose corn syrup","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"honey","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"low sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"lower sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"monk fruit","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"natural sweeteners","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"added sugar","isClaimed":"no","statement":"","source":"nutrition fact","reason":""},{"claim":"refined sugars","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"saccharin","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"splenda/sucralose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"splenda","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sucralose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"stevia","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sugar","isClaimed":"yes","statement":"other","source":"ingredient list","reason":"sugar is in ingredient list"},{"claim":"sugar added","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sugar alcohol","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"tagatose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"xylitol","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"reduced sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sugar free","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"unsweetened","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"xylitol","isClaimed":"unknown","statement":"","source":"","reason":""}]
+2024-07-08 11:29:44 [31merror[39m: fat claim list
+2024-07-08 11:29:44 [32minfo[39m: [{"claim":"is trans fat free","isClaimed":"yes","source":"nutrition fact","reason":"the product contains 0g of trans fat."},{"claim":"have zero grams trans fat per serving","isClaimed":"yes","source":"nutrition fact","reason":"the product contains 0g of trans fat."},{"claim":"have zero trans fat","isClaimed":"yes","source":"nutrition fact","reason":"the product contains 0g of trans fat."}]
+2024-07-08 11:29:44 [31merror[39m: other claim list
+2024-07-08 11:29:44 [32minfo[39m: [{"claim":"not fried","isClaimed":"yes","source":"marketing text on product","reason":"\"SEASONED & NON-FRIED RICE NOODLE\""}]
+2024-07-08 11:29:44 [31merror[39m: calorie claim list
+2024-07-08 11:29:44 [32minfo[39m: [{"claim":"have low calorie","isClaimed":"no","source":"marketing text on product"}]
+2024-07-08 11:29:44 [31merror[39m: salt claim list
+2024-07-08 11:29:44 [32minfo[39m: [{"claim":"low sodium","isClaimed":"unknown","source":""},{"claim":"no salt","isClaimed":"unknown","source":""},{"claim":"no salt added","isClaimed":"unknown","source":""},{"claim":"reduced sodium","isClaimed":"unknown","source":""},{"claim":"salt free","isClaimed":"unknown","source":""},{"claim":"sodium free","isClaimed":"unknown","source":""},{"claim":"unsalted","isClaimed":"unknown","source":""},{"claim":"very low sodium","isClaimed":"unknown","source":""}]
+2024-07-08 11:29:44 [31merror[39m: allergen list
+2024-07-08 11:29:44 [32minfo[39m: [{"containStatement":"CONTAINS: SOYBEANS, SULFITES, FISH AND TREE NUTS (COCONUT)","containList":"soy / soybeans, sulfites, fish, tree nuts","notContainStatement":"","notContainList":"","containOnEquipmentStatement":"","containOnEquipmentList":""}]
+2024-07-08 11:29:44 [31merror[39m: header list
+2024-07-08 11:29:44 [32minfo[39m: [{"productName":"Stir Fried Rice-Noodle Yaki Be-fun","brandName":"KENMIN FOODS","primarySize":"2.29 OZ","secondarySize":"65g","thirdSize":"","fullSizeTextDescription":"NET WT. 2.29 OZ (65g)","count":""}]
+2024-07-08 11:29:44 [31merror[39m: ingredient list
+2024-07-08 11:29:44 [32minfo[39m: [{"isProductSupplement":"false","ingredientStatement":"RICE, STARCH (TAPIOCA, POTATO, CORN), SOY SAUCE (WATER, SOYBEANS, WHEAT, SALT), SALT, KELP EXTRACT, MONOSODIUM GLUTAMATE, FISH EXTRACT (MALTODEXTRIN, BONITO EXTRACT, SALT, FISH EXTRACT POWDER (EASTERN LITTLE TUNA, FRIGATE MACKEREL, SKIPJACK TUNA), YEAST EXTRACT), SUGAR, GINGER PASTE, MONO - AND DIGLYCERIDES OF FATTY ACIDS, SODIUM METAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, TETRASODIUM PYROPHOSPHATE, CARBOXYMETHYL CELLULOSE, GARLIC POWDER, ONION POWDER, DISODIUM 5' - RIBONUCLEOTIDE, CARAMEL COLOR, YEAST EXTRACT, PEPPER, SUCROSE ESTERS OF FATTY ACIDS, COLOR (RIBOFLAVIN), ROSEMARY EXTRACT.","ingredientBreakdown":"RICE, STARCH (TAPIOCA, POTATO, CORN), SOY SAUCE (WATER, SOYBEANS, WHEAT, SALT), SALT, KELP EXTRACT, MONOSODIUM GLUTAMATE, FISH EXTRACT (MALTODEXTRIN, BONITO EXTRACT, SALT, FISH EXTRACT POWDER (EASTERN LITTLE TUNA, FRIGATE MACKEREL, SKIPJACK TUNA), YEAST EXTRACT), SUGAR, GINGER PASTE, MONO - AND DIGLYCERIDES OF FATTY ACIDS, SODIUM METAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, TETRASODIUM PYROPHOSPHATE, CARBOXYMETHYL CELLULOSE, GARLIC POWDER, ONION POWDER, DISODIUM 5' - RIBONUCLEOTIDE, CARAMEL COLOR, YEAST EXTRACT, PEPPER, SUCROSE ESTERS OF FATTY ACIDS, COLOR (RIBOFLAVIN), ROSEMARY EXTRACT."}]
+2024-07-08 11:29:44 [31merror[39m: physical
+2024-07-08 11:29:44 [32minfo[39m: [{"upc12":"50009312013"}]
+2024-07-08 11:29:44 [31merror[39m: marketing
+2024-07-08 11:29:44 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","website":"http://www.kenmin.co.jp","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-08 11:29:44 [31merror[39m: instruction
+2024-07-08 11:29:44 [32minfo[39m: [{"storageInstruction":[],"cookingInstruction":["Heat frying pan and add one and half table spoon of cooking oil . Lay down pork belly strips and layer with Yaki - Befun noodles , and ( vegetables in this particular order .","Add 6.7 ounces of water , seal with a lid and heat on high heat for 3 mins .","After 3 minutes , remove the lid and lightly mix the ingredients around and let the remaining water evaporate . Serve hot .","* 2 servings add 11.5 ounces of water . * sesame oil can be added for extra flavor"],"usageInstruction":[],"usageTimeInstruction":[],"otherInstructions":["Can change thin cut pork belly with bacon , cabbage to be cut in bite sizes , carrots to be cut in match sticks , the green bell peppers and onions to be cut into strips ."]}]
+2024-07-08 11:29:44 [31merror[39m: supplyChain
+2024-07-08 11:29:44 [32minfo[39m: [{"countryOfOriginText":"PRODUCT OF Thailand","countryOfOrigin":"Thailand","distributedBy":"IMPORTED BY: JFC INTERNATIONAL INC. LOS ANGELES, CA 90040","manufacturerName":"KENMIN FOODS CO., LTD.","manufacturerDate":"","manufacturerPhoneNumber":"","manufacturerStreetAddress":"","manufacturerCity":"","manufacturerState":"","manufactureZipCode":""}]
+2024-07-08 11:29:44 [31merror[39m: marketing text
+2024-07-08 11:29:44 [32minfo[39m: []
+2024-07-08 11:36:36 [31merror[39m: sugar
+2024-07-08 11:36:36 [32minfo[39m: 
+| sugar item | sugar item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ?  | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| acesulfame k | unknown |  |  |  |
+| acesulfame potassium | unknown |  |  |  |
+| agave | unknown |  |  |  |
+| allulose | unknown |  |  |  |
+| artificial sweetener | unknown |  |  |  |
+| aspartame | unknown |  |  |  |
+| beet sugar | unknown |  |  |  |
+| cane sugar | unknown |  |  |  |
+| coconut sugar | unknown |  |  |  |
+| coconut palm sugar | unknown |  |  |  |
+| fruit juice | unknown |  |  |  |
+| corn syrup | unknown |  |  |  |
+| high fructose corn syrup | unknown |  |  |  |
+| honey | unknown |  |  |  |
+| low sugar | unknown |  |  |  |
+| lower sugar | unknown |  |  |  |
+| monk fruit | unknown |  |  |  |
+| natural sweeteners | unknown |  |  |  |
+| added sugar | no |  | nutrition fact | Includes Og Added Sugars |
+| refined sugars | unknown |  |  |  |
+| saccharin | unknown |  |  |  |
+| splenda/sucralose | unknown |  |  |  |
+| splenda | unknown |  |  |  |
+| sucralose | unknown |  |  |  |
+| stevia | unknown |  |  |  |
+| sugar | no |  | nutrition fact | Total Sugars Og |
+| sugar added | no |  | nutrition fact | Includes Og Added Sugars |
+| sugar alcohol | unknown |  |  |  |
+| tagatose | unknown |  |  |  |
+| xylitol | unknown |  |  |  |
+| reduced sugar | unknown |  |  |  |
+| sugar free | unknown |  |  |  |
+| unsweetened | unknown |  |  |  |
+| xylitol | unknown |  |  |  |
+
+## 
+2024-07-08 11:36:36 [31merror[39m: fat
+2024-07-08 11:36:36 [32minfo[39m: 
+| fat claim | does product claim that fat claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| have zero grams trans fat per serving | yes | nutrition fact | Trans Fat 0g |
+| have zero trans fat | yes | nutrition fact | Trans Fat 0g |
+
+## 
+2024-07-08 11:36:36 [31merror[39m: other
+2024-07-08 11:36:36 [32minfo[39m: 
+| other claim | does product explicitly claim this claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| not fried | yes | marketing text on product | SEASONED & NON - FRIED RICE NOODLE |
+
+## 
+2024-07-08 11:36:36 [31merror[39m: calorie
+2024-07-08 11:36:36 [32minfo[39m: 
+| calorie claim | does product explicitly claim the calorie claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+| have low calorie | no | marketing text on product | 230kcal is not low calorie |
+
+## 
+2024-07-08 11:36:36 [31merror[39m: salt
+2024-07-08 11:36:36 [32minfo[39m: 
+| salt claim | does product explicitly claim this claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+| low sodium | unknown |  |
+| no salt | unknown |  |
+| no salt added | unknown |  |
+| reduced sodium | unknown |  |
+| salt free | unknown |  |
+| sodium free | unknown |  |
+| unsalted | unknown |  |
+| very low sodium | unknown |  |
+
+## 
+2024-07-08 11:36:36 [31merror[39m: extra 1
+2024-07-08 11:36:36 [32minfo[39m: 
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| additives | unknown |  |  |  |
+| artificial additives | unknown |  |  |  |
+| chemical additives | unknown |  |  |  |
+| synthetic additives | unknown |  |  |  |
+| natural additives | unknown |  |  |  |
+| added colors | unknown |  |  |  |
+| artificial colors | unknown |  |  |  |
+| chemical colors | unknown |  |  |  |
+| synthetic colors | unknown |  |  |  |
+| natural colors | unknown |  |  |  |
+| dyes | unknown |  |  |  |
+| added dyes | unknown |  |  |  |
+| artificial dyes | unknown |  |  |  |
+| chemical dyes | unknown |  |  |  |
+| synthetic dyes | unknown |  |  |  |
+| natural dyes | unknown |  |  |  |
+| added flavors | unknown |  |  |  |
+| artificial flavors | unknown |  |  |  |
+| chemical flavors | unknown |  |  |  |
+| synthetic flavors | unknown |  |  |  |
+| natural flavors | unknown |  |  |  |
+| naturally flavored | unknown |  |  |  |
+| added fragrances | unknown |  |  |  |
+| artificial fragrance | unknown |  |  |  |
+| chemical fragrances | unknown |  |  |  |
+| synthetic fragrance | unknown |  |  |  |
+| preservatives | unknown |  |  |  |
+| added preservatives | unknown |  |  |  |
+| artificial preservatives | unknown |  |  |  |
+| chemical preservatives | unknown |  |  |  |
+| synthetic preservatives | unknown |  |  |  |
+| natural preservatives | unknown |  |  |  |
+| artificial ingredients | unknown |  |  |  |
+| chemical ingredients | unknown |  |  |  |
+| synthetic ingredients | unknown |  |  |  |
+| natural ingredients | unknown |  |  |  |
+| animal ingredients | unknown |  |  |  |
+| chemical sunscreens | unknown |  |  |  |
+| animal by-products | unknown |  |  |  |
+| animal derivatives | unknown |  |  |  |
+| animal products | unknown |  |  |  |
+| animal rennet | unknown |  |  |  |
+| antibiotics | unknown |  |  |  |
+| added antibiotics | unknown |  |  |  |
+| synthetics | unknown |  |  |  |
+| chemicals | unknown |  |  |  |
+| hormones | unknown |  |  |  |
+| added hormones | unknown |  |  |  |
+| nitrates/nitrites | unknown |  |  |  |
+| added nitrates | unknown |  |  |  |
+| added nitrites | unknown |  |  |  |
+| yeast | no | other | ingredient list | YEAST EXTRACT |
+| active yeast | unknown |  |  |  |
+
+## 
+2024-07-08 11:36:36 [31merror[39m: extra 2
+2024-07-08 11:36:36 [32minfo[39m: 
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| alcohol | unknown |  |  |  |
+| allergen | no | no | marketing text on product |  |
+| gluten | yes | free from | marketing text on product | Gluten - Free |
+| aluminum | unknown |  |  |  |
+| amino acids | unknown |  |  |  |
+| ammonia | unknown |  |  |  |
+| cholesterol | yes | free of | nutrition fact | Cholesterol Omg |
+| coatings | unknown |  |  |  |
+| corn fillers | unknown |  |  |  |
+| cottonseed oil | unknown |  |  |  |
+| edta | unknown |  |  |  |
+| emulsifiers | unknown |  |  |  |
+| erythorbates | unknown |  |  |  |
+| expeller-pressed oils | unknown |  |  |  |
+| fillers | unknown |  |  |  |
+| fluoride | unknown |  |  |  |
+| formaldehyde | unknown |  |  |  |
+| fragrances | unknown |  |  |  |
+| grain | unknown |  |  |  |
+| hexane | unknown |  |  |  |
+| hydrogenated oils | unknown |  |  |  |
+| kitniyos / kitniyot (legumes) | unknown |  |  |  |
+| lactose | unknown |  |  |  |
+| latex | unknown |  |  |  |
+| msg | yes | contain | ingredient list | MONOSODIUM GLUTAMATE |
+| omega fatty acids | unknown |  |  |  |
+| paba | unknown |  |  |  |
+| palm oil | unknown |  |  |  |
+| parabens | unknown |  |  |  |
+| pesticides | unknown |  |  |  |
+
+## 
+2024-07-08 11:36:36 [31merror[39m: extra 3
+2024-07-08 11:36:36 [32minfo[39m: 
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| sulfites / sulphites | yes | contain | ingredient list | SULFITES |
+
+## 
+2024-07-08 11:36:36 [31merror[39m: allergen
+2024-07-08 11:36:36 [32minfo[39m: 
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+| ------- | -------- | -------- | ------- | -------- | -------- |
+| Contains: SOYBEANS, FISH AND TREE NUTS ( COCONUT ) | soy / soybeans, fish, tree nuts | Gluten - Free | gluten |  |  |
+
+## 
+2024-07-08 11:36:36 [31merror[39m: header
+2024-07-08 11:36:36 [32minfo[39m: 
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+| ------- | -------- | -------- | ------- | -------- | -------- | -------- |
+| Stir Fried Rice-Noodle Yaki Be-fun | KENMIN FOODS | 2.29 OZ | 65g |  | NET WT . 2.29 OZ ( 65g ) |  |
+
+## 
+2024-07-08 11:36:36 [31merror[39m: ingredient
+2024-07-08 11:36:36 [32minfo[39m: 
+| is product supplement ? (answer is boolean) | ingredient statement |  ingredient break-down list |
+| ------- | -------- | -------- |
+| false | ¡ REDIENTS : RICE , STARCH ( TAPIOCA , POTATO , CORN ) , SOY SAUCE ( WATER , SOYBEANS , E , SALT ) , SALT , KELP EXTRACT , MONOSODIUM GLUTAMATE , FISH EXTRACT ( MALTODEXTRIN , NITO EXTRACT , SALT , FISH EXTRACT POWDER ( EASTERN LITTLE TUNA , FRIGATE MACKEREL , NGTAIL TUNA ) , YEAST EXTRACT ) , SUGAR , GINGER PASTE , MONO - AND DIGLYCERIDES OF TY ACIDS , SODIUM METAPHOSPHATE , SODIUM TRIPOLYPHOSPHATE , TETRASODIUM NOPHOSPHATE , CARBOXYMETHYL CELLULOSE , GARLIC POWDER , ONION POWDER , ODIUM 5 ' - RIBONUCLEOTIDE , CARAMEL COLOR , YEAST EXTRACT , PEPPER , SUCROSE ERS OF FATTY ACIDS , COLOR ( RIBOFLAVIN ) , ROSEMARY EXTRACT . | RICE, STARCH ( TAPIOCA, POTATO, CORN ), SOY SAUCE ( WATER, SOYBEANS, E, SALT ), SALT, KELP EXTRACT, MONOSODIUM GLUTAMATE, FISH EXTRACT ( MALTODEXTRIN, NITO EXTRACT, SALT, FISH EXTRACT POWDER ( EASTERN LITTLE TUNA, FRIGATE MACKEREL, NGTAIL TUNA ), YEAST EXTRACT ), SUGAR, GINGER PASTE, MONO - AND DIGLYCERIDES OF TY ACIDS, SODIUM METAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, TETRASODIUM NOPHOSPHATE, CARBOXYMETHYL CELLULOSE, GARLIC POWDER, ONION POWDER, ODIUM 5 ' - RIBONUCLEOTIDE, CARAMEL COLOR, YEAST EXTRACT, PEPPER, SUCROSE ERS OF FATTY ACIDS, COLOR ( RIBOFLAVIN ), ROSEMARY EXTRACT. |
+
+## 
+2024-07-08 11:36:36 [31merror[39m: physical
+2024-07-08 11:36:36 [32minfo[39m: 
+| upc-12 or gtin-12 |
+| ------- |
+| 50009312013 |
+
+## 
+2024-07-08 11:36:36 [31merror[39m: marketing
+2024-07-08 11:36:36 [32minfo[39m: 
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? |type | have Facebook icon ? | have twitter icon ? | social media list | website list (multiple) | social media text list | enlarged to show (answer is boolean) |
+| ------- | -------- | -------- | ------- | ------- | ------- | -------- | -------- | ------- | ------- | ------- |
+| false | false | false | false |  | false | false |  | http://www.kenmin.co.jp |  | false |
+
+## 
+2024-07-08 11:36:36 [31merror[39m: instruction
+2024-07-08 11:36:36 [32minfo[39m: 
+| instruction type | value 1  | value 2 | value 3 | ... (more columns if needed)
+| ------- | -------- | -------- | ------- | ...
+| storage instructions |  |  |  |  |
+| cooking instructions | Heat frying pan and add one and half table spoon of cooking oil . Lay down pork belly strips and layer with Yaki - Befun noodles , and ( vegetables in this particular order . | Add 6.7 ounces of water , seal with a lid and heat on high heat for 3 mins . | After 3 minutes , remove the lid and lightly mix the ingredients around and let the remaining water evaporate . Serve hot . | * 2 servings add 11.5 ounces of water . * sesame oil can be added for extra flavor |
+| usage instructions |  |  |  |  |
+| usage time instruction / freeze by instruction |  |  |  |  |
+| other instructions | Can change thin cut pork belly with bacon , cabbage to be cut in bite sizes , carrots to be cut in match sticks , the green bell peppers and onions to be cut into strips . |  |  |  |
+
+## 
+2024-07-08 11:36:36 [31merror[39m: supply chain
+2024-07-08 11:36:36 [32minfo[39m: 
+| country of origin text | country of origin | distributed by | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+| ------- | -------- | -------- | -------- | ------- | ------- | -------- | -------- | ------- | ------- |
+| PRODUCT OF Thailand | Thailand | IMPORTED BY : JFC INTERNATIONAL INC . LOS ANGELES , CA 90040 | KENMIN FOODS CO . , LTD . |  |  |  |  |  |  |
+
+2024-07-08 11:36:36 [31merror[39m: marketingTextSection
+2024-07-08 11:36:36 [32minfo[39m: undefined
+2024-07-08 11:36:36 [31merror[39m: extra claim object list 1
+2024-07-08 11:36:36 [32minfo[39m: [{"claim":"additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"naturally flavored","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added fragrances","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial fragrance","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical fragrances","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic fragrance","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical sunscreens","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal by-products","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal derivatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal products","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal rennet","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"antibiotics","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added antibiotics","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetics","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemicals","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"hormones","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added hormones","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"nitrates/nitrites","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added nitrates","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added nitrites","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"yeast","mentioned":"no","statement":"other","source":"ingredient list","reason":"YEAST EXTRACT"},{"claim":"active yeast","mentioned":"unknown","statement":"","source":"","reason":""}]
+2024-07-08 11:36:36 [31merror[39m: extra claim object list 2
+2024-07-08 11:36:36 [32minfo[39m: [{"claim":"alcohol","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"allergen","mentioned":"no","statement":"no","source":"marketing text on product","reason":""},{"claim":"gluten","mentioned":"yes","statement":"free from","source":"marketing text on product","reason":"Gluten - Free"},{"claim":"aluminum","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"amino acids","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"ammonia","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"cholesterol","mentioned":"yes","statement":"free of","source":"nutrition fact","reason":"Cholesterol Omg"},{"claim":"coatings","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"corn fillers","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"cottonseed oil","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"edta","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"emulsifiers","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"erythorbates","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"expeller-pressed oils","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"fillers","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"fluoride","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"formaldehyde","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"fragrances","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"grain","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"hexane","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"hydrogenated oils","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"kitniyos / kitniyot (legumes)","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"lactose","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"latex","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"msg","mentioned":"yes","statement":"contain","source":"ingredient list","reason":"MONOSODIUM GLUTAMATE"},{"claim":"omega fatty acids","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"paba","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"palm oil","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"parabens","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"pesticides","mentioned":"unknown","statement":"","source":"","reason":""}]
+2024-07-08 11:36:36 [31merror[39m: extra claim object list 3
+2024-07-08 11:36:36 [32minfo[39m: [{"claim":"sulfites / sulphites","mentioned":"yes","statement":"contain","source":"ingredient list","reason":"SULFITES"}]
+2024-07-08 11:36:36 [31merror[39m: sugar claim list
+2024-07-08 11:36:36 [32minfo[39m: [{"claim":"acesulfame k","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"acesulfame potassium","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"agave","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"allulose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"artificial sweetener","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"aspartame","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"beet sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"cane sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"coconut sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"coconut palm sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"fruit juice","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"corn syrup","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"high fructose corn syrup","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"honey","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"low sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"lower sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"monk fruit","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"natural sweeteners","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"added sugar","isClaimed":"no","statement":"","source":"nutrition fact","reason":"Includes Og Added Sugars"},{"claim":"refined sugars","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"saccharin","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"splenda/sucralose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"splenda","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sucralose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"stevia","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sugar","isClaimed":"no","statement":"","source":"nutrition fact","reason":"Total Sugars Og"},{"claim":"sugar added","isClaimed":"no","statement":"","source":"nutrition fact","reason":"Includes Og Added Sugars"},{"claim":"sugar alcohol","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"tagatose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"xylitol","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"reduced sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sugar free","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"unsweetened","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"xylitol","isClaimed":"unknown","statement":"","source":"","reason":""}]
+2024-07-08 11:36:36 [31merror[39m: fat claim list
+2024-07-08 11:36:36 [32minfo[39m: [{"claim":"have zero grams trans fat per serving","isClaimed":"yes","source":"nutrition fact","reason":"Trans Fat 0g"},{"claim":"have zero trans fat","isClaimed":"yes","source":"nutrition fact","reason":"Trans Fat 0g"}]
+2024-07-08 11:36:36 [31merror[39m: other claim list
+2024-07-08 11:36:36 [32minfo[39m: [{"claim":"not fried","isClaimed":"yes","source":"marketing text on product","reason":"SEASONED & NON - FRIED RICE NOODLE"}]
+2024-07-08 11:36:36 [31merror[39m: calorie claim list
+2024-07-08 11:36:36 [32minfo[39m: [{"claim":"have low calorie","isClaimed":"no","source":"marketing text on product"}]
+2024-07-08 11:36:36 [31merror[39m: salt claim list
+2024-07-08 11:36:36 [32minfo[39m: [{"claim":"low sodium","isClaimed":"unknown","source":""},{"claim":"no salt","isClaimed":"unknown","source":""},{"claim":"no salt added","isClaimed":"unknown","source":""},{"claim":"reduced sodium","isClaimed":"unknown","source":""},{"claim":"salt free","isClaimed":"unknown","source":""},{"claim":"sodium free","isClaimed":"unknown","source":""},{"claim":"unsalted","isClaimed":"unknown","source":""},{"claim":"very low sodium","isClaimed":"unknown","source":""}]
+2024-07-08 11:36:36 [31merror[39m: allergen list
+2024-07-08 11:36:36 [32minfo[39m: [{"containStatement":"Contains: SOYBEANS, FISH AND TREE NUTS ( COCONUT )","containList":"soy / soybeans, fish, tree nuts","notContainStatement":"Gluten - Free","notContainList":"gluten","containOnEquipmentStatement":"","containOnEquipmentList":""}]
+2024-07-08 11:36:36 [31merror[39m: header list
+2024-07-08 11:36:36 [32minfo[39m: [{"productName":"Stir Fried Rice-Noodle Yaki Be-fun","brandName":"KENMIN FOODS","primarySize":"2.29 OZ","secondarySize":"65g","thirdSize":"","fullSizeTextDescription":"NET WT . 2.29 OZ ( 65g )","count":""}]
+2024-07-08 11:36:36 [31merror[39m: ingredient list
+2024-07-08 11:36:36 [32minfo[39m: [{"isProductSupplement":"false","ingredientStatement":"¡ REDIENTS : RICE , STARCH ( TAPIOCA , POTATO , CORN ) , SOY SAUCE ( WATER , SOYBEANS , E , SALT ) , SALT , KELP EXTRACT , MONOSODIUM GLUTAMATE , FISH EXTRACT ( MALTODEXTRIN , NITO EXTRACT , SALT , FISH EXTRACT POWDER ( EASTERN LITTLE TUNA , FRIGATE MACKEREL , NGTAIL TUNA ) , YEAST EXTRACT ) , SUGAR , GINGER PASTE , MONO - AND DIGLYCERIDES OF TY ACIDS , SODIUM METAPHOSPHATE , SODIUM TRIPOLYPHOSPHATE , TETRASODIUM NOPHOSPHATE , CARBOXYMETHYL CELLULOSE , GARLIC POWDER , ONION POWDER , ODIUM 5 ' - RIBONUCLEOTIDE , CARAMEL COLOR , YEAST EXTRACT , PEPPER , SUCROSE ERS OF FATTY ACIDS , COLOR ( RIBOFLAVIN ) , ROSEMARY EXTRACT .","ingredientBreakdown":"RICE, STARCH ( TAPIOCA, POTATO, CORN ), SOY SAUCE ( WATER, SOYBEANS, E, SALT ), SALT, KELP EXTRACT, MONOSODIUM GLUTAMATE, FISH EXTRACT ( MALTODEXTRIN, NITO EXTRACT, SALT, FISH EXTRACT POWDER ( EASTERN LITTLE TUNA, FRIGATE MACKEREL, NGTAIL TUNA ), YEAST EXTRACT ), SUGAR, GINGER PASTE, MONO - AND DIGLYCERIDES OF TY ACIDS, SODIUM METAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, TETRASODIUM NOPHOSPHATE, CARBOXYMETHYL CELLULOSE, GARLIC POWDER, ONION POWDER, ODIUM 5 ' - RIBONUCLEOTIDE, CARAMEL COLOR, YEAST EXTRACT, PEPPER, SUCROSE ERS OF FATTY ACIDS, COLOR ( RIBOFLAVIN ), ROSEMARY EXTRACT."}]
+2024-07-08 11:36:36 [31merror[39m: physical
+2024-07-08 11:36:36 [32minfo[39m: [{"upc12":"50009312013"}]
+2024-07-08 11:36:36 [31merror[39m: marketing
+2024-07-08 11:36:36 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","website":"http://www.kenmin.co.jp","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-08 11:36:36 [31merror[39m: instruction
+2024-07-08 11:36:36 [32minfo[39m: [{"storageInstruction":[],"cookingInstruction":["Heat frying pan and add one and half table spoon of cooking oil . Lay down pork belly strips and layer with Yaki - Befun noodles , and ( vegetables in this particular order .","Add 6.7 ounces of water , seal with a lid and heat on high heat for 3 mins .","After 3 minutes , remove the lid and lightly mix the ingredients around and let the remaining water evaporate . Serve hot .","* 2 servings add 11.5 ounces of water . * sesame oil can be added for extra flavor"],"usageInstruction":[],"usageTimeInstruction":[],"otherInstructions":["Can change thin cut pork belly with bacon , cabbage to be cut in bite sizes , carrots to be cut in match sticks , the green bell peppers and onions to be cut into strips ."]}]
+2024-07-08 11:36:36 [31merror[39m: supplyChain
+2024-07-08 11:36:36 [32minfo[39m: [{"countryOfOriginText":"PRODUCT OF Thailand","countryOfOrigin":"Thailand","distributedBy":"IMPORTED BY : JFC INTERNATIONAL INC . LOS ANGELES , CA 90040","manufacturerName":"KENMIN FOODS CO . , LTD .","manufacturerDate":"","manufacturerPhoneNumber":"","manufacturerStreetAddress":"","manufacturerCity":"","manufacturerState":"","manufactureZipCode":""}]
+2024-07-08 11:36:36 [31merror[39m: marketing text
+2024-07-08 11:36:36 [32minfo[39m: []
+2024-07-08 12:10:02 [31merror[39m: sugar
+2024-07-08 12:10:02 [32minfo[39m: 
+| sugar item | sugar item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ?  | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| acesulfame k | unknown |  |  |  |
+| acesulfame potassium | unknown |  |  |  |
+| agave | unknown |  |  |  |
+| allulose | unknown |  |  |  |
+| artificial sweetener | unknown |  |  |  |
+| aspartame | unknown |  |  |  |
+| beet sugar | unknown |  |  |  |
+| cane sugar | unknown |  |  |  |
+| coconut sugar | unknown |  |  |  |
+| coconut palm sugar | unknown |  |  |  |
+| fruit juice | unknown |  |  |  |
+| corn syrup | unknown |  |  |  |
+| high fructose corn syrup | unknown |  |  |  |
+| honey | unknown |  |  |  |
+| low sugar | unknown |  |  |  |
+| lower sugar | unknown |  |  |  |
+| monk fruit | unknown |  |  |  |
+| natural sweeteners | unknown |  |  |  |
+| added sugar | yes | Includes Og | nutrition fact |  |
+| refined sugars | unknown |  |  |  |
+| saccharin | unknown |  |  |  |
+| splenda/sucralose | unknown |  |  |  |
+| splenda | unknown |  |  |  |
+| sucralose | unknown |  |  |  |
+| stevia | unknown |  |  |  |
+| sugar | unknown |  |  |  |
+| sugar added | unknown |  |  |  |
+| sugar alcohol | unknown |  |  |  |
+| tagatose | unknown |  |  |  |
+| xylitol | unknown |  |  |  |
+| reduced sugar | unknown |  |  |  |
+| sugar free | unknown |  |  |  |
+| unsweetened | unknown |  |  |  |
+| xylitol | unknown |  |  |  |
+
+
+2024-07-08 12:10:02 [31merror[39m: fat
+2024-07-08 12:10:02 [32minfo[39m: 
+| fat claim | does product claim that fat claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| have zero grams trans fat per serving | yes | nutrition fact |  |
+| have zero trans fat | yes | nutrition fact |  |
+
+
+2024-07-08 12:10:02 [31merror[39m: other
+2024-07-08 12:10:02 [32minfo[39m: 
+| other claim | does product explicitly claim this claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| not fried | yes | marketing text on product | SEASONED & NON - FRIED RICE NOODLE |
+
+
+2024-07-08 12:10:02 [31merror[39m: calorie
+2024-07-08 12:10:02 [32minfo[39m: 
+| calorie claim | does product explicitly claim the calorie claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+| have low calorie | no | marketing text on product | 230kcal is not low calorie |
+
+
+2024-07-08 12:10:02 [31merror[39m: salt
+2024-07-08 12:10:02 [32minfo[39m: 
+| salt claim | does product explicitly claim this claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+| low sodium | no | nutrition fact |  |
+| no salt | no | nutrition fact |  |
+| no salt added | no | nutrition fact |  |
+| reduced sodium | no | nutrition fact |  |
+| salt free | no | nutrition fact |  |
+| sodium free | no | nutrition fact |  |
+| unsalted | no | nutrition fact |  |
+| very low sodium | no | nutrition fact |  |
+
+
+2024-07-08 12:10:02 [31merror[39m: extra 1
+2024-07-08 12:10:02 [32minfo[39m: 
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| additives | unknown |  |  |  |
+| artificial additives | unknown |  |  |  |
+| chemical additives | unknown |  |  |  |
+| synthetic additives | unknown |  |  |  |
+| natural additives | unknown |  |  |  |
+| added colors | unknown |  |  |  |
+| artificial colors | unknown |  |  |  |
+| chemical colors | unknown |  |  |  |
+| synthetic colors | unknown |  |  |  |
+| natural colors | unknown |  |  |  |
+| dyes | unknown |  |  |  |
+| added dyes | unknown |  |  |  |
+| artificial dyes | unknown |  |  |  |
+| chemical dyes | unknown |  |  |  |
+| synthetic dyes | unknown |  |  |  |
+| natural dyes | unknown |  |  |  |
+| added flavors | unknown |  |  |  |
+| artificial flavors | unknown |  |  |  |
+| chemical flavors | unknown |  |  |  |
+| synthetic flavors | unknown |  |  |  |
+| natural flavors | unknown |  |  |  |
+| naturally flavored | unknown |  |  |  |
+| added fragrances | unknown |  |  |  |
+| artificial fragrance | unknown |  |  |  |
+| chemical fragrances | unknown |  |  |  |
+| synthetic fragrance | unknown |  |  |  |
+| preservatives | unknown |  |  |  |
+| added preservatives | unknown |  |  |  |
+| artificial preservatives | unknown |  |  |  |
+| chemical preservatives | unknown |  |  |  |
+| synthetic preservatives | unknown |  |  |  |
+| natural preservatives | unknown |  |  |  |
+| artificial ingredients | unknown |  |  |  |
+| chemical ingredients | unknown |  |  |  |
+| synthetic ingredients | unknown |  |  |  |
+| natural ingredients | unknown |  |  |  |
+| animal ingredients | unknown |  |  |  |
+| chemical sunscreens | unknown |  |  |  |
+| animal by-products | unknown |  |  |  |
+| animal derivatives | unknown |  |  |  |
+| animal products | unknown |  |  |  |
+| animal rennet | unknown |  |  |  |
+| antibiotics | unknown |  |  |  |
+| added antibiotics | unknown |  |  |  |
+| synthetics | unknown |  |  |  |
+| chemicals | unknown |  |  |  |
+| hormones | unknown |  |  |  |
+| added hormones | unknown |  |  |  |
+| nitrates/nitrites | unknown |  |  |  |
+| added nitrates | unknown |  |  |  |
+| added nitrites | unknown |  |  |  |
+| yeast | unknown |  |  |  |
+| active yeast | unknown |  |  |  |
+
+
+2024-07-08 12:10:02 [31merror[39m: extra 2
+2024-07-08 12:10:02 [32minfo[39m: 
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| gluten | yes | free from | marketing text on product | Gluten - Free |
+| msg | yes | contain | ingredient list | MONOSODIUM GLUTAMATE |
+
+
+2024-07-08 12:10:02 [31merror[39m: extra 3
+2024-07-08 12:10:02 [32minfo[39m: 
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| sulfites | yes | contain | ingredient list |  |
+
+
+2024-07-08 12:10:02 [31merror[39m: allergen
+2024-07-08 12:10:02 [32minfo[39m: 
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+| ------- | -------- | -------- | ------- | -------- | -------- |
+| CONTAINS : SOYBEANS , SULFITES , FISH AND TREE NUTS ( COCONUT ) | soy / soybeans, fish, tree nuts | Gluten - Free | gluten |  |  |
+
+
+2024-07-08 12:10:02 [31merror[39m: header
+2024-07-08 12:10:02 [32minfo[39m: 
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+| ------- | -------- | -------- | ------- | -------- | -------- | -------- |
+| Stir Fried Rice-Noodle Yaki Be-fun | KENMIN FOODS | 2.29 OZ | 65g |  | NET WT . 2.29 OZ ( 65g ) |  |
+
+
+2024-07-08 12:10:02 [31merror[39m: ingredient
+2024-07-08 12:10:02 [32minfo[39m: 
+| is product supplement ? (answer is boolean) | ingredient statement |  ingredient break-down list |
+| ------- | -------- | -------- |
+| false | ¡ REDIENTS : RICE , STARCH ( TAPIOCA , POTATO , CORN ) , SOY SAUCE ( WATER , SOYBEANS , E , SALT ) , SALT , KELP EXTRACT , MONOSODIUM GLUTAMATE , FISH EXTRACT ( MALTODEXTRIN , NITO EXTRACT , SALT , FISH EXTRACT POWDER ( EASTERN LITTLE TUNA , FRIGATE MACKEREL , NGTAIL TUNA ) , YEAST EXTRACT ) , SUGAR , GINGER PASTE , MONO - AND DIGLYCERIDES OF TY ACIDS , SODIUM METAPHOSPHATE , SODIUM TRIPOLYPHOSPHATE , TETRASODIUM NOPHOSPHATE , CARBOXYMETHYL CELLULOSE , GARLIC POWDER , ONION POWDER , ODIUM 5 ' - RIBONUCLEOTIDE , CARAMEL COLOR , YEAST EXTRACT , PEPPER , SUCROSE ERS OF FATTY ACIDS , COLOR ( RIBOFLAVIN ) , ROSEMARY EXTRACT . | RICE, STARCH, TAPIOCA, POTATO, CORN, SOY SAUCE, WATER, SOYBEANS, E, SALT, SALT, KELP EXTRACT, MONOSODIUM GLUTAMATE, FISH EXTRACT, MALTODEXTRIN, NITO EXTRACT, SALT, FISH EXTRACT POWDER, EASTERN LITTLE TUNA, FRIGATE MACKEREL, NGTAIL TUNA, YEAST EXTRACT, SUGAR, GINGER PASTE, MONO - AND DIGLYCERIDES OF TY ACIDS, SODIUM METAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, TETRASODIUM NOPHOSPHATE, CARBOXYMETHYL CELLULOSE, GARLIC POWDER, ONION POWDER, ODIUM 5 ' - RIBONUCLEOTIDE, CARAMEL COLOR, YEAST EXTRACT, PEPPER, SUCROSE ERS OF FATTY ACIDS, COLOR, RIBOFLAVIN, ROSEMARY EXTRACT |
+
+
+2024-07-08 12:10:02 [31merror[39m: physical
+2024-07-08 12:10:02 [32minfo[39m: 
+| upc-12 or gtin-12 |
+| ------- |
+| 50009312013 |
+
+
+2024-07-08 12:10:02 [31merror[39m: marketing
+2024-07-08 12:10:02 [32minfo[39m: 
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? |type | have Facebook icon ? | have twitter icon ? | social media list | website list (multiple) | social media text list | enlarged to show (answer is boolean) |
+| ------- | -------- | -------- | ------- | ------- | ------- | -------- | -------- | ------- | ------- | ------- |
+| false | false | false | false |  | false | false |  | http://www.kenmin.co.jp |  | false |
+
+
+2024-07-08 12:10:02 [31merror[39m: instruction
+2024-07-08 12:10:02 [32minfo[39m: 
+| instruction type | value 1  | value 2 | value 3 | ... (more columns if needed)
+| ------- | -------- | -------- | ------- | ...
+| storage instructions |  |  |  |  |
+| cooking instructions | Heat frying pan and add one and half table spoon of cooking oil . Lay down pork belly strips and layer with Yaki - Befun noodles , and ( vegetables in this particular order . | Add 6.7 ounces of water , seal with a lid and heat on high heat for 3 mins . | After 3 minutes , remove the lid and lightly mix the ingredients around and let the remaining water evaporate . Serve hot . | * 2 servings add 11.5 ounces of water . * sesame oil can be added for extra flavor |
+| usage instructions |  |  |  |  |
+| usage time instruction / freeze by instruction |  |  |  |  |
+| other instructions | Can change thin cut pork belly with bacon , cabbage to be cut in bite sizes , carrots to be cut in match sticks , the green bell peppers and onions to be cut into strips . |  |  |  |
+
+
+2024-07-08 12:10:02 [31merror[39m: supply chain
+2024-07-08 12:10:02 [32minfo[39m: 
+| country of origin text | country of origin | distributed by | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+| ------- | -------- | -------- | -------- | ------- | ------- | -------- | -------- | ------- | ------- |
+| PRODUCT OF Thailand | Thailand | IMPORTED BY : JFC INTERNATIONAL INC . LOS ANGELES , CA 90040 | KENMIN FOODS CO . , LTD . |  |  |  |  |  |  |
+
+2024-07-08 12:10:02 [31merror[39m: marketingTextSection
+2024-07-08 12:10:02 [32minfo[39m: undefined
+2024-07-08 12:10:02 [31merror[39m: extra claim object list 1
+2024-07-08 12:10:02 [32minfo[39m: [{"claim":"additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"naturally flavored","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added fragrances","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial fragrance","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical fragrances","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic fragrance","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical sunscreens","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal by-products","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal derivatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal products","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal rennet","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"antibiotics","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added antibiotics","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetics","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemicals","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"hormones","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added hormones","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"nitrates/nitrites","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added nitrates","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added nitrites","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"yeast","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"active yeast","mentioned":"unknown","statement":"","source":"","reason":""}]
+2024-07-08 12:10:02 [31merror[39m: extra claim object list 2
+2024-07-08 12:10:02 [32minfo[39m: [{"claim":"gluten","mentioned":"yes","statement":"free from","source":"marketing text on product","reason":"Gluten - Free"},{"claim":"msg","mentioned":"yes","statement":"contain","source":"ingredient list","reason":"MONOSODIUM GLUTAMATE"}]
+2024-07-08 12:10:02 [31merror[39m: extra claim object list 3
+2024-07-08 12:10:02 [32minfo[39m: [{"claim":"sulfites","mentioned":"yes","statement":"contain","source":"ingredient list","reason":""}]
+2024-07-08 12:10:02 [31merror[39m: sugar claim list
+2024-07-08 12:10:02 [32minfo[39m: [{"claim":"acesulfame k","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"acesulfame potassium","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"agave","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"allulose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"artificial sweetener","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"aspartame","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"beet sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"cane sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"coconut sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"coconut palm sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"fruit juice","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"corn syrup","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"high fructose corn syrup","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"honey","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"low sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"lower sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"monk fruit","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"natural sweeteners","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"added sugar","isClaimed":"yes","statement":"Includes Og","source":"nutrition fact","reason":""},{"claim":"refined sugars","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"saccharin","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"splenda/sucralose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"splenda","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sucralose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"stevia","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sugar added","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sugar alcohol","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"tagatose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"xylitol","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"reduced sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sugar free","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"unsweetened","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"xylitol","isClaimed":"unknown","statement":"","source":"","reason":""}]
+2024-07-08 12:10:02 [31merror[39m: fat claim list
+2024-07-08 12:10:02 [32minfo[39m: [{"claim":"have zero grams trans fat per serving","isClaimed":"yes","source":"nutrition fact","reason":""},{"claim":"have zero trans fat","isClaimed":"yes","source":"nutrition fact","reason":""}]
+2024-07-08 12:10:02 [31merror[39m: other claim list
+2024-07-08 12:10:02 [32minfo[39m: [{"claim":"not fried","isClaimed":"yes","source":"marketing text on product","reason":"SEASONED & NON - FRIED RICE NOODLE"}]
+2024-07-08 12:10:02 [31merror[39m: calorie claim list
+2024-07-08 12:10:02 [32minfo[39m: [{"claim":"have low calorie","isClaimed":"no","source":"marketing text on product"}]
+2024-07-08 12:10:02 [31merror[39m: salt claim list
+2024-07-08 12:10:02 [32minfo[39m: [{"claim":"low sodium","isClaimed":"no","source":"nutrition fact"},{"claim":"no salt","isClaimed":"no","source":"nutrition fact"},{"claim":"no salt added","isClaimed":"no","source":"nutrition fact"},{"claim":"reduced sodium","isClaimed":"no","source":"nutrition fact"},{"claim":"salt free","isClaimed":"no","source":"nutrition fact"},{"claim":"sodium free","isClaimed":"no","source":"nutrition fact"},{"claim":"unsalted","isClaimed":"no","source":"nutrition fact"},{"claim":"very low sodium","isClaimed":"no","source":"nutrition fact"}]
+2024-07-08 12:10:02 [31merror[39m: allergen list
+2024-07-08 12:10:02 [32minfo[39m: [{"containStatement":"CONTAINS : SOYBEANS , SULFITES , FISH AND TREE NUTS ( COCONUT )","containList":"soy / soybeans, fish, tree nuts","notContainStatement":"Gluten - Free","notContainList":"gluten","containOnEquipmentStatement":"","containOnEquipmentList":""}]
+2024-07-08 12:10:02 [31merror[39m: header list
+2024-07-08 12:10:02 [32minfo[39m: [{"productName":"Stir Fried Rice-Noodle Yaki Be-fun","brandName":"KENMIN FOODS","primarySize":"2.29 OZ","secondarySize":"65g","thirdSize":"","fullSizeTextDescription":"NET WT . 2.29 OZ ( 65g )","count":""}]
+2024-07-08 12:10:02 [31merror[39m: ingredient list
+2024-07-08 12:10:02 [32minfo[39m: [{"isProductSupplement":"false","ingredientStatement":"¡ REDIENTS : RICE , STARCH ( TAPIOCA , POTATO , CORN ) , SOY SAUCE ( WATER , SOYBEANS , E , SALT ) , SALT , KELP EXTRACT , MONOSODIUM GLUTAMATE , FISH EXTRACT ( MALTODEXTRIN , NITO EXTRACT , SALT , FISH EXTRACT POWDER ( EASTERN LITTLE TUNA , FRIGATE MACKEREL , NGTAIL TUNA ) , YEAST EXTRACT ) , SUGAR , GINGER PASTE , MONO - AND DIGLYCERIDES OF TY ACIDS , SODIUM METAPHOSPHATE , SODIUM TRIPOLYPHOSPHATE , TETRASODIUM NOPHOSPHATE , CARBOXYMETHYL CELLULOSE , GARLIC POWDER , ONION POWDER , ODIUM 5 ' - RIBONUCLEOTIDE , CARAMEL COLOR , YEAST EXTRACT , PEPPER , SUCROSE ERS OF FATTY ACIDS , COLOR ( RIBOFLAVIN ) , ROSEMARY EXTRACT .","ingredientBreakdown":"RICE, STARCH, TAPIOCA, POTATO, CORN, SOY SAUCE, WATER, SOYBEANS, E, SALT, SALT, KELP EXTRACT, MONOSODIUM GLUTAMATE, FISH EXTRACT, MALTODEXTRIN, NITO EXTRACT, SALT, FISH EXTRACT POWDER, EASTERN LITTLE TUNA, FRIGATE MACKEREL, NGTAIL TUNA, YEAST EXTRACT, SUGAR, GINGER PASTE, MONO - AND DIGLYCERIDES OF TY ACIDS, SODIUM METAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, TETRASODIUM NOPHOSPHATE, CARBOXYMETHYL CELLULOSE, GARLIC POWDER, ONION POWDER, ODIUM 5 ' - RIBONUCLEOTIDE, CARAMEL COLOR, YEAST EXTRACT, PEPPER, SUCROSE ERS OF FATTY ACIDS, COLOR, RIBOFLAVIN, ROSEMARY EXTRACT"}]
+2024-07-08 12:10:02 [31merror[39m: physical
+2024-07-08 12:10:02 [32minfo[39m: [{"upc12":"50009312013"}]
+2024-07-08 12:10:02 [31merror[39m: marketing
+2024-07-08 12:10:02 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","website":"http://www.kenmin.co.jp","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-08 12:10:02 [31merror[39m: instruction
+2024-07-08 12:10:02 [32minfo[39m: [{"storageInstruction":[],"cookingInstruction":["Heat frying pan and add one and half table spoon of cooking oil . Lay down pork belly strips and layer with Yaki - Befun noodles , and ( vegetables in this particular order .","Add 6.7 ounces of water , seal with a lid and heat on high heat for 3 mins .","After 3 minutes , remove the lid and lightly mix the ingredients around and let the remaining water evaporate . Serve hot .","* 2 servings add 11.5 ounces of water . * sesame oil can be added for extra flavor"],"usageInstruction":[],"usageTimeInstruction":[],"otherInstructions":["Can change thin cut pork belly with bacon , cabbage to be cut in bite sizes , carrots to be cut in match sticks , the green bell peppers and onions to be cut into strips ."]}]
+2024-07-08 12:10:02 [31merror[39m: supplyChain
+2024-07-08 12:10:02 [32minfo[39m: [{"countryOfOriginText":"PRODUCT OF Thailand","countryOfOrigin":"Thailand","distributedBy":"IMPORTED BY : JFC INTERNATIONAL INC . LOS ANGELES , CA 90040","manufacturerName":"KENMIN FOODS CO . , LTD .","manufacturerDate":"","manufacturerPhoneNumber":"","manufacturerStreetAddress":"","manufacturerCity":"","manufacturerState":"","manufactureZipCode":""}]
+2024-07-08 12:10:02 [31merror[39m: marketing text
+2024-07-08 12:10:02 [32minfo[39m: []
+2024-07-08 12:10:35 [31merror[39m: debug section
+2024-07-08 12:10:35 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in these images.  They appear to be the same table, just photographed from different angles. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the nutrient information is arranged in two columns to save space, this is not considered a true dual-column format. Dual-column formats typically involve different serving sizes, age groups, or a comparison of "per serving" and "per container" data, which is not the case here. |
+
+2024-07-08 12:10:35 [31merror[39m: footnote
+2024-07-08 12:10:35 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+
+
+2024-07-08 12:10:35 [31merror[39m: debug
+2024-07-08 12:10:35 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in these images.  They appear to be the same table, just photographed from different angles. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the nutrient information is arranged in two columns to save space, this is not considered a true dual-column format. Dual-column formats typically involve different serving sizes, age groups, or a comparison of "per serving" and "per container" data, which is not the case here. |
+
+2024-07-08 12:10:35 [31merror[39m: debug table
+2024-07-08 12:10:35 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-08 12:11:51 [31merror[39m: debug section
+2024-07-08 12:11:51 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. I only created one nutrition fact table because there is only one nutrition fact table present in the image. |
+
+2024-07-08 12:11:51 [31merror[39m: footnote
+2024-07-08 12:11:51 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. | * The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice. |
+
+
+2024-07-08 12:11:51 [31merror[39m: debug
+2024-07-08 12:11:51 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. I only created one nutrition fact table because there is only one nutrition fact table present in the image. |
+
+2024-07-08 12:11:51 [31merror[39m: debug table
+2024-07-08 12:11:51 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-08 12:12:52 [31merror[39m: sugar
+2024-07-08 12:12:52 [32minfo[39m: 
+| sugar item | sugar item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ?  | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| acesulfame k | unknown |  |  |  |
+| acesulfame potassium | unknown |  |  |  |
+| agave | unknown |  |  |  |
+| allulose | unknown |  |  |  |
+| artificial sweetener | unknown |  |  |  |
+| aspartame | unknown |  |  |  |
+| beet sugar | unknown |  |  |  |
+| cane sugar | unknown |  |  |  |
+| coconut sugar | unknown |  |  |  |
+| coconut palm sugar | unknown |  |  |  |
+| fruit juice | unknown |  |  |  |
+| corn syrup | unknown |  |  |  |
+| high fructose corn syrup | unknown |  |  |  |
+| honey | unknown |  |  |  |
+| low sugar | unknown |  |  |  |
+| lower sugar | unknown |  |  |  |
+| monk fruit | unknown |  |  |  |
+| natural sweeteners | unknown |  |  |  |
+| added sugar | no |  | nutrition fact | Includes Og Added Sugars |
+| refined sugars | unknown |  |  |  |
+| saccharin | unknown |  |  |  |
+| splenda/sucralose | unknown |  |  |  |
+| splenda | unknown |  |  |  |
+| sucralose | unknown |  |  |  |
+| stevia | unknown |  |  |  |
+| sugar | yes | other | ingredient list | sugar |
+| sugar added | unknown |  |  |  |
+| sugar alcohol | unknown |  |  |  |
+| tagatose | unknown |  |  |  |
+| xylitol | unknown |  |  |  |
+| reduced sugar | unknown |  |  |  |
+| sugar free | unknown |  |  |  |
+| unsweetened | unknown |  |  |  |
+| xylitol | unknown |  |  |  |
+
+## 
+2024-07-08 12:12:52 [31merror[39m: fat
+2024-07-08 12:12:52 [32minfo[39m: 
+| fat claim | does product claim that fat claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| have zero grams trans fat per serving | yes | nutrition fact | Trans Fat 0g |
+| have zero trans fat | yes | nutrition fact | Trans Fat 0g |
+
+## 
+2024-07-08 12:12:52 [31merror[39m: other
+2024-07-08 12:12:52 [32minfo[39m: 
+| other claim | does product explicitly claim this claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| ------- | -------- | -------- | -------- |
+| not fried | yes | marketing text on product | SEASONED & NON - FRIED RICE NOODLE |
+
+## 
+2024-07-08 12:12:52 [31merror[39m: calorie
+2024-07-08 12:12:52 [32minfo[39m: 
+| calorie claim | does product explicitly claim the calorie claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+| have low calorie | yes | marketing text on product | 230kcal |
+
+## 
+2024-07-08 12:12:52 [31merror[39m: salt
+2024-07-08 12:12:52 [32minfo[39m: 
+| salt claim | does product explicitly claim this claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+| no salt added | yes | marketing text on product | It is already seasoned th Japanese Dashi ( soup stock with bonito d kelp ) and soy sauce , so no more seasonings are required . |
+
+## 
+2024-07-08 12:12:52 [31merror[39m: extra 1
+2024-07-08 12:12:52 [32minfo[39m: 
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| additives | unknown |  |  |  |
+| artificial additives | unknown |  |  |  |
+| chemical additives | unknown |  |  |  |
+| synthetic additives | unknown |  |  |  |
+| natural additives | unknown |  |  |  |
+| added colors | no | no | ingredient list | CARAMEL COLOR |
+| artificial colors | unknown |  |  |  |
+| chemical colors | unknown |  |  |  |
+| synthetic colors | unknown |  |  |  |
+| natural colors | unknown |  |  |  |
+| dyes | unknown |  |  |  |
+| added dyes | unknown |  |  |  |
+| artificial dyes | unknown |  |  |  |
+| chemical dyes | unknown |  |  |  |
+| synthetic dyes | unknown |  |  |  |
+| natural dyes | unknown |  |  |  |
+| added flavors | no | no | ingredient list |  |
+| artificial flavors | unknown |  |  |  |
+| chemical flavors | unknown |  |  |  |
+| synthetic flavors | unknown |  |  |  |
+| natural flavors | unknown |  |  |  |
+| naturally flavored | unknown |  |  |  |
+| added fragrances | unknown |  |  |  |
+| artificial fragrance | unknown |  |  |  |
+| chemical fragrances | unknown |  |  |  |
+| synthetic fragrance | unknown |  |  |  |
+| preservatives | unknown |  |  |  |
+| added preservatives | unknown |  |  |  |
+| artificial preservatives | unknown |  |  |  |
+| chemical preservatives | unknown |  |  |  |
+| synthetic preservatives | unknown |  |  |  |
+| natural preservatives | unknown |  |  |  |
+| artificial ingredients | unknown |  |  |  |
+| chemical ingredients | unknown |  |  |  |
+| synthetic ingredients | unknown |  |  |  |
+| natural ingredients | yes | other | marketing text on product | joy EASY and TASTY Stir Fried rice - noodle with lots of vegetables ! |
+| animal ingredients | unknown |  |  |  |
+| chemical sunscreens | unknown |  |  |  |
+| animal by-products | unknown |  |  |  |
+| animal derivatives | unknown |  |  |  |
+| animal products | unknown |  |  |  |
+| animal rennet | unknown |  |  |  |
+| antibiotics | unknown |  |  |  |
+| added antibiotics | unknown |  |  |  |
+| synthetics | unknown |  |  |  |
+| chemicals | unknown |  |  |  |
+| hormones | unknown |  |  |  |
+| added hormones | unknown |  |  |  |
+| nitrates/nitrites | unknown |  |  |  |
+| added nitrates | unknown |  |  |  |
+| added nitrites | unknown |  |  |  |
+| yeast | yes | contain | ingredient list | YEAST EXTRACT |
+| active yeast | unknown |  |  |  |
+
+## 
+2024-07-08 12:12:52 [31merror[39m: extra 2
+2024-07-08 12:12:52 [32minfo[39m: 
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| gluten | yes | free from | marketing text on product | Gluten - Free |
+| msg | yes | contain | ingredient list | MONOSODIUM GLUTAMATE |
+
+## 
+2024-07-08 12:12:52 [31merror[39m: extra 3
+2024-07-08 12:12:52 [32minfo[39m: 
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| sulfites / sulphites | yes | contain | marketing text on product | CONTAINS : SOYBEANS , SULFITES , FISH AND TREE NUTS ( COCONUT ) |
+
+## 
+2024-07-08 12:12:52 [31merror[39m: allergen
+2024-07-08 12:12:52 [32minfo[39m: 
+| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+| ------- | -------- | -------- | ------- | -------- | -------- |
+| CONTAINS : SOYBEANS , SULFITES , FISH AND TREE NUTS ( COCONUT ) | soy / soybeans, sulfites, fish, tree nuts |  |  |  |  |
+
+## 
+2024-07-08 12:12:52 [31merror[39m: header
+2024-07-08 12:12:52 [32minfo[39m: 
+| product name | brand name | primary size | secondary size | third size | full size text description | count |
+| ------- | -------- | -------- | ------- | -------- | -------- | -------- |
+| Stir Fried Rice - Noodle Yaki Be - fun | KENMIN FOODS | 2.29 OZ | 65g |  | NET WT . 2.29 OZ ( 65g ) |  |
+
+## 
+2024-07-08 12:12:52 [31merror[39m: ingredient
+2024-07-08 12:12:52 [32minfo[39m: 
+| is product supplement ? (answer is boolean) | ingredient statement |  ingredient break-down list |
+| ------- | -------- | -------- |
+| false | REDIENTS : RICE , STARCH ( TAPIOCA , POTATO , CORN ) , SOY SAUCE ( WATER , SOYBEANS , E , SALT ) , SALT , KELP EXTRACT , MONOSODIUM GLUTAMATE , FISH EXTRACT ( MALTODEXTRIN , NITO EXTRACT , SALT , FISH EXTRACT POWDER ( EASTERN LITTLE TUNA , FRIGATE MACKEREL , NGTAIL TUNA ) , YEAST EXTRACT ) , SUGAR , GINGER PASTE , MONO - AND DIGLYCERIDES OF TY ACIDS , SODIUM METAPHOSPHATE , SODIUM TRIPOLYPHOSPHATE , TETRASODIUM NOPHOSPHATE , CARBOXYMETHYL CELLULOSE , GARLIC POWDER , ONION POWDER , ODIUM 5 ' - RIBONUCLEOTIDE , CARAMEL COLOR , YEAST EXTRACT , PEPPER , SUCROSE ERS OF FATTY ACIDS , COLOR ( RIBOFLAVIN ) , ROSEMARY EXTRACT . | RICE, STARCH ( TAPIOCA, POTATO, CORN ), SOY SAUCE ( WATER, SOYBEANS, E, SALT ), SALT, KELP EXTRACT, MONOSODIUM GLUTAMATE, FISH EXTRACT ( MALTODEXTRIN, NITO EXTRACT, SALT, FISH EXTRACT POWDER ( EASTERN LITTLE TUNA, FRIGATE MACKEREL, NGTAIL TUNA ), YEAST EXTRACT ), SUGAR, GINGER PASTE, MONO - AND DIGLYCERIDES OF TY ACIDS, SODIUM METAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, TETRASODIUM NOPHOSPHATE, CARBOXYMETHYL CELLULOSE, GARLIC POWDER, ONION POWDER, ODIUM 5 ' - RIBONUCLEOTIDE, CARAMEL COLOR, YEAST EXTRACT, PEPPER, SUCROSE ERS OF FATTY ACIDS, COLOR ( RIBOFLAVIN ), ROSEMARY EXTRACT. |
+
+## 
+2024-07-08 12:12:52 [31merror[39m: physical
+2024-07-08 12:12:52 [32minfo[39m: 
+| upc-12 or gtin-12 |
+| ------- |
+| 50009312013 |
+
+## 
+2024-07-08 12:12:52 [31merror[39m: marketing
+2024-07-08 12:12:52 [32minfo[39m: 
+| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? |type | have Facebook icon ? | have twitter icon ? | social media list | website list (multiple) | social media text list | enlarged to show (answer is boolean) |
+| ------- | -------- | -------- | ------- | ------- | ------- | -------- | -------- | ------- | ------- | ------- |
+| false |  |  |  |  |  |  |  | http://www.kenmin.co.jp |  | false |
+
+## 
+2024-07-08 12:12:52 [31merror[39m: instruction
+2024-07-08 12:12:52 [32minfo[39m: 
+| instruction type | value 1  | value 2 | value 3 | ... (more columns if needed)
+| ------- | -------- | -------- | ------- | ...
+| storage instructions |  |  |  |  |
+| cooking instructions | Heat frying pan and add one and half table spoon of cooking oil . Lay down pork belly strips and layer with Yaki - Befun noodles , and ( vegetables in this particular order . | Add 6.7 ounces of water , seal with a lid and heat on high heat for 3 mins . | After 3 minutes , remove the lid and lightly mix the ingredients around and let the remaining water evaporate . Serve hot . | * 2 servings add 11.5 ounces of water . * sesame oil can be added for extra flavor |
+| usage instructions |  |  |  |  |
+| usage time instruction / freeze by instruction |  |  |  |  |
+| other instructions | Can change thin cut pork belly with bacon , cabbage to be cut in bite sizes , carrots to be cut in match sticks , the green bell peppers and onions to be cut into strips . |  |  |  |
+
+## 
+2024-07-08 12:12:52 [31merror[39m: supply chain
+2024-07-08 12:12:52 [32minfo[39m: 
+| country of origin text | country of origin | distributed by | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
+| ------- | -------- | -------- | -------- | ------- | ------- | -------- | -------- | ------- | ------- |
+| PRODUCT OF Thailand | Thailand | IMPORTED BY : JFC INTERNATIONAL INC . LOS ANGELES , CA 90040 | KENMIN FOODS CO . , LTD . |  |  |  |  |  |  |
+
+2024-07-08 12:12:52 [31merror[39m: marketingTextSection
+2024-07-08 12:12:52 [32minfo[39m: undefined
+2024-07-08 12:12:52 [31merror[39m: extra claim object list 1
+2024-07-08 12:12:52 [32minfo[39m: [{"claim":"additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural additives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added colors","mentioned":"no","statement":"no","source":"ingredient list","reason":"CARAMEL COLOR"},{"claim":"artificial colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural colors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural dyes","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added flavors","mentioned":"no","statement":"no","source":"ingredient list","reason":""},{"claim":"artificial flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural flavors","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"naturally flavored","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added fragrances","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial fragrance","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical fragrances","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic fragrance","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural preservatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"artificial ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetic ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"natural ingredients","mentioned":"yes","statement":"other","source":"marketing text on product","reason":"joy EASY and TASTY Stir Fried rice - noodle with lots of vegetables !"},{"claim":"animal ingredients","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemical sunscreens","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal by-products","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal derivatives","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal products","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"animal rennet","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"antibiotics","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added antibiotics","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"synthetics","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"chemicals","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"hormones","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added hormones","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"nitrates/nitrites","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added nitrates","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"added nitrites","mentioned":"unknown","statement":"","source":"","reason":""},{"claim":"yeast","mentioned":"yes","statement":"contain","source":"ingredient list","reason":"YEAST EXTRACT"},{"claim":"active yeast","mentioned":"unknown","statement":"","source":"","reason":""}]
+2024-07-08 12:12:52 [31merror[39m: extra claim object list 2
+2024-07-08 12:12:52 [32minfo[39m: [{"claim":"gluten","mentioned":"yes","statement":"free from","source":"marketing text on product","reason":"Gluten - Free"},{"claim":"msg","mentioned":"yes","statement":"contain","source":"ingredient list","reason":"MONOSODIUM GLUTAMATE"}]
+2024-07-08 12:12:52 [31merror[39m: extra claim object list 3
+2024-07-08 12:12:52 [32minfo[39m: [{"claim":"sulfites / sulphites","mentioned":"yes","statement":"contain","source":"marketing text on product","reason":"CONTAINS : SOYBEANS , SULFITES , FISH AND TREE NUTS ( COCONUT )"}]
+2024-07-08 12:12:52 [31merror[39m: sugar claim list
+2024-07-08 12:12:52 [32minfo[39m: [{"claim":"acesulfame k","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"acesulfame potassium","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"agave","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"allulose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"artificial sweetener","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"aspartame","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"beet sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"cane sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"coconut sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"coconut palm sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"fruit juice","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"corn syrup","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"high fructose corn syrup","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"honey","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"low sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"lower sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"monk fruit","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"natural sweeteners","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"added sugar","isClaimed":"no","statement":"","source":"nutrition fact","reason":"Includes Og Added Sugars"},{"claim":"refined sugars","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"saccharin","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"splenda/sucralose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"splenda","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sucralose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"stevia","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sugar","isClaimed":"yes","statement":"other","source":"ingredient list","reason":"sugar"},{"claim":"sugar added","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sugar alcohol","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"tagatose","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"xylitol","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"reduced sugar","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"sugar free","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"unsweetened","isClaimed":"unknown","statement":"","source":"","reason":""},{"claim":"xylitol","isClaimed":"unknown","statement":"","source":"","reason":""}]
+2024-07-08 12:12:52 [31merror[39m: fat claim list
+2024-07-08 12:12:52 [32minfo[39m: [{"claim":"have zero grams trans fat per serving","isClaimed":"yes","source":"nutrition fact","reason":"Trans Fat 0g"},{"claim":"have zero trans fat","isClaimed":"yes","source":"nutrition fact","reason":"Trans Fat 0g"}]
+2024-07-08 12:12:52 [31merror[39m: other claim list
+2024-07-08 12:12:52 [32minfo[39m: [{"claim":"not fried","isClaimed":"yes","source":"marketing text on product","reason":"SEASONED & NON - FRIED RICE NOODLE"}]
+2024-07-08 12:12:52 [31merror[39m: calorie claim list
+2024-07-08 12:12:52 [32minfo[39m: [{"claim":"have low calorie","isClaimed":"yes","source":"marketing text on product"}]
+2024-07-08 12:12:52 [31merror[39m: salt claim list
+2024-07-08 12:12:52 [32minfo[39m: [{"claim":"no salt added","isClaimed":"yes","source":"marketing text on product"}]
+2024-07-08 12:12:52 [31merror[39m: allergen list
+2024-07-08 12:12:52 [32minfo[39m: [{"containStatement":"CONTAINS : SOYBEANS , SULFITES , FISH AND TREE NUTS ( COCONUT )","containList":"soy / soybeans, sulfites, fish, tree nuts","notContainStatement":"","notContainList":"","containOnEquipmentStatement":"","containOnEquipmentList":""}]
+2024-07-08 12:12:52 [31merror[39m: header list
+2024-07-08 12:12:52 [32minfo[39m: [{"productName":"Stir Fried Rice - Noodle Yaki Be - fun","brandName":"KENMIN FOODS","primarySize":"2.29 OZ","secondarySize":"65g","thirdSize":"","fullSizeTextDescription":"NET WT . 2.29 OZ ( 65g )","count":""}]
+2024-07-08 12:12:52 [31merror[39m: ingredient list
+2024-07-08 12:12:52 [32minfo[39m: [{"isProductSupplement":"false","ingredientStatement":"REDIENTS : RICE , STARCH ( TAPIOCA , POTATO , CORN ) , SOY SAUCE ( WATER , SOYBEANS , E , SALT ) , SALT , KELP EXTRACT , MONOSODIUM GLUTAMATE , FISH EXTRACT ( MALTODEXTRIN , NITO EXTRACT , SALT , FISH EXTRACT POWDER ( EASTERN LITTLE TUNA , FRIGATE MACKEREL , NGTAIL TUNA ) , YEAST EXTRACT ) , SUGAR , GINGER PASTE , MONO - AND DIGLYCERIDES OF TY ACIDS , SODIUM METAPHOSPHATE , SODIUM TRIPOLYPHOSPHATE , TETRASODIUM NOPHOSPHATE , CARBOXYMETHYL CELLULOSE , GARLIC POWDER , ONION POWDER , ODIUM 5 ' - RIBONUCLEOTIDE , CARAMEL COLOR , YEAST EXTRACT , PEPPER , SUCROSE ERS OF FATTY ACIDS , COLOR ( RIBOFLAVIN ) , ROSEMARY EXTRACT .","ingredientBreakdown":"RICE, STARCH ( TAPIOCA, POTATO, CORN ), SOY SAUCE ( WATER, SOYBEANS, E, SALT ), SALT, KELP EXTRACT, MONOSODIUM GLUTAMATE, FISH EXTRACT ( MALTODEXTRIN, NITO EXTRACT, SALT, FISH EXTRACT POWDER ( EASTERN LITTLE TUNA, FRIGATE MACKEREL, NGTAIL TUNA ), YEAST EXTRACT ), SUGAR, GINGER PASTE, MONO - AND DIGLYCERIDES OF TY ACIDS, SODIUM METAPHOSPHATE, SODIUM TRIPOLYPHOSPHATE, TETRASODIUM NOPHOSPHATE, CARBOXYMETHYL CELLULOSE, GARLIC POWDER, ONION POWDER, ODIUM 5 ' - RIBONUCLEOTIDE, CARAMEL COLOR, YEAST EXTRACT, PEPPER, SUCROSE ERS OF FATTY ACIDS, COLOR ( RIBOFLAVIN ), ROSEMARY EXTRACT."}]
+2024-07-08 12:12:52 [31merror[39m: physical
+2024-07-08 12:12:52 [32minfo[39m: [{"upc12":"50009312013"}]
+2024-07-08 12:12:52 [31merror[39m: marketing
+2024-07-08 12:12:52 [32minfo[39m: [{"haveQrCode":"false","instagram":"","pinterest":"","youtube":"","youtubeType":"","facebook":"","twitter":"","socialMediaList":"","website":"http://www.kenmin.co.jp","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-08 12:12:52 [31merror[39m: instruction
+2024-07-08 12:12:52 [32minfo[39m: [{"storageInstruction":[],"cookingInstruction":["Heat frying pan and add one and half table spoon of cooking oil . Lay down pork belly strips and layer with Yaki - Befun noodles , and ( vegetables in this particular order .","Add 6.7 ounces of water , seal with a lid and heat on high heat for 3 mins .","After 3 minutes , remove the lid and lightly mix the ingredients around and let the remaining water evaporate . Serve hot .","* 2 servings add 11.5 ounces of water . * sesame oil can be added for extra flavor"],"usageInstruction":[],"usageTimeInstruction":[],"otherInstructions":["Can change thin cut pork belly with bacon , cabbage to be cut in bite sizes , carrots to be cut in match sticks , the green bell peppers and onions to be cut into strips ."]}]
+2024-07-08 12:12:52 [31merror[39m: supplyChain
+2024-07-08 12:12:52 [32minfo[39m: [{"countryOfOriginText":"PRODUCT OF Thailand","countryOfOrigin":"Thailand","distributedBy":"IMPORTED BY : JFC INTERNATIONAL INC . LOS ANGELES , CA 90040","manufacturerName":"KENMIN FOODS CO . , LTD .","manufacturerDate":"","manufacturerPhoneNumber":"","manufacturerStreetAddress":"","manufacturerCity":"","manufacturerState":"","manufactureZipCode":""}]
+2024-07-08 12:12:52 [31merror[39m: marketing text
+2024-07-08 12:12:52 [32minfo[39m: []

@@ -75,14 +75,15 @@ const ProductDetailPage = () => {
 
         const productData = data?.data;
 
-        if (!productData) return;
+        const { product: productInfo, latestSession } = productData;
 
-        setProductIxone(productData);
+        if (!productInfo) return;
 
-        const newestSessionData = productData?.extractSessions[0];
-        if (newestSessionData) {
-          setProductInfo(JSON.parse(newestSessionData?.result));
-          setPdSessionId(newestSessionData?.sessionId);
+        setProductIxone(productInfo);
+
+        if (latestSession) {
+          setProductInfo(JSON.parse(latestSession?.result));
+          setPdSessionId(latestSession?.sessionId);
         }
       };
       fetchProduct();

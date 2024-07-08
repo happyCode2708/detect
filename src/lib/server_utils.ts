@@ -160,6 +160,8 @@ export const removeRawFieldData = (rawResponse: object) => {
     'product.marketing.youtube',
     'product.marketing.facebook',
     'product.marketing.twitter',
+    'product.nutMark',
+    'product.allMark',
   ];
 
   fields.forEach((removeField) => {

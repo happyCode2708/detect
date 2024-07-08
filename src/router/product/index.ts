@@ -8,6 +8,7 @@ import {
   getOcrTextAllImages,
   findImagesContainNutFact,
   addUniqueString,
+  removeRawFieldData,
 } from '../../lib/server_utils';
 import { port, prisma } from '../../server';
 import bodyParser from 'body-parser';
@@ -163,7 +164,38 @@ router.get('/:ixoneid', async (req, res) => {
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
 
-      res.status(200).json({ isSuccess: true, data: product });
+      let latestExtractSession = product.extractSessions?.[0] as any;
+
+      if (!latestExtractSession && !latestExtractSession?.result) {
+        res.status(200).json({
+          isSuccess: true,
+          data: {
+            product,
+            latestSession: {},
+          },
+        });
+        return;
+      }
+
+      let latestExtractSession_result = JSON.parse(
+        latestExtractSession?.result
+      );
+
+      if (process.env.NODE_ENV === 'production') {
+        removeRawFieldData(latestExtractSession_result);
+      }
+
+      latestExtractSession['result'] = JSON.stringify(
+        latestExtractSession_result
+      );
+
+      res.status(200).json({
+        isSuccess: true,
+        data: {
+          product,
+          latestSession: latestExtractSession,
+        },
+      });
     } else {
       res.status(404).json({ error: 'Product not found' });
     }
@@ -268,7 +300,7 @@ router.post('/get-compare-result-tdc', async (req, res) => {
 
     const productDetailData = productDetailRes?.data?.data;
 
-    const newestExtractedData = productDetailData?.extractSessions?.[0];
+    const newestExtractedData = productDetailData?.latestSession;
 
     const mappedData = mapToTDCformat(JSON.parse(newestExtractedData?.result));
 
