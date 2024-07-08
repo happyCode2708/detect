@@ -1,3 +1,4 @@
+import { AnyARecord } from 'dns';
 import { lowerCase, toLower, toUpper } from 'lodash';
 
 export const mapToTDCformat = (extractData: any) => {
@@ -17,24 +18,26 @@ export const mapToTDCformat = (extractData: any) => {
     physical,
   } = productData;
 
+  const productType = toLower(ingredients?.[0]?.productType);
+
   const mappedResult = {
     //* header
-    ProductDescription: toUpper(header?.[0].productName),
+    ProductDescription: toUpper(header?.[0]?.productName),
     BrandName: toUpper(header?.[0]?.brandName),
     PrimarySize: toUpper(header?.[0]?.primarySizeValue),
     PrimarySizeUOM: toUpper(header?.[0]?.primarySizeUOM),
-    PrimarySizeText: toUpper(header?.[0].fullSizeTextDescription),
-    SecondarySize: toUpper(header?.[0].secondarySizeValue),
-    SecondarySizeUOM: toUpper(header?.[0].secondarySizeUOM),
+    PrimarySizeText: toUpper(header?.[0]?.fullSizeTextDescription),
+    SecondarySize: toUpper(header?.[0]?.secondarySizeValue),
+    SecondarySizeUOM: toUpper(header?.[0]?.secondarySizeUOM),
     UnitCount: header?.[0]?.count,
 
     //* panel
     NutritionPanel:
-      toLower(ingredients?.[0]?.isProductSupplement) !== 'true' && factPanels
-        ? mapToNutritionPanels(factPanels, 'NUTRITION FACTS')
+      productType === 'nutrition facts' && factPanels?.length > 0
+        ? mapToNutritionPanels(factPanels, 'NUTRITION FACTS', ingredients)
         : null,
     SupplementPanel:
-      toLower(ingredients?.[0]?.isProductSupplement) === 'true' && factPanels
+      productType === 'supplement facts' && factPanels?.length > 0
         ? mapToNutritionPanels(factPanels, 'SUPPLEMENT FACTS', ingredients)
         : null,
 
@@ -58,6 +61,7 @@ export const mapToTDCformat = (extractData: any) => {
     //* instructions
     UsageInstructions: instructions?.[0]?.usageInstruction,
     ConsumerStorage: instructions?.[0]?.storageInstruction,
+    CookingInstructions: instructions?.[0]?.cookingInstruction,
 
     //* allergen
     Allergens: allergens?.[0]?.validated_containList,
@@ -70,28 +74,32 @@ export const mapToTDCformat = (extractData: any) => {
 
     //* ingredients
     SupplementIngredientStatement:
-      toLower(ingredients?.[0]?.isProductSupplement) === 'true' &&
+      productType === 'supplement facts' &&
       ingredients?.[0]?.ingredientStatement
         ? [toUpper(ingredients[0].ingredientStatement)]
         : undefined,
 
     IngredientsStatement:
-      toLower(ingredients?.[0]?.isProductSupplement) !== 'true' &&
-      ingredients?.[0]?.ingredientStatement
-        ? [toUpper(ingredients[0].ingredientStatement)]
+      productType === 'nutrition facts' && ingredients?.length > 0
+        ? ingredients?.map((ingredientItem: any) => {
+            return toUpper(ingredientItem?.ingredientStatement);
+          })
         : undefined,
-    IngredientBreakout: ingredients?.[0]?.ingredientBreakdown
-      ?.split(', ')
-      .filter((item: string) => item !== '')
-      .map((item: string) => toUpper(item?.trim())),
+    IngredientBreakout:
+      ingredients?.length > 0
+        ? ingredients?.map((ingredientItem: any) => {
+            return ingredientItem?.ingredientBreakdown
+              ?.split(', ')
+              .filter((item: string) => item !== '')
+              .map((item: string) => toUpper(item?.trim()));
+          })
+        : undefined,
 
     //* additional
     HasSupplementPanel:
-      toLower(ingredients?.[0]?.isProductSupplement) === 'true' &&
-      factPanels?.length > 0,
+      productType === 'supplement facts' && factPanels?.length > 0,
     HasNutritionPanel:
-      toLower(ingredients?.[0]?.isProductSupplement) !== 'true' &&
-      factPanels?.length > 0,
+      productType === 'nutrition facts' && factPanels?.length > 0,
     HasPanel: factPanels?.length > 0,
 
     //* Physical
@@ -116,6 +124,10 @@ export const mapToTDCformat = (extractData: any) => {
     MarketingClaims: marketing?.[0]?.marketingClaims?.map((item: string) =>
       toUpper(item)
     ),
+    SocialMediaAddresses: marketing?.[0]?.socialMediaText
+      ?.split(', ')
+      .filter((item: string) => item !== '')
+      .map((item: any) => toUpper(item)),
 
     // //* attribute
     SugarSweetener: attributes?.validated_sugarClaims || [],
@@ -133,100 +145,105 @@ const mapToNutritionPanels = (
   title: string,
   ingredients?: any
 ) => {
-  return factPanels.map((factPanelItem: any) => {
-    let formatFactPanelPropertyList = [] as any;
-    const { servingInfo, nutritionFacts, footnotes } = factPanelItem;
-    const {
-      servingPerContainer,
-      servingSize,
-      equivalentServingSize,
-      amountPerServingName,
-      calories,
-    } = servingInfo || {};
+  return factPanels
+    ?.map((factPanelItem: any) => {
+      let formatFactPanelPropertyList = [] as any;
+      const { servingInfo, nutritionFacts, footnotes } = factPanelItem;
+      const {
+        servingPerContainer,
+        servingSize,
+        equivalentServingSize,
+        amountPerServingName,
+        calories,
+      } = servingInfo || {};
 
-    const { footnoteContentEnglish, footnoteContent } = footnotes?.[0] || {};
+      const { footnoteContentEnglish, footnoteContent } = footnotes?.[0] || {};
 
-    formatFactPanelPropertyList.push({
-      PropertyName: 'PANEL LABEL',
-      PropertySource: title,
-      Amount: '',
-      AmountUOM: '',
-    });
-
-    if (
-      title === 'SUPPLEMENT FACTS' &&
-      !!ingredients?.[0]?.ingredientStatement
-    ) {
       formatFactPanelPropertyList.push({
-        PropertyName: 'OTHER INGREDIENTS',
-        PropertySource: ingredients?.[0]?.ingredientStatement,
+        PropertyName: 'PANEL LABEL',
+        PropertySource: title,
         Amount: '',
         AmountUOM: '',
       });
-    }
 
-    if (servingPerContainer) {
-      formatFactPanelPropertyList.push({
-        PropertyName: 'PRIMARY SERVINGS PER CONTAINER',
-        PropertySource: '',
-        Amount: toUpper(servingPerContainer),
-        AmountUOM: '',
+      console.log('title', title);
+
+      if (ingredients?.length > 0) {
+        ingredients?.forEach((ingredientItem: any) => {
+          if (ingredientItem?.ingredientPrefix?.includes('other')) {
+            formatFactPanelPropertyList.push({
+              PropertyName: 'OTHER INGREDIENTS',
+              PropertySource: ingredientItem.ingredientStatement,
+              Amount: '',
+              AmountUOM: '',
+            });
+          }
+        });
+      }
+
+      if (servingPerContainer) {
+        formatFactPanelPropertyList.push({
+          PropertyName: 'PRIMARY SERVINGS PER CONTAINER',
+          PropertySource: '',
+          Amount: toUpper(servingPerContainer),
+          AmountUOM: '',
+        });
+      }
+
+      if (servingSize) {
+        formatFactPanelPropertyList.push({
+          PropertyName: 'PRIMARY SERVING SIZE',
+          PropertySource: '',
+          Amount:
+            servingSize +
+            (equivalentServingSize ? ` ${equivalentServingSize}` : ''),
+          AmountUOM: '',
+        });
+      }
+
+      // if (equivalentServingSize) {
+      //   formatFactPanelPropertyList.push({
+      //     PropertyName: 'SECONDARY SERVING SIZE',
+      //     PropertySource: '',
+      //     Amount: equivalentServingSize,
+      //     AmountUOM: '',
+      //   });
+      // }
+      if (calories) {
+        formatFactPanelPropertyList.push({
+          PropertyName: 'CALORIES',
+          PropertySource: '',
+          AnalyticalValue: calories,
+          Amount: calories,
+          AmountUOM: '',
+        });
+      }
+
+      if (footnoteContentEnglish || footnoteContent) {
+        formatFactPanelPropertyList.push({
+          PropertyName: 'DAILY VALUE STATEMENT',
+          PropertySource: toUpper(footnoteContentEnglish || footnoteContent),
+          AnalyticalValue: '',
+          Amount: calories,
+          AmountUOM: '',
+        });
+      }
+
+      nutritionFacts.forEach((nutrientItem: any) => {
+        formatFactPanelPropertyList.push({
+          PropertyName: toUpper(nutrientItem?.['validated_nutrientName']),
+          PropertySource: toUpper(nutrientItem?.['blendIngredients'] || ''),
+          AnalyticalValue: nutrientItem?.['amount'],
+          Amount: nutrientItem?.['amount'],
+          AmountUOM: nutrientItem?.['uom'],
+          Percent: nutrientItem?.['percent'],
+          Indicators: nutrientItem?.['indicator']
+            ? [nutrientItem?.['indicator']]
+            : '',
+        });
       });
-    }
 
-    if (servingSize) {
-      formatFactPanelPropertyList.push({
-        PropertyName: 'PRIMARY SERVING SIZE',
-        PropertySource: '',
-        Amount:
-          servingSize +
-          (equivalentServingSize ? ` ${equivalentServingSize}` : ''),
-        AmountUOM: '',
-      });
-    }
-
-    // if (equivalentServingSize) {
-    //   formatFactPanelPropertyList.push({
-    //     PropertyName: 'SECONDARY SERVING SIZE',
-    //     PropertySource: '',
-    //     Amount: equivalentServingSize,
-    //     AmountUOM: '',
-    //   });
-    // }
-    if (calories) {
-      formatFactPanelPropertyList.push({
-        PropertyName: 'CALORIES',
-        PropertySource: '',
-        AnalyticalValue: calories,
-        Amount: calories,
-        AmountUOM: '',
-      });
-    }
-
-    if (footnoteContentEnglish || footnoteContent) {
-      formatFactPanelPropertyList.push({
-        PropertyName: 'DAILY VALUE STATEMENT',
-        PropertySource: toUpper(footnoteContentEnglish || footnoteContent),
-        AnalyticalValue: '',
-        Amount: calories,
-        AmountUOM: '',
-      });
-    }
-
-    nutritionFacts.forEach((nutrientItem: any) => {
-      formatFactPanelPropertyList.push({
-        PropertyName: toUpper(nutrientItem?.['validated_nutrientName']),
-        PropertySource: toUpper(nutrientItem?.['blendIngredients'] || ''),
-        AnalyticalValue: nutrientItem?.['amount'],
-        Amount: nutrientItem?.['amount'],
-        AmountUOM: nutrientItem?.['uom'],
-        Percent: nutrientItem?.['percent'],
-        Indicators: nutrientItem?.['indicator']
-          ? [nutrientItem?.['indicator']]
-          : '',
-      });
-    });
-
-    return { Property: formatFactPanelPropertyList };
-  });
+      return { Property: formatFactPanelPropertyList };
+    })
+    ?.reverse();
 };

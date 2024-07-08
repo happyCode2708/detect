@@ -49,7 +49,7 @@ const { execFile } = require('child_process');
 // ) {
 //   // Check if the directory exists
 //   if (!fs.existsSync(directory)) {
-//     // If it does not exist, create it
+//     // If it , create it
 //     console.log('does not exist');
 //     fs.mkdirSync(directory, { recursive: true });
 //   }

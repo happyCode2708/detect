@@ -77,6 +77,10 @@ const validate = async (
       const currentValues =
         modifiedProductDataPoints?.['attributes']?.[dataPointKey] || [];
 
+      console.log('claim value', claimValue);
+      console.log('statement', statement);
+      console.log('datapointKey', dataPointKey);
+
       modifiedProductDataPoints['attributes'][dataPointKey] = Array.from(
         new Set([...currentValues, CONTAIN_AND_NOT_CONTAIN_MAP?.[claimValue]])
       );
@@ -163,9 +167,9 @@ const check = async (
   }
 
   if (
-    source?.includes('ingredient list') ||
-    source?.includes('nutrition fact')
-    // || source?.includes('allergen contain statement')
+    (source?.includes('ingredient list') ||
+      source?.includes('nutrition fact')) &&
+    !source?.includes('marketing text on product')
   ) {
     return Promise.resolve(false);
   }

@@ -1,3 +1,4 @@
+import logger from '../../../lib/logger';
 import { toLower } from 'lodash';
 
 export const sugarClaimValidate = async (modifiedProductDataPoints: any) => {
@@ -45,7 +46,7 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
   }
 
-  if (source === 'ingredient list' || source === 'nutrition fact') {
+  if (!source.includes('marketing text on product')) {
     return Promise.resolve(false);
   }
 
@@ -53,7 +54,12 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
   }
 
-  if (source === 'marketing text on product' && isClaimed === 'yes') {
+  if (statement === 'other') {
+    logger.error(`sugar claim -- ${claim}`);
+    return Promise.resolve(false);
+  }
+
+  if (source?.includes('marketing text on product') && isClaimed === 'yes') {
     return Promise.resolve(true);
   }
 

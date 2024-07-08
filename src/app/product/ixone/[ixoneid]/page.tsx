@@ -81,7 +81,7 @@ const ProductDetailPage = () => {
 
         setProductIxone(productInfo);
 
-        if (latestSession) {
+        if (latestSession?.result) {
           setProductInfo(JSON.parse(latestSession?.result));
           setPdSessionId(latestSession?.sessionId);
         }
@@ -251,7 +251,7 @@ const ProductDetailPage = () => {
           }
           setLoading(false);
         }
-      }, 4000);
+      }, 5000);
     }
     return () => {
       if (!refInterval.current) return;

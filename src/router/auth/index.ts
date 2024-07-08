@@ -54,7 +54,7 @@ router.post('/login', async (req, res) => {
         httpOnly: true,
         // secure: process.env.NODE_ENV !== 'development',
         secure: false,
-        maxAge: 3600,
+        maxAge: 3600 * 10,
         sameSite: 'lax',
         path: '/',
       })

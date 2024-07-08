@@ -21,7 +21,7 @@ export const TableResultTDC = ({
           {/* <MetaInfo productInfo={productInfo} />
            */}
           <CamelFieldStringRender
-            objectValues={metaData}
+            objectValues={{ ...metaData, generalFactPanels: 'N/A' }}
             evaluations={evaluation}
           />
 
@@ -44,7 +44,7 @@ export const TableResultTDC = ({
                 return (
                   <TdcNutPanelRender
                     propertyList={panelData?.Property}
-                    title='Supplement Fact'
+                    title='Nutrition Fact'
                     evaluation={evaluation?.NutritionPanel?.[idx]?.Property}
                   />
                 );

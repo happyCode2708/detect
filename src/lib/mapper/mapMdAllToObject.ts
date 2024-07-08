@@ -218,7 +218,8 @@ export const mapMarkdownAllToObject = (markdown: string) => {
 
   //? INGREDIENT TABLE
   const ingredientObjList = getObjectDataFromTable(ingredientSection, [
-    'isProductSupplement',
+    'productType',
+    'ingredientPrefix',
     'ingredientStatement',
     'ingredientBreakdown',
   ]);

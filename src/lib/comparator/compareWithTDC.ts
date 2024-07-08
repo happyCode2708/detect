@@ -17,6 +17,8 @@ export const compareWithTDC = ({
   return {
     ...comparisonResult,
     ...compareResultFactPanel,
+    generalFactPanels:
+      comparisonResult?.NutritionPanel || comparisonResult?.SupplementPanel,
   };
 };
 
@@ -97,7 +99,9 @@ const compareObjects = (obj1: any, obj2: any) => {
 
   for (const key of Object.keys(obj2)) {
     if (obj1.hasOwnProperty(key)) {
-      if (obj1[key] === undefined && obj2[key] !== undefined) {
+      if (`${obj1[key]}` === `${obj2[key]}`) {
+        comparisonResult[key] = '100%';
+      } else if (obj1[key] === undefined && obj2[key] !== undefined) {
         comparisonResult[key] = '0%';
       } else {
         comparisonResult[key] = `${getMatchPercent({

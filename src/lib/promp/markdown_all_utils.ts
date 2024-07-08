@@ -42,8 +42,6 @@ VALIDATION AND FIX BUGS:
 2) Only be using the information explicitly provided in the product images and not drawing conclusions based on the ingredient list. I will focus on directly extracting product claims from the text on the packaging and avoid making deductions based on the presence or absence of specific ingredients.
 Ex 1: if product have something in ingredient list. That cannot conclude that product claim to have this thing. Claim must be a statement or texts on the packaging make claim on a thing.
 
-3) "NON GMO Project VERIFIED" does not claim "not fried". It is about non-GMO food and products.
-
 4) Product info could contain multiple languages info. Only return provided info in english.
 
 5) Only return all markdown tables that i require you to return.
@@ -105,7 +103,9 @@ IMPORTANT RULES:
 + "allergen does-not-contain statement" is the exact context that you found on provided images about allergen info, that product claim not to contain.
 Ex 1: "non-dairy" text mean does not contain allergen ingredient of "dairy"
 
-+ "allergen contain statement" is the exact context that you found on provided images about allergen info, ususally start with "contains", "contains:", "may contains:", ....
++ "allergen contain statement" is the exact context that you found on provided images about allergen info, usually start with "contains", "contains:", "may contains:", ....
+
++ "allergen contain break-down list" is the allergen ingredients from "allergen contain statement" and do not collect from product ingredient list.
 
 + "allergen contain on equipment statement" is the exact context that you found on provided images about list of allergen ingredients that is said they may be contained in/on manufacturing equipments.
 ex 1: "manufactured on equipment that also processes product containing ..."
@@ -115,20 +115,23 @@ ex 2: "made in a facility that also processes ... "
 ex 1: "oats, milk"
 
 3) "SUGAR_CLAIM_TABLE" rules:
-+ "how product state about it ?" only have return exact answers such as "free of", "free from", "made without", "no contain", "contain", "lower", "low", "0g", "zero", "other", "does not contain".
++ "how product state about it ?" only have return exact answers such as "free of", "free from", "made without", "no contain", "contain", "lower", "low", "0g", "zero", "other", "does not contain", "not too sweet", "low sweet".
 
 4) "header" table rules:
 + header table only have 1 row item so you must carefully examine the images.
 + "primary size" and "secondary size" and "third size" is a quantity measurement of product in two different unit of measurement. They are not info from "serving size" in nutrition fact.
 Ex: "primary size" = "100gram"
+
 + "count" is the count number of smaller unit inside a package, or a display shipper, or a case, or a box.
+
 + "full size text description" is the whole quantity measurement description statement of the product on image. It is usually appear on the front face of product.
-Ex: "Net WT 9.28oz(260g) 10 cups"
+Ex 1: "Net WT 9.28oz(260g) 10 cups"
 
 5) "ingredient" table rules:
 + is the list of statements about ingredients of product (since product can have many ingredients list)
 + "ingredient statement" is content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "other ingredients:".
 + "ingredient break-down list" is the list of ingredient in ingredient statement split by ", "
++ "product type from nutrition panel" could be detected through nutrition panel text title which are NUTRITION FACTS or SUPPLEMENT FACTS
 
 6) "marketing" table rules:
 + "youtube icon type" have 2 types (answer is type_1/type_2)
@@ -162,27 +165,27 @@ Ex 2: "freeze after open ..."
 
 9) "supply chain" table rules:
 + "country of origin text" example
-Ex 1: "manufactured in Canada"
+Ex 1: "manufactured in Canada"ingredient
 Ex 2: "made in Brazil"
 
 + "country of origin" example
 Ex 1: "Canada"
 Ex 2: "Brazil"
 
-+ "manufacture name"
-Ex 1: "MANUFACTURED IN A CGMP CERTIFIED FACTORY FOR AMAZON".
++ "manufacture name" is the statement about manufacturer name could include some text like "manufactured in", "manufactured for".
+Ex 1: "MANUFACTURED IN A CGMP CERTIFIED FACTORY FOR AMAZON" should be recorded as "manufacturer name" = "MANUFACTURED IN A CGMP CERTIFIED FACTORY FOR AMAZON"
+Ex 2: "MANUFACTURED FOR: COCA-COLA, INC." should be recorded as "manufacturer name" = "MANUFACTURED FOR: COCA-COLA, INC."
 
 + "distributed by" usually include address of distributor and text "distributed by".
 Ex 1: "distributed by: boiron inc. newtown square, PA 19073"
 
 RESULT THAT I NEED:
-Carefully examine provided images above. They are captured images of one product, and return info from provided images that match all listed requirements and rules above with all markdown tables format below:
+Carefully examine all text infos, all icons, all logos  from provided images and help me return output with given format that match all listed requirements and rules above with all markdown tables format below remember that all provided images are captured pictured of one product only from different angles.
 
 1) SUGAR_CLAIM_TABLE info recorded in markdown table format below:
 
 IMPORTANT NOTE:
 + only process with provided sugar items below.
-+ "not too sweet" not mean a sugar claim.
 
 SUGAR_CLAIM_TABLE
 | sugar item | sugar item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ?  | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know ? |
@@ -247,7 +250,7 @@ CONDITION FOR ROW TO SHOW IN TABLE BELOW:
 + only return row items that its "does product explicitly claim this claim" value = "yes" and remove all rows with "does product explicitly claim this claim" value = "unknown" or "no")
 
 PROCESS_CLAIM_TABLE
-| other claim | does product explicitly claim this claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| proces claim | does product explicitly claim this process claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
 | ------- | -------- | -------- | -------- |
 | 100% natural | ...
 | 100% natural ingredients | ...
@@ -295,7 +298,7 @@ PROCESS_CLAIM_TABLE
 | non-alcoholic | ...
 | non-irradiated | ...
 | non-toxic | ...
-| not fried | ...
+| non-fried | ...
 | not from concentrate | ...
 | pasteurized | ...
 | pasture raised | ...
@@ -448,6 +451,9 @@ SECOND_EXTRA_CLAIM_TABLE
 CONDITION FOR ROWS TO SHOW FOR TABLE BELOW: 
 + only return row items if its answer of "item explicitly and directly state in a text on product  without implying from other text" = "yes" and remove all unqualified rows from table below
 
+IMPORTANT NOTE:
++ "vegan" not mean "vegan ingredients"
+
 THIRD_EXTRA_CLAIM_TABLE
 | extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
 | ------- | -------- | ------- | ------- | ------- |
@@ -510,8 +516,8 @@ HEADER_TABLE
 11) Ingredient info with table format below:
 
 INGREDIENT_TABLE
-| is product supplement ? (answer is boolean) | ingredient statement |  ingredient break-down list |
-| ------- | -------- | -------- |
+| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement |  ingredient break-down list |
+| ------- | ------- | -------- | -------- |
 
 12) Physical info with table format below
 
