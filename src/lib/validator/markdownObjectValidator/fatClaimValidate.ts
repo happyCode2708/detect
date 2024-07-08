@@ -23,10 +23,9 @@ const validate = async (
       const currentValues =
         modifiedProductDataPoints?.['attributes']?.[dataPointKey] || [];
 
-      modifiedProductDataPoints['attributes'][dataPointKey] = [
-        ...currentValues,
-        claimValue,
-      ];
+      modifiedProductDataPoints['attributes'][dataPointKey] = Array.from(
+        new Set([...currentValues, FAT_CLAIMS_MAP?.[claimValue]])
+      );
     }
   }
 };
@@ -36,7 +35,7 @@ const check = async (analysisItem: any): Promise<boolean> => {
 
   if (!claim) return Promise.resolve(false);
 
-  if (isClaimed === 'false' || isClaimed === 'unknown')
+  if (isClaimed === 'no' || isClaimed === 'unknown')
     return Promise.resolve(false);
 
   if (source === 'ingredient list' || source === 'nutrition fact') {
@@ -51,14 +50,27 @@ const check = async (analysisItem: any): Promise<boolean> => {
 };
 
 const FAT_CLAIMS = [
-  'fat free',
-  'free of saturated fat',
-  'low fat',
-  'low in saturated fat',
-  'no fat',
-  'no trans fat',
-  'reduced fat',
-  'trans fat free',
-  'zero grams trans fat per serving',
-  'zero trans fat',
+  'is fat free',
+  'is free of saturated fat',
+  'is low fat',
+  'is low in saturated fat',
+  'have no fat',
+  'have no trans fat',
+  'is reduced fat',
+  'is trans fat free',
+  'have zero grams trans fat per serving',
+  'have zero trans fat',
 ];
+
+const FAT_CLAIMS_MAP = {
+  'is fat free': 'fat free',
+  'is free of saturated fat': 'free of saturated fat',
+  'is low fat': 'low fat',
+  'is low in saturated fat': 'low in saturated fat',
+  'have no fat': 'no fat',
+  'have no trans fat': 'no trans fat',
+  'is reduced fat': 'reduced fat',
+  'is trans fat free': 'trans fat free',
+  'have zero grams trans fat per serving': 'zero grams trans fat per serving',
+  'have zero trans fat': 'zero trans fat',
+} as any;

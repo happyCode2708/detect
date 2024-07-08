@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import {
   useMutateGetCompareResultWithTdc,
   useMutateProductExtraction,
+  useMutateRevalidateProductData,
   useMutateUploadFile,
 } from '@/queries/home';
 import { FluidContainer } from '@/components/container/FluidContainer';
@@ -49,6 +50,7 @@ const ProductDetailPage = () => {
   const refInterval = useRef<number | null>(null);
 
   const mutationProductExtract = useMutateProductExtraction();
+  const mutationRevalidateProductData = useMutateRevalidateProductData();
   const mutateGetCompareResultWithTdc = useMutateGetCompareResultWithTdc();
 
   const router = useRouter();
@@ -147,6 +149,30 @@ const ProductDetailPage = () => {
     });
   };
 
+  const handleRevalidateProductData = async () => {
+    setSessionId(null);
+    const payload = {
+      ixoneId: ixoneid,
+    };
+
+    setLoading(true);
+    setProductInfo(null);
+
+    mutationRevalidateProductData.mutate(payload, {
+      onError: (e) => {
+        console.log(e);
+      },
+      onSuccess: (res) => {
+        const { data, messages } = res;
+        const { sessionId } = data;
+
+        setSessionId(sessionId);
+        setLoading(false);
+        // queryClient.invalidateQueries({ queryKey: ['history'] });
+      },
+    });
+  };
+
   const onCancel = () => {
     setLoading(false);
     setSessionId('');
@@ -236,6 +262,8 @@ const ProductDetailPage = () => {
     return <div>Loading...</div>;
   }
 
+  console.log('session id', sessionId);
+
   return (
     <FluidContainer>
       <div className='flex flex-col gap-4 py-4 px-4'>
@@ -309,6 +337,19 @@ const ProductDetailPage = () => {
                   </div>
                 ) : (
                   'Extract'
+                )}
+              </Button>
+              <Button
+                disabled={loading || imageUrls?.length <= 0}
+                onClick={handleRevalidateProductData}
+              >
+                {loading ? (
+                  <div className='flex flex-row items-center'>
+                    <RefreshCcw className='mr-1 animate-spin' />
+                    <span>Processing</span>
+                  </div>
+                ) : (
+                  'Revalidate'
                 )}
               </Button>
               {loading && (

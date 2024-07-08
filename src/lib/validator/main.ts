@@ -48,11 +48,7 @@ const validateProductDataPoints = async (response: any, ocrClaims: any) => {
   const { factPanels, nutMark, allMark, ...productDataPoints } =
     response?.product || {};
 
-  console.log('response ----', response);
-
   let modifiedProductDataPoints = { ...productDataPoints };
-
-  console.log('modifiedProductDataPoints ----', modifiedProductDataPoints);
 
   allergenValidate(modifiedProductDataPoints);
   supplyChainValidate(modifiedProductDataPoints);

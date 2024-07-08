@@ -247,10 +247,18 @@ router.post('/process-product-image', async (req, res) => {
         }),
       ]);
 
+      await prisma.extractSession.update({
+        where: { sessionId },
+        data: {
+          status: 'fail',
+          result_all: JSON.stringify({}),
+          result_nut: JSON.stringify({}),
+        },
+      });
       await createFinalResult({ finalAll, finalNut, sessionId, res });
     } catch (e) {
       console.log(e);
-      const updatedSession = await prisma.extractSession.update({
+      await prisma.extractSession.update({
         where: { sessionId },
         data: {
           status: 'fail',
@@ -270,6 +278,48 @@ router.post('/process-product-image', async (req, res) => {
     //   error: JSON.stringify(error),
     //   message: 'Failed to create session',
     // });
+  }
+});
+
+router.post('/revalidate-product-data', async (req, res) => {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { ixoneID: req.body.ixoneId },
+      include: { images: true, extractSessions: true },
+    });
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    product.extractSessions.sort(
+      (a: any, b: any) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+
+    const latestExtractSession = product.extractSessions?.[0];
+    const { result_all, result_nut, sessionId } = latestExtractSession;
+
+    if (!result_all || !result_nut) {
+      return res.status(404).json({ error: 'Product not valid to revalidate' });
+    }
+    const finalAll = JSON.parse(result_all);
+    const finalNut = JSON.parse(result_nut);
+
+    await createFinalResult({ finalAll, finalNut, sessionId, res });
+
+    res.status(200).json({
+      isSuccess: true,
+      message: 'revalidate success fully',
+      data: { sessionId },
+    });
+  } catch (error) {
+    console.log('error', error);
+    res.status(404).json({
+      isSuccess: false,
+      error: JSON.stringify(error),
+      message: 'Failed to revalidate product',
+    });
   }
 });
 

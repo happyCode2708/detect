@@ -27,10 +27,9 @@ const validate = async (
       const currentValues =
         modifiedProductDataPoints?.['attributes']?.[dataPointKey] || [];
 
-      modifiedProductDataPoints['attributes'][dataPointKey] = [
-        ...currentValues,
-        NON_CERTIFICATE_CLAIMS_MAP?.[claimValue],
-      ];
+      modifiedProductDataPoints['attributes'][dataPointKey] = Array.from(
+        new Set([...currentValues, NON_CERTIFICATE_CLAIMS_MAP?.[claimValue]])
+      );
     }
   }
 };
@@ -40,7 +39,7 @@ const check = async (analysisItem: any): Promise<boolean> => {
 
   if (!claim) return Promise.resolve(false);
 
-  if (isClaimed === 'false' || isClaimed === 'unknown')
+  if (isClaimed === 'no' || isClaimed === 'unknown')
     return Promise.resolve(false);
 
   if (
@@ -98,6 +97,7 @@ const NON_CERTIFICATE_CLAIMS = [
   'low carbohydrate or low-carb',
   'low carbohydrate',
   'low-carb',
+  'low - carb',
   'low cholesterol',
   'macrobiotic',
   'minimally processed',
