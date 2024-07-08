@@ -161,9 +161,14 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
     }
 
     if (result && session?.status === 'success') {
+      let parsedResult = JSON.parse(result);
+      if (process.env.NODE_ENV === 'production') {
+        removeRawFieldData(parsedResult);
+      }
+
       return res.status(200).json({
         isSuccess: true,
-        data: JSON.parse(result),
+        data: parsedResult,
         message: 'Successfully process image',
       });
     }

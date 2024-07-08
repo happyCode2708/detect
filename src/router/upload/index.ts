@@ -374,7 +374,6 @@ const createFinalResult = async ({
 
     let validatedResponse = await responseValidator(finalResult, '');
 
-    //! removeRawFieldData(validatedResponse);
     await prisma.extractSession.update({
       where: { sessionId },
       data: {
