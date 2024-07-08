@@ -76,6 +76,7 @@ const LoginPage: React.FC = () => {
           <form
             onSubmit={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               form.handleSubmit(onSubmit)(e);
             }}
             className='space-y-8'

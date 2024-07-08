@@ -41,10 +41,7 @@ const startServer = async () => {
   app.use(cookieParser());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
-  app.use(
-    '/assets',
-    express.static(path.join(__dirname, '..', 'assets/upload'))
-  );
+  app.use('/assets', express.static(uploadsDir));
 
   if (process.env.NEXT_BUILD) {
     app.listen(port, async () => {
