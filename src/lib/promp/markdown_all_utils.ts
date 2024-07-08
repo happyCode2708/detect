@@ -77,6 +77,8 @@ PHYSICAL_TABLE
 MARKETING_TABLE
 INSTRUCTION_TABLE
 SUPPLY_CHAIN_TABLE
+BASE_CERTIFIER_CLAIM_TABLE
+ATTRIBUTE_TABLE
 
 without any number like 1) or 2) before table names
 
@@ -179,8 +181,12 @@ Ex 2: "MANUFACTURED FOR: COCA-COLA, INC." should be recorded as "manufacturer na
 + "distributed by" usually include address of distributor and text "distributed by".
 Ex 1: "distributed by: boiron inc. newtown square, PA 19073"
 
+10) "base certifier claim" rules:
++ carefully check for text or certifier logo that could indicate claim from provided image
+Ex: logo U kosher found mean "kosher claim" = "yes" 
+
 RESULT THAT I NEED:
-Carefully examine all text infos, all icons, all logos  from provided images and help me return output with given format that match all listed requirements and rules above with all markdown tables format below remember that all provided images are captured pictured of one product only from different angles.
+Carefully examine all text infos, all icons, all logos  from provided images and help me return output with all markdown tables format below remember that all provided images are captured pictured of one product only from different angles.
 
 1) SUGAR_CLAIM_TABLE info recorded in markdown table format below:
 
@@ -551,8 +557,72 @@ SUPPLY_CHAIN_TABLE
 | country of origin text | country of origin | distributed by | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
 | ------- | -------- | -------- | -------- | ------- | ------- | -------- | -------- | ------- | ------- |
 
+16) Base certifier claim info with table format below:
+
+BASE_CERTIFIER_CLAIM_TABLE
+| claim | is product claim that ? (answer is yes/no/unknown) |
+| ------- | ------- |
+| bee friendly claim |
+| bio-based claim |
+| biodynamic claim |
+| bioengineered claim |
+| cbd cannabidiol / help claim |
+| carbon footprint claim |
+| certified b corporation |
+| certified by international packaged ice association |
+| cold pressure verified |
+| cold pressure protected claim |
+| cradle to cradle claim |
+| cruelty free claim |
+| diabetic friendly claim |
+| eco fishery claim |
+| fair trade claim |
+| for life claim |
+| use GMO claim |
+| gmp claim |
+| gluten-free claim |
+| glycemic index claim |
+| glyphosate residue free claim |
+| grass-fed claim |
+| halal claim |
+| hearth healthy claim |
+| high potency |
+| ITAL CERTIFIED SEAL Claim |
+| ITAL CONSCIOUS SEAL Claim |
+| ITAL SACRAMENT SEAL Claim |
+| Keto/Ketogenic Claim |
+| Kosher Claim |
+| Live and Active Culture Claim |
+| Low Glycemic Claim |
+| New York State Grown & Certified Claim |
+| Non-GMO Claim |
+| Organic Claim |
+| PACA Claim |
+| PASA Claim |
+| Paleo Claim |
+| Plant Based/Derived Claim |
+| Rain Forest Alliance Claim |
+| Vegan Claim |
+| Vegetarian Claim |
+| Viticulture Claim |
+| Whole Grain Claim |
+
+17) some other attribute info recorded with table format below:
+
+ATTRIBUTE_TABLE
+| grade (answer are 'grade A'/ 'grade B) | juice percent (answer is number) |
+| ------- | ------- |
 `;
 };
+
+// 16) Attribute info with table format below:
+
+// ATTRIBUTE_TABLE
+// | juice percent (answer is number / NA) |
+// | ------- |
+
+// CONDITION FOR ROWS TO SHOW FOR TABLE BELOW:
+// + only return row items if its answer of "is product claim that ?" = "yes" and remove all other rows with answer of "no" or "unknown"
 
 // 16) Marketing text with table format below:
 

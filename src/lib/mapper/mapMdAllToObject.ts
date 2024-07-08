@@ -101,10 +101,24 @@ export const mapMarkdownAllToObject = (markdown: string) => {
 
   const supplyChainSection = markdown
     .split('SUPPLY_CHAIN_TABLE')?.[1]
-    ?.split('MARKETING_TEXT_TABLE')?.[0];
+    ?.split('BASE_CERTIFIER_CLAIM_TABLE')?.[0];
 
   logger.error('supply chain');
   logger.info(supplyChainSection);
+
+  const baseCertifierClaimSection = markdown
+    .split('BASE_CERTIFIER_CLAIM_TABLE')?.[1]
+    ?.split('ATTRIBUTE_TABLE')?.[0];
+
+  logger.error('base certifier claim');
+  logger.info(baseCertifierClaimSection);
+
+  const attributeClaimSection = markdown
+    .split('ATTRIBUTE_TABLE')?.[1]
+    ?.split('MARKETING_TEXT_TABLE')?.[0];
+
+  logger.error('attribute claim');
+  logger.info(attributeClaimSection);
 
   const marketingTextSection = markdown
     ?.split('MARKETING_TEXT_TABLE')?.[1]
@@ -278,6 +292,22 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   logger.error('supplyChain');
   logger.info(JSON.stringify(supplyChainObjList));
 
+  //? BASE CERTIFIER CLAIM
+  const baseCertifierClaimObjList = getObjectDataFromTable(
+    baseCertifierClaimSection,
+    ['claim', 'isClaimed']
+  );
+  logger.error('base certifier claim object list');
+  logger.info(JSON.stringify(baseCertifierClaimObjList));
+
+  //? ATTRIBUTE
+  const attributeObjList = getObjectDataFromTable(attributeClaimSection, [
+    'grade',
+    'juicePercent',
+  ]);
+  logger.error('attribute object list');
+  logger.info(JSON.stringify(attributeObjList));
+
   //? MARKETING TEXT TABLE
   const marketingTextObjList = getObjectDataFromTable(marketingTextSection, [
     'idx',
@@ -300,6 +330,8 @@ export const mapMarkdownAllToObject = (markdown: string) => {
       nonCertificateClaims: nonCertificateClaimsObjList,
       calorieClaims: calorieClaimsObjList,
       saltClaims: saltClaimsObjList,
+      baseCertifierClaims: baseCertifierClaimObjList,
+      otherAttribute: attributeObjList,
     },
     ingredients: ingredientObjList,
     allergens: allergenObjList,
@@ -312,7 +344,6 @@ export const mapMarkdownAllToObject = (markdown: string) => {
         ),
       },
     ],
-
     supplyChain: supplyChainObjList,
   };
 };

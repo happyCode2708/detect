@@ -24,23 +24,27 @@ export const generateContent = async (images: any[], text: any) => {
     contents: [{ role: 'user', parts: [...images, text] }],
   };
 
-  const streamingResp = await (
-    global as any
-  ).generativeModel.generateContentStream(req);
+  try {
+    const streamingResp = await (
+      global as any
+    ).generativeModel.generateContentStream(req);
 
-  let chunkResponse = [];
+    let chunkResponse = [];
 
-  let finalResponse = '';
+    let finalResponse = '';
 
-  for await (const item of streamingResp.stream) {
-    chunkResponse.push(item);
-    if (!item?.candidates) return;
-    finalResponse =
-      finalResponse + item?.candidates[0]?.content?.parts?.[0]?.text;
-    console.log('chunk ...' + item?.candidates[0]?.content?.parts?.[0]?.text);
+    for await (const item of streamingResp.stream) {
+      chunkResponse.push(item);
+      if (!item?.candidates) return;
+      finalResponse =
+        finalResponse + item?.candidates[0]?.content?.parts?.[0]?.text;
+      console.log('chunk ...' + item?.candidates[0]?.content?.parts?.[0]?.text);
+    }
+
+    return { chunkResponse, finalResponse };
+  } catch (err) {
+    console.log('chunk error', err);
   }
-
-  return { chunkResponse, finalResponse };
 };
 
 export const onProcessGemini = async ({
