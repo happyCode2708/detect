@@ -1,3 +1,4 @@
+import { toLower } from 'lodash';
 import { NON_CERTIFICATE_CLAIMS_MAP } from './nonCertifierClaimValidate';
 
 export const containAndNotContainClaimValidate = async (
@@ -7,104 +8,157 @@ export const containAndNotContainClaimValidate = async (
   const claim_list =
     modifiedProductDataPoints?.['attributes']?.['containAndNotContain'] || [];
 
-  await validate(
-    [
-      ...claim_list.filter(
-        (item: any) => item?.contain === 'yes' || item?.contain === 'true'
-      ),
-    ],
-    modifiedProductDataPoints,
-    'validated_contain',
-    ocrClaims
-  );
-
-  await validate(
-    [
-      ...claim_list.filter(
-        (item: any) => item?.notContain === 'yes' || item?.notContain === 'true'
-      ),
-    ],
-    modifiedProductDataPoints,
-    'validated_notContain',
-    ocrClaims
-  );
+  await validate(claim_list, modifiedProductDataPoints);
 };
 
 const validate = async (
   analysisList: any[],
-  modifiedProductDataPoints: any,
-  dataPointKey: string,
-  ocrClaims: any
+  modifiedProductDataPoints: any
 ) => {
   for (const analysisItem of analysisList) {
-    let valid = await check(analysisItem, ocrClaims);
+    let valid = await check(analysisItem);
 
-    if (valid === 'from non-certificate claim') {
-      const claimValue = analysisItem['claim'];
+    // if (valid === 'from non-certificate claim') {
+    //   const claimValue = analysisItem['claim'];
 
-      const currentValues =
-        modifiedProductDataPoints?.['attributes']?.[
-          'validated_nonCertificateClaims'
-        ] || [];
+    //   const currentValues =
+    //     modifiedProductDataPoints?.['attributes']?.[
+    //       'validated_nonCertificateClaims'
+    //     ] || [];
 
-      modifiedProductDataPoints['attributes'][
-        'validated_nonCertificateClaims'
-      ] = Array.from(
-        new Set([...currentValues, NON_CERTIFICATE_CLAIMS_MAP?.[claimValue]])
-      );
+    //   modifiedProductDataPoints['attributes'][
+    //     'validated_nonCertificateClaims'
+    //   ] = Array.from(
+    //     new Set([...currentValues, NON_CERTIFICATE_CLAIMS_MAP?.[claimValue]])
+    //   );
 
-      return;
-    }
+    //   return;
+    // }
 
-    if (valid === 'from sugar claim') {
-      const claimValue = analysisItem['claim'];
+    // if (valid === 'from sugar claim') {
+    //   const claimValue = analysisItem['claim'];
 
-      const currentValues =
-        modifiedProductDataPoints?.['attributes']?.['validated_sugarClaims'] ||
-        [];
+    //   const currentValues =
+    //     modifiedProductDataPoints?.['attributes']?.['validated_sugarClaims'] ||
+    //     [];
 
-      if (dataPointKey === 'validated_notContain') {
-        modifiedProductDataPoints['attributes']['validated_sugarClaims'] = [
-          ...currentValues,
-          'no contain ' + claimValue,
-        ];
-        return;
-      }
+    //   if (dataPointKey === 'validated_notContain') {
+    //     modifiedProductDataPoints['attributes']['validated_sugarClaims'] = [
+    //       ...currentValues,
+    //       'no contain ' + claimValue,
+    //     ];
+    //     return;
+    //   }
 
-      if (dataPointKey === 'validated_contain') {
-        modifiedProductDataPoints['attributes']['validated_sugarClaims'] = [
-          ...currentValues,
-          'contain ' + claimValue,
-        ];
-        return;
-      }
+    //   if (dataPointKey === 'validated_contain') {
+    //     modifiedProductDataPoints['attributes']['validated_sugarClaims'] = [
+    //       ...currentValues,
+    //       'contain ' + claimValue,
+    //     ];
+    //     return;
+    //   }
 
-      return;
-    }
+    //   return;
+    // }
 
     if (valid === true) {
-      const claimValue = analysisItem['claim'];
+      const { claim: claimValue, statement } = analysisItem;
+
+      const dataPointKey = DATA_POINT_KEY_MAP['validated_contain'].includes(
+        toLower(statement)
+      )
+        ? 'validated_contain'
+        : DATA_POINT_KEY_MAP['validated_notContain'].includes(
+            toLower(statement)
+          )
+        ? 'validated_notContain'
+        : 'non_validated_containAndNotContain';
 
       const currentValues =
         modifiedProductDataPoints?.['attributes']?.[dataPointKey] || [];
 
-      modifiedProductDataPoints['attributes'][dataPointKey] = [
-        ...currentValues,
-        CONTAIN_AND_NOT_CONTAIN_MAP?.[claimValue],
-      ];
+      modifiedProductDataPoints['attributes'][dataPointKey] = Array.from(
+        new Set([...currentValues, CONTAIN_AND_NOT_CONTAIN_MAP?.[claimValue]])
+      );
     }
   }
 };
 
+// const validate_old = async (
+//   analysisList: any[],
+//   modifiedProductDataPoints: any,
+//   dataPointKey: string,
+//   ocrClaims: any
+// ) => {
+//   for (const analysisItem of analysisList) {
+//     let valid = await check(analysisItem, ocrClaims);
+
+//     if (valid === 'from non-certificate claim') {
+//       const claimValue = analysisItem['claim'];
+
+//       const currentValues =
+//         modifiedProductDataPoints?.['attributes']?.[
+//           'validated_nonCertificateClaims'
+//         ] || [];
+
+//       modifiedProductDataPoints['attributes'][
+//         'validated_nonCertificateClaims'
+//       ] = Array.from(
+//         new Set([...currentValues, NON_CERTIFICATE_CLAIMS_MAP?.[claimValue]])
+//       );
+
+//       return;
+//     }
+
+//     if (valid === 'from sugar claim') {
+//       const claimValue = analysisItem['claim'];
+
+//       const currentValues =
+//         modifiedProductDataPoints?.['attributes']?.['validated_sugarClaims'] ||
+//         [];
+
+//       if (dataPointKey === 'validated_notContain') {
+//         modifiedProductDataPoints['attributes']['validated_sugarClaims'] = [
+//           ...currentValues,
+//           'no contain ' + claimValue,
+//         ];
+//         return;
+//       }
+
+//       if (dataPointKey === 'validated_contain') {
+//         modifiedProductDataPoints['attributes']['validated_sugarClaims'] = [
+//           ...currentValues,
+//           'contain ' + claimValue,
+//         ];
+//         return;
+//       }
+
+//       return;
+//     }
+
+//     if (valid === true) {
+//       const claimValue = analysisItem['claim'];
+
+//       const currentValues =
+//         modifiedProductDataPoints?.['attributes']?.[dataPointKey] || [];
+
+//       modifiedProductDataPoints['attributes'][dataPointKey] = [
+//         ...currentValues,
+//         CONTAIN_AND_NOT_CONTAIN_MAP?.[claimValue],
+//       ];
+//     }
+//   }
+// };
+
 const check = async (
-  analysisItem: any,
-  ocrClaims: any
+  analysisItem: any
+  // ocrClaims: any
 ): Promise<boolean | string> => {
   const { claim, mentioned, source } = analysisItem;
 
   if (!claim) return Promise.resolve(false);
 
-  if (mentioned === 'false' || mentioned === 'unknown' || mentioned === 'no') {
+  if (mentioned === 'no' || mentioned === 'unknown') {
     return Promise.resolve(false);
   }
 
@@ -128,11 +182,23 @@ const check = async (
     return Promise.resolve(false);
   }
 
-  if (source.includes('marketing text on product')) {
+  if (source.includes('marketing text on product') && mentioned === 'yes') {
     return Promise.resolve(true);
   }
 
   return Promise.resolve(false);
+};
+
+const DATA_POINT_KEY_MAP = {
+  validated_contain: ['contain', 'other', 'naturally flavored', 'naturally'],
+  validated_notContain: [
+    'free of',
+    'free from',
+    'no contain',
+    'made without',
+    'does not contain',
+    'no',
+  ],
 };
 
 const CONTAIN_AND_NOT_CONTAIN_CLAIMS = [

@@ -1,6 +1,8 @@
 import natural from 'natural';
 
 export const getMatchPercent = ({ v1, v2 }: { v1: string; v2: string }) => {
+  if (v1 === v2) return 100;
+
   if (v1 === '' && v2 === '') return 100;
 
   if (isNumber(v1) || isNumber(v2)) {

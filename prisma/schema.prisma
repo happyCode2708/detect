@@ -1,6 +1,7 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 // "postgresql://postgres:@localhost:5432/ocr"
+//  url      = "postgresql://admin:congacon@localhost:5432/ocr"
 // env("DATABASE_URL")
 
 datasource db {

@@ -13,6 +13,7 @@ const validateNoContainList = async (modifiedProductDataPoints: any) => {
   if (!notContainList) return null;
   let validated_notContainList = [] as any;
 
+  console.log('allergen item', notContainList);
   notContainList?.split(', ')?.forEach((notContainItem: any) => {
     ALLERGEN_LIST.forEach((allergenItem: any) => {
       const variants = allergenItem?.variants;

@@ -23,6 +23,7 @@ jobs:
         run: |
           echo "GOOGLE_CREDENTIALS=${{ secrets.GOOGLE_CREDENTIALS}}" >> .env.production
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env.production
+          echo "ASSET_PATH=${{ secrets.ASSET_PATH }}" >> .env.production
         working-directory: ${{ github.workspace }}
 
       - name: Create env file

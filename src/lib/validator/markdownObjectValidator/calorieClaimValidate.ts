@@ -23,10 +23,9 @@ const validate = async (
       const currentValues =
         modifiedProductDataPoints?.['attributes']?.[dataPointKey] || [];
 
-      modifiedProductDataPoints['attributes'][dataPointKey] = [
-        ...currentValues,
-        claimValue,
-      ];
+      modifiedProductDataPoints['attributes'][dataPointKey] = Array.from(
+        new Set([...currentValues, claimValue])
+      );
     }
   }
 };
@@ -36,7 +35,7 @@ const check = async (analysisItem: any): Promise<boolean> => {
 
   if (!claim) return Promise.resolve(false);
 
-  if (isClaimed === 'false' || isClaimed === 'unknown')
+  if (isClaimed === 'no' || isClaimed === 'unknown')
     return Promise.resolve(false);
 
   if (source === 'ingredient list' || source === 'nutrition fact') {

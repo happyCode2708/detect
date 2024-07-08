@@ -1,6 +1,41 @@
 import logger from '../logger/index';
 
 export const mapMarkdownAllToObject = (markdown: string) => {
+  const sugarClaimSection = markdown
+    .split('SUGAR_CLAIM_TABLE')?.[1]
+    ?.split('FAT_CLAIM_TABLE')?.[0];
+
+  logger.error('sugar');
+  logger.info(sugarClaimSection);
+
+  const fatClaimSection = markdown
+    .split('FAT_CLAIM_TABLE')?.[1]
+    ?.split('PROCESS_CLAIM_TABLE')?.[0];
+
+  logger.error('fat');
+  logger.info(fatClaimSection);
+
+  const processClaimSection = markdown
+    .split('PROCESS_CLAIM_TABLE')?.[1]
+    ?.split('CALORIE_CLAIM_TABLE')?.[0];
+
+  logger.error('other');
+  logger.info(processClaimSection);
+
+  const calorieClaimSection = markdown
+    .split('CALORIE_CLAIM_TABLE')?.[1]
+    ?.split('SALT_CLAIM_TABLE')?.[0];
+
+  logger.error('calorie');
+  logger.info(calorieClaimSection);
+
+  const saltClaimSection = markdown
+    .split('SALT_CLAIM_TABLE')?.[1]
+    ?.split('FIRST_EXTRA_CLAIM_TABLE')?.[0];
+
+  logger.error('salt');
+  logger.info(saltClaimSection);
+
   const extraClaimSection_1 = markdown
     .split('FIRST_EXTRA_CLAIM_TABLE')?.[1]
     ?.split('SECOND_EXTRA_CLAIM_TABLE')?.[0];
@@ -17,45 +52,10 @@ export const mapMarkdownAllToObject = (markdown: string) => {
 
   const extraClaimSection_3 = markdown
     .split('THIRD_EXTRA_CLAIM_TABLE')?.[1]
-    ?.split('SUGAR_CLAIM_TABLE')?.[0];
+    ?.split('ALLERGEN_TABLE')?.[0];
 
   logger.error('extra 3');
   logger.info(extraClaimSection_3);
-
-  const sugarClaimSection = markdown
-    .split('SUGAR_CLAIM_TABLE')?.[1]
-    ?.split('FAT_CLAIM_TABLE')?.[0];
-
-  logger.error('sugar');
-  logger.info(sugarClaimSection);
-
-  const fatClaimSection = markdown
-    .split('FAT_CLAIM_TABLE')?.[1]
-    ?.split('OTHER_CLAIM_TABLE')?.[0];
-
-  logger.error('fat');
-  logger.info(fatClaimSection);
-
-  const otherClaimSection = markdown
-    .split('OTHER_CLAIM_TABLE')?.[1]
-    ?.split('CALORIE_CLAIM_TABLE')?.[0];
-
-  logger.error('other');
-  logger.info(otherClaimSection);
-
-  const calorieClaimSection = markdown
-    .split('CALORIE_CLAIM_TABLE')?.[1]
-    ?.split('SALT_CLAIM_TABLE')?.[0];
-
-  logger.error('calorie');
-  logger.info(calorieClaimSection);
-
-  const saltClaimSection = markdown
-    .split('SALT_CLAIM_TABLE')?.[1]
-    ?.split('ALLERGEN_TABLE')?.[0];
-
-  logger.error('salt');
-  logger.info(saltClaimSection);
 
   const allergenClaimSection = markdown
     .split('ALLERGEN_TABLE')?.[1]
@@ -101,18 +101,25 @@ export const mapMarkdownAllToObject = (markdown: string) => {
 
   const supplyChainSection = markdown
     .split('SUPPLY_CHAIN_TABLE')?.[1]
-    ?.split('DEBUG_TABLE')?.[0];
+    ?.split('MARKETING_TEXT_TABLE')?.[0];
 
   logger.error('supply chain');
   logger.info(supplyChainSection);
+
+  const marketingTextSection = markdown
+    ?.split('MARKETING_TEXT_TABLE')?.[1]
+    ?.split('DEBUG_TABLE')?.[0];
+
+  logger.error('marketingTextSection');
+  logger.info(marketingTextSection);
 
   //? EXTRA
   const extraClaimsObjList_1 = getObjectDataFromTable(extraClaimSection_1, [
     'claim',
     'mentioned',
-    'reason',
+    'statement',
     'source',
-    'containOrNot',
+    'reason',
   ]);
   logger.error('extra claim object list 1');
   logger.info(JSON.stringify(extraClaimsObjList_1));
@@ -120,8 +127,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   const extraClaimsObjList_2 = getObjectDataFromTable(extraClaimSection_2, [
     'claim',
     'mentioned',
-    'contain',
-    'notContain',
+    'statement',
     'source',
     'reason',
   ]);
@@ -131,8 +137,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   const extraClaimsObjList_3 = getObjectDataFromTable(extraClaimSection_3, [
     'claim',
     'mentioned',
-    'contain',
-    'notContain',
+    'statement',
     'source',
     'reason',
   ]);
@@ -143,6 +148,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   const sugarClaimsObjList = getObjectDataFromTable(sugarClaimSection, [
     'claim',
     'isClaimed',
+    'statement',
     'source',
     'reason',
   ]);
@@ -161,7 +167,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
 
   //? OTHER
   const nonCertificateClaimsObjList = getObjectDataFromTable(
-    otherClaimSection,
+    processClaimSection,
     ['claim', 'isClaimed', 'source', 'reason']
   );
   logger.error('other claim list');
@@ -214,6 +220,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   const ingredientObjList = getObjectDataFromTable(ingredientSection, [
     'isProductSupplement',
     'ingredientStatement',
+    'ingredientBreakdown',
   ]);
   logger.error('ingredient list');
   logger.info(JSON.stringify(ingredientObjList));
@@ -229,6 +236,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
     'instagram',
     'pinterest',
     'youtube',
+    'youtubeType',
     'facebook',
     'twitter',
     'socialMediaList',
@@ -240,18 +248,22 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   logger.info(JSON.stringify(marketingObjList));
 
   //? INSTRUCTION
-  const instructionObjList = getObjectDataFromTable(instructionSection, [
-    'storageInstruction',
-    'cookingInstruction',
-    'usageInstruction',
-    'usageTimeInstruction',
-    'otherInstructions',
-  ]);
+  const instructionObjList = getObjectDataFromHorizontalTable(
+    instructionSection,
+    {
+      'storage instructions': 'storageInstruction',
+      'cooking instructions': 'cookingInstruction',
+      'usage instructions': 'usageInstruction',
+      'usage time instruction / freeze by instruction': 'usageTimeInstruction',
+      'other instructions': 'otherInstructions',
+    }
+  );
   logger.error('instruction');
   logger.info(JSON.stringify(instructionObjList));
 
   //? SUPPLY CHAIN
   const supplyChainObjList = getObjectDataFromTable(supplyChainSection, [
+    'countryOfOriginText',
     'countryOfOrigin',
     'distributedBy',
     'manufacturerName',
@@ -265,29 +277,41 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   logger.error('supplyChain');
   logger.info(JSON.stringify(supplyChainObjList));
 
+  //? MARKETING TEXT TABLE
+  const marketingTextObjList = getObjectDataFromTable(marketingTextSection, [
+    'idx',
+    'marketingContent',
+  ]);
+  logger.error('marketing text');
+  logger.info(JSON.stringify(marketingTextObjList));
+
   return {
     header: headerObjList,
     physical: physicalObjList,
     attributes: {
       containAndNotContain: [
-        ...extraClaimsObjList_1?.map((item: any) => ({
-          ...item,
-          contain: `${item?.containOrNot === 'yes'}`,
-          notContain: `${item?.containOrNot !== 'yes'}`,
-        })),
+        ...extraClaimsObjList_1,
         ...extraClaimsObjList_2,
         ...extraClaimsObjList_3,
       ],
+      sugarClaims: sugarClaimsObjList,
       fatClaims: fatClaimsObjList,
       nonCertificateClaims: nonCertificateClaimsObjList,
       calorieClaims: calorieClaimsObjList,
       saltClaims: saltClaimsObjList,
-      sugarClaims: sugarClaimsObjList,
     },
     ingredients: ingredientObjList,
     allergens: allergenObjList,
     instructions: instructionObjList,
-    marketing: marketingObjList,
+    marketing: [
+      {
+        ...marketingObjList?.[0],
+        marketingClaims: marketingTextObjList?.map(
+          (item) => item?.marketingContent
+        ),
+      },
+    ],
+
     supplyChain: supplyChainObjList,
   };
 };
@@ -296,6 +320,8 @@ const getObjectDataFromTable = (
   sectionContent: string,
   propertyList: string[]
 ) => {
+  if (!sectionContent) return [];
+
   const [tableHeader, tableDivider, ...itemStringList] = sectionContent
     .trim()
     .split('\n')
@@ -316,4 +342,36 @@ const getObjectDataFromTable = (
 
     return obj;
   });
+};
+
+const getObjectDataFromHorizontalTable = (
+  sectionContent: string,
+  propertyListMap: any
+) => {
+  if (!sectionContent) return [];
+
+  const [tableHeader, tableDivider, ...itemStringList] = sectionContent
+    .trim()
+    .split('\n')
+    .filter((line) => line.trim().length > 0)
+    .filter((line) => line.trim() !== '##')
+    .filter((line) => line.trim() !== '**');
+
+  const obj: Record<string, any> = {};
+
+  itemStringList.forEach((line, idx) => {
+    const values = line
+      .split('|')
+      .filter((item) => item !== '')
+      .map((item) => item.trim());
+    const [name, ...multiValues] = values;
+
+    // const currentPropertyValue
+
+    obj[propertyListMap?.[name]] = multiValues?.filter(
+      (item: string) => item !== ''
+    );
+  });
+
+  return [obj];
 };

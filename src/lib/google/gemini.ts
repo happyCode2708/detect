@@ -14,6 +14,8 @@ import { make_markdown_nut_prompt } from '../promp/markdown_nut_utils';
 import { mapMarkdownNutToObject } from '../mapper/mapMarkdonwDataToObject';
 import { make_markdown_all_prompt } from '../promp/markdown_all_utils';
 import { mapMarkdownAllToObject } from '../mapper/mapMdAllToObject';
+import { make_markdown_all_prompt_test } from '../promp/markdown_all_utils_test';
+import { make_markdown_all_prompt_test_2 } from '../promp/markdown_all_utils_test_2';
 
 export const generateContent = async (images: any[], text: any) => {
   if (!(global as any)?.generativeModel) return;
@@ -326,6 +328,13 @@ export const onProcessOther = async ({
         ...invalidatedInput.nutIncluded,
         ...invalidatedInput.nutExcluded,
       ],
+      // prompt: make_markdown_all_prompt({
+      //   ocrText: JSON.stringify(new_allText),
+      //   imageCount: [
+      //     ...invalidatedInput.nutIncluded,
+      //     ...invalidatedInput.nutExcluded,
+      //   ]?.length,
+      // }),
       prompt: make_markdown_all_prompt({
         ocrText: JSON.stringify(new_allText),
         imageCount: [

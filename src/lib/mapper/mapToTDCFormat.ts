@@ -1,4 +1,4 @@
-import { toUpper } from 'lodash';
+import { lowerCase, toLower, toUpper } from 'lodash';
 
 export const mapToTDCformat = (extractData: any) => {
   const productData = extractData?.product;
@@ -30,11 +30,11 @@ export const mapToTDCformat = (extractData: any) => {
 
     //* panel
     NutritionPanel:
-      ingredients?.[0]?.isProductSupplement !== 'true' && factPanels
+      toLower(ingredients?.[0]?.isProductSupplement) !== 'true' && factPanels
         ? mapToNutritionPanels(factPanels, 'NUTRITION FACTS')
         : null,
     SupplementPanel:
-      ingredients?.[0]?.isProductSupplement === 'true' && factPanels
+      toLower(ingredients?.[0]?.isProductSupplement) === 'true' && factPanels
         ? mapToNutritionPanels(factPanels, 'SUPPLEMENT FACTS', ingredients)
         : null,
 
@@ -52,16 +52,12 @@ export const mapToTDCformat = (extractData: any) => {
     ),
     ManufacturerZipCodePackaging: toUpper(supplyChain?.[0]?.manufactureZipCode),
     DistributedBy: supplyChain?.[0]?.distributedBy, //? in progress
-    // CountryOfOriginText: toUpper(supplyChain?.[0]?.countryOfOriginText),
+    CountryOfOriginText: toUpper(supplyChain?.[0]?.countryOfOriginText),
     CountryOfOriginName: toUpper(supplyChain?.[0]?.validated_countryOfOrigin),
 
     //* instructions
-    UsageInstructions: instructions?.[0]?.usageInstruction
-      ?.split(', ')
-      .map((item: string) => toUpper(item?.trim())),
-    ConsumerStorage: instructions?.[0]?.storageInstruction
-      ?.split(', ')
-      .map((item: string) => toUpper(item?.trim())),
+    UsageInstructions: instructions?.[0]?.usageInstruction,
+    ConsumerStorage: instructions?.[0]?.storageInstruction,
 
     //* allergen
     Allergens: allergens?.[0]?.validated_containList,
@@ -74,23 +70,27 @@ export const mapToTDCformat = (extractData: any) => {
 
     //* ingredients
     SupplementIngredientStatement:
-      ingredients?.[0]?.isProductSupplement === 'true' &&
+      toLower(ingredients?.[0]?.isProductSupplement) === 'true' &&
       ingredients?.[0]?.ingredientStatement
         ? [toUpper(ingredients[0].ingredientStatement)]
         : undefined,
 
     IngredientsStatement:
-      ingredients?.[0]?.isProductSupplement !== 'true' &&
+      toLower(ingredients?.[0]?.isProductSupplement) !== 'true' &&
       ingredients?.[0]?.ingredientStatement
         ? [toUpper(ingredients[0].ingredientStatement)]
         : undefined,
+    IngredientBreakout: ingredients?.[0]?.ingredientBreakdown
+      ?.split(', ')
+      .filter((item: string) => item !== '')
+      .map((item: string) => toUpper(item?.trim())),
 
     //* additional
     HasSupplementPanel:
-      ingredients?.[0]?.isProductSupplement === 'true' &&
+      toLower(ingredients?.[0]?.isProductSupplement) === 'true' &&
       factPanels?.length > 0,
     HasNutritionPanel:
-      ingredients?.[0]?.isProductSupplement !== 'true' &&
+      toLower(ingredients?.[0]?.isProductSupplement) !== 'true' &&
       factPanels?.length > 0,
     HasPanel: factPanels?.length > 0,
 
@@ -100,11 +100,22 @@ export const mapToTDCformat = (extractData: any) => {
     //* marketing
     Website: marketing?.[0]?.website
       ?.split(', ')
+      .filter((item: string) => item !== '')
       .map((item: string) => toUpper(item?.trim())),
     QRCode: marketing?.[0]?.haveQrCode,
     SocialMedia: marketing?.[0]?.socialMediaList
       ?.split(', ')
-      .map((item: string) => toUpper(item?.trim())),
+      .filter((item: string) => item !== '')
+      .map((item: string) => {
+        if (item === 'youtube' && marketing?.[0]?.youtubeType === 'type_2') {
+          return 'YOUTUBE2 or YOUTUBE3';
+        }
+
+        return toUpper(item?.trim());
+      }),
+    MarketingClaims: marketing?.[0]?.marketingClaims?.map((item: string) =>
+      toUpper(item)
+    ),
 
     // //* attribute
     SugarSweetener: attributes?.validated_sugarClaims || [],
@@ -158,7 +169,7 @@ const mapToNutritionPanels = (
       formatFactPanelPropertyList.push({
         PropertyName: 'PRIMARY SERVINGS PER CONTAINER',
         PropertySource: '',
-        Amount: servingPerContainer,
+        Amount: toUpper(servingPerContainer),
         AmountUOM: '',
       });
     }

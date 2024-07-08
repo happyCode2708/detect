@@ -34,6 +34,24 @@ export const useMutateProductExtraction = () => {
   });
 };
 
+export const useMutateRevalidateProductData = () => {
+  return useMutation({
+    mutationFn: async (payload: any) => {
+      const response = await fetch('/api/upload/revalidate-product-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    },
+  });
+};
+
 export const useMutateGetCompareResultWithTdc = () => {
   return useMutation({
     mutationFn: async (payload: any) => {

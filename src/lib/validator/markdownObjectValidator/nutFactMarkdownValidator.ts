@@ -1,5 +1,4 @@
 import { toLower, toUpper } from 'lodash';
-import { Models } from 'openai/resources';
 
 export const nutFactMarkdownValidator = (response: any) => {
   let modifiedFactPanels = response['product']['factPanels'] || [];
@@ -99,16 +98,11 @@ const validateNutrientName = (modifiedNutrient: any) => {
     bcaas: 'BRANCHED-CHAIN AMINO ACIDS',
     cal: 'CALORIES',
     kcal: 'KILOCALORIES',
-    'Potas.': 'POTASSIUM',
+    'potas.': 'POTASSIUM',
     'added sugars': 'ADDED SUGAR',
     //   iu: 'INTERNATIONAL UNITS',
     'total carbohydrate': 'TOTAL CARBOHYDRATES',
   } as any;
-
-  // const words = nutrientName.toLowerCase().split(/[\s,]+/);
-  // const fullFormWords = words.map(
-  //   (word: any) => shortFormMap[word] || toUpper(word)
-  // );
 
   const mappedNutrientName =
     shortFormMap?.[nutrientName] || toUpper(nutrientName);
