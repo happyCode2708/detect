@@ -18,6 +18,7 @@ import { writeJsonToFile } from '../../lib/json';
 
 import { prisma } from '../../server';
 import { responseValidator } from '../../lib/validator/main';
+import { checkFilesExist } from '../../lib/utils/checkFile';
 
 // import OpenAI from 'openai';
 
@@ -97,8 +98,6 @@ router.post(
 
     let invalidatedInput = await findImagesContainNutFact(filePaths);
 
-    // await createCollage(filePaths, collatedOuputPath);
-
     Object.entries(biasForm).forEach(([key, value]: any) => {
       if (value?.haveNutFact === true) {
         let newNutIncluded = addUniqueString(
@@ -166,9 +165,27 @@ router.post('/process-product-image', async (req, res) => {
       return res.status(404).json({ error: 'Product not found' });
     }
 
-    const filePaths = product?.images?.map((imageItem: any) =>
-      path.join(baseDir, imageItem?.path)
-    );
+    const filePaths = product?.images?.map((imageItem: any) => imageItem?.path);
+
+    try {
+      const checkFileExistResults = await checkFilesExist(filePaths);
+      const fileExistList = checkFileExistResults.filter(
+        (item: any) => item?.exists === true
+      );
+
+      if (fileExistList?.length < filePaths?.length) {
+        res
+          .status(404)
+          .json({ isSuccess: false, message: 'not enough file path' });
+
+        return;
+      }
+    } catch (err) {
+      res.status(404).json({
+        isSuccess: false,
+        message: 'some thing went wrong when checking for image files',
+      });
+    }
 
     const newSession = await prisma.extractSession.create({
       data: {
@@ -358,8 +375,7 @@ const createFinalResult = async ({
     let validatedResponse = await responseValidator(finalResult, '');
 
     //! removeRawFieldData(validatedResponse);
-
-    const updatedSession = await prisma.extractSession.update({
+    await prisma.extractSession.update({
       where: { sessionId },
       data: {
         status: 'success',
@@ -371,7 +387,6 @@ const createFinalResult = async ({
 
     console.log('stored in ' + sessionId);
   } catch (err) {
-    console.log(err);
     const updatedSession = await prisma.extractSession.update({
       where: { sessionId },
       data: {

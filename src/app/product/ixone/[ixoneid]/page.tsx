@@ -116,6 +116,7 @@ const ProductDetailPage = () => {
     mutationProductExtract.mutate(payload, {
       onError: (e) => {
         console.log(e);
+        setLoading(false);
       },
       onSuccess: (res) => {
         const { sessionId, images, messages } = res;
@@ -144,7 +145,7 @@ const ProductDetailPage = () => {
           });
         }
         setSessionId(sessionId);
-        queryClient.invalidateQueries({ queryKey: ['history'] });
+        // queryClient.invalidateQueries({ queryKey: ['history'] });
       },
     });
   };

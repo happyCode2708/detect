@@ -26,10 +26,15 @@ export const useMutateProductExtraction = () => {
         },
         body: JSON.stringify(payload),
       });
-      if (!response.ok) {
+      const res = (await response.json()) as any;
+
+      const { isSuccess } = res;
+
+      if (!response.ok || isSuccess === false) {
         throw new Error('Network response was not ok');
       }
-      return response.json();
+
+      return res;
     },
   });
 };
