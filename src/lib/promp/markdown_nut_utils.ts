@@ -85,8 +85,12 @@ MARKDOWN RULES:
 3) do not use bold or heading markdown syntax for table_name
 4) content in a markdown table cell can only use <br> as line break instead of "\n"
 
+IMPORTANT NOTES:
+1) dual-column nutrition panel must be always separated into two different markdown tables. 
+
 RESULT THAT I NEED:
-carefully examine provided images above. They are captured images of one product, and return info from provided images that match all listed requirements and rules above with markdown tables format below
+Carefully examine provided images above. They are captured images of one product, and return info from provided images that meet all listed requirements and rules above with markdown tables format below
+
 
 1) Nutrition fact info recorded in table
 + TABLE_NAME = "NUTRITION_FACT_TABLE [index number] " (example: NUTRITION_FACT_TABLE [1])
