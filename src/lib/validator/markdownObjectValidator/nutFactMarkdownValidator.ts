@@ -104,6 +104,7 @@ const validateNutrientName = (modifiedNutrient: any) => {
     'total carbohydrate': 'TOTAL CARBOHYDRATES',
     fiber: 'DIETARY FIBER',
     'total carb.': 'TOTAL CARBOHYDRATES',
+    sugars: 'TOTAL SUGARS',
   } as any;
 
   const mappedNutrientName =

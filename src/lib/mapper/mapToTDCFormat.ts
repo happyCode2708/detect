@@ -130,10 +130,16 @@ export const mapToTDCformat = (extractData: any) => {
       .map((item: any) => toUpper(item)),
 
     // //* attribute
-    SugarSweetener: attributes?.validated_sugarClaims || [],
+    SugarSweetener:
+      attributes?.validated_sugarClaims?.filter((item: any) => !!item) || [],
     Process: attributes?.validated_nonCertificateClaims || [],
     Contains: attributes?.validated_contain || [],
     DoesNotContain: attributes?.validated_notContain || [],
+
+    //* other attributes
+    ...(attributes?.['validated_baseCertifierClaims']
+      ? attributes?.['validated_baseCertifierClaims']
+      : {}),
   };
 
   // console.log('result', JSON.stringify(mappedResult));

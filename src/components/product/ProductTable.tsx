@@ -40,7 +40,7 @@ const ProductTable = ({
             <TableHead>Ixone Id</TableHead>
             <TableHead>Images</TableHead>
             <TableHead>Extract Session</TableHead>
-            <TableHead>Validation Result</TableHead>
+            <TableHead>Saved Compare Result</TableHead>
             <TableHead>Tool</TableHead>
           </TableRow>
         </TableHeader>
@@ -71,7 +71,7 @@ const ProductTable = ({
                 </div>
               </TableCell>
               <TableCell>{product?.extractSessions}</TableCell>
-              <TableCell>{product?.validationResult}</TableCell>
+              <TableCell>{product?.compareResult ? 'yes' : ''}</TableCell>
               <TableCell>
                 <div className='flex space-x-2'>
                   <Link

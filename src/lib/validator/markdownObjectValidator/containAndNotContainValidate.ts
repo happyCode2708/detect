@@ -202,6 +202,7 @@ const DATA_POINT_KEY_MAP = {
     'made without',
     'does not contain',
     'no',
+    'free',
   ],
 };
 

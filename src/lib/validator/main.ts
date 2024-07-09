@@ -28,6 +28,7 @@ import { calorieClaimValidate } from './markdownObjectValidator/calorieClaimVali
 import { HeaderValidate } from './markdownObjectValidator/HeaderValidate';
 import { allergenValidate } from './markdownObjectValidator/allergenValidate';
 import { supplyChainValidate } from './markdownObjectValidator/supplyChainValidate';
+import { baseCertifierClaimValidate } from './markdownObjectValidator/baseCertifierClaimValidate';
 
 export const responseValidator = async (response: any, ocrClaims: any) => {
   let validatedResponse = { ...response };
@@ -58,6 +59,7 @@ const validateProductDataPoints = async (response: any, ocrClaims: any) => {
   await nonCertifierClaimValidate(modifiedProductDataPoints);
   await saltClaimValidate(modifiedProductDataPoints);
   await sugarClaimValidate(modifiedProductDataPoints);
+  await baseCertifierClaimValidate(modifiedProductDataPoints);
 
   // ingredientsValidator(modifiedProductDataPoints);
   // highRichExcellentClaimsValidator(modifiedProductDataPoints);

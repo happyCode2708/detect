@@ -269,7 +269,8 @@ export const mapMarkdownAllToObject = (markdown: string) => {
       'storage instructions': 'storageInstruction',
       'cooking instructions': 'cookingInstruction',
       'usage instructions': 'usageInstruction',
-      'usage time instruction / freeze by instruction': 'usageTimeInstruction',
+      'how to store product after opening or freeze by / within a time instruction':
+        'usageTimeInstruction',
       'other instructions': 'otherInstructions',
     }
   );

@@ -6,6 +6,7 @@ import AddProductDialog from '@/components/product/AddProductDialog';
 import DeleteProductDialog from '@/components/product/DeleteProductDialog';
 import { toast } from '@/components/ui/use-toast';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutationExportCompareResult } from '@/queries/home';
 
 const HomePage = () => {
   // const [products, setProducts] = useState([]);
@@ -17,6 +18,7 @@ const HomePage = () => {
   );
 
   const queryClient = useQueryClient();
+  const mutateExportCompareResult = useMutationExportCompareResult();
 
   const fetchProducts = async (searchTerm: string) => {
     const response = await fetch(`/api/product/list?ixoneID=${searchTerm}`, {
@@ -102,6 +104,25 @@ const HomePage = () => {
     }
   };
 
+  const handleExportCompareResult = () => {
+    const payload = {};
+
+    mutateExportCompareResult.mutate(payload, {
+      onError: (e) => {
+        console.log('e', e);
+      },
+      onSuccess: (res) => {
+        const { message } = res;
+        toast({
+          title: 'Info',
+          description: message,
+          variant: 'success',
+          duration: 2000,
+        });
+      },
+    });
+  };
+
   const handleProductSelect = (id: string) => {
     setSelectedProducts((prev) => {
       const newSelected = new Set(prev);
@@ -125,6 +146,11 @@ const HomePage = () => {
           className='p-2 border border-gray-300 rounded'
         />
         <div className='flex space-x-1'>
+          {process.env.NODE_ENV !== 'production' && (
+            <Button variant='secondary' onClick={handleExportCompareResult}>
+              Export compare result
+            </Button>
+          )}
           <DeleteProductDialog
             isOpen={isDeleteDialogOpen}
             toggleDialog={toggleDeleteProductDialog}

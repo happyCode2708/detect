@@ -3,6 +3,7 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
+import { createObjectCsvWriter } from 'csv-writer';
 
 import {
   getOcrTextAllImages,
@@ -122,6 +123,134 @@ router.delete('/delete-products', async (req, res) => {
   } catch (error) {
     console.log(JSON.stringify(error));
     res.status(500).json({ error: 'Failed to delete products' });
+  }
+});
+
+router.post('/save-compare-result', async (req, res) => {
+  const { ixoneid, compareResult } = req.body;
+
+  try {
+    //* update compare result to product
+    await prisma.product.update({
+      data: {
+        compareResult: JSON.stringify(compareResult),
+      },
+      where: {
+        ixoneID: ixoneid,
+      },
+    });
+    res
+      .status(201)
+      .json({ isSucess: true, message: 'save compare result  successfully' });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ isSuccess: false, message: 'fail to save compare result' });
+  }
+});
+
+router.post('/export-compare-result', async (req, res) => {
+  const {} = req.body;
+
+  // Example product array
+  // const products = [
+  //   {
+  //     productName: 'Product 1',
+  //     productWeight: '2.29 OZ',
+  //     productIngredients: 'Ingredient1, Ingredient2',
+  //     isNonGmoClaim: true,
+  //     rating: 4.5,
+  //   },
+  //   {
+  //     productName: 'Product 2',
+  //     productWeight: '1.5 KG',
+  //     productIngredients: 'Ingredient3, Ingredient4',
+  //   },
+  //   {
+  //     productName: 'Product 3',
+  //     productWeight: '500 G',
+  //     productIngredients: 'Ingredient5, Ingredient6',
+  //     rating: 3.8,
+  //   },
+  //   // Add more products as needed
+  // ] as any;
+
+  const products = await prisma.product.findMany({
+    orderBy: {
+      createdAt: 'desc', // Order by creation date, newest first
+    },
+    // include: { images: true },
+  });
+
+  if (!products) {
+    return res.status(404).json({
+      isSuccess: false,
+      message: 'There is no compare result to export',
+    });
+  }
+
+  let exportProductsList = products?.map((productItem: any, idx: number) =>
+    productItem?.compareResult
+      ? {
+          idx,
+          ixoneId: productItem?.ixoneID,
+          ...JSON.parse(productItem?.compareResult),
+          NutritionPanel: 'NA',
+          SupplementPanel: 'NA',
+        }
+      : []
+  );
+
+  // Determine all unique keys across all products
+  const allKeys = Array.from(
+    exportProductsList.reduce((keys: Set<string>, product: any) => {
+      Object.keys(product).forEach((key) => keys.add(key));
+      return keys;
+    }, new Set())
+  );
+
+  // Calculate the average rating
+  // const ratings = products
+  //   .filter((product: any) => 'rating' in product)
+  //   .map((product: any) => product.rating);
+  // const averageRating =
+  //   ratings.reduce((sum: any, rating: any) => sum + rating, 0) / ratings.length;
+
+  // Add average rating to the product array as a separate object
+  // products.push({
+  //   productName: 'Average Rating',
+  //   productWeight: '',
+  //   productIngredients: '',
+  //   isNonGmoClaim: '',
+  //   rating: averageRating.toFixed(2), // Rounded to 2 decimal places
+  // });
+
+  // Define the CSV writer
+
+  try {
+    const csvWriter = createObjectCsvWriter({
+      path: 'products.csv',
+      header: allKeys.map((key: any) => ({ id: key, title: key })),
+    });
+
+    // Write the products to the CSV file
+    csvWriter
+      .writeRecords(exportProductsList)
+      .then(() => {
+        console.log('CSV file was written successfully');
+
+        res.status(201).json({
+          isSucess: true,
+          message: 'export compare result  successfully',
+        });
+      })
+      .catch((err) => {
+        console.error('Error writing CSV file:', err);
+      });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ isSucess: false, message: 'fail to export compare result' });
   }
 });
 

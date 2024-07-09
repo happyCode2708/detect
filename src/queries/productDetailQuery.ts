@@ -24,3 +24,28 @@ export const useQueryProductsFromTdc = ({
     retry: false,
   });
 };
+
+export const useMutateSaveCompareResult = () => {
+  return useMutation({
+    mutationFn: async ({
+      ixoneid,
+      compareResult,
+    }: {
+      ixoneid: string;
+      compareResult: any;
+    }) => {
+      const response = await fetch('/api/product/save-compare-result', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ixoneid, compareResult }),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      return response.json();
+    },
+  });
+};

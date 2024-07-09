@@ -37,7 +37,7 @@ export const make_markdown_all_prompt = ({
 ${ocrText}
 
 VALIDATION AND FIX BUGS:
-1) To avoid any deduction and ensure accuracy, if the product explicitly states that it "does not contain [specific ingredient]" or "is free from [specific ingredient]". Do not infer or deduce information from similar phrases. For example, if the product says "free from artificial flavors," do not assume it also means "does not contain added flavors." Only report what the text directly states.
+1) To avoid any deduction and ensure accuracy.
 
 2) Only be using the information explicitly provided in the product images and not drawing conclusions based on the ingredient list. I will focus on directly extracting product claims from the text on the packaging and avoid making deductions based on the presence or absence of specific ingredients.
 Ex 1: if product have something in ingredient list. That cannot conclude that product claim to have this thing. Claim must be a statement or texts on the packaging make claim on a thing.
@@ -79,6 +79,7 @@ INSTRUCTION_TABLE
 SUPPLY_CHAIN_TABLE
 BASE_CERTIFIER_CLAIM_TABLE
 ATTRIBUTE_TABLE
+MARKETING_TEXT_TABLE
 
 without any number like 1) or 2) before table names
 
@@ -137,8 +138,8 @@ Ex 1: "Net WT 9.28oz(260g) 10 cups"
 
 6) "marketing" table rules:
 + "youtube icon type" have 2 types (answer is type_1/type_2)
-type_1 is youtube icon have two text "you" and "tube" on it.
-type_2 is youtube icon of youtube logo with play button without text
+type_1 is youtube icon have two texts "you" and "tube" on it.
+type_2 is youtube icon of youtube logo with play button without name youtube
 
 + "social media list" is the list of social media method mentioned on product images (such as "facebook", "google", "instagram", "pinterest", "snapchat", "tiktok", "youtube", "twitter", ...).
 + "website list" are all website links found on product (website link exclude "nongmoproject.org") and be careful the content after slash could be phone number.
@@ -156,12 +157,14 @@ Ex: "0   4562342221   5" as you can see there are two digit numbers at the start
 ex 1: "best if consumed ..."
 ex 2: "use it with lemon..."
 
++ "cooking instructions" is statement about how to cook with product. 
+
 + "storage instruction" such as "keep refrigerated"
 
-+ "usage instructions"
++ "usage instructions" is instruction about how to use product but not about cooking instruction statements.
 Ex 1: "suggested use: 2 cups at one time."
 
-+ "usage time instruction / freeze by instruction" such "use by a time", "use within a time", "use before a time"
++ "how to store product after opening or freeze by / within a time instruction" is about how to pertain 
 Ex 1: "use within 30 days ..."
 Ex 2: "freeze after open ..."
 
@@ -175,8 +178,6 @@ Ex 1: "Canada"
 Ex 2: "Brazil"
 
 + "manufacture name" is the statement about manufacturer name could include some text like "manufactured in", "manufactured for".
-Ex 1: "MANUFACTURED IN A CGMP CERTIFIED FACTORY FOR AMAZON" should be recorded as "manufacturer name" = "MANUFACTURED IN A CGMP CERTIFIED FACTORY FOR AMAZON"
-Ex 2: "MANUFACTURED FOR: COCA-COLA, INC." should be recorded as "manufacturer name" = "MANUFACTURED FOR: COCA-COLA, INC."
 
 + "distributed by" usually include address of distributor and text "distributed by".
 Ex 1: "distributed by: boiron inc. newtown square, PA 19073"
@@ -184,6 +185,10 @@ Ex 1: "distributed by: boiron inc. newtown square, PA 19073"
 10) "base certifier claim" rules:
 + carefully check for text or certifier logo that could indicate claim from provided image
 Ex: logo U kosher found mean "kosher claim" = "yes" 
+
+11) "marketing text table" rules:
+ + is the list of all texts or paragraphs to marketing for products that appeal customer to buy
+
 
 RESULT THAT I NEED:
 Carefully examine all text infos, all icons, all logos  from provided images and help me return output with all markdown tables format below remember that all provided images are captured pictured of one product only from different angles.
@@ -254,6 +259,9 @@ FAT_CLAIM_TABLE
 
 CONDITION FOR ROW TO SHOW IN TABLE BELOW: 
 + only return row items that its "does product explicitly claim this claim" value = "yes" and remove all rows with "does product explicitly claim this claim" value = "unknown" or "no")
+
+IMPORTANT NOTE:
++ "live food" is living animals used as food for pet.
 
 PROCESS_CLAIM_TABLE
 | proces claim | does product explicitly claim this process claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
@@ -354,9 +362,10 @@ SALT_CLAIM_TABLE
 IMPORTANT NOTE:
 + "artificial color" DO NOT mean "added color"
 + "artificial flavor", "chemical flavors" DO NOT mean "added flavor"
- 
++ "artificial sweeteners" not mean "artificial flavors"
+
 FIRST_EXTRA_CLAIM_TABLE
-| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer is multiple string if needed) | how do you know ? |
 | ------- | -------- | ------- | ------- | ------- |
 | additives | ...
 | artificial additives | ...
@@ -416,6 +425,9 @@ FIRST_EXTRA_CLAIM_TABLE
 
 CONDITION FOR ROW TO SHOW FOR TABLE BELOW: 
 + only return row items if its answer of "item explicitly and directly state in a text on product  without implying from other text" = "yes" and remove all unqualified rows from table below
+
+IMPORTANT NOTE:
++ "no dairy" DO NOT mean "no lactose"
 
 SECOND_EXTRA_CLAIM_TABLE
 | extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
@@ -507,6 +519,7 @@ THIRD_EXTRA_CLAIM_TABLE
  
 IMPORTANT NOTE:
 + allergen table only must have one row data so the list must be recorded in one cell and split by ", "
++ 'NON DAIRY' mean no dairy 
 
 ALLERGEN_TABLE
 | allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
@@ -548,7 +561,7 @@ INSTRUCTION_TABLE
 | storage instructions | 
 | cooking instructions | 
 | usage instructions | 
-| usage time instruction / freeze by instruction | 
+| how to store product after opening or freeze by / within a time instruction | 
 | other instructions |
 
 15) supply chain info with table format below:
@@ -586,10 +599,6 @@ BASE_CERTIFIER_CLAIM_TABLE
 | grass-fed claim |
 | halal claim |
 | hearth healthy claim |
-| high potency |
-| ITAL CERTIFIED SEAL Claim |
-| ITAL CONSCIOUS SEAL Claim |
-| ITAL SACRAMENT SEAL Claim |
 | Keto/Ketogenic Claim |
 | Kosher Claim |
 | Live and Active Culture Claim |
@@ -612,8 +621,19 @@ BASE_CERTIFIER_CLAIM_TABLE
 ATTRIBUTE_TABLE
 | grade (answer are 'grade A'/ 'grade B) | juice percent (answer is number) |
 | ------- | ------- |
+
+18) Marketing text with table format below:
+
+MARKETING_TEXT_TABLE
+| index | marketing text |
+| ------- | -------- |
 `;
 };
+
+// | high potency |
+// | ITAL CERTIFIED SEAL Claim |
+// | ITAL CONSCIOUS SEAL Claim |
+// | ITAL SACRAMENT SEAL Claim |
 
 // 16) Attribute info with table format below:
 

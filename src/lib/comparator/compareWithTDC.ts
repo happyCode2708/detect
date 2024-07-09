@@ -71,7 +71,7 @@ const compareFactPanel = (obj1: any, obj2: any) => {
             (value === '' && sameValue === '') ||
             (value === '0' && sameValue === '0')
           ) {
-            comparisonResult[key] = '100%';
+            comparisonResult[key] = '100';
           } else {
             comparisonResult[key] = `${getMatchPercent({
               v1:
@@ -82,7 +82,7 @@ const compareFactPanel = (obj1: any, obj2: any) => {
                 typeof samePropertyOnExtractData[key] !== 'string'
                   ? JSON.stringify(samePropertyOnExtractData[key])
                   : samePropertyOnExtractData[key],
-            })}%`;
+            })}`;
           }
         }
       }
@@ -100,9 +100,9 @@ const compareObjects = (obj1: any, obj2: any) => {
   for (const key of Object.keys(obj2)) {
     if (obj1.hasOwnProperty(key)) {
       if (`${obj1[key]}` === `${obj2[key]}`) {
-        comparisonResult[key] = '100%';
+        comparisonResult[key] = '100';
       } else if (obj1[key] === undefined && obj2[key] !== undefined) {
-        comparisonResult[key] = '0%';
+        comparisonResult[key] = '0';
       } else {
         comparisonResult[key] = `${getMatchPercent({
           v1:
@@ -113,7 +113,7 @@ const compareObjects = (obj1: any, obj2: any) => {
             typeof obj2[key] !== 'string'
               ? JSON.stringify(obj2[key])
               : obj2[key],
-        })}%`;
+        })}`;
       }
     } else {
       // comparisonResult[key] = '';
@@ -125,7 +125,7 @@ const compareObjects = (obj1: any, obj2: any) => {
       if (obj1[key] === '' || obj1[key] === null) {
         break;
       }
-      comparisonResult[key] = '0%';
+      comparisonResult[key] = '0';
     }
   }
 

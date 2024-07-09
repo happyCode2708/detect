@@ -23,6 +23,7 @@ const validate = async (
     if (valid === true) {
       // const claimValue = analysisItem['claim'];
       const { claim, statement } = analysisItem;
+      console.log(`sugar ---- ${claim} ${statement}`);
 
       const currentValues =
         modifiedProductDataPoints?.['attributes']?.[dataPointKey] || [];
@@ -39,6 +40,8 @@ const validate = async (
 
 const check = async (analysisItem: any): Promise<boolean> => {
   const { claim, isClaimed, statement, source } = analysisItem;
+
+  console.log(`sugar ---- ${claim} ${statement}`);
 
   if (!claim) return Promise.resolve(false);
 
@@ -104,6 +107,32 @@ const SUGAR_ITEMS = [
 ];
 
 const SUGAR_CLAIMS_MAP = {
+  no: {
+    'acesulfame k': 'no acesulfame k',
+    'acesulfame potassium': 'no acesulfame k',
+    'added sugar': 'no added sugar',
+    agave: 'no agave',
+    allulose: 'no allulose',
+    'artificial sweetener': 'no artificial sweetener',
+    aspartame: 'no aspartame',
+    'cane sugar': 'no cane sugar',
+    'coconut/coconut palm sugar': 'no coconut/coconut palm sugar',
+    'coconut sugar': 'no coconut/coconut palm sugar',
+    'coconut palm sugar': 'no coconut/coconut palm sugar',
+    'corn syrup': 'no corn syrup',
+    'high fructose corn syrup': 'no high fructose corn syrup',
+    'refined sugars': 'no refined sugars',
+    saccharin: 'no saccharin',
+    'splenda/sucralose': 'no splenda/sucralose',
+    slpenda: 'no splenda/sucralose',
+    sucralose: 'no splenda/sucralose',
+    stevia: 'no stevia',
+    sugar: 'no sugar',
+    'sugar added': 'no sugar added',
+    'sugar alcohol': 'no sugar alcohol',
+    tagatose: 'no tagatose',
+    xylitol: 'no xylitol',
+  },
   'no contain': {
     'acesulfame k': 'no acesulfame k',
     'acesulfame potassium': 'no acesulfame k',
@@ -238,7 +267,10 @@ const SUGAR_CLAIMS_MAP = {
     'low sugar': 'low sugar',
   },
   lower: {
-    'lower sugar': 'low sugar',
+    'lower sugar': 'lower sugar',
+  },
+  unsweetened: {
+    unsweetened: 'unsweetened',
   },
   contain: {
     'reduced sugar': 'reduced sugar',

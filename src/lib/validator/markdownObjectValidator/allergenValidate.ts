@@ -216,6 +216,7 @@ const ALLERGEN_LIST = [
       'pecans',
       'pistachios',
       'macadamia nuts',
+      'coconut',
     ],
   },
   {
