@@ -15699,3 +15699,90 @@ FLAVOR WITH OTHER NATURAL FLAVORS | yes |
 2024-07-10 16:41:30 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"true","twitter":"false","socialMediaList":"facebook","website":"PRIMALKITCHEN.COM","socialMediaText":"","enlargedToShow":"false"}]
 2024-07-10 16:41:30 [31merror[39m: instruction
 2024-07-10 16:41:30 [32minfo[39m: [{"storageInstruction":["Store in a cool, dry place away from sunlight."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":["Shake me and refrigerate after opening."],"otherInstructions":[]}]
+2024-07-10 22:39:09 [31merror[39m: debug section
+2024-07-10 22:39:09 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in dual-column format. That means the percent daily values are all in one column. I only created one table because there is only one nutrition fact table present. |
+
+2024-07-10 22:39:09 [31merror[39m: footnote
+2024-07-10 22:39:09 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * NOT A LOW CALORIE FOOD. SEE NUTRITION INFORMATION FOR FAT & SATURATED FAT CONTENT. | * NOT A LOW CALORIE FOOD. SEE NUTRITION INFORMATION FOR FAT & SATURATED FAT CONTENT. |
+
+
+2024-07-10 22:39:09 [31merror[39m: debug
+2024-07-10 22:39:09 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in dual-column format. That means the percent daily values are all in one column. I only created one table because there is only one nutrition fact table present. |
+
+2024-07-10 22:39:09 [31merror[39m: debug table
+2024-07-10 22:39:09 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-10 22:40:29 [31merror[39m: ingredient list
+2024-07-10 22:40:29 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"AVOCADO OIL, ORGANIC VINEGAR, ORGANIC EGGS, ORGANIC EGG YOLKS, SALT, ROSEMARY EXTRACT, MUSTARD SEED EXTRACT.","ingredientBreakdown":"AVOCADO OIL, ORGANIC VINEGAR, ORGANIC EGGS, ORGANIC EGG YOLKS, SALT, ROSEMARY EXTRACT, MUSTARD SEED EXTRACT."}]
+2024-07-10 22:40:29 [31merror[39m: marketing
+2024-07-10 22:40:29 [32minfo[39m: [{"haveQrCode":"true","instagram":"false","pinterest":"false","youtube":"true","youtubeType":"type_2","facebook":"true","twitter":"false","socialMediaList":"facebook","website":"primalkitchen.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-10 22:40:29 [31merror[39m: instruction
+2024-07-10 22:40:29 [32minfo[39m: [{"storageInstruction":["Store in a cool, dry place.","Refrigerate after opening."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[],"otherInstructions":[]}]
+2024-07-10 23:29:07 [31merror[39m: debug section
+2024-07-10 23:29:07 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. It is a single-column format because all of the nutrients are listed in a single column. I only created one nutrition fact table because there is only one nutrition fact table present in the image. |
+
+2024-07-10 23:29:07 [31merror[39m: footnote
+2024-07-10 23:29:07 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| *NOT A LOW CALORIE FOOD. SEE NUTRITION INFORMATION FOR FAT & SATURATED FAT CONTENT. | *NOT A LOW CALORIE FOOD. SEE NUTRITION INFORMATION FOR FAT & SATURATED FAT CONTENT. |
+
+
+2024-07-10 23:29:07 [31merror[39m: debug
+2024-07-10 23:29:07 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. It is a single-column format because all of the nutrients are listed in a single column. I only created one nutrition fact table because there is only one nutrition fact table present in the image. |
+
+2024-07-10 23:29:07 [31merror[39m: debug table
+2024-07-10 23:29:07 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-10 23:30:30 [31merror[39m: ingredient list
+2024-07-10 23:30:30 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"AVOCADO OIL, ORGANIC VINEGAR, ORGANIC EGGS, ORGANIC EGG YOLKS, SALT, ROSEMARY EXTRACT, MUSTARD SEED EXTRACT.","ingredientBreakdown":"AVOCADO OIL, ORGANIC VINEGAR, ORGANIC EGGS, ORGANIC EGG YOLKS, SALT, ROSEMARY EXTRACT, MUSTARD SEED EXTRACT."}]
+2024-07-10 23:30:30 [31merror[39m: marketing
+2024-07-10 23:30:30 [32minfo[39m: [{"haveQrCode":"true","instagram":"unknown","pinterest":"unknown","youtube":"true","youtubeType":"type_2","facebook":"unknown","twitter":"unknown","socialMediaList":"","website":"www.primalkitchen.com","socialMediaText":"","enlargedToShow":"unknown"}]
+2024-07-10 23:30:30 [31merror[39m: instruction
+2024-07-10 23:30:30 [32minfo[39m: [{"storageInstruction":["Store in a cool, dry place.","Refrigerate after opening."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[],"otherInstructions":[]}]
+2024-07-10 23:33:56 [31merror[39m: debug section
+2024-07-10 23:33:56 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in dual-column format. Although the information is displayed in two columns, it follows a standard single-column format with a single set of headings.  |
+
+2024-07-10 23:33:56 [31merror[39m: footnote
+2024-07-10 23:33:56 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * NOT A LOW CALORIE FOOD. SEE NUTRITION INFORMATION FOR FAT & SATURATED FAT CONTENT. |  | 
+
+
+2024-07-10 23:33:56 [31merror[39m: debug
+2024-07-10 23:33:56 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in dual-column format. Although the information is displayed in two columns, it follows a standard single-column format with a single set of headings.  |
+
+2024-07-10 23:33:56 [31merror[39m: debug table
+2024-07-10 23:33:56 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-10 23:35:20 [31merror[39m: ingredient list
+2024-07-10 23:35:20 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"AVOCADO OIL, ORGANIC VINEGAR, ORGANIC EGGS, ORGANIC EGG YOLKS, SALT, ROSEMARY EXTRACT, MUSTARD SEED EXTRACT.","ingredientBreakdown":"AVOCADO OIL, ORGANIC VINEGAR, ORGANIC EGGS, ORGANIC EGG YOLKS, SALT, ROSEMARY EXTRACT, MUSTARD SEED EXTRACT."},{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"AVOCADO OIL, ORGANIC VINEGAR, ORGANIC EGGS, ORGANIC EGG YOLKS, SALT, MUSTARD SEED EXTRACT.","ingredientBreakdown":"AVOCADO OIL, ORGANIC VINEGAR, ORGANIC EGGS, ORGANIC EGG YOLKS, SALT, MUSTARD SEED EXTRACT."}]
+2024-07-10 23:35:20 [31merror[39m: marketing
+2024-07-10 23:35:20 [32minfo[39m: [{"haveQrCode":"true","instagram":"false","pinterest":"false","youtube":"true","youtubeType":"type_2","facebook":"true","twitter":"false","socialMediaList":"facebook","website":"primalkitchen.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-10 23:35:20 [31merror[39m: instruction
+2024-07-10 23:35:20 [32minfo[39m: [{"storageInstruction":["Store in a cool, dry place.","Refrigerate after opening."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[],"otherInstructions":[]}]

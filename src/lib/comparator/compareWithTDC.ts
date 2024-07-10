@@ -99,7 +99,10 @@ const compareObjects = (obj1: any, obj2: any) => {
 
   for (const key of Object.keys(obj2)) {
     if (obj1.hasOwnProperty(key)) {
-      if (`${obj1[key]}` === `${obj2[key]}`) {
+      // console.log(`key---${key} -- ${obj1[key]} --- ${obj2[key]}`);
+      if (isEqual(obj1[key], []) && obj2[key]) {
+        comparisonResult[key] = '0';
+      } else if (`${obj1[key]}` === `${obj2[key]}`) {
         comparisonResult[key] = '100';
       } else if (obj1[key] === undefined && obj2[key] !== undefined) {
         comparisonResult[key] = '0';

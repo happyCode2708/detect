@@ -5,7 +5,7 @@ const paragraph1 = '29';
 const paragraph2 = 29;
 
 const p1 = 'gram';
-const p2 = '';
+const p2 = '[]';
 
 const tfidf = new TfIdf();
 tfidf.addDocument(p1);

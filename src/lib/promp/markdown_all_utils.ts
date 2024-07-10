@@ -170,11 +170,25 @@ ex 2: "use it with lemon..."
 + "usage instructions" are all instruction statement about how to use product but not about "cooking instructions" text.
 Ex 1: "suggested use: 2 cups at one time."
 
-+ "storage instruction" such as "keep refrigerated"
++ "storage instruction" are all storage instruction such as
+Ex 1: store cool dark place
+Ex 2: store cool dry place
+Ex 3: do not freeze
+Ex 4: do not refrigerate
+Ex 5: store dry place
+Ex 6: keep frozen
+Ex 7: keep refrigerated
+Ex 8: refrigerate after opening
+Ex 9: seal for freshness
+Ex 10: store at room temperature
+
 
 + "how to store product after opening or freeze by / within a time instruction" is about how to pertain 
 Ex 1: "use within 30 days ..."
 Ex 2: "freeze after open ..."
+
++ "other instructions" are all other instructions see examples
+Ex 1: SEE NUTRITION INFORMATION FOR FAT AND SATURATED FAT ...
 
 9) "supply chain" table rules:
 + "country of origin text" example

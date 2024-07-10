@@ -63,7 +63,7 @@ export const mapToTDCformat = (extractData: any) => {
 
     //* instructions
     UsageInstructions: instructions?.[0]?.usageInstruction,
-    // ConsumerStorage: instructions?.[0]?.storaƒgeInstruction,
+    ConsumerStorage: instructions?.[0]?.validated_storageInstruction,
     CookingInstructions: instructions?.[0]?.cookingInstruction,
     UseOrFreezeBy: instructions?.[0]?.useOrFreezeBy,
     InstructionsAncillary: instructions?.[0]?.otherInstructions,

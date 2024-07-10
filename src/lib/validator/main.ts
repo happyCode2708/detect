@@ -29,6 +29,7 @@ import { HeaderValidate } from './markdownObjectValidator/HeaderValidate';
 import { allergenValidate } from './markdownObjectValidator/allergenValidate';
 import { supplyChainValidate } from './markdownObjectValidator/supplyChainValidate';
 import { baseCertifierClaimValidate } from './markdownObjectValidator/baseCertifierClaimValidate';
+import { instructionValidate } from './markdownObjectValidator/instructionValidate';
 
 export const responseValidator = async (response: any, ocrClaims: any) => {
   let validatedResponse = { ...response };
@@ -60,6 +61,7 @@ const validateProductDataPoints = async (response: any, ocrClaims: any) => {
   await saltClaimValidate(modifiedProductDataPoints);
   await sugarClaimValidate(modifiedProductDataPoints);
   await baseCertifierClaimValidate(modifiedProductDataPoints);
+  await instructionValidate(modifiedProductDataPoints);
 
   // ingredientsValidator(modifiedProductDataPoints);
   // highRichExcellentClaimsValidator(modifiedProductDataPoints);
