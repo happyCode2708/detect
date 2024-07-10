@@ -39,7 +39,7 @@ const validate = async (
 };
 
 const check = async (analysisItem: any): Promise<boolean> => {
-  const { claim, isClaimed, statement, source } = analysisItem;
+  const { claim, isClaimed, statement, source, reason } = analysisItem;
 
   console.log(`sugar ---- ${claim} ${statement}`);
 
@@ -62,12 +62,33 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
   }
 
+  if (
+    SUGAR_ITEMS_REASON?.[toLower(claim)]
+      ? SUGAR_ITEMS_REASON?.[toLower(claim)]
+          ?.map((word: string) => {
+            if (toLower(reason)?.includes(word)) return true;
+
+            return false;
+          })
+          .some((result: boolean) => result === false)
+      : false
+  ) {
+    return Promise.resolve(false);
+  }
+
   if (source?.includes('marketing text on product') && isClaimed === 'yes') {
     return Promise.resolve(true);
   }
 
   return Promise.resolve(false);
 };
+
+const SUGAR_ITEMS_REASON = {
+  'lower sugar': ['lower', 'sugar'],
+  'low sugar': ['low', 'sugar'],
+  'reduced sugar': ['reduced', 'sugar'],
+  'sugar free': ['sugar', 'free'],
+} as any;
 
 const SUGAR_ITEMS = [
   'acesulfame k',
@@ -107,6 +128,24 @@ const SUGAR_ITEMS = [
 ];
 
 const SUGAR_CLAIMS_MAP = {
+  low: {
+    'low sugar': 'low sugar',
+  },
+  lower: {
+    'lower sugar': 'lower sugar',
+  },
+  unsweetened: {
+    unsweetened: 'unsweetened',
+  },
+  sweetened: {
+    xylitol: 'xylitol',
+  },
+  reduced: {
+    'reduced sugar': 'reduced sugar',
+  },
+  'sugar free': {
+    'sugar free': 'sugar free',
+  },
   no: {
     'acesulfame k': 'no acesulfame k',
     'acesulfame potassium': 'no acesulfame k',
@@ -184,6 +223,7 @@ const SUGAR_CLAIMS_MAP = {
     'sugar alcohol': 'no sugar alcohol',
     tagatose: 'no tagatose',
     xylitol: 'no xylitol',
+    'sugar free': 'sugar free',
   },
   '0g': {
     'acesulfame k': 'no acesulfame k',
@@ -236,6 +276,7 @@ const SUGAR_CLAIMS_MAP = {
     'sugar alcohol': 'no sugar alcohol',
     tagatose: 'no tagatose',
     xylitol: 'no xylitol',
+    'sugar free': 'sugar free',
   },
   'does not contain': {
     'acesulfame k': 'no acesulfame k',
@@ -262,15 +303,6 @@ const SUGAR_CLAIMS_MAP = {
     'sugar alcohol': 'no sugar alcohol',
     tagatose: 'no tagatose',
     xylitol: 'no xylitol',
-  },
-  low: {
-    'low sugar': 'low sugar',
-  },
-  lower: {
-    'lower sugar': 'lower sugar',
-  },
-  unsweetened: {
-    unsweetened: 'unsweetened',
   },
   contain: {
     'reduced sugar': 'reduced sugar',

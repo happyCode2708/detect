@@ -229,7 +229,7 @@ router.post('/export-compare-result', async (req, res) => {
 
   try {
     const csvWriter = createObjectCsvWriter({
-      path: 'products.csv',
+      path: 'products-home.csv',
       header: allKeys.map((key: any) => ({ id: key, title: key })),
     });
 
@@ -244,7 +244,7 @@ router.post('/export-compare-result', async (req, res) => {
           message: 'export compare result  successfully',
         });
       })
-      .catch((err) => {
+      .catch((err: any) => {
         console.error('Error writing CSV file:', err);
       });
   } catch (error) {

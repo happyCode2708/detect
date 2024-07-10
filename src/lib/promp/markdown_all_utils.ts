@@ -26,6 +26,9 @@
 // + "ingredient break-down" is the break-down list of ingredients statement. Remember that sub-ingredients in the parenthesis or bracket of main ingredient item is recorded as one ingredient item info.
 // Ex1: "STARCH (TAPIOCA, POTATO, CORN)" is an ingredient item in the list
 
+// 11) "marketing text table" rules:
+//  + is the list of all texts or paragraphs to marketing for products that appeal customer to buy
+
 export const make_markdown_all_prompt = ({
   ocrText,
   imageCount,
@@ -79,9 +82,9 @@ INSTRUCTION_TABLE
 SUPPLY_CHAIN_TABLE
 BASE_CERTIFIER_CLAIM_TABLE
 ATTRIBUTE_TABLE
-MARKETING_TEXT_TABLE
 
 without any number like 1) or 2) before table names
+without \`\`\` or \`\`\`markdown closing tag
 
 IMPORTANT RULES:
 1) return result rules:
@@ -113,12 +116,13 @@ Ex 1: "non-dairy" text mean does not contain allergen ingredient of "dairy"
 + "allergen contain on equipment statement" is the exact context that you found on provided images about list of allergen ingredients that is said they may be contained in/on manufacturing equipments.
 ex 1: "manufactured on equipment that also processes product containing ..."
 ex 2: "made in a facility that also processes ... "
+ex 3: "tree nuts, wheat present in facility"
 
 + "allergen break-down list" is a string list
 ex 1: "oats, milk"
 
 3) "SUGAR_CLAIM_TABLE" rules:
-+ "how product state about it ?" only have return exact answers such as "free of", "free from", "made without", "no contain", "contain", "lower", "low", "0g", "zero", "other", "does not contain", "not too sweet", "low sweet".
++ possible answers of "how product state about it ?" are "free of"/  "free from" / "made without" / "no contain" / "contain" / "lower" / "low" / "0g" / "zero" / "other" / "does not contain" / "not too sweet" / "low sweet" / "sweetened" / "other".
 
 4) "header" table rules:
 + header table only have 1 row item so you must carefully examine the images.
@@ -157,12 +161,12 @@ Ex: "0   4562342221   5" as you can see there are two digit numbers at the start
 ex 1: "best if consumed ..."
 ex 2: "use it with lemon..."
 
-+ "cooking instructions" is statement about how to cook with product. 
++ "cooking instructions" are all statements or all steps how to cook using product.
+
++ "usage instructions" are all instruction statement about how to use product but not about "cooking instructions" text.
+Ex 1: "suggested use: 2 cups at one time."
 
 + "storage instruction" such as "keep refrigerated"
-
-+ "usage instructions" is instruction about how to use product but not about cooking instruction statements.
-Ex 1: "suggested use: 2 cups at one time."
 
 + "how to store product after opening or freeze by / within a time instruction" is about how to pertain 
 Ex 1: "use within 30 days ..."
@@ -177,18 +181,22 @@ Ex 2: "made in Brazil"
 Ex 1: "Canada"
 Ex 2: "Brazil"
 
-+ "manufacture name" is the statement about manufacturer name could include some text like "manufactured in", "manufactured for".
-
-+ "distributed by" usually include address of distributor and text "distributed by".
++ "distributed by" is the text statement MUST start after text such as "distributed by", "distributed by:", "distributor ...".
 Ex 1: "distributed by: boiron inc. newtown square, PA 19073"
+
++ "manufacture name" is only the name of manufacturer could start after some text such as "manufactured in" without including address.
+Ex1 : "Coca cola .LLC"
+
++ address info of "manufacturer" is recorded in manufacture street address , manufacture city , manufacture state , manufacture zipCode.
 
 10) "base certifier claim" rules:
 + carefully check for text or certifier logo that could indicate claim from provided image
 Ex: logo U kosher found mean "kosher claim" = "yes" 
 
-11) "marketing text table" rules:
- + is the list of all texts or paragraphs to marketing for products that appeal customer to buy
 
+11) Three "extra claim table" rules:
++ text "make without: ..." is in type "marketing text on product".
++ "how product state about it ?" the possible answers of question are  "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use".
 
 RESULT THAT I NEED:
 Carefully examine all text infos, all icons, all logos  from provided images and help me return output with all markdown tables format below remember that all provided images are captured pictured of one product only from different angles.
@@ -197,6 +205,7 @@ Carefully examine all text infos, all icons, all logos  from provided images and
 
 IMPORTANT NOTE:
 + only process with provided sugar items below.
++ possible answers of "how product state about it ?" for sugar claim table  are  "free of"/  "free from" / "made without" / "no contain" / "contain" / "lower" / "low" / "0g" / "zero" / "other" / "does not contain" / "not too sweet" / "low sweet" / "sweetened" / "other".
 
 SUGAR_CLAIM_TABLE
 | sugar item | sugar item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ?  | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know ? |
@@ -237,9 +246,6 @@ SUGAR_CLAIM_TABLE
 | xylitol |
 
 2) FAT_CLAIM_TABLE info of product images recorded in markdown table format below:
-
-CONDITION FOR ROW TO SHOW IN TABLE BELOW: 
-+ only return row items if its answer of "does product claim that fat claim" value = "yes" and remove all rows with "does product claim that fat claim" value = "unknown" or "no" )
 
 FAT_CLAIM_TABLE
 | fat claim | does product claim that fat claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
@@ -359,14 +365,19 @@ SALT_CLAIM_TABLE
 
 6) FIRST EXTRA CLAIM TABLE info recorded in markdown table format below:
 
+CONDITION FOR ROW TO SHOW FOR TABLE BELOW: 
++ have no rows return condition it means that you must return all rows items listed below
+
+
 IMPORTANT NOTE:
 + "artificial color" DO NOT mean "added color"
 + "artificial flavor", "chemical flavors" DO NOT mean "added flavor"
 + "artificial sweeteners" not mean "artificial flavors"
++ "hormones" not mean "added hormones"
 
 FIRST_EXTRA_CLAIM_TABLE
-| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer is multiple string if needed) | how do you know ? |
-| ------- | -------- | ------- | ------- | ------- |
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ?  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer is multiple string if needed) | how do you know ? | do exact text of extra item appear on product ? | 
+| ------- | -------- | ------- | ------- | ------- | 
 | additives | ...
 | artificial additives | ...
 | chemical additives | ...
@@ -415,7 +426,8 @@ FIRST_EXTRA_CLAIM_TABLE
 | chemicals | ...
 | hormones | ...
 | added hormones | ...
-| nitrates/nitrites | ...
+| nitrates | ...
+| nitrites | ...
 | added nitrates | ...
 | added nitrites | ...
 | yeast | ...
@@ -423,15 +435,14 @@ FIRST_EXTRA_CLAIM_TABLE
 
 7) SECOND_EXTRA_CLAIM_TABLE info recorded in markdown table format below:
 
-CONDITION FOR ROW TO SHOW FOR TABLE BELOW: 
-+ only return row items if its answer of "item explicitly and directly state in a text on product  without implying from other text" = "yes" and remove all unqualified rows from table below
-
 IMPORTANT NOTE:
 + "no dairy" DO NOT mean "no lactose"
 
 SECOND_EXTRA_CLAIM_TABLE
 | extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
 | ------- | -------- | ------- | ------- | ------- |
+| omega fatty acids | ...
+| pesticides | ...
 | 1,4-dioxane | ...
 | alcohol | ...
 | allergen | ...
@@ -454,26 +465,22 @@ SECOND_EXTRA_CLAIM_TABLE
 | grain | ...
 | hexane | ...
 | hydrogenated oils | ...
-| kitniyos / kitniyot (legumes) | ...
+| kitniyos | ...
+| kitniyot | ...
 | lactose | ...
 | latex | ...
 | msg | ...
-| omega fatty acids | ...
 | paba | ...
 | palm oil | ...
 | parabens | ...
-| pesticides | ...
 
 8) THIRD_EXTRA_CLAIM_TABLE info recorded in markdown table format below: 
-
-CONDITION FOR ROWS TO SHOW FOR TABLE BELOW: 
-+ only return row items if its answer of "item explicitly and directly state in a text on product  without implying from other text" = "yes" and remove all unqualified rows from table below
 
 IMPORTANT NOTE:
 + "vegan" not mean "vegan ingredients"
 
 THIRD_EXTRA_CLAIM_TABLE
-| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) |  How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
 | ------- | -------- | ------- | ------- | ------- |
 | petro chemical | ...
 | petrolatum | ...
@@ -483,11 +490,13 @@ THIRD_EXTRA_CLAIM_TABLE
 | phthalates | ...
 | pits | ...
 | probiotics | ...
-| rbgh/bst | ...
+| rbgh | ...
+| rbst | ...
 | rennet | ...
 | salicylates | ...
 | sea salt | ...
-| shells/ shell pieces | ...
+| shells pieces | ...
+| shell pieces | ...
 | silicone | ...
 | sles (sodium laureth sulfate) | ...
 | sls (sodium lauryl sulfate) | ...
@@ -495,9 +504,11 @@ THIRD_EXTRA_CLAIM_TABLE
 | starch | ...
 | sulfates | ...
 | sulfides | ...
-| sulfites / sulphites | ...
+| sulfites | ...
+| sulphites | ...
 | sulfur dioxide | ...
-| thc / tetrahydrocannabinol | ...
+| thc | ...
+| tetrahydrocannabinol | ...
 | toxic pesticides | ...
 | triclosan | ...
 | vegan ingredients | ...
@@ -520,6 +531,7 @@ THIRD_EXTRA_CLAIM_TABLE
 IMPORTANT NOTE:
 + allergen table only must have one row data so the list must be recorded in one cell and split by ", "
 + 'NON DAIRY' mean no dairy 
++ tree nuts also includes "coconut"
 
 ALLERGEN_TABLE
 | allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
@@ -619,16 +631,31 @@ BASE_CERTIFIER_CLAIM_TABLE
 17) some other attribute info recorded with table format below:
 
 ATTRIBUTE_TABLE
-| grade (answer are 'grade A'/ 'grade B) | juice percent (answer is number) |
+| grade (answer are 'A'/ 'B') | juice percent (answer is number) |
 | ------- | ------- |
 
-18) Marketing text with table format below:
-
-MARKETING_TEXT_TABLE
-| index | marketing text |
-| ------- | -------- |
 `;
 };
+
+//* second
+// CONDITION FOR ROW TO SHOW FOR TABLE BELOW:
+// + only return row items if its answer of "item explicitly and directly state in a text on product  without implying from other text" = "yes" and remove all unqualified rows from table below
+
+//* third
+// CONDITION FOR ROWS TO SHOW FOR TABLE BELOW:
+// + only return row items if its answer of "item explicitly and directly state in a text on product  without implying from other text" = "yes" and remove all unqualified rows from table below
+
+//* fat claim
+// CONDITION FOR ROW TO SHOW IN TABLE BELOW:
+// + only return row items if its answer of "does product claim that fat claim" value = "yes" and remove all rows with "does product claim that fat claim" value = "unknown" or "no" )
+
+// 18) Marketing text with table format below:
+
+// MARKETING_TEXT_TABLE
+// | index | marketing text |
+// | ------- | -------- |
+
+// MARKETING_TEXT_TABLE
 
 // | high potency |
 // | ITAL CERTIFIED SEAL Claim |

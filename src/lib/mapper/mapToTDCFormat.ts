@@ -60,8 +60,10 @@ export const mapToTDCformat = (extractData: any) => {
 
     //* instructions
     UsageInstructions: instructions?.[0]?.usageInstruction,
-    ConsumerStorage: instructions?.[0]?.storageInstruction,
+    // ConsumerStorage: instructions?.[0]?.storaƒgeInstruction,
     CookingInstructions: instructions?.[0]?.cookingInstruction,
+    UseOrFreezeBy: instructions?.[0]?.useOrFreezeBy,
+    InstructionsAncillary: instructions?.[0]?.otherInstructions,
 
     //* allergen
     Allergens: allergens?.[0]?.validated_containList,
@@ -71,6 +73,9 @@ export const mapToTDCformat = (extractData: any) => {
     ProcessedOnEquipment: allergens?.[0]?.validated_containOnEquipmentList,
     ProcessedManufacturedInFacilityStatement:
       allergens?.[0]?.containOnEquipmentStatement,
+    InFacilityOnEquipmentStatement: allergens?.[0]?.containOnEquipmentStatement,
+    InFacilityOnEquipmentIncluding:
+      allergens?.[0]?.validated_containOnEquipmentList,
 
     //* ingredients
     SupplementIngredientStatement:
@@ -121,9 +126,9 @@ export const mapToTDCformat = (extractData: any) => {
 
         return toUpper(item?.trim());
       }),
-    MarketingClaims: marketing?.[0]?.marketingClaims?.map((item: string) =>
-      toUpper(item)
-    ),
+    // MarketingClaims: marketing?.[0]?.marketingClaims?.map((item: string) =>
+    //   toUpper(item)
+    // ),
     SocialMediaAddresses: marketing?.[0]?.socialMediaText
       ?.split(', ')
       .filter((item: string) => item !== '')
@@ -135,6 +140,8 @@ export const mapToTDCformat = (extractData: any) => {
     Process: attributes?.validated_nonCertificateClaims || [],
     Contains: attributes?.validated_contain || [],
     DoesNotContain: attributes?.validated_notContain || [],
+    Grade: attributes?.otherAttribute?.[0]?.grade,
+    JuicePercent: attributes?.otherAttribute?.[0]?.juicePercent,
 
     //* other attributes
     ...(attributes?.['validated_baseCertifierClaims']

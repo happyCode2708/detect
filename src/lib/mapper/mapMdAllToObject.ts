@@ -270,7 +270,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
       'cooking instructions': 'cookingInstruction',
       'usage instructions': 'usageInstruction',
       'how to store product after opening or freeze by / within a time instruction':
-        'usageTimeInstruction',
+        'useOrFreezeBy',
       'other instructions': 'otherInstructions',
     }
   );

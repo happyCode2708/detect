@@ -1,0 +1,15 @@
+idx,ixoneId,BrandName,FairTradeYN,OrganicYN,PrimarySize,PrimarySizeText,PrimarySizeUOM,ProductDescription,SecondarySize,SecondarySizeUOM,IngredientBreakout,IngredientsStatement,UsageInstructions,SocialMedia,Website,UPC12,ManufacturerCityPackaging,ManufacturerNamePackaging,ManufacturerPhoneNumberPackaging,ManufacturerStatePackaging,ManufacturerStreetPackaging,ManufacturerZipCodePackaging,HasPanel,HasSupplementPanel,HasNutritionPanel,NutritionPanel,SupplementPanel,Allergens,FreeOf,DoesNotContain,GlutenFreeYN,Process,UnitCount,SupplementIngredientStatement,ConsumerStorage,CountryOfOriginName,CountryOfOriginText,DistributedBy,generalFactPanels,Contains,Grade,InstructionsAncillary,UseOrFreezeBy,QRCode,AllergensAncillary,KosherYN,NonGMOYN,CertifiedBCorporation,CookingInstructions,MarketingClaims,InFacilityOnEquipmentIncluding,InFacilityOnEquipmentStatement
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,SNL425393,32.47,100.00,100.00,100,100,100,36.66,100,0.00,100.00,0,90.30,51.10,100.00,100,100,100.00,100.00,100,100.00,100,100,100,100,NA,NA,,,,,,,,,,,,,,,,,,,,,,,,,
+4,SNL170906,100,,,0,0,0,58.86,,,,,100.00,,100.00,0,100,51.10,100,100,,100,100,100,100,NA,NA,100,100.00,82.87,100.00,51.10,100,27.19,100.00,100,100,54.03,100,,,,,,,,,,,,,
+5,SNL654130,0.00,,,100,0,100,38.75,100,100,100.00,100.00,,,100,0,100,100,,100,,100,100,100,100,NA,NA,100,,71.74,,,,,,,,,100,100.00,100,100.00,100.00,0.00,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,SNL615174,71.74,,100.00,100,100,100,28.49,100,100,100,84.39,,,NaN,0,100,76.53,,100,,100,100,100,100,NA,NA,100,,,,,,,100.00,,,,87.01,,,,,,100,100.00,100.00,100.00,6.78,63.60,100,100
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

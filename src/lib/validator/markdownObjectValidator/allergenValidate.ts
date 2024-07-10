@@ -13,9 +13,8 @@ const validateNoContainList = async (modifiedProductDataPoints: any) => {
   if (!notContainList) return null;
   let validated_notContainList = [] as any;
 
-  console.log('allergen item', notContainList);
   notContainList?.split(', ')?.forEach((notContainItem: any) => {
-    ALLERGEN_LIST.forEach((allergenItem: any) => {
+    ALLERGEN_LIST.some((allergenItem: any) => {
       const variants = allergenItem?.variants;
       const name = allergenItem?.name;
 
@@ -27,7 +26,10 @@ const validateNoContainList = async (modifiedProductDataPoints: any) => {
         validated_notContainList = Array.from(
           new Set([...validated_notContainList, toUpper(name)])
         );
+        return true;
       }
+
+      return false;
     });
   });
 
@@ -43,7 +45,7 @@ const validateContainList = async (modifiedProductDataPoints: any) => {
   let validated_containList = [] as any;
 
   containList?.split(', ')?.forEach((containItem: any) => {
-    ALLERGEN_LIST.forEach((allergenItem: any) => {
+    ALLERGEN_LIST.some((allergenItem: any) => {
       const variants = allergenItem?.variants;
       const name = allergenItem?.name;
 
@@ -55,7 +57,10 @@ const validateContainList = async (modifiedProductDataPoints: any) => {
         validated_containList = Array.from(
           new Set([...validated_containList, toUpper(name)])
         );
+        return true;
       }
+
+      return false;
     });
   });
 
@@ -73,7 +78,7 @@ const validateContainOnEquipmentList = async (
   let validated_containOnEquipmentList = [] as any;
 
   containOnEquipmentList?.split(', ')?.forEach((containItem: any) => {
-    ALLERGEN_LIST.forEach((allergenItem: any) => {
+    ALLERGEN_LIST.some((allergenItem: any) => {
       const variants = allergenItem?.variants;
       const name = allergenItem?.name;
 
@@ -85,7 +90,10 @@ const validateContainOnEquipmentList = async (
         validated_containOnEquipmentList = Array.from(
           new Set([...validated_containOnEquipmentList, toUpper(name)])
         );
+        return true;
       }
+
+      return false;
     });
   });
 
@@ -109,6 +117,7 @@ const ALLERGEN_LIST = [
     name: 'crustacean shellfish',
     variants: [
       'crustacean shellfish',
+      'shellfish',
       'shrimp',
       'crab',
       'lobster',
