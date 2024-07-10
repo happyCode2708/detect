@@ -196,16 +196,18 @@ router.post('/export-compare-result', async (req, res) => {
     ratings.reduce((sum: any, rating: any) => sum + rating, 0) / ratings.length;
 
   // Add average rating to the product array as a separate object
-  let accuracy;
+  let accuracy = {} as any;
 
-  allKeys.forEach(() => {});
+  allKeys.forEach((key: string) => {
+    accuracy[key] = computeAverage(exportProductsList, key);
+  });
 
-  products.push({
-    productName: 'Average Rating',
-    productWeight: '',
-    productIngredients: '',
-    isNonGmoClaim: '',
-    rating: averageRating.toFixed(2), // Rounded to 2 decimal places
+  console.log(JSON.stringify(accuracy));
+
+  exportProductsList.push({
+    idx: '',
+    ixoneId: 'All',
+    ...accuracy,
   });
 
   // Define the CSV writer
@@ -239,12 +241,16 @@ router.post('/export-compare-result', async (req, res) => {
 
 const computeAverage = (products: any, field: string) => {
   const ratings = products
-    .filter((product: any) => field in product && product[field] !== 'NA')
-    .map((product: any) => product.rating);
+    .filter(
+      (product: any) =>
+        field in product && product[field] !== 'NA' && product[field] !== ''
+    )
+    .map((product: any) => product?.[field]);
   const averageRating =
     ratings.reduce((sum: any, rating: any) => sum + rating, 0) / ratings.length;
 
-  return averageRating;
+  const final = averageRating?.toFixed(2);
+  return final;
 };
 
 // router.post('/create-session', async (req, res) => {
