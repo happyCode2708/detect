@@ -106,14 +106,17 @@ IMPORTANT RULES:
 "tree nuts"
 "wheat".
 
-+ "allergen does-not-contain statement" is the exact context that you found on provided images about allergen info, that product claim not to contain.
-Ex 1: "non-dairy" text mean does not contain allergen ingredient of "dairy"
++ "allergen does-not-contain statement" are the exact contexts that you found on provided images about allergen info, that product claim not to contain.
+Ex 1: "contain no wheat, milk"
+Ex 2: "does not contain wheat, milk"
+Ex 3: "free of wheat, milk"
+Ex 4: "non-dairy" text mean does not contain allergen ingredient of "dairy"
 
-+ "allergen contain statement" is the exact context that you found on provided images about allergen info, usually start with "contains", "contains:", "may contains:", ....
++ "allergen contain statement" are the exact contexts that you found on provided images about allergen info, usually start with "contains", "contains:", "may contains:", ....
 
 + "allergen contain break-down list" is the allergen ingredients from "allergen contain statement" and do not collect from product ingredient list.
 
-+ "allergen contain on equipment statement" is the exact context that you found on provided images about list of allergen ingredients that is said they may be contained in/on manufacturing equipments.
++ "allergen contain on equipment statement" are the exact contexts that you found on provided images about list of allergen ingredients that is said they may be contained in/on manufacturing equipments.
 ex 1: "manufactured on equipment that also processes product containing ..."
 ex 2: "made in a facility that also processes ... "
 ex 3: "tree nuts, wheat present in facility"
@@ -131,8 +134,9 @@ Ex: "primary size" = "100gram"
 
 + "count" is the count number of smaller unit inside a package, or a display shipper, or a case, or a box.
 
-+ "full size text description" is the whole quantity measurement description statement of the product on image. It is usually appear on the front face of product.
++ "full size text description" is the whole quantity measurement description statement of the product on images.
 Ex 1: "Net WT 9.28oz(260g) 10 cups"
+Ex 2: "16 FL OZ (472 ML)
 
 5) "ingredient" table rules:
 + is the list of statements about ingredients of product (since product can have many ingredients list)
@@ -181,13 +185,15 @@ Ex 2: "made in Brazil"
 Ex 1: "Canada"
 Ex 2: "Brazil"
 
-+ "distributed by" is the text statement MUST start after text such as "distributed by", "distributed by:", "distributor ...".
-Ex 1: "distributed by: boiron inc. newtown square, PA 19073"
++ "manufacturer" could not be "distributor"
+
++ "distributeor name" is detected from the text statement MUST start after text such as "distributed by", "distributed by:", "distributor ...".
 
 + "manufacture name" is only the name of manufacturer could start after some text such as "manufactured in" without including address.
-Ex1 : "Coca cola .LLC"
+Ex 1 : "Coca cola .LLC"
+Ex 2: "MANUFACTURED FOR: BEAUTY FARM, PBC"
 
-+ address info of "manufacturer" is recorded in manufacture street address , manufacture city , manufacture state , manufacture zipCode.
++ if "manufacturer name" exits so its address info of that "manufacturer" is recorded in manufacture street address , manufacture city , manufacture state , manufacture zipCode.
 
 10) "base certifier claim" rules:
 + carefully check for text or certifier logo that could indicate claim from provided image
@@ -208,7 +214,7 @@ IMPORTANT NOTE:
 + possible answers of "how product state about it ?" for sugar claim table  are  "free of"/  "free from" / "made without" / "no contain" / "contain" / "lower" / "low" / "0g" / "zero" / "other" / "does not contain" / "not too sweet" / "low sweet" / "sweetened" / "other".
 
 SUGAR_CLAIM_TABLE
-| sugar item | sugar item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ?  | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know ? |
+| sugar item | sugar item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ?  | do you know it through which info ? (answer are "ingredient list","marketing text on product", "nutrition fact", "others") (answer allow multiple sources split by comma) | how do you know ? |
 | ------- | -------- | ------- | ------- | ------- |
 | acesulfame k |
 | acesulfame potassium |
@@ -376,7 +382,7 @@ IMPORTANT NOTE:
 + "hormones" not mean "added hormones"
 
 FIRST_EXTRA_CLAIM_TABLE
-| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ?  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer is multiple string if needed) | how do you know ? | do exact text of extra item appear on product ? | 
+| extra item | is item mentioned on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain" )  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer is multiple string if needed) | how do you know ? |  
 | ------- | -------- | ------- | ------- | ------- | 
 | additives | ...
 | artificial additives | ...
@@ -439,7 +445,7 @@ IMPORTANT NOTE:
 + "no dairy" DO NOT mean "no lactose"
 
 SECOND_EXTRA_CLAIM_TABLE
-| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| extra item | is item mentioned on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
 | ------- | -------- | ------- | ------- | ------- |
 | omega fatty acids | ...
 | pesticides | ...
@@ -480,7 +486,7 @@ IMPORTANT NOTE:
 + "vegan" not mean "vegan ingredients"
 
 THIRD_EXTRA_CLAIM_TABLE
-| extra item | item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) |  How product state about it ? (return short answer like "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "other") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| extra item | is item mentioned on provided images? (answer is yes/no/unknown) |  How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
 | ------- | -------- | ------- | ------- | ------- |
 | petro chemical | ...
 | petrolatum | ...
@@ -530,24 +536,23 @@ THIRD_EXTRA_CLAIM_TABLE
  
 IMPORTANT NOTE:
 + allergen table only must have one row data so the list must be recorded in one cell and split by ", "
-+ 'NON DAIRY' mean no dairy 
 + tree nuts also includes "coconut"
 
 ALLERGEN_TABLE
-| allergen contain statement | allergen contain break-down list | allergen does-not-contain statement | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+| allergen contain statement (allow multiple string split by comma) | allergen contain break-down list | allergen does-not-contain statement (allow multiple string split by comma) | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
 | ------- | -------- | -------- | ------- | -------- | -------- |
 
 10) Header info with table format below:
 (IMPORTANT NOTE: remember header table only have one row item)
 
 HEADER_TABLE
-| product name | brand name | primary size | secondary size | third size | full size text description | count |
-| ------- | -------- | -------- | ------- | -------- | -------- | -------- |
+| product name | brand name | primary size | secondary size | third size | full size text description | count | count uom |
+| ------- | -------- | -------- | ------- | -------- | -------- | -------- | -------- |
 
 11) Ingredient info with table format below:
 
 INGREDIENT_TABLE
-| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement |  ingredient break-down list |
+| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement |  ingredient break-down list (answer in multiple string splitted by comma) |
 | ------- | ------- | -------- | -------- |
 
 12) Physical info with table format below
@@ -579,8 +584,23 @@ INSTRUCTION_TABLE
 15) supply chain info with table format below:
 
 SUPPLY_CHAIN_TABLE
-| country of origin text | country of origin | distributed by | manufacture name | manufacture date | manufacture phone number | manufacture street address | manufacture city | manufacture state | manufacture zipCode |
-| ------- | -------- | -------- | -------- | ------- | ------- | -------- | -------- | ------- | ------- |
+| info item | value |
+| ------- | -------- |
+| country of origin text |
+| country of origin | 
+| distributor name |
+| distributor city | 
+| distributor state |
+| distributor zipCode |
+| distributor phone number |
+| full text about distributor |
+| manufacture name | 
+| manufacture date | 
+| manufacture phone number | 
+| manufacture street address | 
+| manufacture city | 
+| manufacture state 
+| manufacture zipCode |
 
 16) Base certifier claim info with table format below:
 

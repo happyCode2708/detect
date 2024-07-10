@@ -38,7 +38,11 @@ export const generateContent = async (images: any[], text: any) => {
       if (!item?.candidates) return;
       finalResponse =
         finalResponse + item?.candidates[0]?.content?.parts?.[0]?.text;
-      console.log('chunk ...' + item?.candidates[0]?.content?.parts?.[0]?.text);
+      if (!item?.candidates[0]?.content?.parts?.[0]?.text) {
+        console.log(
+          'chunk error  ...' + item?.candidates[0]?.content?.parts?.[0]?.text
+        );
+      }
     }
 
     return { chunkResponse, finalResponse };
@@ -382,7 +386,8 @@ export const onProcessNut = async ({
   collateImageName: string;
   outputConfig: any;
 }) => {
-  if (invalidatedInput?.nutIncluded?.length === 0 || !outputConfig.nut) {
+  // if (invalidatedInput?.nutIncluded?.length === 0 || !outputConfig.nut) {
+  if (!outputConfig.nut) {
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
       'nut.json',

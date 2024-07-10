@@ -152,29 +152,6 @@ router.post('/save-compare-result', async (req, res) => {
 router.post('/export-compare-result', async (req, res) => {
   const {} = req.body;
 
-  // Example product array
-  // const products = [
-  //   {
-  //     productName: 'Product 1',
-  //     productWeight: '2.29 OZ',
-  //     productIngredients: 'Ingredient1, Ingredient2',
-  //     isNonGmoClaim: true,
-  //     rating: 4.5,
-  //   },
-  //   {
-  //     productName: 'Product 2',
-  //     productWeight: '1.5 KG',
-  //     productIngredients: 'Ingredient3, Ingredient4',
-  //   },
-  //   {
-  //     productName: 'Product 3',
-  //     productWeight: '500 G',
-  //     productIngredients: 'Ingredient5, Ingredient6',
-  //     rating: 3.8,
-  //   },
-  //   // Add more products as needed
-  // ] as any;
-
   const products = await prisma.product.findMany({
     orderBy: {
       createdAt: 'desc', // Order by creation date, newest first
@@ -189,17 +166,19 @@ router.post('/export-compare-result', async (req, res) => {
     });
   }
 
-  let exportProductsList = products?.map((productItem: any, idx: number) =>
-    productItem?.compareResult
-      ? {
-          idx,
-          ixoneId: productItem?.ixoneID,
-          ...JSON.parse(productItem?.compareResult),
-          NutritionPanel: 'NA',
-          SupplementPanel: 'NA',
-        }
-      : []
-  );
+  let exportProductsList = products
+    ?.filter((item) => !!item?.compareResult)
+    ?.map((productItem: any, idx: number) =>
+      productItem?.compareResult
+        ? {
+            idx,
+            ixoneId: productItem?.ixoneID,
+            ...JSON.parse(productItem?.compareResult),
+            NutritionPanel: 'NA',
+            SupplementPanel: 'NA',
+          }
+        : []
+    );
 
   // Determine all unique keys across all products
   const allKeys = Array.from(
@@ -210,26 +189,30 @@ router.post('/export-compare-result', async (req, res) => {
   );
 
   // Calculate the average rating
-  // const ratings = products
-  //   .filter((product: any) => 'rating' in product)
-  //   .map((product: any) => product.rating);
-  // const averageRating =
-  //   ratings.reduce((sum: any, rating: any) => sum + rating, 0) / ratings.length;
+  const ratings = products
+    .filter((product: any) => 'rating' in product)
+    .map((product: any) => product.rating);
+  const averageRating =
+    ratings.reduce((sum: any, rating: any) => sum + rating, 0) / ratings.length;
 
   // Add average rating to the product array as a separate object
-  // products.push({
-  //   productName: 'Average Rating',
-  //   productWeight: '',
-  //   productIngredients: '',
-  //   isNonGmoClaim: '',
-  //   rating: averageRating.toFixed(2), // Rounded to 2 decimal places
-  // });
+  let accuracy;
+
+  allKeys.forEach(() => {});
+
+  products.push({
+    productName: 'Average Rating',
+    productWeight: '',
+    productIngredients: '',
+    isNonGmoClaim: '',
+    rating: averageRating.toFixed(2), // Rounded to 2 decimal places
+  });
 
   // Define the CSV writer
 
   try {
     const csvWriter = createObjectCsvWriter({
-      path: 'products-home.csv',
+      path: 'products-test.csv',
       header: allKeys.map((key: any) => ({ id: key, title: key })),
     });
 
@@ -253,6 +236,16 @@ router.post('/export-compare-result', async (req, res) => {
       .json({ isSucess: false, message: 'fail to export compare result' });
   }
 });
+
+const computeAverage = (products: any, field: string) => {
+  const ratings = products
+    .filter((product: any) => field in product && product[field] !== 'NA')
+    .map((product: any) => product.rating);
+  const averageRating =
+    ratings.reduce((sum: any, rating: any) => sum + rating, 0) / ratings.length;
+
+  return averageRating;
+};
 
 // router.post('/create-session', async (req, res) => {
 //   const { ixoneId, session } = req.body;

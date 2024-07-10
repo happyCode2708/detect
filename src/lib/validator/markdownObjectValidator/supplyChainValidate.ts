@@ -7,34 +7,36 @@ export const supplyChainValidate = async (modifiedProductDataPoints: any) => {
 
 const validateManufacturerState = async (modifiedProductDataPoints: any) => {
   const manufacturerState =
-    modifiedProductDataPoints?.supplyChain?.[0]?.manufacturerState;
+    modifiedProductDataPoints?.supplyChain?.[0]?.manufacturerState?.[0];
 
   if (!manufacturerState) return;
 
   const upperAbbreviation = manufacturerState?.trim().toUpperCase();
   if (states[upperAbbreviation]) {
     modifiedProductDataPoints['supplyChain'][0]['validated_manufacturerState'] =
-      states[upperAbbreviation];
+      [states[upperAbbreviation]];
   } else {
     modifiedProductDataPoints['supplyChain'][0]['validated_manufacturerState'] =
-      toUpper(manufacturerState);
+      [toUpper(manufacturerState)];
   }
 };
 
 const validateCountryOfOrigin = async (modifiedProductDataPoints: any) => {
   const countryOfOrigin =
-    modifiedProductDataPoints?.supplyChain?.[0]?.countryOfOrigin;
+    modifiedProductDataPoints?.supplyChain?.[0]?.countryOfOrigin?.[0];
 
   if (!countryOfOrigin) return;
 
   const upperName = countryOfOrigin?.trim().toUpperCase();
 
   if (COUNTRY_SHORT_NAMES?.[upperName]) {
-    modifiedProductDataPoints['supplyChain'][0]['validated_countryOfOrigin'] =
-      toUpper(COUNTRY_SHORT_NAMES[upperName]);
+    modifiedProductDataPoints['supplyChain'][0]['validated_countryOfOrigin'] = [
+      toUpper(COUNTRY_SHORT_NAMES[upperName]),
+    ];
   } else {
-    modifiedProductDataPoints['supplyChain'][0]['validated_countryOfOrigin'] =
-      upperName;
+    modifiedProductDataPoints['supplyChain'][0]['validated_countryOfOrigin'] = [
+      upperName,
+    ];
   }
 };
 

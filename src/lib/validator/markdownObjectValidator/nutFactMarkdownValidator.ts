@@ -88,6 +88,7 @@ const validateNutrientName = (modifiedNutrient: any) => {
     'sat. fat': 'SATURATED FAT',
     'trans. fat': 'TRANS FAT',
     chol: 'CHOLESTEROL',
+    'cholest.': 'CHOLESTEROL',
     sug: 'SUGARS',
     fib: 'FIBER',
     'omega-3': 'OMEGA-3 FATTY ACIDS',
@@ -104,6 +105,8 @@ const validateNutrientName = (modifiedNutrient: any) => {
     'total carbohydrate': 'TOTAL CARBOHYDRATES',
     fiber: 'DIETARY FIBER',
     'total carb.': 'TOTAL CARBOHYDRATES',
+    'monounsat. fat': 'MONOUNSATURATED FAT',
+    'polyunsat. fat': 'POLYUNSATURATED FAT',
     sugars: 'TOTAL SUGARS',
   } as any;
 

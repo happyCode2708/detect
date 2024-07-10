@@ -203,6 +203,12 @@ const check = async (
       .some((result: boolean) => result === false)
   ) {
     return Promise.resolve(false);
+  } else {
+    //* exceptional cases
+    if (toLower(claim) === 'alcohol' && toLower(reason)?.includes('sugar')) {
+      //? it could be about 'alcohol sugar' so must return false
+      return Promise.resolve(false);
+    }
   }
 
   if (source.includes('marketing text on product') && mentioned === 'yes') {
@@ -213,7 +219,13 @@ const check = async (
 };
 
 const DATA_POINT_KEY_MAP = {
-  validated_contain: ['contain', 'other', 'naturally flavored', 'naturally'],
+  validated_contain: [
+    'contain',
+    'may contain',
+    'other',
+    'naturally flavored',
+    'naturally',
+  ],
   validated_notContain: [
     'free of',
     'free from',

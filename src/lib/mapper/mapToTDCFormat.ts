@@ -24,9 +24,9 @@ export const mapToTDCformat = (extractData: any) => {
     //* header
     ProductDescription: toUpper(header?.[0]?.productName),
     BrandName: toUpper(header?.[0]?.brandName),
-    PrimarySize: toUpper(header?.[0]?.primarySizeValue),
-    PrimarySizeUOM: toUpper(header?.[0]?.primarySizeUOM),
-    PrimarySizeText: toUpper(header?.[0]?.fullSizeTextDescription),
+    // PrimarySize: toUpper(header?.[0]?.primarySizeValue),
+    // PrimarySizeUOM: toUpper(header?.[0]?.primarySizeUOM),
+    ...mapPrimarySizeAndPrimarySizeUom(header),
     SecondarySize: toUpper(header?.[0]?.secondarySizeValue),
     SecondarySizeUOM: toUpper(header?.[0]?.secondarySizeUOM),
     UnitCount: header?.[0]?.count,
@@ -42,19 +42,22 @@ export const mapToTDCformat = (extractData: any) => {
         : null,
 
     //* supply chain
-    ManufacturerNamePackaging: toUpper(supplyChain?.[0]?.manufacturerName),
-    ManufacturerCityPackaging: toUpper(supplyChain?.[0]?.manufacturerCity),
+    ManufacturerNamePackaging: toUpper(supplyChain?.[0]?.manufacturerName?.[0]),
+    ManufacturerCityPackaging: toUpper(supplyChain?.[0]?.manufacturerCity?.[0]),
     ManufacturerPhoneNumberPackaging: toUpper(
-      supplyChain?.[0]?.manufacturerPhoneNumber
+      supplyChain?.[0]?.manufacturerPhoneNumber?.[0]
     ),
     ManufacturerStatePackaging: toUpper(
-      supplyChain?.[0]?.validated_manufacturerState
+      supplyChain?.[0]?.validated_manufacturerState?.[0]
     ),
     ManufacturerStreetPackaging: toUpper(
-      supplyChain?.[0]?.manufacturerStreetAddress
+      supplyChain?.[0]?.manufacturerStreetAddress?.[0]
     ),
-    ManufacturerZipCodePackaging: toUpper(supplyChain?.[0]?.manufactureZipCode),
-    DistributedBy: supplyChain?.[0]?.distributedBy, //? in progress
+    ManufacturerZipCodePackaging: toUpper(
+      supplyChain?.[0]?.manufactureZipCode?.[0]
+    ),
+    // ...mapDistributedBy(supplyChain),
+    DistributedBy: toUpper(supplyChain?.[0]?.fullTextDistributor?.[0]),
     CountryOfOriginText: toUpper(supplyChain?.[0]?.countryOfOriginText),
     CountryOfOriginName: toUpper(supplyChain?.[0]?.validated_countryOfOrigin),
 
@@ -69,7 +72,10 @@ export const mapToTDCformat = (extractData: any) => {
     Allergens: allergens?.[0]?.validated_containList,
 
     FreeOf: allergens?.[0]?.validated_notContainList,
-    AllergensAncillary: [toUpper(allergens?.[0]?.containStatement)], //? in progress
+    AllergensAncillary: [
+      toUpper(allergens?.[0]?.containStatement),
+      toUpper(allergens?.[0]?.notContainStatement),
+    ], //? in progress
     ProcessedOnEquipment: allergens?.[0]?.validated_containOnEquipmentList,
     ProcessedManufacturedInFacilityStatement:
       allergens?.[0]?.containOnEquipmentStatement,
@@ -85,7 +91,10 @@ export const mapToTDCformat = (extractData: any) => {
         : undefined,
 
     IngredientsStatement:
-      productType === 'nutrition facts' && ingredients?.length > 0
+      (productType === 'nutrition facts' ||
+        productType === 'unknown' ||
+        !productType) &&
+      ingredients?.length > 0
         ? ingredients?.map((ingredientItem: any) => {
             return toUpper(ingredientItem?.ingredientStatement);
           })
@@ -260,3 +269,54 @@ const mapToNutritionPanels = (
     })
     ?.reverse();
 };
+
+const mapPrimarySizeAndPrimarySizeUom = (header: any) => {
+  const {
+    primarySizeValue,
+    primarySizeUOM,
+    count,
+    countUom,
+    fullSizeTextDescription,
+  } = header?.[0] || {};
+  if (primarySizeValue) {
+    return {
+      PrimarySize: toUpper(primarySizeValue),
+      PrimarySizeUOM: toUpper(primarySizeUOM),
+      PrimarySizeText: toUpper(fullSizeTextDescription),
+    };
+  }
+
+  if (!primarySizeValue && count) {
+    return {
+      PrimarySize: toUpper(count),
+      PrimarySizeUOM: 'COUNT',
+      PrimarySizeText: toUpper(`${count} ${countUom}`),
+    };
+  }
+
+  return {};
+};
+
+// const mapDistributedBy = (suppychain: any) => {
+//   const {
+//     distributorName,
+//     distributorCity,
+//     distributorState,
+//     distributorZipCode,
+//   } = suppychain?.[0] || {};
+
+//   if (distributorName) {
+//     return {
+//       DistributedBy: toUpper(
+//         [
+//           distributorName,
+//           distributorCity,
+//           distributorState,
+//           distributorZipCode,
+//         ]?.join(', ')
+//       ),
+//     };
+//   }
+
+//   return {};
+// };
