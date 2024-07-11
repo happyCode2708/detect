@@ -155,6 +155,8 @@ router.post(
 );
 
 router.post('/process-product-image', async (req, res) => {
+  let responseReturned = false;
+  let sessionId;
   try {
     const product = await prisma.product.findUnique({
       where: { ixoneID: req.body.ixoneId },
@@ -193,7 +195,8 @@ router.post('/process-product-image', async (req, res) => {
         status: 'unknown',
       },
     });
-    const sessionId = newSession.sessionId;
+
+    sessionId = newSession.sessionId;
 
     const biasForm = JSON.parse(req.body?.biasForm);
     const outputConfig = JSON.parse(req.body?.outputConfig);
@@ -240,41 +243,50 @@ router.post('/process-product-image', async (req, res) => {
       ],
     });
 
-    try {
-      const [finalNut, finalAll] = await Promise.all([
-        onProcessNut({
-          req,
-          res,
-          invalidatedInput,
-          //* flash version
-          ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-          // ocrList: nutImagesOCRresult,
-          sessionId,
-          collateImageName,
-          outputConfig,
-        }),
-        onProcessOther({
-          req,
-          res,
-          invalidatedInput,
-          ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-          sessionId,
-          collateImageName,
-          outputConfig,
-        }),
-      ]);
+    responseReturned = true;
 
-      await prisma.extractSession.update({
-        where: { sessionId },
-        data: {
-          status: 'fail',
-          result_all: JSON.stringify({}),
-          result_nut: JSON.stringify({}),
-        },
+    const [finalNut, finalAll] = await Promise.all([
+      onProcessNut({
+        req,
+        res,
+        invalidatedInput,
+        //* flash version
+        ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+        // ocrList: nutImagesOCRresult,
+        sessionId,
+        collateImageName,
+        outputConfig,
+      }),
+      onProcessOther({
+        req,
+        res,
+        invalidatedInput,
+        ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+        sessionId,
+        collateImageName,
+        outputConfig,
+      }),
+    ]);
+
+    await prisma.extractSession.update({
+      where: { sessionId },
+      data: {
+        status: 'fail',
+        result_all: JSON.stringify({}),
+        result_nut: JSON.stringify({}),
+      },
+    });
+    await createFinalResult({ finalAll, finalNut, sessionId, res });
+  } catch (e) {
+    console.log('process-image-error', e);
+
+    if (!responseReturned) {
+      res.status(500).json({
+        isSuccess: false,
+        error: JSON.stringify(e),
+        message: 'Failed to create session',
       });
-      await createFinalResult({ finalAll, finalNut, sessionId, res });
-    } catch (e) {
-      console.log(e);
+    } else {
       await prisma.extractSession.update({
         where: { sessionId },
         data: {
@@ -285,16 +297,6 @@ router.post('/process-product-image', async (req, res) => {
         },
       });
     }
-
-    // console.log('test 1', final1);
-    // console.log('test 2', final2);
-  } catch (error) {
-    console.log('error', error);
-    // res.status(500).json({
-    //   isSuccess: false,
-    //   error: JSON.stringify(error),
-    //   message: 'Failed to create session',
-    // });
   }
 });
 
@@ -351,51 +353,51 @@ const createFinalResult = async ({
   sessionId: string;
   res: any;
 }) => {
-  try {
-    const allRes = JSON.parse(finalAll?.['all.json']);
-    const nutRes = JSON.parse(finalNut?.['nut.json']);
-    // const ocrClaims = JSON.parse(ocrClaimData);
+  // try {
+  const allRes = JSON.parse(finalAll?.['all.json']);
+  const nutRes = JSON.parse(finalNut?.['nut.json']);
+  // const ocrClaims = JSON.parse(ocrClaimData);
 
-    const { isSuccess: allSuccess, status: allStatus } = allRes || {};
-    const { isSuccess: nutSuccess, status: nutStatus } = nutRes || {};
+  const { isSuccess: allSuccess, status: allStatus } = allRes || {};
+  const { isSuccess: nutSuccess, status: nutStatus } = nutRes || {};
 
-    if (nutSuccess === false || allSuccess === false) {
-      return;
-    }
-
-    let finalResult = {
-      product: {
-        ...allRes?.data?.jsonData,
-        factPanels: nutRes?.data?.jsonData, //* markdown converted
-        nutMark: nutRes?.data?.markdownContent,
-        allMark: allRes?.data?.markdownContent,
-      },
-    };
-
-    let validatedResponse = await responseValidator(finalResult, '');
-
-    await prisma.extractSession.update({
-      where: { sessionId },
-      data: {
-        status: 'success',
-        result_all: JSON.stringify(finalAll),
-        result_nut: JSON.stringify(finalNut),
-        result: JSON.stringify(validatedResponse),
-      },
-    });
-
-    console.log('stored in ' + sessionId);
-  } catch (err) {
-    const updatedSession = await prisma.extractSession.update({
-      where: { sessionId },
-      data: {
-        status: 'fail',
-        result_all: JSON.stringify({}),
-        result_nut: JSON.stringify({}),
-        result: JSON.stringify({}),
-      },
-    });
+  if (nutSuccess === false || allSuccess === false) {
+    return;
   }
+
+  let finalResult = {
+    product: {
+      ...allRes?.data?.jsonData,
+      factPanels: nutRes?.data?.jsonData, //* markdown converted
+      nutMark: nutRes?.data?.markdownContent,
+      allMark: allRes?.data?.markdownContent,
+    },
+  };
+
+  let validatedResponse = await responseValidator(finalResult, '');
+
+  await prisma.extractSession.update({
+    where: { sessionId },
+    data: {
+      status: 'success',
+      result_all: JSON.stringify(finalAll),
+      result_nut: JSON.stringify(finalNut),
+      result: JSON.stringify(validatedResponse),
+    },
+  });
+
+  console.log('stored in ' + sessionId);
+  // } catch (err) {
+  //   const updatedSession = await prisma.extractSession.update({
+  //     where: { sessionId },
+  //     data: {
+  //       status: 'fail',
+  //       result_all: JSON.stringify({}),
+  //       result_nut: JSON.stringify({}),
+  //       result: JSON.stringify({}),
+  //     },
+  //   });
+  // }
 };
 
 // app.post('/api/upload', upload.single('file'), async (req, res) => {

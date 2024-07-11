@@ -64,24 +64,30 @@ const compareFactPanel = (obj1: any, obj2: any) => {
 
       for (const key of Object.keys(propertyItem)) {
         if (samePropertyOnExtractData?.hasOwnProperty(key)) {
-          const value = `${propertyItem[key]}`;
-          const sameValue = `${samePropertyOnExtractData[key]}`;
+          const value = propertyItem[key];
+          const extractValue = samePropertyOnExtractData[key];
+          const valueString =
+            typeof value !== 'string' ? JSON.stringify(value) : value;
+          const extractValueString =
+            typeof extractValue === 'undefined'
+              ? ''
+              : typeof extractValue !== 'string'
+              ? JSON.stringify(extractValue)
+              : extractValue;
+
+          console.log(
+            `key -- ${key} -- ${valueString} -- ${extractValueString} `
+          );
 
           if (
-            (value === '' && sameValue === '') ||
-            (value === '0' && sameValue === '0')
+            (valueString === '' && extractValueString === '') ||
+            (valueString === '0' && extractValueString === '0')
           ) {
             comparisonResult[key] = '100';
           } else {
             comparisonResult[key] = `${getMatchPercent({
-              v1:
-                typeof propertyItem[key] !== 'string'
-                  ? JSON.stringify(propertyItem[key])
-                  : propertyItem[key],
-              v2:
-                typeof samePropertyOnExtractData[key] !== 'string'
-                  ? JSON.stringify(samePropertyOnExtractData[key])
-                  : samePropertyOnExtractData[key],
+              v1: valueString,
+              v2: extractValueString,
             })}`;
           }
         }
@@ -95,42 +101,55 @@ const compareFactPanel = (obj1: any, obj2: any) => {
 };
 
 const compareObjects = (obj1: any, obj2: any) => {
-  const comparisonResult = {} as any;
+  try {
+    const comparisonResult = {} as any;
 
-  for (const key of Object.keys(obj2)) {
-    if (obj1.hasOwnProperty(key)) {
-      // console.log(`key---${key} -- ${obj1[key]} --- ${obj2[key]}`);
-      if (isEqual(obj1[key], []) && obj2[key]) {
-        comparisonResult[key] = '0';
-      } else if (`${obj1[key]}` === `${obj2[key]}`) {
-        comparisonResult[key] = '100';
-      } else if (obj1[key] === undefined && obj2[key] !== undefined) {
-        comparisonResult[key] = '0';
+    for (const key of Object.keys(obj2)) {
+      if (obj1.hasOwnProperty(key)) {
+        const extractedDataObj = obj1;
+        const tdcDataObj = obj2;
+
+        const extractValue = extractedDataObj[key];
+        const value = tdcDataObj[key];
+        const valueString =
+          typeof value !== 'string' ? JSON.stringify(value) : value;
+        const extractValueString =
+          typeof extractValue === 'undefined'
+            ? ''
+            : typeof extractValue !== 'string'
+            ? JSON.stringify(extractValue)
+            : extractValue;
+
+        if (
+          (valueString === '' && extractValueString === '') ||
+          (valueString === '0' && extractValueString === '0')
+        ) {
+          comparisonResult[key] = '100';
+        } else {
+          comparisonResult[key] = `${getMatchPercent({
+            v1: valueString,
+            v2: extractValueString,
+          })}`;
+        }
       } else {
-        comparisonResult[key] = `${getMatchPercent({
-          v1:
-            typeof obj1[key] !== 'string'
-              ? JSON.stringify(obj1[key])
-              : obj1[key],
-          v2:
-            typeof obj2[key] !== 'string'
-              ? JSON.stringify(obj2[key])
-              : obj2[key],
-        })}`;
+        // comparisonResult[key] = '';
       }
-    } else {
-      // comparisonResult[key] = '';
     }
-  }
 
-  for (const key of Object.keys(obj1)) {
-    if (!obj2.hasOwnProperty(key)) {
-      if (obj1[key] === '' || obj1[key] === null) {
-        break;
+    for (const key of Object.keys(obj1)) {
+      if (!obj2.hasOwnProperty(key)) {
+        if (obj1[key] === '' || obj1[key] === null) {
+          break;
+        }
+        comparisonResult[key] = '0';
       }
-      comparisonResult[key] = '0';
     }
-  }
 
-  return comparisonResult;
+    return comparisonResult;
+  } catch (e) {
+    console.log('compare object error ---', e);
+    // console.log(`error --- key---${key} -- ${obj1[key]} --- ${obj2[key]}`);
+
+    return {};
+  }
 };

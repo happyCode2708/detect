@@ -256,6 +256,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
     'facebook',
     'twitter',
     'socialMediaList',
+    'socialMediaAddresses',
     'website',
     'socialMediaText',
     'enlargedToShow',
@@ -270,9 +271,9 @@ export const mapMarkdownAllToObject = (markdown: string) => {
       'storage instructions': 'storageInstruction',
       'cooking instructions': 'cookingInstruction',
       'usage instructions': 'usageInstruction',
-      'how to store product after opening or freeze by / within a time instruction':
+      'store by a date time instructions / freeze by a date time instructions / use product within a time instructions':
         'useOrFreezeBy',
-      'other instructions': 'otherInstructions',
+      'all other instructions': 'otherInstructions',
     }
   );
   logger.error('instruction');

@@ -1,4 +1,4 @@
-import { toUpper } from 'lodash';
+import { toLower, toUpper } from 'lodash';
 
 export const nonCertifierClaimValidate = async (
   modifiedProductDataPoints: any
@@ -35,7 +35,7 @@ const validate = async (
 };
 
 const check = async (analysisItem: any): Promise<boolean> => {
-  const { claim, isClaimed, source } = analysisItem;
+  const { claim, isClaimed, source, reason } = analysisItem;
 
   if (!claim) return Promise.resolve(false);
 
@@ -53,12 +53,46 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
   }
 
+  if (
+    NON_CERTIFICATE_REASON?.[toLower(claim)]
+      ?.map((wordList: any) => {
+        return wordList
+          .map((word: any) => {
+            if (toLower(reason)?.includes(word)) {
+              return true;
+            } else {
+              return false;
+            }
+          })
+          .every((result: any) => result === true);
+      })
+      .every((result: any) => result === false)
+  ) {
+    return Promise.resolve(false);
+  } else {
+    //* exceptional cases
+    // if (toLower(claim) === 'alcohol' && toLower(reason)?.includes('sugar')) {
+    //   //? it could be about 'alcohol sugar' so must return false
+    //   return Promise.resolve(false);
+    // }
+  }
+
   if (source?.includes('marketing text on product')) {
     return Promise.resolve(true);
   }
 
   return Promise.resolve(false);
 };
+
+const NON_CERTIFICATE_REASON = {
+  '100% natural ingredients': [['100%', 'natural', 'ingredient']],
+  '100% natural': [['100%', 'natural']],
+  'vegetarian or vegan diet/feed': [
+    ['vegetarian'],
+    ['vegan', 'diet'],
+    ['vegan', 'feed'],
+  ],
+} as any;
 
 const NON_CERTIFICATE_CLAIMS = [
   '100% natural',

@@ -4,8 +4,8 @@ const TfIdf = natural.TfIdf;
 const paragraph1 = '29';
 const paragraph2 = 29;
 
-const p1 = 'gram';
-const p2 = '[]';
+const p1 = '10';
+const p2 = '10';
 
 const tfidf = new TfIdf();
 tfidf.addDocument(p1);

@@ -1,3 +1,4 @@
+import { contains } from 'cheerio/lib/static';
 import { toLower, toUpper } from 'lodash';
 
 export const allergenValidate = async (modifiedProductDataPoints: any) => {
@@ -9,6 +10,8 @@ export const allergenValidate = async (modifiedProductDataPoints: any) => {
 const validateNoContainList = async (modifiedProductDataPoints: any) => {
   const notContainList =
     modifiedProductDataPoints?.['allergens']?.[0]?.['notContainList'];
+  const notContainStatement =
+    modifiedProductDataPoints?.['allergens']?.[0]?.['notContainStatement'];
 
   if (!notContainList) return null;
   let validated_notContainList = [] as any;
@@ -17,10 +20,23 @@ const validateNoContainList = async (modifiedProductDataPoints: any) => {
     ALLERGEN_LIST.some((allergenItem: any) => {
       const variants = allergenItem?.variants;
       const name = allergenItem?.name;
+      const statement_not_include = allergenItem?.statement_not_include;
 
-      const isValid = variants.find((variantItem: any) =>
+      let isValid = variants.find((variantItem: any) =>
         toLower(notContainItem)?.includes(variantItem)
       );
+
+      if (statement_not_include) {
+        let statement = notContainStatement;
+
+        if (
+          statement_not_include.some((expText: string) => {
+            return toLower(statement?.includes(expText));
+          })
+        ) {
+          isValid = false;
+        }
+      }
 
       if (isValid) {
         validated_notContainList = Array.from(
@@ -40,6 +56,8 @@ const validateNoContainList = async (modifiedProductDataPoints: any) => {
 const validateContainList = async (modifiedProductDataPoints: any) => {
   const containList =
     modifiedProductDataPoints?.['allergens']?.[0]?.['containList'];
+  const containStatement =
+    modifiedProductDataPoints?.['allergens']?.[0]?.['containStatement'];
 
   if (!containList) return null;
   let validated_containList = [] as any;
@@ -48,10 +66,22 @@ const validateContainList = async (modifiedProductDataPoints: any) => {
     ALLERGEN_LIST.some((allergenItem: any) => {
       const variants = allergenItem?.variants;
       const name = allergenItem?.name;
+      const statement_not_include = allergenItem?.statement_not_include;
 
-      const isValid = variants.find((variantItem: any) =>
+      let isValid = variants.find((variantItem: any) =>
         toLower(containItem)?.includes(variantItem)
       );
+
+      if (statement_not_include) {
+        let statement = containStatement;
+        if (
+          statement_not_include.some((expText: string) => {
+            return toLower(statement)?.includes(expText);
+          })
+        ) {
+          isValid = false;
+        }
+      }
 
       if (isValid) {
         validated_containList = Array.from(
@@ -74,6 +104,11 @@ const validateContainOnEquipmentList = async (
   const containOnEquipmentList =
     modifiedProductDataPoints?.['allergens']?.[0]?.['containOnEquipmentList'];
 
+  const containStatement =
+    modifiedProductDataPoints?.['allergens']?.[0]?.[
+      'containOnEquipmentStatement'
+    ];
+
   if (!containOnEquipmentList) return null;
   let validated_containOnEquipmentList = [] as any;
 
@@ -81,10 +116,22 @@ const validateContainOnEquipmentList = async (
     ALLERGEN_LIST.some((allergenItem: any) => {
       const variants = allergenItem?.variants;
       const name = allergenItem?.name;
+      const statement_not_include = allergenItem?.statement_not_include;
 
-      const isValid = variants.find((variantItem: any) =>
+      let isValid = variants.find((variantItem: any) =>
         toLower(containItem)?.includes(variantItem)
       );
+
+      if (statement_not_include) {
+        let statement = containStatement;
+        if (
+          statement_not_include.some((expText: string) => {
+            return toLower(statement)?.includes(expText);
+          })
+        ) {
+          isValid = false;
+        }
+      }
 
       if (isValid) {
         validated_containOnEquipmentList = Array.from(
@@ -193,6 +240,7 @@ const ALLERGEN_LIST = [
       'flaxseeds',
       'chia seeds',
     ],
+    statement_not_include: ['seed oil', 'seed oil', 'seed oils'],
   },
   {
     name: 'sesame',

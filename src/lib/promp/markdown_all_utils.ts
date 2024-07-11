@@ -64,7 +64,9 @@ Ex 1: if product have something in ingredient list. That cannot conclude that pr
 12) inferred info is not accepted for claim:
 Ex: you are not allow to infer "no animal ingredients" from "organic certifier"
 
-13) result must be in order and include all tables below
+13) do not collect phone number to website list data. 
+
+14) result must be in order and include all tables below
 SUGAR_CLAIM_TABLE
 FAT_CLAIM_TABLE
 PROCESS_CLAIM_TABLE
@@ -130,13 +132,17 @@ ex 1: "oats, milk"
 4) "header" table rules:
 + header table only have 1 row item so you must carefully examine the images.
 + "primary size" and "secondary size" and "third size" is a quantity measurement of product in two different unit of measurement. They are not info from "serving size" in nutrition fact.
-Ex: "primary size" = "100gram"
+Ex 1: "primary size" = "100gram"
+Ex 2: "32 fl oz ( 2 pt ) 946 mL" should recorded as "primary size" = "32 fl oz" and "secondary size" = "2 pt" and "third size" = "946 mL"
+Ex 3: "WT 2.68 OZ (40g) should recorded as "primary size" = "2.68 OZ" and "secondary size" = "40g"
+Ex 4: "100 capsules"  should recorded as "primary size" = "100 capsules"
 
 + "count" is the count number of smaller unit inside a package, or a display shipper, or a case, or a box.
 
 + "full size text description" is the whole quantity measurement description statement of the product on images.
 Ex 1: "Net WT 9.28oz(260g) 10 cups"
 Ex 2: "16 FL OZ (472 ML)
+Ex 3: "900 CAPSULES 400 servings"
 
 5) "ingredient" table rules:
 + is the list of statements about ingredients of product (since product can have many ingredients list)
@@ -150,10 +156,13 @@ type_1 is youtube icon have two texts "you" and "tube" on it.
 type_2 is youtube icon of youtube logo with play button without name youtube
 
 + "social media list" is the list of social media method mentioned on product images (such as "facebook", "google", "instagram", "pinterest", "snapchat", "tiktok", "youtube", "twitter", ...).
-+ "website list" are all website links found on product (website link exclude "nongmoproject.org") and be careful the content after slash could be phone number.
++ "website list" are all website links found on product (website link exclude "nongmoproject.org") and be careful the content after website could be phone number.
 Ex 1: www.cocacola.com, www.cocacola.com/policy, www.cocacola.com/fanpage, cocacola.com
+Ex 2: if text "coca.com . 555/200-3529" it seem that "555/200-3529" is a phone number or other number not belong to website link "coca.com"
 
 + "social media text" is a list of text usually start with "@", or "#" those can be used to search the product on social media. Hint, it is usually next to social media icons.
+Ex 1: @cocacola
+
 + "enlarge to show" is true if statement such as "enlarged to show..." seen on product image.
 
 7) "physical" rules:
@@ -170,24 +179,26 @@ ex 2: "use it with lemon..."
 + "usage instructions" are all instruction statement about how to use product but not about "cooking instructions" text.
 Ex 1: "suggested use: 2 cups at one time."
 
-+ "storage instruction" are all storage instruction such as
-Ex 1: store cool dark place
-Ex 2: store cool dry place
-Ex 3: do not freeze
-Ex 4: do not refrigerate
-Ex 5: store dry place
-Ex 6: keep frozen
-Ex 7: keep refrigerated
-Ex 8: refrigerate after opening
-Ex 9: seal for freshness
-Ex 10: store at room temperature
++ "storage instruction" are all storage instruction text that includes some phrases below:
+ "store cool dark place"
+"store cool dry place"
+"do not freeze"
+"do not refrigerate"
+"store dry place"
+"keep frozen"
+"keep refrigerated"
+"refrigerate after opening"
+"seal for freshness"
+"store at room temperature"
+
+if storage instruction include other point not mentioned in the list above that instructions must be put in "all other instructions" as well
+Ex1: "STORE IN A COOL, DRY PLACE AWAY FROM KITCHEN" is valid for "storage instructions" but also valid for "all other instructions since it say "away from kitchen"
 
 
-+ "how to store product after opening or freeze by / within a time instruction" is about how to pertain 
-Ex 1: "use within 30 days ..."
-Ex 2: "freeze after open ..."
++ "store by a date time instructions / freeze by a date time instructions / use product within a time instructions" some example
+Ex 1: "use within 30 days after opening"
 
-+ "other instructions" are all other instructions see examples
++ "all other instructions" are all other instructions see examples
 Ex 1: SEE NUTRITION INFORMATION FOR FAT AND SATURATED FAT ...
 
 9) "supply chain" table rules:
@@ -578,7 +589,7 @@ PHYSICAL_TABLE
 13) Marketing info with table format below:
 
 MARKETING_TABLE
-| have QR code (answer is boolean) | have Instagram icon ? | have Pinterest icon ? | have Youtube icon ? |type | have Facebook icon ? | have twitter icon ? | social media list | website list (multiple) | social media text list | enlarged to show (answer is boolean) |
+| have QR code (answer is boolean) | have Instagram icon or info ? | have Pinterest icon or info ? | have Youtube icon or info ? | youtube icon type (if have youtube icon or info )  | have Facebook icon or info ? | have twitter icon or info ? | social media list | social media addresses (multiple) | website list (multiple split by comma) | social media text list | enlarged to show (answer is boolean) |
 | ------- | -------- | -------- | ------- | ------- | ------- | -------- | -------- | ------- | ------- | ------- |
 
 14) Instruction info with table format below:
@@ -592,8 +603,8 @@ INSTRUCTION_TABLE
 | storage instructions | 
 | cooking instructions | 
 | usage instructions | 
-| how to store product after opening or freeze by / within a time instruction | 
-| other instructions |
+| store by a date time instructions / freeze by a date time instructions / use product within a time instructions | 
+| all other instructions |
 
 15) supply chain info with table format below:
 

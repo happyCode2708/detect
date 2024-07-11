@@ -29,6 +29,8 @@ export const mapToTDCformat = (extractData: any) => {
     ...mapPrimarySizeAndPrimarySizeUom(header),
     SecondarySize: toUpper(header?.[0]?.secondarySizeValue),
     SecondarySizeUOM: toUpper(header?.[0]?.secondarySizeUOM),
+    TertiarySize: toUpper(header?.[0]?.thirdSizeValue),
+    TertiarySizeUOM: toUpper(header?.[0]?.thirdSizeUOM),
     UnitCount: header?.[0]?.count,
 
     //* panel
@@ -66,16 +68,16 @@ export const mapToTDCformat = (extractData: any) => {
     ConsumerStorage: instructions?.[0]?.validated_storageInstruction,
     CookingInstructions: instructions?.[0]?.cookingInstruction,
     UseOrFreezeBy: instructions?.[0]?.useOrFreezeBy,
-    InstructionsAncillary: instructions?.[0]?.otherInstructions,
+    // InstructionsAncillary: instructions?.[0]?.otherInstructions,
 
     //* allergen
     Allergens: allergens?.[0]?.validated_containList,
 
     FreeOf: allergens?.[0]?.validated_notContainList,
-    AllergensAncillary: [
-      toUpper(allergens?.[0]?.containStatement),
-      toUpper(allergens?.[0]?.notContainStatement),
-    ], //? in progress
+    // AllergensAncillary: [
+    //   toUpper(allergens?.[0]?.containStatement),
+    //   toUpper(allergens?.[0]?.notContainStatement),
+    // ], //? in progress
     ProcessedOnEquipment: allergens?.[0]?.validated_containOnEquipmentList,
     ProcessedManufacturedInFacilityStatement:
       allergens?.[0]?.containOnEquipmentStatement,
@@ -84,17 +86,14 @@ export const mapToTDCformat = (extractData: any) => {
       allergens?.[0]?.validated_containOnEquipmentList,
 
     //* ingredients
-    SupplementIngredientStatement:
-      productType === 'supplement facts' &&
-      ingredients?.[0]?.ingredientStatement
-        ? [toUpper(ingredients[0].ingredientStatement)]
-        : undefined,
+    // SupplementIngredientStatement:
+    //   productType === 'supplement facts' &&
+    //   ingredients?.[0]?.ingredientStatement
+    //     ? [toUpper(ingredients[0].ingredientStatement)]
+    //     : undefined,
 
     IngredientsStatement:
-      (productType === 'nutrition facts' ||
-        productType === 'unknown' ||
-        !productType) &&
-      ingredients?.length > 0
+      ingredients?.[0]?.ingredientStatement && ingredients?.length > 0
         ? ingredients?.map((ingredientItem: any) => {
             return toUpper(ingredientItem?.ingredientStatement);
           })
@@ -133,15 +132,38 @@ export const mapToTDCformat = (extractData: any) => {
           return 'YOUTUBE2 or YOUTUBE3';
         }
 
+        if (item === 'twitter') {
+          return 'X FORMERLY TWITTER';
+        }
+
         return toUpper(item?.trim());
       }),
     // MarketingClaims: marketing?.[0]?.marketingClaims?.map((item: string) =>
     //   toUpper(item)
     // ),
-    SocialMediaAddresses: marketing?.[0]?.socialMediaText
-      ?.split(', ')
-      .filter((item: string) => item !== '')
-      .map((item: any) => toUpper(item)),
+    SocialMediaAddresses:
+      [
+        ...(marketing?.[0]?.socialMediaText
+          ?.split(', ')
+          .filter((item: string) => item !== '')
+          .map((item: any) => toUpper(item)) || []),
+        ...(marketing?.[0]?.website
+          ?.split(', ')
+          .filter((item: string) => item !== '')
+          .filter((item: string) => {
+            if (
+              item?.includes('facebook') ||
+              item?.includes('twitter') ||
+              item?.includes('youtube') ||
+              item?.includes('instagram') ||
+              item?.includes('snapchat')
+            ) {
+              return true;
+            } else {
+              return false;
+            }
+          }) || []),
+      ] || [],
 
     // //* attribute
     SugarSweetener:
@@ -257,7 +279,7 @@ const mapToNutritionPanels = (
           PropertySource: toUpper(nutrientItem?.['blendIngredients'] || ''),
           AnalyticalValue: nutrientItem?.['amount'],
           Amount: nutrientItem?.['amount'],
-          AmountUOM: nutrientItem?.['uom'],
+          AmountUOM: nutrientItem?.['uom']?.toString() || '',
           Percent: nutrientItem?.['percent'],
           Indicators: nutrientItem?.['indicator']
             ? [nutrientItem?.['indicator']]

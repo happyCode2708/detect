@@ -1,26 +1,31 @@
 const { toLower } = require('lodash');
 
-const run = (statement) => {
-  const [foundEnumValue, test] =
-    Object.entries(STORAGE_MAPPING)?.find(([key, words]) => {
-      return words.every((word) => {
-        return toLower(statement).includes(word);
-      });
-    }) || [];
+const run = (reason, claim) => {
+  let final = NON_CERTIFICATE_REASON?.[toLower(claim)]
+    ?.map((wordList) => {
+      return wordList
+        .map((word) => {
+          if (toLower(reason)?.includes(word)) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .every((result) => result === true);
+    })
+    .every((result) => result === false);
 
-  console.log('result', foundEnumValue);
-};
-const STORAGE_MAPPING = {
-  'COOL DARK PLACE': ['cool', 'dark', 'place'],
-  'COOL DRY PLACE': ['cool', 'dry', 'place'],
-  'DO NOT FREEZE': ['not', 'freeze'],
-  'DO NOT REFRIGERATE': ['not', 'refrigerate'],
-  'DRY PLACE': ['dry', 'place'],
-  'KEEP FROZEN': ['keep', 'frozen'],
-  'KEEP REFRIGERATED': ['keep', 'refrigerated'],
-  'REFRIGERATE AFTER OPENING': ['refrigerate', 'after', 'open'],
-  'SEAL FOR FRESHNESS': ['seal', 'freshness'],
-  'STORE AT ROOM TEMPERATURE': ['at', 'room temperature'],
+  console.log('final', final);
 };
 
-run('store in dry place');
+const NON_CERTIFICATE_REASON = {
+  '100% natural ingredients': [['100%', 'natural', 'ingredient']],
+  '100% natural': [['100%', 'natural']],
+  'vegetarian or vegan diet/feed': [
+    ['vegetarian'],
+    ['vegan', 'diet'],
+    ['vegan', 'feed'],
+  ],
+};
+
+run('vegan diet', 'vegetarian or vegan diet/feed');

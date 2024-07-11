@@ -13,6 +13,8 @@ export const getMatchPercent = ({ v1, v2 }: { v1: string; v2: string }) => {
     }
   }
 
+  console.log('tiff', `${v1} ${typeof v1} ${v2} ${typeof v2} `);
+
   const TfIdf = natural.TfIdf;
 
   const tfidf = new TfIdf();

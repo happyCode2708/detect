@@ -88,6 +88,7 @@ const SUGAR_ITEMS_REASON = {
   'low sugar': ['low', 'sugar'],
   'reduced sugar': ['reduced', 'sugar'],
   'sugar free': ['sugar', 'free'],
+  'cane sugar': ['cane', 'sugar'],
 } as any;
 
 const SUGAR_ITEMS = [

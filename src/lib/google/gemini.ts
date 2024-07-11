@@ -24,31 +24,76 @@ export const generateContent = async (images: any[], text: any) => {
     contents: [{ role: 'user', parts: [...images, text] }],
   };
 
-  try {
-    const streamingResp = await (
-      global as any
-    ).generativeModel.generateContentStream(req);
+  // try {
+  // const streamingResp = await (
+  //   global as any
+  // ).generativeModel.generateContentStream(req);
 
-    let chunkResponse = [];
+  // let chunkResponse = [];
 
-    let finalResponse = '';
+  // let finalResponse = '';
 
-    for await (const item of streamingResp.stream) {
-      chunkResponse.push(item);
-      if (!item?.candidates) return;
-      finalResponse =
-        finalResponse + item?.candidates[0]?.content?.parts?.[0]?.text;
-      if (!item?.candidates[0]?.content?.parts?.[0]?.text) {
-        console.log(
-          'chunk error  ...' + item?.candidates[0]?.content?.parts?.[0]?.text
-        );
+  // for await (const item of streamingResp.stream) {
+  //   chunkResponse.push(item);
+  //   if (!item?.candidates) return;
+  //   finalResponse =
+  //     finalResponse + item?.candidates[0]?.content?.parts?.[0]?.text;
+  //   if (!item?.candidates[0]?.content?.parts?.[0]?.text) {
+  //     console.log(
+  //       'chunk error  ...' + item?.candidates[0]?.content?.parts?.[0]?.text
+  //     );
+  //   }
+  // }
+
+  // return { chunkResponse, finalResponse };
+
+  const streamingResp = await (
+    global as any
+  ).generativeModel.generateContentStream(req);
+  let chunkResponse = [] as any;
+  let finalResponse = '';
+
+  // Set a timeout for the streaming process
+  const timeoutPromise = new Promise(
+    (_, reject) =>
+      setTimeout(() => reject(new Error('Streaming timeout')), 220000) // 30 seconds timeout
+  );
+
+  // Process the stream with error handling and timeout
+  await Promise.race([
+    (async () => {
+      // for await (const item of streamingResp.stream) {
+      //   if (!item?.candidates) return;
+      //   chunkResponse.push(item);
+      //   const textPart = item?.candidates[0]?.content?.parts?.[0]?.text;
+      //   if (!textPart) {
+      //     console.log('chunk error  ...' + textPart);
+      //     continue;
+      //   }
+      //   finalResponse += textPart;
+      // }
+      for await (const item of streamingResp.stream) {
+        chunkResponse.push(item);
+        if (!item?.candidates) return;
+        const value = item?.candidates[0]?.content?.parts?.[0]?.text;
+        finalResponse = finalResponse + value;
+        // console.log(`...`);
+        if (item?.candidates[0]?.content?.parts?.[0]?.text === undefined) {
+          console.log(
+            'chunk error  ...' + item?.candidates[0]?.content?.parts?.[0]?.text
+          );
+          throw new Error('chunk empty answer');
+        }
       }
-    }
+    })(),
+    timeoutPromise,
+  ]);
 
-    return { chunkResponse, finalResponse };
-  } catch (err) {
-    console.log('chunk error', err);
-  }
+  // return finalResponse;
+  return { chunkResponse, finalResponse };
+  // } catch (err) {
+  //   console.log('chunk error', err);
+  // }
 };
 
 export const onProcessGemini = async ({
@@ -146,19 +191,6 @@ export const onProcessGemini = async ({
     }
 
     if (isMarkdown) {
-      // const jsonResult = mapMarkdownNutToObject(procResult);
-      // if (!mapMdToObjectFunct) {
-      // writeJsonToFile(
-      //   resultsDir + `/${sessionId}`,
-      //   resultFileName,
-      //   JSON.stringify({
-      //     isSuccess: true,
-      //     data: { allMark: procResult },
-      //   })
-      // );
-      // return;
-      // }
-
       const jsonResult = mapMdToObjectFunct(procResult);
 
       writeJsonToFile(
@@ -178,14 +210,6 @@ export const onProcessGemini = async ({
         }),
       };
 
-      // const updatedSession = await prisma.extractSession.update({
-      //   where: { sessionId },
-      //   data: {
-      //     status: 'success',
-      //     ['result' + '_' + prefix]: JSON.stringify(sessionPayload),
-      //   },
-      // });
-
       return Promise.resolve(sessionPayload);
     }
   } catch (e) {
@@ -195,7 +219,8 @@ export const onProcessGemini = async ({
       JSON.stringify({ isSuccess: false })
     );
 
-    console.log('on process gemini error', e);
+    console.log('on process gemini error or chunk error', e);
+    // throw e;
 
     const updatedSession = await prisma.extractSession.update({
       where: { sessionId },
@@ -240,11 +265,6 @@ export const onProcessOther = async ({
       JSON.stringify({})
     );
 
-    // writeJsonToFile(
-    //   resultsDir + `/${sessionId}`,
-    //   'orc-claims.json',
-    //   JSON
-
     let sessionPayload = {
       ['all.json']: JSON.stringify({
         isSuccess: true,
@@ -271,16 +291,6 @@ export const onProcessOther = async ({
     })
   );
 
-  // const allText = ocrList.reduce(
-  //   (accumulator: any, currentValue: any, idx: number) => {
-  //     return {
-  //       ...accumulator,
-  //       [`ocrImage_${idx + 1}`]: currentValue,
-  //     };
-  //   },
-  //   {}
-  // );
-
   const new_allText = ocrList.reduce(
     (accumulator: any, currentValue: any, idx: number) => {
       let [whole_text, ...array_string] = currentValue;
@@ -305,68 +315,31 @@ export const onProcessOther = async ({
     'all-ocr': JSON.stringify(new_allText),
   };
 
-  // writeJsonToFile(
-  //   resultsDir + `/${sessionId}`,
-  //   'orc-claims.json',
-  //   JSON.stringify(ocr_claims)
-  // );
-  try {
-    const finalSessionPayload = await onProcessGemini({
-      req,
-      res,
-      sessionId,
-      collateImageName,
+  const finalSessionPayload = await onProcessGemini({
+    req,
+    res,
+    sessionId,
+    collateImageName,
+    prefix,
+    //* markdown all
+    collatedOuputPath: [
+      ...invalidatedInput.nutIncluded,
+      ...invalidatedInput.nutExcluded,
+    ],
 
-      prefix,
-      // collatedOuputPath: [
-      //   ...invalidatedInput.nutIncluded,
-      //   ...invalidatedInput.nutExcluded,
-      // ],
-      // prompt: makePrompt({
-      //   ocrText: JSON.stringify(new_allText),
-      //   imageCount: [
-      //     ...invalidatedInput.nutIncluded,
-      //     ...invalidatedInput.nutExcluded,
-      //   ]?.length,
-      //   detectedClaims: JSON.stringify(ocr_claims),
-      // }),
-
-      //* markdown all
-      collatedOuputPath: [
+    prompt: make_markdown_all_prompt({
+      ocrText: JSON.stringify(new_allText),
+      imageCount: [
         ...invalidatedInput.nutIncluded,
         ...invalidatedInput.nutExcluded,
-      ],
-      // prompt: make_markdown_all_prompt({
-      //   ocrText: JSON.stringify(new_allText),
-      //   imageCount: [
-      //     ...invalidatedInput.nutIncluded,
-      //     ...invalidatedInput.nutExcluded,
-      //   ]?.length,
-      // }),
-      prompt: make_markdown_all_prompt({
-        ocrText: JSON.stringify(new_allText),
-        imageCount: [
-          ...invalidatedInput.nutIncluded,
-          ...invalidatedInput.nutExcluded,
-        ]?.length,
-      }),
-      isMarkdown: true,
-      mapMdToObjectFunct: mapMarkdownAllToObject,
-      sessionPayload,
-    });
+      ]?.length,
+    }),
+    isMarkdown: true,
+    mapMdToObjectFunct: mapMarkdownAllToObject,
+    sessionPayload,
+  });
 
-    return Promise.resolve(finalSessionPayload);
-  } catch (e) {
-    // const updatedSession = await prisma.extractSession.update({
-    //   where: { sessionId },
-    //   data: {
-    //     status: 'fail',
-    //     result_all: JSON.stringify({}),
-    //     result_nut: JSON.stringify({}),
-    //     result: JSON.stringify({}),
-    //   },
-    // });
-  }
+  return Promise.resolve(finalSessionPayload);
 };
 
 export const onProcessNut = async ({
@@ -429,16 +402,6 @@ export const onProcessNut = async ({
     })
   );
 
-  // const nutText = ocrList.reduce(
-  //   (accumulator: any, currentValue: any, idx: number) => {
-  //     return {
-  //       ...accumulator,
-  //       [`ocrImage_${idx + 1}`]: currentValue,
-  //     };
-  //   },
-  //   {}
-  // );
-
   const new_nutText = ocrList.reduce(
     (accumulator: any, currentValue: any, idx: number) => {
       let [whole_text, ...array_string] = currentValue;
@@ -467,23 +430,6 @@ export const onProcessNut = async ({
     sessionId,
     collateImageName,
     prefix,
-    // collatedOuputPath: invalidatedInput.nutIncluded,
-    // prompt: make_nut_prompt({
-    //   ocrText: JSON.stringify(new_nutText),
-    //   imageCount: invalidatedInput.nutIncluded?.length,
-    // }),
-    //* flash
-    // collatedOuputPath: [
-    //   ...invalidatedInput.nutIncluded,
-    //   ...invalidatedInput.nutExcluded,
-    // ],
-    // prompt: make_nut_prompt({
-    //   ocrText: JSON.stringify(new_nutText),
-    //   imageCount: [
-    //     ...invalidatedInput.nutIncluded,
-    //     ...invalidatedInput.nutExcluded,
-    //   ]?.length,
-    // }),
 
     //* markdown nut
     collatedOuputPath: [

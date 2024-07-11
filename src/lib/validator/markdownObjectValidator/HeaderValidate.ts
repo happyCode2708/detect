@@ -5,6 +5,7 @@ export const HeaderValidate = (response: any) => {
 
   validatePrimarySize(modifiedHeader);
   validateSecondarySize(modifiedHeader);
+  validateThirdSize(modifiedHeader);
 
   response['product']['header'][0] = modifiedHeader;
 };
@@ -22,11 +23,14 @@ const sizeMap = {
   tbsp: 'TABLESPOON',
   cup: 'CUP',
   pint: 'PINT',
+  pt: 'PINT',
   quart: 'QUART',
   gallon: 'GALLON',
   'fl oz': 'FLUID OUNCE',
   'fl.oz': 'FLUID OUNCE',
   'fl. oz': 'FLUID OUNCE',
+  capsules: 'COUNT',
+  caps: 'COUNT',
 } as any;
 
 const validatePrimarySize = (modifiedHeader: any) => {
@@ -91,4 +95,36 @@ const validateSecondarySize = (modifiedHeader: any) => {
   modifiedHeader['secondarySizeValue'] = null;
   modifiedHeader['secondarySizeText'] = rawSecondarySize;
   modifiedHeader['secondarySizeUOM'] = null;
+};
+
+const validateThirdSize = (modifiedHeader: any) => {
+  const { thirdSize: rawThirdSize } = modifiedHeader;
+
+  if (!rawThirdSize) return;
+
+  const regex = /([\d.]+)\s*([a-zA-Z\s.]+)/;
+  const match = rawThirdSize.match(regex);
+
+  if (match) {
+    const sizeValue = parseFloat(match[1]);
+    const sizeUnit = match[2].trim().toLowerCase().replace(/\./g, '');
+
+    const fullUnit = sizeMap[sizeUnit] || sizeUnit.toUpperCase();
+
+    // Replace the short form in the text with the full form
+    const primarySizeText = rawThirdSize.replace(
+      new RegExp(sizeUnit, 'i'),
+      fullUnit
+    );
+
+    modifiedHeader['thirdSizeValue'] = sizeValue;
+    modifiedHeader['thirdSizeText'] = primarySizeText;
+    modifiedHeader['thirdSizeUOM'] = fullUnit;
+
+    return;
+  }
+
+  modifiedHeader['thirdSizeValue'] = null;
+  modifiedHeader['thirdSizeText'] = rawThirdSize;
+  modifiedHeader['thirdSizeUOM'] = null;
 };
