@@ -26,6 +26,9 @@ import axios from 'axios';
 import logger from '../../lib/logger';
 import { mapToTDCformat } from '../../lib/mapper/mapToTDCFormat';
 import { compareWithTDC } from '../../lib/comparator/compareWithTDC';
+// import { makeSessionResult } from '@/lib/middleware/ makeSessionResult';
+import { isEmpty } from 'lodash';
+import { responseValidator } from '../../lib/validator/main';
 
 const router = express.Router();
 
@@ -304,48 +307,118 @@ router.get('/:ixoneid', async (req, res) => {
       where: { ixoneID: ixoneid },
       include: { images: true, extractSessions: true },
     });
+
+    if (!product) {
+      res.status(404).json({ message: 'Product not found', isSuccess: false });
+    }
+
     if (product) {
       product.extractSessions.sort(
         (a: any, b: any) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
 
-      let latestExtractSession = product.extractSessions?.[0] as any;
+      let latestExtractSession = product.extractSessions?.[0] || {};
 
-      if (!latestExtractSession && !latestExtractSession?.result) {
-        res.status(200).json({
+      const { result, status } = latestExtractSession;
+
+      //* if the result of latest extract session is success
+      if (result && status === 'success') {
+        let latestExtractSession_result = JSON.parse(result);
+
+        if (process.env.NODE_ENV === 'production') {
+          removeRawFieldData(latestExtractSession_result);
+        }
+
+        latestExtractSession['result'] = JSON.stringify(
+          latestExtractSession_result
+        );
+
+        return res.status(200).json({
+          isSuccess: true,
+          data: {
+            product,
+            latestSession: latestExtractSession,
+          },
+        });
+      }
+
+      //* if result is not ready
+
+      const { result_nut, result_all, sessionId } = latestExtractSession as any;
+
+      if (!result_nut || !result_all) {
+        return res.status(200).json({
           isSuccess: true,
           data: {
             product,
             latestSession: {},
           },
         });
-        return;
       }
 
-      let latestExtractSession_result = JSON.parse(
-        latestExtractSession?.result
-      );
+      const nutRes = JSON.parse(JSON.parse(result_nut)?.['nut.json']);
+      const allRes = JSON.parse(JSON.parse(result_all)?.['all.json']);
 
-      if (process.env.NODE_ENV === 'production') {
-        removeRawFieldData(latestExtractSession_result);
+      const { isSuccess: allSuccess } = allRes || {};
+      const { isSuccess: nutSuccess } = nutRes || {};
+
+      //* if one of process fail
+      if (allSuccess === false || nutSuccess === false) {
+        await prisma.extractSession.update({
+          where: { sessionId },
+          data: {
+            status: 'fail',
+          },
+        });
+
+        return res.status(200).json({
+          isSuccess: true,
+          data: {
+            product,
+            latestSession: {},
+          },
+        });
       }
 
-      latestExtractSession['result'] = JSON.stringify(
-        latestExtractSession_result
-      );
+      //* if both process success
 
-      res.status(200).json({
+      let finalResult = {
+        product: {
+          ...allRes?.data?.jsonData,
+          factPanels: nutRes?.data?.jsonData, //* markdown converted
+          nutMark: nutRes?.data?.markdownContent,
+          allMark: allRes?.data?.markdownContent,
+        },
+      };
+
+      let validatedResponse = await responseValidator(finalResult, '');
+
+      let updatedSession = await prisma.extractSession.update({
+        where: { sessionId },
+        data: {
+          status: 'success',
+          result: JSON.stringify(validatedResponse),
+        },
+      });
+
+      // if (updatedSession?.result && updatedSession?.status === 'success') {
+      // let parsedResult = JSON.parse(updatedSession?.result);
+      // if (process.env.NODE_ENV === 'production') {
+      //   removeRawFieldData(parsedResult);
+      // }
+
+      return res.status(200).json({
         isSuccess: true,
         data: {
           product,
-          latestSession: latestExtractSession,
+          latestSession: updatedSession,
         },
       });
-    } else {
-      res.status(404).json({ error: 'Product not found' });
+      // }
     }
   } catch (error) {
+    console.log('error', error);
     res.status(500).json({ error: 'Failed to fetch product' });
   }
 });

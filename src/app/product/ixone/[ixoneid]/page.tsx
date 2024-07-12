@@ -47,9 +47,7 @@ const ProductDetailPage = () => {
   });
 
   const [productIxone, setProductIxone] = useState<any>(null);
-  const [sessionId, setSessionId] = useState<any>(
-    '81828dd1-1828-4ebc-9e97-970d5d3733d2'
-  );
+  const [sessionId, setSessionId] = useState<any>();
   const [pdSessionId, setPdSessionId] = useState<any>(null);
 
   const [loading, setLoading] = useState(false);
@@ -289,12 +287,12 @@ const ProductDetailPage = () => {
           }
         } catch (error) {
           console.error('some thing went wrong', error);
-          // if (refInterval.current) {
-          //   clearInterval(refInterval.current);
-          // }
-          // setLoading(false);
+          if (refInterval.current) {
+            clearInterval(refInterval.current);
+          }
+          setLoading(false);
         }
-      }, 7000);
+      }, 6000);
     }
     return () => {
       if (!refInterval.current) return;

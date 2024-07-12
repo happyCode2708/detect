@@ -152,8 +152,8 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       });
     }
 
-    const nutRes = JSON.parse(result_nut)?.['nut.json'];
-    const allRes = JSON.parse(result_all)?.['all.json'];
+    const nutRes = JSON.parse(JSON.parse(result_nut)?.['nut.json']);
+    const allRes = JSON.parse(JSON.parse(result_all)?.['all.json']);
 
     console.log(typeof nutRes);
 
@@ -205,9 +205,9 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
 
     if (result && session?.status === 'success') {
       let parsedResult = JSON.parse(result);
-      // if (process.env.NODE_ENV === 'production') {
-      //   removeRawFieldData(parsedResult);
-      // }
+      if (process.env.NODE_ENV === 'production') {
+        removeRawFieldData(parsedResult);
+      }
 
       return res.status(200).json({
         isSuccess: true,

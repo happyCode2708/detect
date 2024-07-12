@@ -771,3 +771,21 @@
 2024-07-12 16:52:22 [32minfo[39m: [{"haveQrCode":"true","instagram":"no","pinterest":"no","youtube":"no","youtubeType":"","facebook":"no","twitter":"no","socialMediaList":"","website":"megafood.com, megafood.com/standards","socialMediaText":"","enlargedToShow":"false"}]
 2024-07-12 16:52:22 [31merror[39m: instruction
 2024-07-12 16:52:22 [32minfo[39m: [{"storageInstruction":["Keep out of reach of children.","Store tightly sealed in a cool place and avoid exposure to moisture.","Once open, consume within three months."],"cookingInstruction":[],"usageInstruction":["Adults take 2 capsules anytime of day with food and a beverage."]}]
+2024-07-12 21:54:49 [31merror[39m: ingredient list
+2024-07-12 21:54:49 [32minfo[39m: [{"productType":"supplement facts","ingredientPrefix":"Other Ingredients:","ingredientStatement":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide","ingredientBreakdown":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide"}]
+2024-07-12 21:54:49 [31merror[39m: marketing
+2024-07-12 21:54:49 [32minfo[39m: [{"haveQrCode":"true","instagram":"unknown","pinterest":"unknown","youtube":"unknown","youtubeType":"unknown","facebook":"unknown","twitter":"unknown","socialMediaList":"unknown","website":"megafood.com/standards, megafood.com, MEGAFOOD.COM, 800.848.2542","socialMediaText":"unknown","enlargedToShow":"unknown"}]
+2024-07-12 21:54:49 [31merror[39m: instruction
+2024-07-12 21:54:49 [32minfo[39m: [{"storageInstruction":["Keep out of reach of children.","Store tightly sealed in a cool place and avoid exposure to moisture.","Once open, consume within three months."],"cookingInstruction":["unknown","unknown","unknown"],"usageInstruction":["Adults take 2 capsules anytime of day with food and a beverage.","unknown","unknown"]}]
+2024-07-12 23:02:17 [31merror[39m: ingredient list
+2024-07-12 23:02:17 [32minfo[39m: [{"productType":"supplement facts","ingredientPrefix":"Other Ingredients:","ingredientStatement":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide","ingredientBreakdown":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide"}]
+2024-07-12 23:02:17 [31merror[39m: marketing
+2024-07-12 23:02:17 [32minfo[39m: [{"haveQrCode":"true","instagram":"no","pinterest":"no","youtube":"no","youtubeType":"","facebook":"no","twitter":"no","socialMediaList":"","website":"megafood.com/standards, megafood.com, MEGAFOOD.COM, 800.848.2542","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 23:02:17 [31merror[39m: instruction
+2024-07-12 23:02:17 [32minfo[39m: [{"storageInstruction":["Keep out of reach of children.","Store tightly sealed in a cool place and avoid exposure to moisture.","Once open, consume within three months."],"cookingInstruction":[],"usageInstruction":["Adults take 2 capsules anytime of day with food and a beverage."]}]
+2024-07-12 23:05:03 [31merror[39m: ingredient list
+2024-07-12 23:05:03 [32minfo[39m: [{"productType":"supplement facts","ingredientPrefix":"Other Ingredients:","ingredientStatement":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide","ingredientBreakdown":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide"}]
+2024-07-12 23:05:03 [31merror[39m: marketing
+2024-07-12 23:05:03 [32minfo[39m: [{"haveQrCode":"true","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","website":"megafood.com/standards, megafood.com, MEGAFOOD.COM","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 23:05:03 [31merror[39m: instruction
+2024-07-12 23:05:03 [32minfo[39m: [{"storageInstruction":["Keep out of reach of children.","Store tightly sealed in a cool place and avoid exposure to moisture.","Once open, consume within three months."],"cookingInstruction":[],"usageInstruction":["Adults take 2 capsules anytime of day with food and a beverage."]}]
