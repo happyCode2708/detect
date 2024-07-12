@@ -133,18 +133,18 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
   // Validate that the file extension is .json
   try {
     const sessionId = req.params.sessionId;
-    if (!sessionId) {
-      res.status(404).json({ error: 'Session not found' });
-    }
 
-    const session = await prisma.extractSession.findUnique({
+    let session = await prisma.extractSession.findUnique({
       where: { sessionId },
       // include: { product: true },  // Include related product details if needed
     });
 
-    const result = session?.result;
+    // if (session) {
+    //   res.status(404).json({ error: 'Session not found' });
+    // }
+    const { result_nut, result_all } = session as any;
 
-    if (!result && session?.status === 'unknown') {
+    if (session?.status === 'unknown' && (!result_nut || !result_all)) {
       return res.status(200).send({
         isSuccess: 'unknown',
         status: 'processing',
@@ -152,8 +152,40 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       });
     }
 
+    const allRes = JSON.parse(result_all?.['all.json']);
+    const nutRes = JSON.parse(result_nut?.['nut.json']);
+    // const ocrClaims = JSON.parse(ocrClaimData);
+
+    const { isSuccess: allSuccess, status: allStatus } = allRes || {};
+    const { isSuccess: nutSuccess, status: nutStatus } = nutRes || {};
+
+    if (nutSuccess === false || allSuccess === false) {
+      return;
+    }
+
+    let finalResult = {
+      product: {
+        ...allRes?.data?.jsonData,
+        factPanels: nutRes?.data?.jsonData, //* markdown converted
+        nutMark: nutRes?.data?.markdownContent,
+        allMark: allRes?.data?.markdownContent,
+      },
+    };
+
+    let validatedResponse = await responseValidator(finalResult, '');
+
+    session = await prisma.extractSession.update({
+      where: { sessionId },
+      data: {
+        status: 'success',
+        result: JSON.stringify(validatedResponse),
+      },
+    });
+
+    const result = session?.result;
+
     if (!result && session?.status === 'fail') {
-      return res.status(200).send({
+      return res.status(404).send({
         isSuccess: false,
         status: 'fail',
         message: 'something went wrong',
@@ -162,9 +194,9 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
 
     if (result && session?.status === 'success') {
       let parsedResult = JSON.parse(result);
-      if (process.env.NODE_ENV === 'production') {
-        removeRawFieldData(parsedResult);
-      }
+      // if (process.env.NODE_ENV === 'production') {
+      //   removeRawFieldData(parsedResult);
+      // }
 
       return res.status(200).json({
         isSuccess: true,

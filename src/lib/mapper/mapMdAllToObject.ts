@@ -256,7 +256,6 @@ export const mapMarkdownAllToObject = (markdown: string) => {
     'facebook',
     'twitter',
     'socialMediaList',
-    'socialMediaAddresses',
     'website',
     'socialMediaText',
     'enlargedToShow',
@@ -271,9 +270,6 @@ export const mapMarkdownAllToObject = (markdown: string) => {
       'storage instructions': 'storageInstruction',
       'cooking instructions': 'cookingInstruction',
       'usage instructions': 'usageInstruction',
-      'store by a date time instructions / freeze by a date time instructions / use product within a time instructions':
-        'useOrFreezeBy',
-      'all other instructions': 'otherInstructions',
     }
   );
   logger.error('instruction');
@@ -297,6 +293,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
     {
       'country of origin text': 'countryOfOriginText',
       'country of origin': 'countryOfOrigin',
+      'have text "distributed by" ? (answer is yes/no)': 'haveDistributor',
       'distributor name': 'distributorName',
       'distributor city': 'distributorCity',
       'distributor state': 'distributorState',

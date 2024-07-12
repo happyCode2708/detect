@@ -4,6 +4,12 @@ import { toLower } from 'lodash';
 export const baseCertifierClaimValidate = async (
   modifiedProductDataPoints: any
 ) => {
+  if (!modifiedProductDataPoints?.['attributes']) {
+    console.log('finish validate base certifier claim');
+
+    return;
+  }
+
   const claim_list =
     modifiedProductDataPoints?.['attributes']?.['baseCertifierClaims'] || [];
 
@@ -12,6 +18,8 @@ export const baseCertifierClaimValidate = async (
     modifiedProductDataPoints,
     'validated_baseCertifierClaims'
   );
+
+  console.log('finish validate base certifier claim');
 };
 
 const validate = async (

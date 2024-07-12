@@ -10,6 +10,8 @@ export const sugarClaimValidate = async (modifiedProductDataPoints: any) => {
     modifiedProductDataPoints,
     'validated_sugarClaims'
   );
+
+  console.log('finish validate sugar claim');
 };
 
 const validate = async (
@@ -247,7 +249,6 @@ const SUGAR_CLAIMS_MAP = {
     slpenda: 'no splenda/sucralose',
     sucralose: 'no splenda/sucralose',
     stevia: 'no stevia',
-    sugar: 'no sugar',
     'sugar added': 'no sugar added',
     'sugar alcohol': 'no sugar alcohol',
     tagatose: 'no tagatose',
@@ -300,7 +301,6 @@ const SUGAR_CLAIMS_MAP = {
     slpenda: 'no splenda/sucralose',
     sucralose: 'no splenda/sucralose',
     stevia: 'no stevia',
-    sugar: 'no sugar',
     'sugar added': 'no sugar added',
     'sugar alcohol': 'no sugar alcohol',
     tagatose: 'no tagatose',

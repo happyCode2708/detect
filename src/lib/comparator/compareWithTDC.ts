@@ -9,10 +9,12 @@ export const compareWithTDC = ({
   tdcData: any;
 }) => {
   const comparisonResult = compareObjects(tdcFormattedExtractData, tdcData);
-  const compareResultFactPanel = compareFactPanel(
+  const compareResultFactPanel = compareFactPanelByOrder(
     tdcFormattedExtractData,
     tdcData
   );
+
+  compareFactPanelByMostMatch(tdcFormattedExtractData, tdcData);
 
   return {
     ...comparisonResult,
@@ -22,7 +24,7 @@ export const compareWithTDC = ({
   };
 };
 
-const compareFactPanel = (obj1: any, obj2: any) => {
+const compareFactPanelByOrder = (obj1: any, obj2: any) => {
   const {
     NutritionPanel: NutritionPanel_1,
     SupplementPanel: SupplementPanel_1,
@@ -152,4 +154,95 @@ const compareObjects = (obj1: any, obj2: any) => {
 
     return {};
   }
+};
+
+const compareFactPanelByMostMatch = (obj1: any, obj2: any) => {
+  const {
+    NutritionPanel: NutritionPanel_1,
+    SupplementPanel: SupplementPanel_1,
+  } = obj1;
+  const {
+    NutritionPanel: NutritionPanel_2,
+    SupplementPanel: SupplementPanel_2,
+  } = obj2;
+
+  let factPanels = NutritionPanel_1 || SupplementPanel_1;
+  let tdc_factPanels = NutritionPanel_2 || SupplementPanel_2;
+
+  let panelType: any;
+
+  if (SupplementPanel_2?.length > 0) {
+    panelType = 'SupplementPanel_compare_by_most_match';
+  } else {
+    panelType = 'NutritionPanel_compare_by_most_match';
+  }
+
+  if (!factPanels) return {};
+
+  let matchResult = {
+    [panelType]: [],
+  } as any;
+
+  tdc_factPanels?.forEach((panelItem: any, idx: number) => {
+    const panelPropertyList = panelItem?.Property || [];
+
+    matchResult[panelType].push({ Property: [] });
+
+    panelPropertyList.forEach((propertyItem: any) => {
+      const propertyName = propertyItem?.PropertyName;
+      let comparisonResult = { name: propertyName } as any;
+
+      const matchPercentList = factPanels?.[idx]?.Property?.map(
+        (extractPropertyItem: any) => {
+          const matchPercent = `${getMatchPercent({
+            v1: JSON.stringify(propertyItem),
+            v2: JSON.stringify(extractPropertyItem),
+          })}`;
+          return matchPercent;
+        }
+      );
+
+      console.log(
+        'match percent list',
+        `key -- ${propertyName} ${JSON.stringify(matchPercentList)}`
+      );
+
+      // const samePropertyOnExtractData =
+
+      // for (const key of Object.keys(propertyItem)) {
+      //   if (samePropertyOnExtractData?.hasOwnProperty(key)) {
+      //     const value = propertyItem[key];
+      //     const extractValue = samePropertyOnExtractData[key];
+      //     const valueString =
+      //       typeof value !== 'string' ? JSON.stringify(value) : value;
+      //     const extractValueString =
+      //       typeof extractValue === 'undefined'
+      //         ? ''
+      //         : typeof extractValue !== 'string'
+      //         ? JSON.stringify(extractValue)
+      //         : extractValue;
+
+      //     console.log(
+      //       `key -- ${key} -- ${valueString} -- ${extractValueString} `
+      //     );
+
+      //     if (
+      //       (valueString === '' && extractValueString === '') ||
+      //       (valueString === '0' && extractValueString === '0')
+      //     ) {
+      //       comparisonResult[key] = '100';
+      //     } else {
+      //       comparisonResult[key] = `${getMatchPercent({
+      //         v1: valueString,
+      //         v2: extractValueString,
+      //       })}`;
+      //     }
+      //   }
+      // }
+
+      // matchResult[panelType][idx]['Property'].push(comparisonResult);
+    });
+  });
+
+  return matchResult;
 };

@@ -11,6 +11,7 @@ ${ocrText}
 
 VALIDATION AND FIX BUGS:
 1) why you keep not separating the dual-column nutrition fact panel? please please help me always separated into multiple table of info for dual-column nutrition fact panel.
+2) only give me the information visibly seen on provided images and do not assume the values.
 
 IMPORTANT REQUIREMENTS:
 1) do not provide data that you cannot see it by human eyes on provided images.

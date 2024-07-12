@@ -122,17 +122,33 @@ export const mapToTDCformat = (extractData: any) => {
     Website: marketing?.[0]?.website
       ?.split(', ')
       .filter((item: string) => item !== '')
+      .filter((item: string) => {
+        if (
+          toLower(item)?.includes('facebook') ||
+          toLower(item)?.includes('youtube') ||
+          toLower(item)?.includes('twitter') ||
+          toLower(item)?.includes('youtube') ||
+          toLower(item)?.includes('pinterest')
+        ) {
+          return false;
+        } else {
+          return true;
+        }
+      })
       .map((item: string) => toUpper(item?.trim())),
     QRCode: marketing?.[0]?.haveQrCode,
     SocialMedia: marketing?.[0]?.socialMediaList
       ?.split(', ')
       .filter((item: string) => item !== '')
       .map((item: string) => {
-        if (item === 'youtube' && marketing?.[0]?.youtubeType === 'type_2') {
+        if (
+          toLower(item)?.includes('youtube') &&
+          marketing?.[0]?.youtubeType === 'type_2'
+        ) {
           return 'YOUTUBE2 or YOUTUBE3';
         }
 
-        if (item === 'twitter') {
+        if (toLower(item)?.includes('twitter')) {
           return 'X FORMERLY TWITTER';
         }
 
@@ -141,29 +157,29 @@ export const mapToTDCformat = (extractData: any) => {
     // MarketingClaims: marketing?.[0]?.marketingClaims?.map((item: string) =>
     //   toUpper(item)
     // ),
-    SocialMediaAddresses:
-      [
-        ...(marketing?.[0]?.socialMediaText
-          ?.split(', ')
-          .filter((item: string) => item !== '')
-          .map((item: any) => toUpper(item)) || []),
-        ...(marketing?.[0]?.website
-          ?.split(', ')
-          .filter((item: string) => item !== '')
-          .filter((item: string) => {
-            if (
-              item?.includes('facebook') ||
-              item?.includes('twitter') ||
-              item?.includes('youtube') ||
-              item?.includes('instagram') ||
-              item?.includes('snapchat')
-            ) {
-              return true;
-            } else {
-              return false;
-            }
-          }) || []),
-      ] || [],
+    SocialMediaAddresses: [
+      ...(marketing?.[0]?.website
+        ?.split(', ')
+        .filter((item: string) => item !== '')
+        .filter((item: string) => {
+          if (
+            toLower(item)?.includes('facebook') ||
+            toLower(item)?.includes('youtube') ||
+            toLower(item)?.includes('twitter') ||
+            toLower(item)?.includes('youtube') ||
+            toLower(item)?.includes('pinterest')
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .map((item: string) => toUpper(item?.trim())) || []),
+      ...(marketing?.[0]?.socialMediaText
+        ?.split(', ')
+        .map((item: string) => toUpper(item?.trim()))
+        .filter((item: string) => item !== '') || []),
+    ],
 
     // //* attribute
     SugarSweetener:
@@ -214,7 +230,7 @@ const mapToNutritionPanels = (
 
       if (ingredients?.length > 0) {
         ingredients?.forEach((ingredientItem: any) => {
-          if (ingredientItem?.ingredientPrefix?.includes('other')) {
+          if (toLower(ingredientItem?.ingredientPrefix)?.includes('other')) {
             formatFactPanelPropertyList.push({
               PropertyName: 'OTHER INGREDIENTS',
               PropertySource: ingredientItem.ingredientStatement,
@@ -274,17 +290,30 @@ const mapToNutritionPanels = (
       }
 
       nutritionFacts.forEach((nutrientItem: any) => {
-        formatFactPanelPropertyList.push({
+        let nutrientObj = {
           PropertyName: toUpper(nutrientItem?.['validated_nutrientName']),
-          PropertySource: toUpper(nutrientItem?.['blendIngredients'] || ''),
+          PropertySource: `${toUpper(
+            nutrientItem?.['blendIngredients']
+          )} ${toUpper(nutrientItem?.['parenthesesDescriptor'])}  ${toUpper(
+            nutrientItem?.['amountPerServingDescriptor']
+          )}`,
           AnalyticalValue: nutrientItem?.['amount'],
-          Amount: nutrientItem?.['amount'],
+          Amount: `${nutrientItem?.['amount']}`,
           AmountUOM: nutrientItem?.['uom']?.toString() || '',
           Percent: nutrientItem?.['percent'],
-          Indicators: nutrientItem?.['indicator']
-            ? [nutrientItem?.['indicator']]
-            : '',
-        });
+        } as any;
+        // Indicators: nutrientItem?.['indicator']
+        //   ? [nutrientItem?.['indicator']]
+        //   : '',
+
+        if (nutrientItem?.['indicator']) {
+          nutrientObj = {
+            ...nutrientObj,
+            Indicators: [nutrientItem?.['indicator']],
+          };
+        }
+
+        formatFactPanelPropertyList.push(nutrientObj);
       });
 
       return { Property: formatFactPanelPropertyList };

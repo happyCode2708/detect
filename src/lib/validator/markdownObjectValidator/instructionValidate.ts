@@ -1,6 +1,12 @@
 import { toLower } from 'lodash';
 
 export const instructionValidate = async (modifiedProductDataPoints: any) => {
+  if (!modifiedProductDataPoints?.['instructions']) {
+    console.log('finish validate storage instruction');
+
+    return;
+  }
+
   const allInstructions =
     modifiedProductDataPoints?.['instructions']?.[0] || {};
 
@@ -11,6 +17,8 @@ export const instructionValidate = async (modifiedProductDataPoints: any) => {
     modifiedProductDataPoints,
     'validated_storageInstruction'
   );
+
+  console.log('finish validate storage instruction');
 };
 
 const validate = async (
@@ -19,32 +27,37 @@ const validate = async (
   dataPointKey: string
 ) => {
   for (const analysisItem of analysisList) {
-    let validEnumValue = await check(analysisItem);
+    let validEnumValues = await check(analysisItem);
 
-    if (validEnumValue) {
+    if (validEnumValues) {
       const currentValues =
         modifiedProductDataPoints?.['instructions']?.[0]?.[dataPointKey] || [];
 
       modifiedProductDataPoints['instructions'][0][dataPointKey] = Array.from(
-        new Set([...currentValues, validEnumValue])
+        new Set([...currentValues, ...validEnumValues])
       );
     }
   }
 };
 
-const check = async (statement: any): Promise<string | false> => {
-  const [foundEnumValue] =
-    Object.entries(STORAGE_MAPPING)?.find(([key, words]) => {
-      return words.every((word: string) => {
-        return toLower(statement).includes(word);
-      });
-    }) || [];
+const check = async (statement: any): Promise<string[] | false> => {
+  let validEnumValues = [] as any;
 
-  if (!foundEnumValue) {
+  // const [foundEnumValue] =
+  Object.entries(STORAGE_MAPPING)?.forEach(([key, words]) => {
+    const isStatementMatchEnum = words.every((word: string) => {
+      return toLower(statement).includes(word);
+    });
+    if (isStatementMatchEnum) {
+      validEnumValues.push(key);
+    }
+  });
+
+  if (validEnumValues?.length === 0) {
     return Promise.resolve(false);
   }
 
-  return Promise.resolve(foundEnumValue);
+  return Promise.resolve(validEnumValues);
 };
 
 const STORAGE_MAPPING = {

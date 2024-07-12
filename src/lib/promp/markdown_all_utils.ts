@@ -29,6 +29,9 @@
 // 11) "marketing text table" rules:
 //  + is the list of all texts or paragraphs to marketing for products that appeal customer to buy
 
+// + "all other instructions" are all other instructions see examples
+// Ex 1: SEE NUTRITION INFORMATION FOR FAT AND SATURATED FAT ...
+
 export const make_markdown_all_prompt = ({
   ocrText,
   imageCount,
@@ -113,6 +116,7 @@ Ex 1: "contain no wheat, milk"
 Ex 2: "does not contain wheat, milk"
 Ex 3: "free of wheat, milk"
 Ex 4: "non-dairy" text mean does not contain allergen ingredient of "dairy"
+Ex 5:  "no soy"
 
 + "allergen contain statement" are the exact contexts that you found on provided images about allergen info, usually start with "contains", "contains:", "may contains:", ....
 
@@ -133,9 +137,10 @@ ex 1: "oats, milk"
 + header table only have 1 row item so you must carefully examine the images.
 + "primary size" and "secondary size" and "third size" is a quantity measurement of product in two different unit of measurement. They are not info from "serving size" in nutrition fact.
 Ex 1: "primary size" = "100gram"
-Ex 2: "32 fl oz ( 2 pt ) 946 mL" should recorded as "primary size" = "32 fl oz" and "secondary size" = "2 pt" and "third size" = "946 mL"
 Ex 3: "WT 2.68 OZ (40g) should recorded as "primary size" = "2.68 OZ" and "secondary size" = "40g"
+Ex 2: "32 fl oz ( 2 pt ) 946 mL" should recorded as "primary size" = "32 fl oz" and "secondary size" = "2 pt" and "third size" = "946 mL"
 Ex 4: "100 capsules"  should recorded as "primary size" = "100 capsules"
++ just collect size in order. If production mention three type of uom it will have third size
 
 + "count" is the count number of smaller unit inside a package, or a display shipper, or a case, or a box.
 
@@ -143,6 +148,7 @@ Ex 4: "100 capsules"  should recorded as "primary size" = "100 capsules"
 Ex 1: "Net WT 9.28oz(260g) 10 cups"
 Ex 2: "16 FL OZ (472 ML)
 Ex 3: "900 CAPSULES 400 servings"
+Ex 4: "24 K-CUP PODS - 0.55 OZ (5.2)G/EA NET WT 4.44 OZ (38g)"
 
 5) "ingredient" table rules:
 + is the list of statements about ingredients of product (since product can have many ingredients list)
@@ -170,36 +176,15 @@ Ex 1: @cocacola
 Ex: "0   4562342221   5" as you can see there are two digit numbers at the start is 0 and at the end is 5. And the "upc-12 or gtin-12" here = 045623422215
 
 8) "instruction" table rules:
-+ "other instruction" such as
-ex 1: "best if consumed ..."
-ex 2: "use it with lemon..."
-
 + "cooking instructions" are all statements or all steps how to cook using product.
 
 + "usage instructions" are all instruction statement about how to use product but not about "cooking instructions" text.
-Ex 1: "suggested use: 2 cups at one time."
+Ex 1: "suggested use: 2 cups at one time." should be recorded as "usage instructions" = "suggested use: 2 cups at one time."
 
 + "storage instruction" are all storage instruction text that includes some phrases below:
- "store cool dark place"
-"store cool dry place"
-"do not freeze"
-"do not refrigerate"
-"store dry place"
-"keep frozen"
-"keep refrigerated"
-"refrigerate after opening"
-"seal for freshness"
-"store at room temperature"
 
 if storage instruction include other point not mentioned in the list above that instructions must be put in "all other instructions" as well
 Ex1: "STORE IN A COOL, DRY PLACE AWAY FROM KITCHEN" is valid for "storage instructions" but also valid for "all other instructions since it say "away from kitchen"
-
-
-+ "store by a date time instructions / freeze by a date time instructions / use product within a time instructions" some example
-Ex 1: "use within 30 days after opening"
-
-+ "all other instructions" are all other instructions see examples
-Ex 1: SEE NUTRITION INFORMATION FOR FAT AND SATURATED FAT ...
 
 9) "supply chain" table rules:
 + "country of origin text" example
@@ -212,7 +197,7 @@ Ex 2: "Brazil"
 
 + "manufacturer" could not be "distributor"
 
-+ "distributeor name" is detected from the text statement MUST start after text such as "distributed by", "distributed by:", "distributor ...".
++ "distributor name" is detected from the text statement MUST start after text such as "distributed by", "distributed by:", "distributor ...". If you do not see those texts the info of company must be about "manufacture info"
 
 + "manufacture name" is only the name of manufacturer could start after some text such as "manufactured in" without including address.
 Ex 1 : "Coca cola .LLC"
@@ -589,13 +574,14 @@ PHYSICAL_TABLE
 13) Marketing info with table format below:
 
 MARKETING_TABLE
-| have QR code (answer is boolean) | have Instagram icon or info ? | have Pinterest icon or info ? | have Youtube icon or info ? | youtube icon type (if have youtube icon or info )  | have Facebook icon or info ? | have twitter icon or info ? | social media list | social media addresses (multiple) | website list (multiple split by comma) | social media text list | enlarged to show (answer is boolean) |
+| have QR code (answer is boolean) | have Instagram icon or info ? | have Pinterest icon or info ? | have Youtube icon or info ? | youtube icon type (if have youtube icon or info )  | have Facebook icon or info ? | have twitter icon or info ? | social media list | website list (multiple split by comma) | social media text list | enlarged to show (answer is boolean) |
 | ------- | -------- | -------- | ------- | ------- | ------- | -------- | -------- | ------- | ------- | ------- |
 
 14) Instruction info with table format below:
 
 IMPORTANT NOTE:
 + each type of instruction could have multiple value
++
 
 INSTRUCTION_TABLE
 | instruction type | value 1  | value 2 | value 3 | ... (more columns if needed)
@@ -603,8 +589,6 @@ INSTRUCTION_TABLE
 | storage instructions | 
 | cooking instructions | 
 | usage instructions | 
-| store by a date time instructions / freeze by a date time instructions / use product within a time instructions | 
-| all other instructions |
 
 15) supply chain info with table format below:
 
@@ -613,6 +597,7 @@ SUPPLY_CHAIN_TABLE
 | ------- | -------- |
 | country of origin text |
 | country of origin | 
+| have text "distributed by" ? (answer is yes/no) |
 | distributor name |
 | distributor city | 
 | distributor state |

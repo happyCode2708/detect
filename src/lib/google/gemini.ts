@@ -82,7 +82,9 @@ export const generateContent = async (images: any[], text: any) => {
           console.log(
             'chunk error  ...' + item?.candidates[0]?.content?.parts?.[0]?.text
           );
-          throw new Error('chunk empty answer');
+          return Promise.reject('chunk empty answer');
+        } else {
+          console.log('generating...');
         }
       }
     })(),
@@ -231,6 +233,7 @@ export const onProcessGemini = async ({
         result: JSON.stringify({}),
       },
     });
+    return Promise.reject(e);
   }
 };
 
@@ -339,7 +342,16 @@ export const onProcessOther = async ({
     sessionPayload,
   });
 
-  return Promise.resolve(finalSessionPayload);
+  await prisma.extractSession.update({
+    where: { sessionId },
+    data: {
+      status: 'unknown',
+      result_all: JSON.stringify(finalSessionPayload),
+      // result_nut: JSON.stringify(finalSessionPayload),
+    },
+  });
+
+  // return Promise.resolve(finalSessionPayload);
 };
 
 export const onProcessNut = async ({
@@ -389,64 +401,77 @@ export const onProcessNut = async ({
     return Promise.resolve(sessionPayload);
   }
 
-  const prefix = 'nut';
+  try {
+    const prefix = 'nut';
 
-  const resultFileName = (prefix ? `${prefix}` : '') + '.json';
+    const resultFileName = (prefix ? `${prefix}` : '') + '.json';
 
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    resultFileName,
-    JSON.stringify({
-      isSuccess: 'unknown',
-      status: 'processing',
-    })
-  );
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      resultFileName,
+      JSON.stringify({
+        isSuccess: 'unknown',
+        status: 'processing',
+      })
+    );
 
-  const new_nutText = ocrList.reduce(
-    (accumulator: any, currentValue: any, idx: number) => {
-      let [whole_text, ...array_string] = currentValue;
-      let processed_whole_text = array_string.join(' ');
-      return {
-        ...accumulator,
-        [`ocrImage_${idx + 1}`]: processed_whole_text,
-      };
-    },
-    {}
-  );
+    const new_nutText = ocrList.reduce(
+      (accumulator: any, currentValue: any, idx: number) => {
+        let [whole_text, ...array_string] = currentValue;
+        let processed_whole_text = array_string.join(' ');
+        return {
+          ...accumulator,
+          [`ocrImage_${idx + 1}`]: processed_whole_text,
+        };
+      },
+      {}
+    );
 
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    'nut-orc.json',
-    JSON.stringify(new_nutText)
-  );
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      'nut-orc.json',
+      JSON.stringify(new_nutText)
+    );
 
-  let sessionPayload = {
-    'nut-ocr': JSON.stringify(new_nutText),
-  };
+    let sessionPayload = {
+      'nut-ocr': JSON.stringify(new_nutText),
+    };
 
-  const finalSessionPayload = await onProcessGemini({
-    req,
-    res,
-    sessionId,
-    collateImageName,
-    prefix,
+    const finalSessionPayload = await onProcessGemini({
+      req,
+      res,
+      sessionId,
+      collateImageName,
+      prefix,
 
-    //* markdown nut
-    collatedOuputPath: [
-      ...invalidatedInput.nutIncluded,
-      ...invalidatedInput.nutExcluded,
-    ],
-    prompt: make_markdown_nut_prompt({
-      ocrText: JSON.stringify(new_nutText),
-      imageCount: [
+      //* markdown nut
+      collatedOuputPath: [
         ...invalidatedInput.nutIncluded,
         ...invalidatedInput.nutExcluded,
-      ]?.length,
-    }),
-    isMarkdown: true,
-    mapMdToObjectFunct: mapMarkdownNutToObject,
-    sessionPayload,
-  });
+      ],
+      prompt: make_markdown_nut_prompt({
+        ocrText: JSON.stringify(new_nutText),
+        imageCount: [
+          ...invalidatedInput.nutIncluded,
+          ...invalidatedInput.nutExcluded,
+        ]?.length,
+      }),
+      isMarkdown: true,
+      mapMdToObjectFunct: mapMarkdownNutToObject,
+      sessionPayload,
+    });
 
-  return Promise.resolve(finalSessionPayload);
+    await prisma.extractSession.update({
+      where: { sessionId },
+      data: {
+        status: 'unknown',
+        // result_all: JSON.stringify({}),
+        result_nut: JSON.stringify(finalSessionPayload),
+      },
+    });
+  } catch (e) {
+    console.log('process nut eror', e);
+  }
+
+  // return Promise.resolve(finalSessionPayload);
 };

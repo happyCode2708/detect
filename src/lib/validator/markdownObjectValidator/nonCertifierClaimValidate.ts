@@ -11,6 +11,8 @@ export const nonCertifierClaimValidate = async (
     modifiedProductDataPoints,
     'validated_nonCertificateClaims'
   );
+
+  console.log('finish validate non certificate');
 };
 
 const validate = async (

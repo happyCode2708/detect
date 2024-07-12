@@ -168,17 +168,24 @@ router.post('/export-compare-result', async (req, res) => {
 
   let exportProductsList = products
     ?.filter((item) => !!item?.compareResult)
-    ?.map((productItem: any, idx: number) =>
-      productItem?.compareResult
+    ?.map((productItem: any, idx: number) => {
+      const compareResult = JSON.parse(productItem?.compareResult);
+
+      let { SupplementPanel, NutritionPanel, ...restFields } = compareResult;
+
+      return productItem?.compareResult
         ? {
             idx,
             ixoneId: productItem?.ixoneID,
-            ...JSON.parse(productItem?.compareResult),
-            NutritionPanel: 'NA',
-            SupplementPanel: 'NA',
+            ...restFields,
+            // NutritionPanel: 'NA',
+            // SupplementPanel: 'NA',
+            // NutritionPanel: 'produc',
+            // SupplementPanel: 'NA',
+            // generalFactPanels:
           }
-        : []
-    );
+        : [];
+    });
 
   // Determine all unique keys across all products
   const allKeys = Array.from(
@@ -198,15 +205,17 @@ router.post('/export-compare-result', async (req, res) => {
   // Add average rating to the product array as a separate object
   let accuracy = {} as any;
 
+  const AVERAGE_KEY_EXCLUDED = ['idx', 'ixoneId'];
+
   allKeys.forEach((key: string) => {
+    if (AVERAGE_KEY_EXCLUDED.includes(key)) return;
+
     accuracy[key] = computeAverage(exportProductsList, key);
   });
 
-  console.log(JSON.stringify(accuracy));
-
   exportProductsList.push({
     idx: '',
-    ixoneId: 'All',
+    ixoneId: '',
     ...accuracy,
   });
 
@@ -214,7 +223,7 @@ router.post('/export-compare-result', async (req, res) => {
 
   try {
     const csvWriter = createObjectCsvWriter({
-      path: 'products-test-2.csv',
+      path: 'products-com-1.csv',
       header: allKeys.map((key: any) => ({ id: key, title: key })),
     });
 
@@ -240,16 +249,25 @@ router.post('/export-compare-result', async (req, res) => {
 });
 
 const computeAverage = (products: any, field: string) => {
-  const ratings = products
+  const allPercents = products
     .filter(
       (product: any) =>
-        field in product && product[field] !== 'NA' && product[field] !== ''
+        field in product &&
+        product[field] !== 'NAN' &&
+        product[field] !== 'NaN' &&
+        product[field] !== '' &&
+        product[field] !== 'NA'
     )
     .map((product: any) => product?.[field]);
-  const averageRating =
-    ratings.reduce((sum: any, rating: any) => sum + rating, 0) / ratings.length;
+  const averagePercent =
+    allPercents.reduce(
+      (sum: any, percentValue: any) => sum + Number(percentValue),
+      0
+    ) / allPercents.length;
 
-  const final = averageRating?.toFixed(2);
+  console.log('allpercents', JSON.stringify(allPercents));
+
+  const final = averagePercent;
   return final;
 };
 

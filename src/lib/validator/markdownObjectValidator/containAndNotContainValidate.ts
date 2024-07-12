@@ -9,6 +9,8 @@ export const containAndNotContainClaimValidate = async (
     modifiedProductDataPoints?.['attributes']?.['containAndNotContain'] || [];
 
   await validate(claim_list, modifiedProductDataPoints);
+
+  console.log('finish validate contain and does not contain');
 };
 
 const validate = async (

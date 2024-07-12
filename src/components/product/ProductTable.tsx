@@ -39,8 +39,10 @@ const ProductTable = ({
             <TableHead>Select</TableHead>
             <TableHead>Ixone Id</TableHead>
             <TableHead>Images</TableHead>
-            <TableHead>Extract Session</TableHead>
-            <TableHead>Saved Compare Result</TableHead>
+            {/* <TableHead>Extract Session</TableHead> */}
+            {process.env.NODE_ENV !== 'production' && (
+              <TableHead>Saved Compare Result</TableHead>
+            )}
             <TableHead>Tool</TableHead>
           </TableRow>
         </TableHeader>
@@ -70,8 +72,10 @@ const ProductTable = ({
                   })}
                 </div>
               </TableCell>
-              <TableCell>{product?.extractSessions}</TableCell>
-              <TableCell>{product?.compareResult ? 'yes' : ''}</TableCell>
+              {/* <TableCell>{product?.extractSessions}</TableCell> */}
+              {process.env.NODE_ENV !== 'production' && (
+                <TableCell>{product?.compareResult ? 'yes' : ''}</TableCell>
+              )}
               <TableCell>
                 <div className='flex space-x-2'>
                   <Link

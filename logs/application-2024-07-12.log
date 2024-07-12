@@ -215,3 +215,559 @@
 2024-07-12 00:54:12 [32minfo[39m: [{"haveQrCode":"true","instagram":"no","pinterest":"no","youtube":"no","youtubeType":"","facebook":"no","twitter":"no","socialMediaList":"","socialMediaAddresses":"","website":"megafood.com/standards, MEGAFOOD.COM, 800.848.2542","socialMediaText":"","enlargedToShow":"no"}]
 2024-07-12 00:54:12 [31merror[39m: instruction
 2024-07-12 00:54:12 [32minfo[39m: [{"storageInstruction":["Keep out of reach of children.","Store tightly sealed in a cool place and avoid exposure to moisture.","Once open, consume within three months.","Do not use if seal under cap is broken or missing."],"cookingInstruction":[],"usageInstruction":["Adults take 2 capsules anytime of day with food and a beverage."],"useOrFreezeBy":[],"otherInstructions":[]}]
+2024-07-12 09:37:44 [31merror[39m: debug section
+2024-07-12 09:37:44 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+|---|---|
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is only one nutrition fact table visible in the provided images. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition label is not in a dual-column format. While it has a two-column layout for easier readability, it presents information for a single serving size (2 Tbsp). Dual-column formats are typically used to display information for two different serving sizes or for different groups (like children and adults). |
+
+2024-07-12 09:37:44 [31merror[39m: footnote
+2024-07-12 09:37:44 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+|---|---|
+|  |  |
+
+## 
+2024-07-12 09:37:44 [31merror[39m: debug
+2024-07-12 09:37:44 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+|---|---|
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is only one nutrition fact table visible in the provided images. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition label is not in a dual-column format. While it has a two-column layout for easier readability, it presents information for a single serving size (2 Tbsp). Dual-column formats are typically used to display information for two different serving sizes or for different groups (like children and adults). |
+
+2024-07-12 09:37:44 [31merror[39m: debug table
+2024-07-12 09:37:44 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-12 09:39:09 [31merror[39m: ingredient list
+2024-07-12 09:39:09 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS :","ingredientStatement":"INGREDIENTS : AVOCADO OIL, WATER, PICKLE RELISH ( CUCUMBERS, WATER, ORGANIC VINEGAR, SALT ), ORGANIC APPLE CIDER VINEGAR, ORGANIC PEAR JUICE CONCENTRATE, ORGANIC EGG YOLK, ORGANIC DISTILLED WHITE VINEGAR, ORGANIC TOMATO PASTE, POTATO STARCH, PREPARED YELLOW MUSTARD ( WATER, ORGANIC WHITE DISTILLED VINEGAR, MUSTARD SEED, SALT, TURMERIC, PAPRIKA ), MUSHROOM EXTRACT ( TO MAINTAIN FRESHNESS ), SEA SALT, GARLIC POWDER, ORGANIC ONION POWDER, ORGANIC MUSTARD FLOUR, SALT, TAMARIND SEED GUM, CITRIC ACID, ORGANIC LEMON JUICE CONCENTRATE, ORGANIC PAPRIKA, BLACK PEPPER.","ingredientBreakdown":"AVOCADO OIL,  WATER,  PICKLE RELISH ( CUCUMBERS,  WATER,  ORGANIC VINEGAR,  SALT ),  ORGANIC APPLE CIDER VINEGAR,  ORGANIC PEAR JUICE CONCENTRATE,  ORGANIC EGG YOLK,  ORGANIC DISTILLED WHITE VINEGAR,  ORGANIC TOMATO PASTE,  POTATO STARCH,  PREPARED YELLOW MUSTARD ( WATER,  ORGANIC WHITE DISTILLED VINEGAR,  MUSTARD SEED,  SALT,  TURMERIC,  PAPRIKA ),  MUSHROOM EXTRACT ( TO MAINTAIN FRESHNESS ),  SEA SALT,  GARLIC POWDER,  ORGANIC ONION POWDER,  ORGANIC MUSTARD FLOUR,  SALT,  TAMARIND SEED GUM,  CITRIC ACID,  ORGANIC LEMON JUICE CONCENTRATE,  ORGANIC PAPRIKA,  BLACK PEPPER."}]
+2024-07-12 09:39:09 [31merror[39m: marketing
+2024-07-12 09:39:09 [32minfo[39m: [{"haveQrCode":"false","instagram":"unknown","pinterest":"unknown","youtube":"unknown","youtubeType":"","facebook":"unknown","twitter":"unknown","socialMediaList":"","socialMediaAddresses":"","website":"PRIMALKITCHEN.COM","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 09:39:09 [31merror[39m: instruction
+2024-07-12 09:39:09 [32minfo[39m: [{"storageInstruction":["Store in a cool, dry place away from sunlight.","Shake me and refrigerate after opening."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[],"otherInstructions":[]}]
+2024-07-12 09:39:43 [31merror[39m: debug section
+2024-07-12 09:39:43 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is in a dual-column format because it has two columns for the % Daily Value. I have extracted it as one table because the information is not duplicated. |
+
+2024-07-12 09:39:43 [31merror[39m: footnote
+2024-07-12 09:39:43 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * NOT A LOW CALORIE FOOD . SEE NUTRITION INFORMATION FOR FAT & SATURATED FAT CONTENT . |  |
+
+
+2024-07-12 09:39:43 [31merror[39m: debug
+2024-07-12 09:39:43 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is in a dual-column format because it has two columns for the % Daily Value. I have extracted it as one table because the information is not duplicated. |
+
+2024-07-12 09:39:43 [31merror[39m: debug table
+2024-07-12 09:39:43 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-12 09:41:04 [31merror[39m: ingredient list
+2024-07-12 09:41:04 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"AVOCADO OIL, ORGANIC VINEGAR, ORGANIC EGGS, ORGANIC EGG YOLKS, SALT, ROSEMARY EXTRACT, MUSTARD SEED EXTRACT.","ingredientBreakdown":"AVOCADO OIL, ORGANIC VINEGAR, ORGANIC EGGS, ORGANIC EGG YOLKS, SALT, ROSEMARY EXTRACT, MUSTARD SEED EXTRACT."}]
+2024-07-12 09:41:04 [31merror[39m: marketing
+2024-07-12 09:41:04 [32minfo[39m: [{"haveQrCode":"true","instagram":"unknown","pinterest":"unknown","youtube":"true","youtubeType":"type_2","facebook":"unknown","twitter":"unknown","socialMediaList":"youtube","socialMediaAddresses":"","website":"PRIMALKITCHEN.COM","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 09:41:04 [31merror[39m: instruction
+2024-07-12 09:41:04 [32minfo[39m: [{"storageInstruction":["Store in a cool, dry place.","Refrigerate after opening."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[],"otherInstructions":[]}]
+2024-07-12 10:09:56 [31merror[39m: debug section
+2024-07-12 10:09:56 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the information is presented side-by-side, it doesn't meet the criteria for a dual-column format, such as having separate columns for different serving sizes or age groups. Therefore, it is represented as a single nutrition fact table. | 
+
+2024-07-12 10:09:56 [31merror[39m: footnote
+2024-07-12 10:09:56 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+
+
+## 
+2024-07-12 10:09:56 [31merror[39m: debug
+2024-07-12 10:09:56 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the information is presented side-by-side, it doesn't meet the criteria for a dual-column format, such as having separate columns for different serving sizes or age groups. Therefore, it is represented as a single nutrition fact table. | 
+
+2024-07-12 10:09:56 [31merror[39m: debug table
+2024-07-12 10:09:56 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-12 10:11:26 [31merror[39m: ingredient list
+2024-07-12 10:11:26 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"INGREDIENTS : AVOCADO OIL , WATER , PICKLE RELISH ( CUCUMBERS , WATER , ORGANIC VINEGAR , SALT ) , ORGANIC APPLE CIDER VINEGAR , ORGANIC PEAR JUICE CONCENTRATE , ORGANIC EGG YOLK , ORGANIC DISTILLED WHITE VINEGAR , ORGANIC TOMATO PASTE , POTATO STARCH , PREPARED YELLOW MUSTARD ( WATER , ORGANIC WHITE DISTILLED VINEGAR , MUSTARD SEED , SALT , TURMERIC , PAPRIKA ) , MUSHROOM EXTRACT ( TO MAINTAIN FRESHNESS ) , SEA SALT , GARLIC POWDER , ORGANIC ONION POWDER , ORGANIC MUSTARD FLOUR , SALT , TAMARIND SEED GUM , CITRIC ACID , ORGANIC LEMON JUICE CONCENTRATE , ORGANIC PAPRIKA , BLACK PEPPER .","ingredientBreakdown":"AVOCADO OIL, WATER, PICKLE RELISH ( CUCUMBERS, WATER, ORGANIC VINEGAR, SALT ), ORGANIC APPLE CIDER VINEGAR, ORGANIC PEAR JUICE CONCENTRATE, ORGANIC EGG YOLK, ORGANIC DISTILLED WHITE VINEGAR, ORGANIC TOMATO PASTE, POTATO STARCH, PREPARED YELLOW MUSTARD ( WATER, ORGANIC WHITE DISTILLED VINEGAR, MUSTARD SEED, SALT, TURMERIC, PAPRIKA ), MUSHROOM EXTRACT ( TO MAINTAIN FRESHNESS ), SEA SALT, GARLIC POWDER, ORGANIC ONION POWDER, ORGANIC MUSTARD FLOUR, SALT, TAMARIND SEED GUM, CITRIC ACID, ORGANIC LEMON JUICE CONCENTRATE, ORGANIC PAPRIKA, BLACK PEPPER."}]
+2024-07-12 10:11:26 [31merror[39m: marketing
+2024-07-12 10:11:26 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","socialMediaAddresses":"","website":"PRIMALKITCHEN.COM","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 10:11:26 [31merror[39m: instruction
+2024-07-12 10:11:26 [32minfo[39m: [{"storageInstruction":["Store in a cool, dry place away from sunlight."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[],"otherInstructions":["Shake me and refrigerate after opening."]}]
+2024-07-12 10:19:17 [31merror[39m: debug section
+2024-07-12 10:19:17 [32minfo[39m: **
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is one nutrition fact table in the provided images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the information is presented side-by-side, it all belongs to a single serving size and does not meet the criteria for a dual-column format. | 
+
+2024-07-12 10:19:17 [31merror[39m: footnote
+2024-07-12 10:19:17 [32minfo[39m:  [1]**
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+
+
+**
+2024-07-12 10:19:17 [31merror[39m: debug
+2024-07-12 10:19:17 [32minfo[39m: **
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is one nutrition fact table in the provided images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the information is presented side-by-side, it all belongs to a single serving size and does not meet the criteria for a dual-column format. | 
+
+2024-07-12 10:19:17 [31merror[39m: debug table
+2024-07-12 10:19:17 [32minfo[39m: [object Object],[object Object],[object Object],[object Object]
+2024-07-12 10:20:57 [31merror[39m: ingredient list
+2024-07-12 10:20:57 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS :","ingredientStatement":"AVOCADO OIL, WATER, PICKLE RELISH ( CUCUMBERS, WATER, ORGANIC VINEGAR, SALT ), ORGANIC APPLE CIDER VINEGAR, ORGANIC PEAR JUICE CONCENTRATE, ORGANIC EGG YOLK, ORGANIC DISTILLED WHITE VINEGAR, ORGANIC TOMATO PASTE, POTATO STARCH, PREPARED YELLOW MUSTARD ( WATER, ORGANIC WHITE DISTILLED VINEGAR, MUSTARD SEED, SALT, TURMERIC, PAPRIKA ), MUSHROOM EXTRACT ( TO MAINTAIN FRESHNESS ), SEA SALT, GARLIC POWDER, ORGANIC ONION POWDER, ORGANIC MUSTARD FLOUR, SALT, TAMARIND SEED GUM, CITRIC ACID, ORGANIC LEMON JUICE CONCENTRATE, ORGANIC PAPRIKA, BLACK PEPPER.","ingredientBreakdown":"AVOCADO OIL, WATER, PICKLE RELISH ( CUCUMBERS, WATER, ORGANIC VINEGAR, SALT ), ORGANIC APPLE CIDER VINEGAR, ORGANIC PEAR JUICE CONCENTRATE, ORGANIC EGG YOLK, ORGANIC DISTILLED WHITE VINEGAR, ORGANIC TOMATO PASTE, POTATO STARCH, PREPARED YELLOW MUSTARD ( WATER, ORGANIC WHITE DISTILLED VINEGAR, MUSTARD SEED, SALT, TURMERIC, PAPRIKA ), MUSHROOM EXTRACT ( TO MAINTAIN FRESHNESS ), SEA SALT, GARLIC POWDER, ORGANIC ONION POWDER, ORGANIC MUSTARD FLOUR, SALT, TAMARIND SEED GUM, CITRIC ACID, ORGANIC LEMON JUICE CONCENTRATE, ORGANIC PAPRIKA, BLACK PEPPER."}]
+2024-07-12 10:20:57 [31merror[39m: marketing
+2024-07-12 10:20:57 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","socialMediaAddresses":"","website":"PRIMALKITCHEN.COM","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 10:20:57 [31merror[39m: instruction
+2024-07-12 10:20:57 [32minfo[39m: [{"storageInstruction":["Store in a cool, dry place away from sunlight."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[],"otherInstructions":["Shake me and refrigerate after opening."]}]
+2024-07-12 10:26:28 [31merror[39m: debug section
+2024-07-12 10:26:28 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in these images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although it appears to have two columns, it only presents information for one serving size. Dual-column formats are used to display information for two different serving sizes or age groups side-by-side. |
+
+2024-07-12 10:26:28 [31merror[39m: footnote
+2024-07-12 10:26:28 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+
+
+## 
+2024-07-12 10:26:28 [31merror[39m: debug
+2024-07-12 10:26:28 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in these images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although it appears to have two columns, it only presents information for one serving size. Dual-column formats are used to display information for two different serving sizes or age groups side-by-side. |
+
+2024-07-12 10:26:28 [31merror[39m: debug table
+2024-07-12 10:26:28 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-12 10:29:30 [31merror[39m: debug section
+2024-07-12 10:29:30 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+|---|---|
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition label is not in a dual-column format. Although some of the nutrient information is displayed on two lines, it does not meet the criteria for a dual-column format, which typically involves separate columns for different serving sizes or age groups. |
+
+2024-07-12 10:29:30 [31merror[39m: footnote
+2024-07-12 10:29:30 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+|---|---|
+
+## 
+2024-07-12 10:29:30 [31merror[39m: debug
+2024-07-12 10:29:30 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+|---|---|
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition label is not in a dual-column format. Although some of the nutrient information is displayed on two lines, it does not meet the criteria for a dual-column format, which typically involves separate columns for different serving sizes or age groups. |
+
+2024-07-12 10:29:30 [31merror[39m: debug table
+2024-07-12 10:29:30 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-12 10:31:00 [31merror[39m: ingredient list
+2024-07-12 10:31:00 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"INGREDIENTS : AVOCADO OIL , WATER , PICKLE RELISH ( CUCUMBERS , WATER , ORGANIC VINEGAR , SALT ) , ORGANIC APPLE CIDER VINEGAR , ORGANIC PEAR JUICE CONCENTRATE , ORGANIC EGG YOLK , ORGANIC DISTILLED WHITE VINEGAR , ORGANIC TOMATO PASTE , POTATO STARCH , PREPARED YELLOW MUSTARD ( WATER , ORGANIC WHITE DISTILLED VINEGAR , MUSTARD SEED , SALT , TURMERIC , PAPRIKA ) , MUSHROOM EXTRACT ( TO MAINTAIN FRESHNESS ) , SEA SALT , GARLIC POWDER , ORGANIC ONION POWDER , ORGANIC MUSTARD FLOUR , SALT , TAMARIND SEED GUM , CITRIC ACID , ORGANIC LEMON JUICE CONCENTRATE , ORGANIC PAPRIKA , BLACK PEPPER .","ingredientBreakdown":"AVOCADO OIL, WATER, PICKLE RELISH ( CUCUMBERS, WATER, ORGANIC VINEGAR, SALT ), ORGANIC APPLE CIDER VINEGAR, ORGANIC PEAR JUICE CONCENTRATE, ORGANIC EGG YOLK, ORGANIC DISTILLED WHITE VINEGAR, ORGANIC TOMATO PASTE, POTATO STARCH, PREPARED YELLOW MUSTARD ( WATER, ORGANIC WHITE DISTILLED VINEGAR, MUSTARD SEED, SALT, TURMERIC, PAPRIKA ), MUSHROOM EXTRACT ( TO MAINTAIN FRESHNESS ), SEA SALT, GARLIC POWDER, ORGANIC ONION POWDER, ORGANIC MUSTARD FLOUR, SALT, TAMARIND SEED GUM, CITRIC ACID, ORGANIC LEMON JUICE CONCENTRATE, ORGANIC PAPRIKA, BLACK PEPPER."}]
+2024-07-12 10:31:00 [31merror[39m: marketing
+2024-07-12 10:31:00 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","socialMediaAddresses":"","website":"PRIMALKITCHEN.COM","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 10:31:00 [31merror[39m: instruction
+2024-07-12 10:31:00 [32minfo[39m: [{"storageInstruction":["Store in a cool, dry place away from sunlight.","Shake me and refrigerate after opening."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 10:34:14 [31merror[39m: debug section
+2024-07-12 10:34:14 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in dual-column format. Although some of the nutrient information is displayed on two lines to save space, this is a single-column nutrition label because there is only one column of "% Daily Value" data. |
+
+2024-07-12 10:34:14 [31merror[39m: footnote
+2024-07-12 10:34:14 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+|  |  |
+
+
+2024-07-12 10:34:14 [31merror[39m: debug
+2024-07-12 10:34:14 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in dual-column format. Although some of the nutrient information is displayed on two lines to save space, this is a single-column nutrition label because there is only one column of "% Daily Value" data. |
+
+2024-07-12 10:34:14 [31merror[39m: debug table
+2024-07-12 10:34:14 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-12 10:36:19 [31merror[39m: debug section
+2024-07-12 10:36:19 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There appears to be only one nutrition fact table present in the images provided, just captured from different angles. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition label is not a dual-column format. Although it has two columns of data, it only presents information for one serving size. Dual-column formats are used to display information for two different serving sizes or demographics side-by-side.  | 
+
+2024-07-12 10:36:19 [31merror[39m: footnote
+2024-07-12 10:36:19 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+|  |  |
+
+## 
+2024-07-12 10:36:19 [31merror[39m: debug
+2024-07-12 10:36:19 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There appears to be only one nutrition fact table present in the images provided, just captured from different angles. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition label is not a dual-column format. Although it has two columns of data, it only presents information for one serving size. Dual-column formats are used to display information for two different serving sizes or demographics side-by-side.  | 
+
+2024-07-12 10:36:19 [31merror[39m: debug table
+2024-07-12 10:36:19 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-12 10:39:47 [31merror[39m: debug section
+2024-07-12 10:39:47 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the nutrients are arranged in two columns to save space, this does not meet the criteria for a dual-column format. Dual-column formats typically have two distinct columns for "Amount Per Serving" and "% Daily Value" for different serving sizes or age groups. This nutrition label only has one column for each.  | 
+
+2024-07-12 10:39:47 [31merror[39m: footnote
+2024-07-12 10:39:47 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+|  |  |
+
+## 
+2024-07-12 10:39:47 [31merror[39m: debug
+2024-07-12 10:39:47 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided images.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although some of the nutrients are arranged in two columns to save space, this does not meet the criteria for a dual-column format. Dual-column formats typically have two distinct columns for "Amount Per Serving" and "% Daily Value" for different serving sizes or age groups. This nutrition label only has one column for each.  | 
+
+2024-07-12 10:39:47 [31merror[39m: debug table
+2024-07-12 10:39:47 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-12 10:43:50 [31merror[39m: debug section
+2024-07-12 10:43:50 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There appears to be only one nutrition fact table present in the images provided, although it is presented from different angles. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition label is not a dual-column format. While it has two columns of data, they represent the same serving size and are simply formatted that way for visual appeal. Dual-column formats typically present information for two different serving sizes or age groups side-by-side.  | 
+
+2024-07-12 10:43:50 [31merror[39m: footnote
+2024-07-12 10:43:50 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+|  |  |
+
+## 
+2024-07-12 10:43:50 [31merror[39m: debug
+2024-07-12 10:43:50 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There appears to be only one nutrition fact table present in the images provided, although it is presented from different angles. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition label is not a dual-column format. While it has two columns of data, they represent the same serving size and are simply formatted that way for visual appeal. Dual-column formats typically present information for two different serving sizes or age groups side-by-side.  | 
+
+2024-07-12 10:43:50 [31merror[39m: debug table
+2024-07-12 10:43:50 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-12 10:46:12 [31merror[39m: debug section
+2024-07-12 10:46:12 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in dual-column format. I know to look for dual-column format when there are two or more columns of "% Daily Value" with different serving sizes or age groups. This table only has one column for "% Daily Value". |
+
+2024-07-12 10:46:12 [31merror[39m: footnote
+2024-07-12 10:46:12 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+|  |  |
+
+
+2024-07-12 10:46:12 [31merror[39m: debug
+2024-07-12 10:46:12 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in dual-column format. I know to look for dual-column format when there are two or more columns of "% Daily Value" with different serving sizes or age groups. This table only has one column for "% Daily Value". |
+
+2024-07-12 10:46:12 [31merror[39m: debug table
+2024-07-12 10:46:12 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-12 10:47:51 [31merror[39m: debug section
+2024-07-12 10:47:51 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in dual-column format. Although some of the nutrient information is arranged in a way that saves space, it does not meet the criteria for a dual-column format, which typically involves distinct columns for different serving sizes or age groups. |
+
+2024-07-12 10:47:51 [31merror[39m: footnote
+2024-07-12 10:47:51 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+|  |  |
+
+
+2024-07-12 10:47:51 [31merror[39m: debug
+2024-07-12 10:47:51 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in the provided image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in dual-column format. Although some of the nutrient information is arranged in a way that saves space, it does not meet the criteria for a dual-column format, which typically involves distinct columns for different serving sizes or age groups. |
+
+2024-07-12 10:47:51 [31merror[39m: debug table
+2024-07-12 10:47:51 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-12 10:49:35 [31merror[39m: debug section
+2024-07-12 10:49:35 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There are two images of the nutrition fact table, but they contain the same information and are from the same product. Therefore, there is only one nutrition fact table. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although it has a two-column layout for space efficiency, it doesn't present information for different serving sizes, age groups, or per container/serving amounts. Therefore, it's a single nutrition fact table with a compact design. |
+
+2024-07-12 10:49:35 [31merror[39m: footnote
+2024-07-12 10:49:35 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+|  |  |
+
+
+2024-07-12 10:49:35 [31merror[39m: debug
+2024-07-12 10:49:35 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There are two images of the nutrition fact table, but they contain the same information and are from the same product. Therefore, there is only one nutrition fact table. |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in a dual-column format. Although it has a two-column layout for space efficiency, it doesn't present information for different serving sizes, age groups, or per container/serving amounts. Therefore, it's a single nutrition fact table with a compact design. |
+
+2024-07-12 10:49:35 [31merror[39m: debug table
+2024-07-12 10:49:35 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-12 10:50:39 [31merror[39m: debug section
+2024-07-12 10:50:39 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in dual-column format. Although some of the nutrients are listed on one side and some are listed on the other, this table does not meet the criteria for a dual-column format. I know to look for two or more columns of "% Daily Value" with different serving sizes or amounts per serving.  |
+
+2024-07-12 10:50:39 [31merror[39m: footnote
+2024-07-12 10:50:39 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+|  |  |
+
+
+2024-07-12 10:50:39 [31merror[39m: debug
+2024-07-12 10:50:39 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is not in dual-column format. Although some of the nutrients are listed on one side and some are listed on the other, this table does not meet the criteria for a dual-column format. I know to look for two or more columns of "% Daily Value" with different serving sizes or amounts per serving.  |
+
+2024-07-12 10:50:39 [31merror[39m: debug table
+2024-07-12 10:50:39 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-12 10:51:06 [31merror[39m: debug section
+2024-07-12 10:51:06 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is in a dual-column format because it has two columns of % Daily Value. However, this is just a formatting choice to save space and does not necessitate the creation of two separate tables. The information presented still belongs to a single nutrition fact table. |
+
+2024-07-12 10:51:06 [31merror[39m: footnote
+2024-07-12 10:51:06 [32minfo[39m:  [1]
+| footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
+| ------- | -------- |
+| * NOT A LOW CALORIE FOOD . SEE NUTRITION INFORMATION FOR FAT & SATURATED FAT CONTENT . |  |
+
+
+2024-07-12 10:51:06 [31merror[39m: debug
+2024-07-12 10:51:06 [32minfo[39m: 
+| question (question from debug list below) | gemini answer |
+| ------- | -------- |
+| gemini answer me how many nutrition fact tables from provided images? are they the same one ? | There is 1 nutrition fact table in this image.  |
+| are they in dual-column format? and tell me why? tell me why you create only one nutrition fact table for dual-column nutrition fact panel format ? remember dual-column label format must be recorded as multiple nutrition fact markdown tables. | This nutrition fact table is in a dual-column format because it has two columns of % Daily Value. However, this is just a formatting choice to save space and does not necessitate the creation of two separate tables. The information presented still belongs to a single nutrition fact table. |
+
+2024-07-12 10:51:06 [31merror[39m: debug table
+2024-07-12 10:51:06 [32minfo[39m: [object Object],[object Object],[object Object]
+2024-07-12 10:55:28 [31merror[39m: ingredient list
+2024-07-12 10:55:28 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"AVOCADO OIL, WATER, PICKLE RELISH ( CUCUMBERS, WATER, ORGANIC VINEGAR, SALT ), ORGANIC APPLE CIDER VINEGAR, ORGANIC PEAR JUICE CONCENTRATE, ORGANIC EGG YOLK, ORGANIC DISTILLED WHITE VINEGAR, ORGANIC TOMATO PASTE, POTATO STARCH, PREPARED YELLOW MUSTARD ( WATER, ORGANIC WHITE DISTILLED VINEGAR, MUSTARD SEED, SALT, TURMERIC, PAPRIKA ), MUSHROOM EXTRACT ( TO MAINTAIN FRESHNESS ), SEA SALT, GARLIC POWDER, ORGANIC ONION POWDER, ORGANIC MUSTARD FLOUR, SALT, TAMARIND SEED GUM, CITRIC ACID, ORGANIC LEMON JUICE CONCENTRATE, ORGANIC PAPRIKA, BLACK PEPPER.","ingredientBreakdown":"AVOCADO OIL, WATER, PICKLE RELISH ( CUCUMBERS, WATER, ORGANIC VINEGAR, SALT ), ORGANIC APPLE CIDER VINEGAR, ORGANIC PEAR JUICE CONCENTRATE, ORGANIC EGG YOLK, ORGANIC DISTILLED WHITE VINEGAR, ORGANIC TOMATO PASTE, POTATO STARCH, PREPARED YELLOW MUSTARD ( WATER, ORGANIC WHITE DISTILLED VINEGAR, MUSTARD SEED, SALT, TURMERIC, PAPRIKA ), MUSHROOM EXTRACT ( TO MAINTAIN FRESHNESS ), SEA SALT, GARLIC POWDER, ORGANIC ONION POWDER, ORGANIC MUSTARD FLOUR, SALT, TAMARIND SEED GUM, CITRIC ACID, ORGANIC LEMON JUICE CONCENTRATE, ORGANIC PAPRIKA, BLACK PEPPER."}]
+2024-07-12 10:55:28 [31merror[39m: marketing
+2024-07-12 10:55:28 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"true","youtubeType":"type_2","facebook":"true","twitter":"false","socialMediaList":"facebook, youtube","socialMediaAddresses":"","website":"PRIMALKITCHEN.COM","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 10:55:28 [31merror[39m: instruction
+2024-07-12 10:55:28 [32minfo[39m: [{"storageInstruction":["Store in a cool, dry place away from sunlight.","Shake me and refrigerate after opening."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 11:14:21 [31merror[39m: ingredient list
+2024-07-12 11:14:21 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"INGREDIENTS : AVOCADO OIL, ORGANIC VINEGAR, ORGANIC EGGS, ORGANIC EGG YOLKS, SALT, ROSEMARY EXTRACT, MUSTARD SEED EXTRACT.","ingredientBreakdown":"AVOCADO OIL,  ORGANIC VINEGAR,  ORGANIC EGGS,  ORGANIC EGG YOLKS,  SALT,  ROSEMARY EXTRACT,  MUSTARD SEED EXTRACT."}]
+2024-07-12 11:14:21 [31merror[39m: marketing
+2024-07-12 11:14:21 [32minfo[39m: [{"haveQrCode":"true","instagram":"false","pinterest":"false","youtube":"true","youtubeType":"type_2","facebook":"true","twitter":"false","socialMediaList":"facebook, youtube","socialMediaAddresses":"","website":"PRIMALKITCHEN.COM","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 11:14:21 [31merror[39m: instruction
+2024-07-12 11:14:21 [32minfo[39m: [{"storageInstruction":["Store in a cool, dry place.","Refrigerate after opening."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 11:26:46 [31merror[39m: ingredient list
+2024-07-12 11:26:46 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"INGREDIENTS : AVOCADO OIL, ORGANIC VINEGAR, ORGANIC EGGS, ORGANIC EGG YOLKS, SALT, ROSEMARY EXTRACT, MUSTARD SEED EXTRACT.","ingredientBreakdown":"AVOCADO OIL, ORGANIC VINEGAR, ORGANIC EGGS, ORGANIC EGG YOLKS, SALT, ROSEMARY EXTRACT, MUSTARD SEED EXTRACT."}]
+2024-07-12 11:26:46 [31merror[39m: marketing
+2024-07-12 11:26:46 [32minfo[39m: [{"haveQrCode":"true","instagram":"unknown","pinterest":"unknown","youtube":"true","youtubeType":"type_2","facebook":"unknown","twitter":"unknown","socialMediaList":"youtube","socialMediaAddresses":"","website":"PRIMALKITCHEN.COM","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 11:26:46 [31merror[39m: instruction
+2024-07-12 11:26:46 [32minfo[39m: [{"storageInstruction":["Store in a cool, dry place.","Refrigerate after opening."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 11:30:46 [31merror[39m: ingredient list
+2024-07-12 11:30:46 [32minfo[39m: [{"productType":"supplement facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"Organic flaxseed oil, algal oil.","ingredientBreakdown":"Organic flaxseed oil, algal oil"}]
+2024-07-12 11:30:46 [31merror[39m: marketing
+2024-07-12 11:30:46 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","socialMediaAddresses":"","website":"barleans.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 11:30:46 [31merror[39m: instruction
+2024-07-12 11:30:46 [32minfo[39m: [{"storageInstruction":["Refrigerate after opening for quality."],"cookingInstruction":[],"usageInstruction":["SUGGESTED USE: 1 Tbsp. 1-2 times daily. Can be taken straight or mixed into salad dressings, yogurt, oatmeal or smoothies."],"useOrFreezeBy":[]}]
+2024-07-12 11:32:46 [31merror[39m: ingredient list
+2024-07-12 11:32:46 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS :","ingredientStatement":"AVOCADO OIL , WATER , ORGANIC VINEGAR , ORGANIC APPLE CIDER VINEGAR , ORGANIC EGG YOLKS , ORGANIC COCONUT AMINOS ( WATER CANOLA ORGANIC COCONUT NECTAR , SALT ) , GARLIC , POTATO STARCH , SEA SALT , ORGANIC BLACK PEPPER , NUTRITIONAL YEAST , ORGANIC LEMON JUICE CONCENTRATE , CITRIC ACID , SALT , TAMARIND SEED CERTIFIED HUMANE RAISED & HANDLED GUM , MUSHROOM EXTRACT ( TO MAINTAIN FRESHNESS ) , ORGANIC ROSEMARY EXTRACT . * ADDS A NEGLIGIBLE AMOUNT OF SUGAR .","ingredientBreakdown":"AVOCADO OIL, WATER, ORGANIC VINEGAR, ORGANIC APPLE CIDER VINEGAR, ORGANIC EGG YOLKS, ORGANIC COCONUT AMINOS ( WATER CANOLA ORGANIC COCONUT NECTAR, SALT ), GARLIC, POTATO STARCH, SEA SALT, ORGANIC BLACK PEPPER, NUTRITIONAL YEAST, ORGANIC LEMON JUICE CONCENTRATE, CITRIC ACID, SALT, TAMARIND SEED CERTIFIED HUMANE RAISED & HANDLED GUM, MUSHROOM EXTRACT ( TO MAINTAIN FRESHNESS ), ORGANIC ROSEMARY EXTRACT., * ADDS A NEGLIGIBLE AMOUNT OF SUGAR ."},{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS :","ingredientStatement":"AVOCADO OIL , WATER , ORGANIC VINEGAR , ORGANIC APPLE CIDER VINEGAR , ORGANIC EGG YOLKS , ORGANIC COCONUT AMINOS ( WATER , CONUT NECTAR , SALT ) , GARLIC , POTATO EA SALT , ORGANIC BLACK PEPPER , YEAST , ORGANIC LEMON JUICE ARE , CITRIC ACID , SALT , TAMARIND SEED ROOM EXTRACT ( TO MAINTAIN ORGANIC ROSEMARY EXTRACT . ELIGIBLE AMOUNT OF SUGAR .","ingredientBreakdown":"AVOCADO OIL, WATER, ORGANIC VINEGAR, ORGANIC APPLE CIDER VINEGAR, ORGANIC EGG YOLKS, ORGANIC COCONUT AMINOS ( WATER, CONUT NECTAR, SALT ), GARLIC, POTATO EA SALT, ORGANIC BLACK PEPPER, YEAST, ORGANIC LEMON JUICE ARE, CITRIC ACID, SALT, TAMARIND SEED ROOM EXTRACT ( TO MAINTAIN ORGANIC ROSEMARY EXTRACT., ELIGIBLE AMOUNT OF SUGAR ."}]
+2024-07-12 11:32:46 [31merror[39m: marketing
+2024-07-12 11:32:46 [32minfo[39m: [{"haveQrCode":"yes","instagram":"unknown","pinterest":"unknown","youtube":"yes","youtubeType":"type_2","facebook":"unknown","twitter":"unknown","socialMediaList":"youtube","socialMediaAddresses":"unknown","website":"PRIMALKITCHEN.COM","socialMediaText":"unknown","enlargedToShow":"unknown"}]
+2024-07-12 11:32:46 [31merror[39m: instruction
+2024-07-12 11:32:46 [32minfo[39m: [{"storageInstruction":["refrigerate after opening ."],"usageInstruction":["Shake me and"]}]
+2024-07-12 11:38:34 [31merror[39m: ingredient list
+2024-07-12 11:38:34 [32minfo[39m: [{"productType":"supplement facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"Organic flaxseed oil, algal oil.","ingredientBreakdown":"Organic flaxseed oil, algal oil"}]
+2024-07-12 11:38:34 [31merror[39m: marketing
+2024-07-12 11:38:34 [32minfo[39m: [{"haveQrCode":"unknown","instagram":"unknown","pinterest":"unknown","youtube":"unknown","youtubeType":"unknown","facebook":"unknown","twitter":"unknown","socialMediaList":"unknown","socialMediaAddresses":"unknown","website":"barleans.com","socialMediaText":"unknown","enlargedToShow":"unknown"}]
+2024-07-12 11:38:34 [31merror[39m: instruction
+2024-07-12 11:38:34 [32minfo[39m: [{"storageInstruction":["Refrigerate after opening for quality."],"cookingInstruction":[],"usageInstruction":["SUGGESTED USE: 1 Tbsp. 1-2 times daily. Can be taken straight or mixed into salad dressings, yogurt, oatmeal or smoothies."],"useOrFreezeBy":[]}]
+2024-07-12 11:41:01 [31merror[39m: ingredient list
+2024-07-12 11:41:01 [32minfo[39m: [{"productType":"unknown","ingredientPrefix":"INGREDIENTS :","ingredientStatement":"DECAFFEINATED BLACK TEA .","ingredientBreakdown":"DECAFFEINATED BLACK TEA"}]
+2024-07-12 11:41:01 [31merror[39m: marketing
+2024-07-12 11:41:01 [32minfo[39m: [{"haveQrCode":"False","instagram":"False","pinterest":"False","youtube":"True","youtubeType":"type_2","facebook":"False","twitter":"False","socialMediaList":"youtube","socialMediaAddresses":"","website":"www.sourcedwithcare.com, Keurig.com/GenuineK-CupPod, Keurig.com/recyclable","socialMediaText":"","enlargedToShow":"False"}]
+2024-07-12 11:41:01 [31merror[39m: instruction
+2024-07-12 11:41:01 [32minfo[39m: [{"storageInstruction":[],"cookingInstruction":[],"usageInstruction":["Fill a large cup with ice cubes ( do not use glass ) . Brew on smallest setting . Stir to chill ."],"useOrFreezeBy":[]}]
+2024-07-12 11:43:34 [31merror[39m: ingredient list
+2024-07-12 11:43:34 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"AVOCADO OIL, WATER, ORGANIC VINEGAR, ORGANIC APPLE CIDER VINEGAR, ORGANIC EGG YOLKS, ORGANIC COCONUT AMINOS (WATER, ORGANIC COCONUT NECTAR, SALT), GARLIC, POTATO STARCH, SEA SALT, ORGANIC BLACK PEPPER, NUTRITIONAL YEAST, ORGANIC LEMON JUICE CONCENTRATE, CITRIC ACID, SALT, TAMARIND SEED GUM, MUSHROOM EXTRACT (TO MAINTAIN FRESHNESS), ORGANIC ROSEMARY EXTRACT. *ADDS A NEGLIGIBLE AMOUNT OF SUGAR.","ingredientBreakdown":"AVOCADO OIL,  WATER,  ORGANIC VINEGAR,  ORGANIC APPLE CIDER VINEGAR,  ORGANIC EGG YOLKS,  ORGANIC COCONUT AMINOS (WATER,  ORGANIC COCONUT NECTAR,  SALT),  GARLIC,  POTATO STARCH,  SEA SALT,  ORGANIC BLACK PEPPER,  NUTRITIONAL YEAST,  ORGANIC LEMON JUICE CONCENTRATE,  CITRIC ACID,  SALT,  TAMARIND SEED GUM,  MUSHROOM EXTRACT (TO MAINTAIN FRESHNESS),  ORGANIC ROSEMARY EXTRACT.,  *ADDS A NEGLIGIBLE AMOUNT OF SUGAR."}]
+2024-07-12 11:43:34 [31merror[39m: marketing
+2024-07-12 11:43:34 [32minfo[39m: [{"haveQrCode":"yes","instagram":"unknown","pinterest":"unknown","youtube":"yes","youtubeType":"type_2","facebook":"unknown","twitter":"unknown","socialMediaList":"youtube","socialMediaAddresses":"","website":"PRIMALKITCHEN.COM","socialMediaText":"","enlargedToShow":"unknown"}]
+2024-07-12 11:43:34 [31merror[39m: instruction
+2024-07-12 11:43:34 [32minfo[39m: [{"storageInstruction":["Store in a cool, dry place away from sunlight."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 11:46:34 [31merror[39m: ingredient list
+2024-07-12 11:46:34 [32minfo[39m: [{"productType":"unknown","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"DECAFFEINATED BLACK TEA","ingredientBreakdown":"DECAFFEINATED BLACK TEA"}]
+2024-07-12 11:46:34 [31merror[39m: marketing
+2024-07-12 11:46:34 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"true","twitter":"true","socialMediaList":"Facebook, Twitter","socialMediaAddresses":"Facebook.com/Keurig, Twitter.com/Keurig","website":"www.twiningsusa.com, www.Keurig.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 11:46:34 [31merror[39m: instruction
+2024-07-12 11:46:34 [32minfo[39m: [{"storageInstruction":[],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 13:49:42 [31merror[39m: ingredient list
+2024-07-12 13:49:42 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS :","ingredientStatement":"AVOCADO OIL, WATER, ORGANIC VINEGAR, ORGANIC APPLE CIDER VINEGAR, ORGANIC EGG YOLKS, ORGANIC COCONUT AMINOS (WATER, CANOLA, ORGANIC COCONUT NECTAR, SALT), GARLIC, POTATO STARCH, SEA SALT, ORGANIC BLACK PEPPER, NUTRITIONAL YEAST, ORGANIC LEMON JUICE CONCENTRATE, CITRIC ACID, SALT, TAMARIND SEED GUM, MUSHROOM EXTRACT (TO MAINTAIN FRESHNESS), ORGANIC ROSEMARY EXTRACT. * ADDS A NEGLIGIBLE AMOUNT OF SUGAR.","ingredientBreakdown":"AVOCADO OIL, WATER, ORGANIC VINEGAR, ORGANIC APPLE CIDER VINEGAR, ORGANIC EGG YOLKS, ORGANIC COCONUT AMINOS (WATER, CANOLA, ORGANIC COCONUT NECTAR, SALT), GARLIC, POTATO STARCH, SEA SALT, ORGANIC BLACK PEPPER, NUTRITIONAL YEAST, ORGANIC LEMON JUICE CONCENTRATE, CITRIC ACID, SALT, TAMARIND SEED GUM, MUSHROOM EXTRACT (TO MAINTAIN FRESHNESS), ORGANIC ROSEMARY EXTRACT., * ADDS A NEGLIGIBLE AMOUNT OF SUGAR."}]
+2024-07-12 13:49:42 [31merror[39m: marketing
+2024-07-12 13:49:42 [32minfo[39m: [{"haveQrCode":"true","instagram":"no","pinterest":"no","youtube":"yes","youtubeType":"type_2","facebook":"no","twitter":"no","socialMediaList":"youtube","socialMediaAddresses":"","website":"PRIMALKITCHEN.COM","socialMediaText":"","enlargedToShow":"no"}]
+2024-07-12 13:49:42 [31merror[39m: instruction
+2024-07-12 13:49:42 [32minfo[39m: [{"allInstructions":["Store in a cool , dry place away from sunlight .","Shake me and refrigerate after opening ."],"storageInstruction":["Store in a cool , dry place away from sunlight .","refrigerate after opening"],"cookingInstruction":[],"usageInstruction":["Shake me and refrigerate after opening ."],"useOrFreezeBy":[]}]
+2024-07-12 13:55:50 [31merror[39m: ingredient list
+2024-07-12 13:55:50 [32minfo[39m: [{"productType":"unknown","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"DECAFFEINATED BLACK TEA","ingredientBreakdown":"DECAFFEINATED BLACK TEA"}]
+2024-07-12 13:55:50 [31merror[39m: marketing
+2024-07-12 13:55:50 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"true","twitter":"true","socialMediaList":"facebook, twitter","socialMediaAddresses":"","website":"www.twiningsusa.com, www.twiningsusa.com/, www.Keurig.com, Facebook.com/Keurig, Twitter.com/Keurig","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 13:55:50 [31merror[39m: instruction
+2024-07-12 13:55:50 [32minfo[39m: [{"allInstructions":["PEEL, EMPTY, RECYCLE."],"storageInstruction":[],"cookingInstruction":[],"usageInstruction":["Fill a large cup with ice cubes (do not use glass).","Brew on smallest setting.","Stir to chill."],"useOrFreezeBy":[]}]
+2024-07-12 14:01:18 [31merror[39m: ingredient list
+2024-07-12 14:01:18 [32minfo[39m: [{"productType":"unknown","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"INGREDIENTS: DECAFFEINATED BLACK TEA.","ingredientBreakdown":"DECAFFEINATED BLACK TEA"}]
+2024-07-12 14:01:18 [31merror[39m: marketing
+2024-07-12 14:01:18 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"true","twitter":"true","socialMediaList":"facebook, twitter","socialMediaAddresses":"","website":"www.twiningsusa.com/, www.twiningsusa.com, www.Keurig.com, Facebook.com/Keurig, Twitter.com/Keurig","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 14:01:18 [31merror[39m: instruction
+2024-07-12 14:01:18 [32minfo[39m: [{"allInstructions":["PEEL, EMPTY, RECYCLE."],"storageInstruction":[],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 14:10:29 [31merror[39m: ingredient list
+2024-07-12 14:10:29 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"ORGANIC SPROUTED GREEN LENTILS, ORGANIC SPROUTED RED LENTILS, ORGANIC SPROUTED BLACK LENTILS.","ingredientBreakdown":"ORGANIC SPROUTED GREEN LENTILS, ORGANIC SPROUTED RED LENTILS, ORGANIC SPROUTED BLACK LENTILS"}]
+2024-07-12 14:10:29 [31merror[39m: marketing
+2024-07-12 14:10:29 [32minfo[39m: [{"haveQrCode":"no","instagram":"yes","pinterest":"no","youtube":"no","youtubeType":"","facebook":"yes","twitter":"no","socialMediaList":"Instagram, Facebook","website":"trurootsfoods.com","socialMediaText":"","enlargedToShow":"no"}]
+2024-07-12 14:10:29 [31merror[39m: instruction
+2024-07-12 14:10:29 [32minfo[39m: [{"allInstructions":["PRE - RINSED.","DO NOT EAT RAW.","FULLY COOK BEFORE EATING."],"storageInstruction":[],"cookingInstruction":["Add 3 cups water or broth to boil in a medium pot.","Stir in 1 cup lentils. Boil over medium heat for 5 minutes. Remove from heat.","Cover and let stand for 5-10 minutes (depending on desired texture). Drain, as needed."],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 14:11:14 [31merror[39m: ingredient list
+2024-07-12 14:11:14 [32minfo[39m: [{"productType":"supplement facts","ingredientPrefix":"Other Ingredients:","ingredientStatement":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide.","ingredientBreakdown":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide."}]
+2024-07-12 14:11:14 [31merror[39m: marketing
+2024-07-12 14:11:14 [32minfo[39m: [{"haveQrCode":"true","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","website":"megafood.com, megafood.com/standards","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 14:11:14 [31merror[39m: instruction
+2024-07-12 14:11:14 [32minfo[39m: [{"allInstructions":["Adults take 2 capsules anytime of day with food and a beverage.","Keep out of reach of children.","Store tightly sealed in a cool place and avoid exposure to moisture. Once open, consume within three months.","Do not use if seal under cap is broken or missing."],"storageInstruction":["Store tightly sealed in a cool place and avoid exposure to moisture."],"usageInstruction":["Adults take 2 capsules anytime of day with food and a beverage."],"useOrFreezeBy":["Once open, consume within three months."]}]
+2024-07-12 14:16:38 [31merror[39m: ingredient list
+2024-07-12 14:16:38 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"ORGANIC SPROUTED GREEN LENTILS, ORGANIC SPROUTED RED LENTILS, ORGANIC SPROUTED BLACK LENTILS.","ingredientBreakdown":"ORGANIC SPROUTED GREEN LENTILS, ORGANIC SPROUTED RED LENTILS, ORGANIC SPROUTED BLACK LENTILS"}]
+2024-07-12 14:16:38 [31merror[39m: marketing
+2024-07-12 14:16:38 [32minfo[39m: [{"haveQrCode":"no","instagram":"yes","pinterest":"no","youtube":"no","youtubeType":"","facebook":"yes","twitter":"no","socialMediaList":"instagram,facebook","website":"trurootsfoods.com","socialMediaText":"","enlargedToShow":"no"}]
+2024-07-12 14:16:38 [31merror[39m: instruction
+2024-07-12 14:16:38 [32minfo[39m: [{"allInstructions":["Stir in 1 cup lentils. Boil over medium heat for 5 minutes. Remove from heat. Cover and let stand for 5-10 minutes (depending on desired texture). Drain, as needed."],"storageInstruction":[],"cookingInstruction":["Stir in 1 cup lentils. Boil over medium heat for 5 minutes. Remove from heat. Cover and let stand for 5-10 minutes (depending on desired texture). Drain, as needed."],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 14:17:04 [31merror[39m: ingredient list
+2024-07-12 14:17:04 [32minfo[39m: [{"productType":"supplement facts","ingredientPrefix":"other ingredients:","ingredientStatement":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide.","ingredientBreakdown":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide."}]
+2024-07-12 14:17:04 [31merror[39m: marketing
+2024-07-12 14:17:04 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","website":"megafood.com, megafood.com/standards","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 14:17:04 [31merror[39m: instruction
+2024-07-12 14:17:04 [32minfo[39m: [{"allInstructions":["Adults take 2 capsules anytime of day with food and a beverage.","Keep out of reach of children.","Store tightly sealed in a cool place and avoid exposure to moisture. Once open, consume within three months. Do not use if seal under cap is broken or missing."],"storageInstruction":["Keep out of reach of children.","Store tightly sealed in a cool place and avoid exposure to moisture. Once open, consume within three months. Do not use if seal under cap is broken or missing."],"cookingInstruction":[],"usageInstruction":["Adults take 2 capsules anytime of day with food and a beverage."],"useOrFreezeBy":["Once open, consume within three months."]}]
+2024-07-12 14:21:03 [31merror[39m: ingredient list
+2024-07-12 14:21:03 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"ORGANIC BALSAMIC VINEGAR (ORGANIC WINE VINEGAR, ORGANIC CONCENTRATED GRAPE MUST), AVOCADO OIL, WATER, SEA SALT, ORGANIC LEMON JUICE CONCENTRATE, ORGANIC GARLIC POWDER, ORGANIC ONION POWDER, KONJAC ROOT, ORGANIC BLACK PEPPER, ORGANIC DRIED BASIL, ORGANIC DRIED OREGANO.","ingredientBreakdown":"ORGANIC BALSAMIC VINEGAR (ORGANIC WINE VINEGAR, ORGANIC CONCENTRATED GRAPE MUST), AVOCADO OIL, WATER, SEA SALT, ORGANIC LEMON JUICE CONCENTRATE, ORGANIC GARLIC POWDER, ORGANIC ONION POWDER, KONJAC ROOT, ORGANIC BLACK PEPPER, ORGANIC DRIED BASIL, ORGANIC DRIED OREGANO."}]
+2024-07-12 14:21:03 [31merror[39m: marketing
+2024-07-12 14:21:03 [32minfo[39m: [{"haveQrCode":"false","instagram":"true","pinterest":"false","youtube":"true","youtubeType":"type_2","facebook":"true","twitter":"false","socialMediaList":"instagram, youtube, facebook","website":"primalkitchen.com/recipes","socialMediaText":"@PRIMALKITCHENFOODS","enlargedToShow":"false"}]
+2024-07-12 14:21:03 [31merror[39m: instruction
+2024-07-12 14:21:03 [32minfo[39m: [{"allInstructions":["Shake me and refrigerate after opening.","Store in a cool, dry place away from sunlight."],"storageInstruction":["Shake me and refrigerate after opening.","Store in a cool, dry place away from sunlight."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 14:21:53 [31merror[39m: ingredient list
+2024-07-12 14:21:53 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"Ingredients:","ingredientStatement":"Chocolate , Chicory Root Fiber , Peanut Butter , Palm Fruit and / or Kernel Oil , Erythritol , Allulose , Cocoa Butter , Pea Protein , Cassava Flour , Cane Sugar , Xanthan Gum , Soy Lecithin , Natural Flavor , Vanilla Extract , Baking Powder , Sea Salt , Stevia , Milk .","ingredientBreakdown":"Chocolate, Chicory Root Fiber, Peanut Butter, Palm Fruit and / or Kernel Oil, Erythritol, Allulose, Cocoa Butter, Pea Protein, Cassava Flour, Cane Sugar, Xanthan Gum, Soy Lecithin, Natural Flavor, Vanilla Extract, Baking Powder, Sea Salt, Stevia, Milk"}]
+2024-07-12 14:21:53 [31merror[39m: marketing
+2024-07-12 14:21:53 [32minfo[39m: [{"haveQrCode":"false","instagram":"true","pinterest":"false","youtube":"false","youtubeType":"","facebook":"true","twitter":"false","socialMediaList":"instagram, facebook","website":"catalinacrunch.com, www.catalinacrunch.com","socialMediaText":"@catalinacrunch","enlargedToShow":"false"}]
+2024-07-12 14:21:53 [31merror[39m: instruction
+2024-07-12 14:21:53 [32minfo[39m: [{"allInstructions":[],"storageInstruction":[],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 14:21:53 [31merror[39m: sugar claim -- sugar
+2024-07-12 14:28:15 [31merror[39m: ingredient list
+2024-07-12 14:28:15 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"Ingredients:","ingredientStatement":"Chocolate , Chicory Root Fiber , Peanut Butter , Palm Fruit and / or Kernel Oil , Erythritol , Allulose , Cocoa Butter , Pea Protein , Cassava Flour , Cane Sugar , Xanthan Gum , Soy Lecithin , Natural Flavor , Vanilla Extract , Baking Powder , Sea Salt , Stevia , Milk .","ingredientBreakdown":"Chocolate, Chicory Root Fiber, Peanut Butter, Palm Fruit and / or Kernel Oil, Erythritol, Allulose, Cocoa Butter, Pea Protein, Cassava Flour, Cane Sugar, Xanthan Gum, Soy Lecithin, Natural Flavor, Vanilla Extract, Baking Powder, Sea Salt, Stevia, Milk."}]
+2024-07-12 14:28:15 [31merror[39m: marketing
+2024-07-12 14:28:15 [32minfo[39m: [{"haveQrCode":"false","instagram":"true","pinterest":"false","youtube":"false","youtubeType":"","facebook":"true","twitter":"false","socialMediaList":"instagram,facebook","website":"catalinacrunch.com, www.catalinacrunch.com, cc.page/book","socialMediaText":"@catalinacrunch","enlargedToShow":"false"}]
+2024-07-12 14:28:15 [31merror[39m: instruction
+2024-07-12 14:28:15 [32minfo[39m: [{"allInstructions":["Text RECIPES to 1-833-244-1327"],"storageInstruction":[],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 14:28:15 [31merror[39m: sugar claim -- sugar
+2024-07-12 14:35:32 [31merror[39m: ingredient list
+2024-07-12 14:35:32 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"Organic coconut, purified water, organic guar gum * . * VEGAN .","ingredientBreakdown":"Organic coconut, purified water, organic guar gum * , * VEGAN ."}]
+2024-07-12 14:35:32 [31merror[39m: marketing
+2024-07-12 14:35:32 [32minfo[39m: [{"haveQrCode":"no","instagram":"no","pinterest":"no","youtube":"no","youtubeType":"","facebook":"no","twitter":"no","socialMediaList":"","website":"fielddayproducts.com","socialMediaText":"","enlargedToShow":"no"}]
+2024-07-12 14:35:32 [31merror[39m: instruction
+2024-07-12 14:35:32 [32minfo[39m: [{"allInstructions":["May solidify during cold storage, warm up if necessary.","Shake well before opening.","Store in a cool, dry place.","Store unused portion in a separate container in the refrigerator and use within 2-3 days."],"storageInstruction":["May solidify during cold storage, warm up if necessary.","Shake well before opening.","Store in a cool, dry place.","Store unused portion in a separate container in the refrigerator and use within 2-3 days."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":["use within 2-3 days."]}]
+2024-07-12 14:36:17 [31merror[39m: ingredient list
+2024-07-12 14:36:17 [32minfo[39m: [{"productType":"unknown","ingredientPrefix":"ingredients:","ingredientStatement":"100 % Specialty Grade Arabica coffee","ingredientBreakdown":"100 % Specialty Grade Arabica coffee"}]
+2024-07-12 14:36:17 [31merror[39m: marketing
+2024-07-12 14:36:17 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"true","twitter":"false","socialMediaList":"facebook","website":"www.disney.com, JOFFREYS.COM","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 14:36:17 [31merror[39m: instruction
+2024-07-12 14:36:17 [32minfo[39m: [{"allInstructions":["START WITH FILTERED WATER. THIS BRINGS THE MOST OUT OF EVERY DROP OF JOFFREY'S COFFEE.","USE 2 TABLESPOONS OF OUR COFFEE FOR EVERY 6 OUNCES OF WATER. ADJUST TO TASTE.","DRINK. Enjoy REPEAT."],"storageInstruction":["Always store Joffrey's coffee in an airtight container, away from light and moisture.","Never refrigerate or freeze."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 14:39:12 [31merror[39m: ingredient list
+2024-07-12 14:39:12 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"Organic coconut, purified water, organic guar gum * . * VEGAN .","ingredientBreakdown":"Organic coconut, purified water, organic guar gum *"}]
+2024-07-12 14:39:12 [31merror[39m: marketing
+2024-07-12 14:39:12 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","website":"fielddayproducts.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 14:39:12 [31merror[39m: instruction
+2024-07-12 14:39:12 [32minfo[39m: [{"allInstructions":["May solidify during cold storage, warm up if necessary.","Shake well before opening.","Store in a cool, dry place.","Store unused portion in a separate container in the refrigerator and use within 2-3 days.","*Can and can end liner not derived from BPA"],"storageInstruction":["Store in a cool, dry place.","Store unused portion in a separate container in the refrigerator and use within 2-3 days."],"cookingInstruction":["May solidify during cold storage, warm up if necessary.","Shake well before opening."],"usageInstruction":[],"useOrFreezeBy":["use within 2-3 days."]}]
+2024-07-12 14:43:19 [31merror[39m: ingredient list
+2024-07-12 14:43:19 [32minfo[39m: [{"productType":"unknown","ingredientPrefix":"Ingredients:","ingredientStatement":"100 % Specialty Grade Arabica coffee","ingredientBreakdown":"100 % Specialty Grade Arabica coffee"}]
+2024-07-12 14:43:19 [31merror[39m: marketing
+2024-07-12 14:43:19 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"true","twitter":"false","socialMediaList":"facebook","website":"www.disney.com, JOFFREYS.COM","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 14:43:19 [31merror[39m: instruction
+2024-07-12 14:43:19 [32minfo[39m: [{"allInstructions":["START WITH FILTERED WATER. THIS BRINGS THE MOST OUT OF EVERY DROP OF JOFFREY'S COFFEE.","USE 2 TABLESPOONS OF OUR COFFEE FOR EVERY 6 OUNCES OF WATER. ADJUST TO TASTE.","DRINK. Enjoy REPEAT."],"storageInstruction":["Always store Joffrey's coffee in an airtight container, away from light and moisture.","Never refrigerate or freeze."],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 14:46:48 [31merror[39m: ingredient list
+2024-07-12 14:46:48 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"other ingredients:","ingredientStatement":"GREENS BLEND ( PINEAPPLE POWDER , CARROT POWDER , SPINACH POWDER , SPIRULINA , ORGANIC LEMON POWDER , KALE POWDER , ZUCCHINI POWDER , ALFALFA GRASS POWDER , PURSLANE POWDER ) ORGANIC GUM ACACIA , SWEET POTATO POWDER , SEAWEED DERIVED CALCIUM , APPLE FIBER POWDER , LEMON OIL POWDER , CARROT FIBER , ORGANIC ACEROLA POWDER , ORGANIC HEN OF THE WOODS MUSHROOM POWDER , ORGANIC OYSTER MUSHROOM POWDER , ORGANIC LINGZHI MUSHROOM POWDER , ORANGE OIL POWDER , AGARICUS MUSHROOM POWDER , ORGANIC SHIITAKE MUSHROOM EXTRACT , BLUEBERRY FIBER POWDER , CRANBERRY FIBER POWDER , MONKFRUIT EXTRACT , RHODIOLA ROSEA EXTRACT , ORGANIC REISHI MUSHROOM EXTRACT .","ingredientBreakdown":"GREENS BLEND ( PINEAPPLE POWDER , CARROT POWDER , SPINACH POWDER , SPIRULINA , ORGANIC LEMON POWDER , KALE POWDER , ZUCCHINI POWDER , ALFALFA GRASS POWDER , PURSLANE POWDER ) , ORGANIC GUM ACACIA , SWEET POTATO POWDER , SEAWEED DERIVED CALCIUM , APPLE FIBER POWDER , LEMON OIL POWDER , CARROT FIBER , ORGANIC ACEROLA POWDER , ORGANIC HEN OF THE WOODS MUSHROOM POWDER , ORGANIC OYSTER MUSHROOM POWDER , ORGANIC LINGZHI MUSHROOM POWDER , ORANGE OIL POWDER , AGARICUS MUSHROOM POWDER , ORGANIC SHIITAKE MUSHROOM EXTRACT , BLUEBERRY FIBER POWDER , CRANBERRY FIBER POWDER , MONKFRUIT EXTRACT , RHODIOLA ROSEA EXTRACT , ORGANIC REISHI MUSHROOM EXTRACT ."}]
+2024-07-12 14:46:48 [31merror[39m: marketing
+2024-07-12 14:46:48 [32minfo[39m: [{"haveQrCode":"true","instagram":"no","pinterest":"no","youtube":"yes","youtubeType":"type_2","facebook":"no","twitter":"no","socialMediaList":"youtube","website":"lairdsupderfood.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 14:46:48 [31merror[39m: instruction
+2024-07-12 14:46:48 [32minfo[39m: [{"allInstructions":["Add one pack to your cup .","Add 8-12 ounces of water & mix ! ( we prefer using our frother for the best consistency ! )","LACK OF ADDITIVES MEANS INGREDIENTS MAY SETTLE TO THE BOTTOM , SIMPLY REMIX AND ENJOY"],"storageInstruction":[],"cookingInstruction":[],"usageInstruction":[],"useOrFreezeBy":[]}]
+2024-07-12 14:50:43 [31merror[39m: ingredient list
+2024-07-12 14:50:43 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"other ingredients:","ingredientStatement":"GREENS BLEND ( PINEAPPLE POWDER , CARROT POWDER , SPINACH POWDER , SPIRULINA , ORGANIC LEMON POWDER , KALE POWDER , ZUCCHINI POWDER , ALFALFA GRASS POWDER , PURSLANE POWDER ) ORGANIC GUM ACACIA , SWEET POTATO POWDER , SEAWEED DERIVED CALCIUM , APPLE FIBER POWDER , LEMON OIL POWDER , CARROT FIBER , ORGANIC ACEROLA POWDER , ORGANIC HEN OF THE WOODS MUSHROOM POWDER , ORGANIC OYSTER MUSHROOM POWDER , ORGANIC LINGZHI MUSHROOM POWDER , ORANGE OIL POWDER , AGARICUS MUSHROOM POWDER , ORGANIC SHIITAKE MUSHROOM EXTRACT , BLUEBERRY FIBER POWDER , CRANBERRY FIBER POWDER , MONKFRUIT EXTRACT , RHODIOLA ROSEA EXTRACT , ORGANIC REISHI MUSHROOM EXTRACT.","ingredientBreakdown":"GREENS BLEND ( PINEAPPLE POWDER , CARROT POWDER , SPINACH POWDER , SPIRULINA , ORGANIC LEMON POWDER , KALE POWDER , ZUCCHINI POWDER , ALFALFA GRASS POWDER , PURSLANE POWDER ) , ORGANIC GUM ACACIA , SWEET POTATO POWDER , SEAWEED DERIVED CALCIUM , APPLE FIBER POWDER , LEMON OIL POWDER , CARROT FIBER , ORGANIC ACEROLA POWDER , ORGANIC HEN OF THE WOODS MUSHROOM POWDER , ORGANIC OYSTER MUSHROOM POWDER , ORGANIC LINGZHI MUSHROOM POWDER , ORANGE OIL POWDER , AGARICUS MUSHROOM POWDER , ORGANIC SHIITAKE MUSHROOM EXTRACT , BLUEBERRY FIBER POWDER , CRANBERRY FIBER POWDER , MONKFRUIT EXTRACT , RHODIOLA ROSEA EXTRACT , ORGANIC REISHI MUSHROOM EXTRACT."}]
+2024-07-12 14:50:43 [31merror[39m: marketing
+2024-07-12 14:50:43 [32minfo[39m: [{"haveQrCode":"true","instagram":"no","pinterest":"no","youtube":"yes","youtubeType":"type_2","facebook":"no","twitter":"no","socialMediaList":"youtube","website":"lairdsupferfood.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 14:50:43 [31merror[39m: instruction
+2024-07-12 14:50:43 [32minfo[39m: [{"storageInstruction":[],"cookingInstruction":[],"usageInstruction":["Add one pack to your cup.","Add 8-12 ounces of water & mix!","(we prefer using our frother for the best consistency !)"],"useOrFreezeBy":[]}]
+2024-07-12 14:52:35 [31merror[39m: ingredient list
+2024-07-12 14:52:35 [32minfo[39m: [{"productType":"supplement facts","ingredientPrefix":"other ingredients:","ingredientStatement":"OTHER INGREDIENTS: vegetarian capsule (hypromellose and water), microcrystalline cellulose, bamboo leaf extract, tapioca maltodextrin","ingredientBreakdown":"vegetarian capsule (hypromellose and water), microcrystalline cellulose, bamboo leaf extract, tapioca maltodextrin"}]
+2024-07-12 14:52:35 [31merror[39m: marketing
+2024-07-12 14:52:35 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","website":"reddremedies.com/purity, reddremedies.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 14:52:35 [31merror[39m: instruction
+2024-07-12 14:52:35 [32minfo[39m: [{"storageInstruction":["Store in a dry place at room temperature."],"cookingInstruction":[],"usageInstruction":["Suggested Use: 2 capsules daily with meals"],"useOrFreezeBy":[]}]
+2024-07-12 14:54:55 [31merror[39m: ingredient list
+2024-07-12 14:54:55 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"other ingredients:","ingredientStatement":"GREENS BLEND ( PINEAPPLE POWDER , CARROT POWDER , SPINACH POWDER , SPIRULINA , ORGANIC LEMON POWDER , KALE POWDER , ZUCCHINI POWDER , ALFALFA GRASS POWDER , PURSLANE POWDER ) ORGANIC GUM ACACIA , SWEET POTATO POWDER , SEAWEED DERIVED CALCIUM , APPLE FIBER POWDER , LEMON OIL POWDER , CARROT FIBER , ORGANIC ACEROLA POWDER , ORGANIC HEN OF THE WOODS MUSHROOM POWDER , ORGANIC OYSTER MUSHROOM POWDER , ORGANIC LINGZHI MUSHROOM POWDER , ORANGE OIL POWDER , AGARICUS MUSHROOM POWDER , ORGANIC SHIITAKE MUSHROOM EXTRACT , BLUEBERRY FIBER POWDER , CRANBERRY FIBER POWDER , MONKFRUIT EXTRACT , RHODIOLA ROSEA EXTRACT , ORGANIC REISHI MUSHROOM EXTRACT .","ingredientBreakdown":"GREENS BLEND ( PINEAPPLE POWDER , CARROT POWDER , SPINACH POWDER , SPIRULINA , ORGANIC LEMON POWDER , KALE POWDER , ZUCCHINI POWDER , ALFALFA GRASS POWDER , PURSLANE POWDER ) , ORGANIC GUM ACACIA , SWEET POTATO POWDER , SEAWEED DERIVED CALCIUM , APPLE FIBER POWDER , LEMON OIL POWDER , CARROT FIBER , ORGANIC ACEROLA POWDER , ORGANIC HEN OF THE WOODS MUSHROOM POWDER , ORGANIC OYSTER MUSHROOM POWDER , ORGANIC LINGZHI MUSHROOM POWDER , ORANGE OIL POWDER , AGARICUS MUSHROOM POWDER , ORGANIC SHIITAKE MUSHROOM EXTRACT , BLUEBERRY FIBER POWDER , CRANBERRY FIBER POWDER , MONKFRUIT EXTRACT , RHODIOLA ROSEA EXTRACT , ORGANIC REISHI MUSHROOM EXTRACT ."}]
+2024-07-12 14:54:55 [31merror[39m: marketing
+2024-07-12 14:54:55 [32minfo[39m: [{"haveQrCode":"true","instagram":"no","pinterest":"no","youtube":"yes","youtubeType":"type_2","facebook":"no","twitter":"no","socialMediaList":"youtube","website":"lairdsupderfood.com","socialMediaText":"","enlargedToShow":"no"}]
+2024-07-12 14:54:55 [31merror[39m: instruction
+2024-07-12 14:54:55 [32minfo[39m: [{"storageInstruction":["STORE IN A COOL, DRY PLACE AWAY FROM KITCHEN"],"cookingInstruction":[],"usageInstruction":["Add one pack to your cup.","Add 8-12 ounces of water & mix!","(we prefer using our frother for the best consistency!)"],"useOrFreezeBy":[]}]
+2024-07-12 16:02:03 [31merror[39m: ingredient list
+2024-07-12 16:02:03 [32minfo[39m: [{"productType":"supplement facts","ingredientPrefix":"Other Ingredients:","ingredientStatement":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide.","ingredientBreakdown":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide."}]
+2024-07-12 16:02:03 [31merror[39m: marketing
+2024-07-12 16:02:03 [32minfo[39m: [{"haveQrCode":"true","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","website":"megafood.com, megafood.com/standards","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 16:02:03 [31merror[39m: instruction
+2024-07-12 16:02:03 [32minfo[39m: [{"storageInstruction":["Keep out of reach of children.","Store tightly sealed in a cool place and avoid exposure to moisture.","Once open, consume within three months.","Do not use if seal under cap is broken or missing."],"usageInstruction":["Adults take 2 capsules anytime of day with food and a beverage."]}]
+2024-07-12 16:23:28 [31merror[39m: ingredient list
+2024-07-12 16:23:28 [32minfo[39m: [{"productType":"supplement facts","ingredientPrefix":"Other Ingredients:","ingredientStatement":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide.","ingredientBreakdown":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide."}]
+2024-07-12 16:23:28 [31merror[39m: marketing
+2024-07-12 16:23:28 [32minfo[39m: [{"haveQrCode":"yes","instagram":"no","pinterest":"no","youtube":"no","youtubeType":"","facebook":"no","twitter":"no","socialMediaList":"","website":"megafood.com, megafood.com/standards","socialMediaText":"","enlargedToShow":"no"}]
+2024-07-12 16:23:28 [31merror[39m: instruction
+2024-07-12 16:23:28 [32minfo[39m: [{"storageInstruction":["Keep out of reach of children.","Store tightly sealed in a cool place and avoid exposure to moisture.","Once open, consume within three months.","Do not use if seal under cap is broken or missing."],"cookingInstruction":[],"usageInstruction":["Adults take 2 capsules anytime of day with food and a beverage."]}]
+2024-07-12 16:52:22 [31merror[39m: ingredient list
+2024-07-12 16:52:22 [32minfo[39m: [{"productType":"supplement facts","ingredientPrefix":"Other Ingredients:","ingredientStatement":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide.","ingredientBreakdown":"Microcrystalline cellulose, hypromellose, tapioca starch, stearic acid, silicon dioxide."},{"productType":"MARKETING_TABLE","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"have QR code (answer is boolean)","ingredientPrefix":"have Instagram icon or info ?","ingredientStatement":"have Pinterest icon or info ?","ingredientBreakdown":"have Youtube icon or info ?"},{"productType":"-------","ingredientPrefix":"--------","ingredientStatement":"--------","ingredientBreakdown":"-------"},{"productType":"true","ingredientPrefix":"no","ingredientStatement":"no","ingredientBreakdown":"no"},{"productType":"INSTRUCTION_TABLE","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"instruction type","ingredientPrefix":"value 1","ingredientStatement":"value 2","ingredientBreakdown":"value 3"},{"productType":"-------","ingredientPrefix":"--------","ingredientStatement":"--------","ingredientBreakdown":"-------"},{"productType":"storage instructions","ingredientPrefix":"Keep out of reach of children.","ingredientStatement":"Store tightly sealed in a cool place and avoid exposure to moisture.","ingredientBreakdown":"Once open, consume within three months."},{"productType":"cooking instructions","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"usage instructions","ingredientPrefix":"Adults take 2 capsules anytime of day with food and a beverage.","ingredientStatement":"","ingredientBreakdown":""},{"productType":"SUPPLY_CHAIN_TABLE","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"info item","ingredientPrefix":"value","ingredientStatement":"","ingredientBreakdown":""},{"productType":"-------","ingredientPrefix":"--------","ingredientStatement":"","ingredientBreakdown":""},{"productType":"country of origin text","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"country of origin","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"have text \"distributed by\" ? (answer is yes/no)","ingredientPrefix":"no","ingredientStatement":"","ingredientBreakdown":""},{"productType":"distributor name","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"distributor city","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"distributor state","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"distributor zipCode","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"distributor phone number","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"full text about distributor","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"manufacture name","ingredientPrefix":"MEGAFOOD","ingredientStatement":"","ingredientBreakdown":""},{"productType":"manufacture date","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"manufacture phone number","ingredientPrefix":"800.848.2542","ingredientStatement":"","ingredientBreakdown":""},{"productType":"manufacture street address","ingredientPrefix":"PO BOX 5244","ingredientStatement":"","ingredientBreakdown":""},{"productType":"manufacture city","ingredientPrefix":"MANCHESTER","ingredientStatement":"","ingredientBreakdown":""},{"productType":"manufacture state","ingredientPrefix":"NH","ingredientStatement":"","ingredientBreakdown":""},{"productType":"manufacture zipCode","ingredientPrefix":"03108","ingredientStatement":"","ingredientBreakdown":""},{"productType":"BASE_CERTIFIER_CLAIM_TABLE","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"claim","ingredientPrefix":"is product claim that ? (answer is yes/no/unknown)","ingredientStatement":"","ingredientBreakdown":""},{"productType":"-------","ingredientPrefix":"-------","ingredientStatement":"","ingredientBreakdown":""},{"productType":"bee friendly claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"bio-based claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"biodynamic claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"bioengineered claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"cbd cannabidiol / help claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"carbon footprint claim","ingredientPrefix":"yes","ingredientStatement":"","ingredientBreakdown":""},{"productType":"certified b corporation","ingredientPrefix":"yes","ingredientStatement":"","ingredientBreakdown":""},{"productType":"certified by international packaged ice association","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"cold pressure verified","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"cold pressure protected claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"cradle to cradle claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"cruelty free claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"diabetic friendly claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"eco fishery claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"fair trade claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"for life claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"use GMO claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"gmp claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"gluten-free claim","ingredientPrefix":"yes","ingredientStatement":"","ingredientBreakdown":""},{"productType":"glycemic index claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"glyphosate residue free claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"grass-fed claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"halal claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"hearth healthy claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"Keto/Ketogenic Claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"Kosher Claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"Live and Active Culture Claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"Low Glycemic Claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"New York State Grown & Certified Claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"Non-GMO Claim","ingredientPrefix":"yes","ingredientStatement":"","ingredientBreakdown":""},{"productType":"Organic Claim","ingredientPrefix":"yes","ingredientStatement":"","ingredientBreakdown":""},{"productType":"PACA Claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"PASA Claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"Paleo Claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"Plant Based/Derived Claim","ingredientPrefix":"yes","ingredientStatement":"","ingredientBreakdown":""},{"productType":"Rain Forest Alliance Claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"Vegan Claim","ingredientPrefix":"yes","ingredientStatement":"","ingredientBreakdown":""},{"productType":"Vegetarian Claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"Viticulture Claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"Whole Grain Claim","ingredientPrefix":"unknown","ingredientStatement":"","ingredientBreakdown":""},{"productType":"ATTRIBUTE_TABLE","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""},{"productType":"grade (answer are 'A'/ 'B')","ingredientPrefix":"juice percent (answer is number)","ingredientStatement":"","ingredientBreakdown":""},{"productType":"-------","ingredientPrefix":"-------","ingredientStatement":"","ingredientBreakdown":""},{"productType":"","ingredientPrefix":"","ingredientStatement":"","ingredientBreakdown":""}]
+2024-07-12 16:52:22 [31merror[39m: marketing
+2024-07-12 16:52:22 [32minfo[39m: [{"haveQrCode":"true","instagram":"no","pinterest":"no","youtube":"no","youtubeType":"","facebook":"no","twitter":"no","socialMediaList":"","website":"megafood.com, megafood.com/standards","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-12 16:52:22 [31merror[39m: instruction
+2024-07-12 16:52:22 [32minfo[39m: [{"storageInstruction":["Keep out of reach of children.","Store tightly sealed in a cool place and avoid exposure to moisture.","Once open, consume within three months."],"cookingInstruction":[],"usageInstruction":["Adults take 2 capsules anytime of day with food and a beverage."]}]
