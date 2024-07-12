@@ -139,9 +139,9 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       // include: { product: true },  // Include related product details if needed
     });
 
-    // if (session) {
-    //   res.status(404).json({ error: 'Session not found' });
-    // }
+    if (!session) {
+      res.status(404).json({ error: 'Session not found' });
+    }
     const { result_nut, result_all } = session as any;
 
     if (session?.status === 'unknown' && (!result_nut || !result_all)) {
@@ -152,15 +152,26 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       });
     }
 
-    const allRes = JSON.parse(result_all?.['all.json']);
-    const nutRes = JSON.parse(result_nut?.['nut.json']);
-    // const ocrClaims = JSON.parse(ocrClaimData);
+    const nutRes = JSON.parse(result_nut)?.['nut.json'];
+    const allRes = JSON.parse(result_all)?.['all.json'];
+
+    console.log(typeof nutRes);
 
     const { isSuccess: allSuccess, status: allStatus } = allRes || {};
     const { isSuccess: nutSuccess, status: nutStatus } = nutRes || {};
 
     if (nutSuccess === false || allSuccess === false) {
-      return;
+      session = await prisma.extractSession.update({
+        where: { sessionId },
+        data: {
+          status: 'fail',
+        },
+      });
+      return res.status(404).send({
+        isSuccess: false,
+        status: 'fail',
+        message: 'something went wrong',
+      });
     }
 
     let finalResult = {
