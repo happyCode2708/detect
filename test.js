@@ -1,31 +1,31 @@
-const { toLower } = require('lodash');
-
-const run = (reason, claim) => {
-  let final = NON_CERTIFICATE_REASON?.[toLower(claim)]
-    ?.map((wordList) => {
-      return wordList
-        .map((word) => {
-          if (toLower(reason)?.includes(word)) {
-            return true;
-          } else {
-            return false;
-          }
-        })
-        .every((result) => result === true);
-    })
-    .every((result) => result === false);
-
-  console.log('final', final);
+const getDescriptor = (nutrientName) => {
+  const pattern = /(\s*\([^()]*\))+$/;
+  const match = nutrientName.match(pattern);
+  return match ? match[0] : null;
 };
 
-const NON_CERTIFICATE_REASON = {
-  '100% natural ingredients': [['100%', 'natural', 'ingredient']],
-  '100% natural': [['100%', 'natural']],
-  'vegetarian or vegan diet/feed': [
-    ['vegetarian'],
-    ['vegan', 'diet'],
-    ['vegan', 'feed'],
-  ],
+const validateNutrientNameByDescriptor = (modifiedNutrient) => {
+  const logicExtractedDescriptor = getDescriptor(
+    modifiedNutrient?.['nutrientName']
+  );
+
+  console.log('extracted descriptor', logicExtractedDescriptor);
+  // if (logicExtractedDescriptor && !modifiedNutrient?.['descriptor']) {
+  if (logicExtractedDescriptor) {
+    modifiedNutrient['validated_descriptor_from_name'] =
+      logicExtractedDescriptor;
+    modifiedNutrient['validated_nutrientName_from_descriptor'] =
+      modifiedNutrient['nutrientName']?.split(logicExtractedDescriptor)?.[0];
+  } else {
+    modifiedNutrient['validated_nutrientName_from_descriptor'] =
+      modifiedNutrient['nutrientName'];
+  }
+
+  console.log(modifiedNutrient);
 };
 
-run('vegan diet', 'vegetarian or vegan diet/feed');
+let modifiedNutrient = {
+  nutrientName: 'Monounsaturated Fat',
+};
+
+validateNutrientNameByDescriptor(modifiedNutrient);

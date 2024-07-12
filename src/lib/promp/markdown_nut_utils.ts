@@ -61,7 +61,8 @@ remember they are put in orders from low index [1] to higher index like [2] and 
 
 specific rules:
 1) "nutrient name descriptor" rules:
-+ is descriptor of nutrient name ( with text look like "as something", "naturally occurring from something", or other equivalent name of nutrient, ...)  
++ "nutrient name descriptor" is descriptor of nutrient name ( with text look like "as something", "naturally occurring from something", or other equivalent name of nutrient, ...)
++ "nutrient name descriptor" is usually text inside parentheses at the end of nutrient name.
 + nutrient could be a type of Extract so its nutrition name must contain "Extract". And the "parenthetical statement about nutrient name" will be the remaining text after word "Extract".
 + nutrient could be a type of Concentrate so its nutrition name must contain "Concentrate". And the "parenthetical statement about nutrient name" will be the remaining text after word "Extract".
 + nutrient info could have text "standardized to something ..." so the text start with "standardized to" should be recorded as "nutrient name descriptor"
@@ -88,6 +89,7 @@ MARKDOWN RULES:
 
 IMPORTANT NOTES:
 1) dual-column nutrition panel must be always separated into two different markdown tables. 
+2) text in nutrition panel such as "added sugar", "incl. 2g added sugar", "includes 2g added sugar" must be recorded as a separated nutrient with "nutrient name" = "added sugar"
 
 RESULT THAT I NEED:
 Carefully examine provided images above. They are captured images of one product, and return info from provided images that meet all listed requirements and rules above with markdown tables format below

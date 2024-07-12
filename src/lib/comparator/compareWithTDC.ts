@@ -202,10 +202,10 @@ const compareFactPanelByMostMatch = (obj1: any, obj2: any) => {
         }
       );
 
-      console.log(
-        'match percent list',
-        `key -- ${propertyName} ${JSON.stringify(matchPercentList)}`
-      );
+      // console.log(
+      //   'match percent list',
+      //   `key -- ${propertyName} ${JSON.stringify(matchPercentList)}`
+      // );
 
       // const samePropertyOnExtractData =
 

@@ -19,6 +19,8 @@ import { writeJsonToFile } from '../../lib/json';
 import { prisma } from '../../server';
 import { responseValidator } from '../../lib/validator/main';
 import { checkFilesExist } from '../../lib/utils/checkFile';
+import { mapMarkdownAllToObject } from '../../lib/mapper/mapMdAllToObject';
+import { mapMarkdownNutToObject } from '../../lib/mapper/mapMarkdonwDataToObject';
 
 // import OpenAI from 'openai';
 
@@ -358,17 +360,31 @@ const createFinalResult = async ({
     const nutRes = JSON.parse(finalNut?.['nut.json']);
     // const ocrClaims = JSON.parse(ocrClaimData);
 
-    const { isSuccess: allSuccess, status: allStatus } = allRes || {};
-    const { isSuccess: nutSuccess, status: nutStatus } = nutRes || {};
+    const {
+      isSuccess: allSuccess,
+      status: allStatus,
+      data: allResData,
+    } = allRes || {};
+    const {
+      isSuccess: nutSuccess,
+      status: nutStatus,
+      data: nutResData,
+    } = nutRes || {};
 
     if (nutSuccess === false || allSuccess === false) {
       return;
     }
 
+    //* if both process success
+    const allJsonData = mapMarkdownAllToObject(allResData?.markdownContent);
+    const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
+
     let finalResult = {
       product: {
-        ...allRes?.data?.jsonData,
-        factPanels: nutRes?.data?.jsonData, //* markdown converted
+        // ...allRes?.data?.jsonData,
+        ...allJsonData,
+        // factPanels: nutRes?.data?.jsonData, //* markdown converted
+        factPanels: nutJsonData,
         nutMark: nutRes?.data?.markdownContent,
         allMark: allRes?.data?.markdownContent,
       },

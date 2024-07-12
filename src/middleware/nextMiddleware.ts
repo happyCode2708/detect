@@ -12,32 +12,32 @@ export const nextMiddleware = (
 
   const path = req.path;
 
-  // return next()
+  return next();
 
   // next();
 
-  if (path?.startsWith('_next/')) {
-    next();
-    return;
-  }
+  // if (path?.startsWith('_next/')) {
+  //   next();
+  //   return;
+  // }
 
-  const isPublicRoute = publicRoutes.includes(path);
+  // const isPublicRoute = publicRoutes.includes(path);
 
-  if (isPublicRoute) {
-    next();
-    return;
-  }
+  // if (isPublicRoute) {
+  //   next();
+  //   return;
+  // }
 
-  const isProtectedRoute =
-    protectedRoutes.findIndex((protectedRouteItem: string) =>
-      path.startsWith(protectedRouteItem)
-    ) !== -1 || path === '/';
+  // const isProtectedRoute =
+  //   protectedRoutes.findIndex((protectedRouteItem: string) =>
+  //     path.startsWith(protectedRouteItem)
+  //   ) !== -1 || path === '/';
 
-  if (isProtectedRoute && !token) {
-    console.log('come here');
+  // if (isProtectedRoute && !token) {
+  //   console.log('come here');
 
-    return res.redirect('/login');
-  } else {
-    next();
-  }
+  //   return res.redirect('/login');
+  // } else {
+  //   next();
+  // }
 };

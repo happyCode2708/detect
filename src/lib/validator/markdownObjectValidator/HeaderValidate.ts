@@ -1,5 +1,5 @@
-export const HeaderValidate = (response: any) => {
-  let modifiedHeader = response?.['product']?.['header']?.[0];
+export const headerValidate = async (modifiedProductDataPoints: any) => {
+  let modifiedHeader = modifiedProductDataPoints?.['header']?.[0];
 
   if (!modifiedHeader) return;
 
@@ -7,7 +7,7 @@ export const HeaderValidate = (response: any) => {
   validateSecondarySize(modifiedHeader);
   validateThirdSize(modifiedHeader);
 
-  response['product']['header'][0] = modifiedHeader;
+  modifiedProductDataPoints['header'][0] = modifiedHeader;
 };
 
 const sizeMap = {

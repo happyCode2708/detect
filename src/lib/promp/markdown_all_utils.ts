@@ -54,22 +54,20 @@ Ex 1: if product have something in ingredient list. That cannot conclude that pr
 
 6) There are some tables that i require return row items with specific given condition. Please check it carefully.
 
-7) you keep return only 10 or 11 digits for upc-12. It is wrong. 
+7) text such as "Contain: ...", "Free of ...", ... are "marketing text on product".
 
-8) text such as "Contain: ...", "Free of ...", ... are "marketing text on product".
+8) all table names must be in capital letters.
 
-9) all table names must be in capital letters.
+9) "gluten" is not allergen.
 
-10 "gluten" is not allergen.
+10) Each table have its own assert item list or claim list. Do not interchange item/claim between tables.
 
-11) Each table have its own assert item list or claim list. Do not interchange item/claim between tables.
-
-12) inferred info is not accepted for claim:
+11) inferred info is not accepted for claim:
 Ex: you are not allow to infer "no animal ingredients" from "organic certifier"
 
-13) do not collect phone number to website list data. 
+12) do not collect phone number to website list data. 
 
-14) result must be in order and include all tables below
+13) result must be in order and include all tables below
 SUGAR_CLAIM_TABLE
 FAT_CLAIM_TABLE
 PROCESS_CLAIM_TABLE
@@ -135,16 +133,19 @@ ex 1: "oats, milk"
 
 4) "header" table rules:
 + header table only have 1 row item so you must carefully examine the images.
-+ "primary size" and "secondary size" and "third size" is a quantity measurement of product in two different unit of measurement. They are not info from "serving size" in nutrition fact.
-Ex 1: "primary size" = "100gram"
++ "primary size" and "secondary size" and "third size" are a quantity measurement of product in there different unit of measurement. They are not info from "serving size" in nutrition fact.
+Ex 1: "primary size" = "100 gram"
 Ex 3: "WT 2.68 OZ (40g) should recorded as "primary size" = "2.68 OZ" and "secondary size" = "40g"
 Ex 2: "32 fl oz ( 2 pt ) 946 mL" should recorded as "primary size" = "32 fl oz" and "secondary size" = "2 pt" and "third size" = "946 mL"
 Ex 4: "100 capsules"  should recorded as "primary size" = "100 capsules"
+
 + just collect size in order. If production mention three type of uom it will have third size
+
++ "primary size" must content quantity value number and its oum (same for primary size, and third size)
 
 + "count" is the count number of smaller unit inside a package, or a display shipper, or a case, or a box.
 
-+ "full size text description" is the whole quantity measurement description statement of the product on images.
++ "full size statement" is the whole size statement text found on product images that might includes all texts about primary size, secondary size,  third size and serving amounts if exits  but not info from nutrition panel
 Ex 1: "Net WT 9.28oz(260g) 10 cups"
 Ex 2: "16 FL OZ (472 ML)
 Ex 3: "900 CAPSULES 400 servings"
@@ -171,14 +172,10 @@ Ex 1: @cocacola
 
 + "enlarge to show" is true if statement such as "enlarged to show..." seen on product image.
 
-7) "physical" rules:
-+ "upc-12 or gtin-12" is a code contain 12 digit numbers, it usually appear on product image with structure that have 10 digit numbers at between two other digit numbers.
-Ex: "0   4562342221   5" as you can see there are two digit numbers at the start is 0 and at the end is 5. And the "upc-12 or gtin-12" here = 045623422215
+7) "instruction" table rules:
++ "cooking instructions" are all statements or all steps how to cook using product
 
-8) "instruction" table rules:
-+ "cooking instructions" are all statements or all steps how to cook using product.
-
-+ "usage instructions" are all instruction statement about how to use product but not about "cooking instructions" text.
++ "usage instructions" are all instruction statement about how to use product but not about "cooking instructions" text (remember that extracted statements also include text before colon such as "suggested use:", "directions:",...)
 Ex 1: "suggested use: 2 cups at one time." should be recorded as "usage instructions" = "suggested use: 2 cups at one time."
 
 + "storage instruction" are all storage instruction text that includes some phrases below:
@@ -186,7 +183,7 @@ Ex 1: "suggested use: 2 cups at one time." should be recorded as "usage instruct
 if storage instruction include other point not mentioned in the list above that instructions must be put in "all other instructions" as well
 Ex1: "STORE IN A COOL, DRY PLACE AWAY FROM KITCHEN" is valid for "storage instructions" but also valid for "all other instructions since it say "away from kitchen"
 
-9) "supply chain" table rules:
+8) "supply chain" table rules:
 + "country of origin text" example
 Ex 1: "manufactured in Canada"ingredient
 Ex 2: "made in Brazil"
@@ -205,12 +202,12 @@ Ex 2: "MANUFACTURED FOR: BEAUTY FARM, PBC"
 
 + if "manufacturer name" exits so its address info of that "manufacturer" is recorded in manufacture street address , manufacture city , manufacture state , manufacture zipCode.
 
-10) "base certifier claim" rules:
+9) "base certifier claim" rules:
 + carefully check for text or certifier logo that could indicate claim from provided image
 Ex: logo U kosher found mean "kosher claim" = "yes" 
 
 
-11) Three "extra claim table" rules:
+10) Three "extra claim table" rules:
 + text "make without: ..." is in type "marketing text on product".
 + "how product state about it ?" the possible answers of question are  "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use".
 
@@ -556,7 +553,7 @@ ALLERGEN_TABLE
 (IMPORTANT NOTE: remember header table only have one row item)
 
 HEADER_TABLE
-| product name | brand name | primary size | secondary size | third size | full size text description | count | count uom |
+| product name | brand name | primary size | secondary size | third size | full size statement | count | count uom |
 | ------- | -------- | -------- | ------- | -------- | -------- | -------- | -------- |
 
 11) Ingredient info with table format below:
@@ -568,8 +565,8 @@ INGREDIENT_TABLE
 12) Physical info with table format below
 
 PHYSICAL_TABLE
-| upc-12 or gtin-12 |
-| ------- |
+ upc code on barcode | The lot number is located on the left side of the UPC code (only one digit number inside the barcode) |
+| ------- | ------- |
 
 13) Marketing info with table format below:
 
@@ -595,10 +592,10 @@ INSTRUCTION_TABLE
 SUPPLY_CHAIN_TABLE
 | info item | value |
 | ------- | -------- |
-| country of origin text |
-| country of origin | 
-| have text "distributed by" ? (answer is yes/no) |
-| distributor name |
+| country of origin text | ...
+| country of origin | ...
+| have text "distributed by" ? (answer is yes/no) | 
+| distributor name | 
 | distributor city | 
 | distributor state |
 | distributor zipCode |

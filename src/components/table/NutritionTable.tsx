@@ -57,7 +57,8 @@ const NutritionTable = ({ data }: { data: any }) => {
               <>
                 <TableRow>
                   <TableCell>
-                    <div>{nutrient?.nutrientName}</div>
+                    {/* <div>{nutrient?.nutrientName}</div> */}
+                    <div>{nutrient?.validated_nutrientName}</div>
                   </TableCell>
                   <TableCell>
                     {nutrient?.parenthesesDescriptor && (

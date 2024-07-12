@@ -193,14 +193,18 @@ export const onProcessGemini = async ({
     }
 
     if (isMarkdown) {
-      const jsonResult = mapMdToObjectFunct(procResult);
+      //? important
+      //* const jsonResult = mapMdToObjectFunct(procResult);
 
       writeJsonToFile(
         resultsDir + `/${sessionId}`,
         resultFileName,
         JSON.stringify({
           isSuccess: true,
-          data: { jsonData: jsonResult, markdownContent: procResult },
+          data: {
+            // ** jsonData: jsonResult,
+            markdownContent: procResult,
+          },
         })
       );
 
@@ -208,7 +212,10 @@ export const onProcessGemini = async ({
         ...sessionPayload,
         [resultFileName]: JSON.stringify({
           isSuccess: true,
-          data: { jsonData: jsonResult, markdownContent: procResult },
+          data: {
+            //* jsonData: jsonResult,
+            markdownContent: procResult,
+          },
         }),
       };
 

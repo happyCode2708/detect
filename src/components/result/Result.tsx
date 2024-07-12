@@ -25,17 +25,17 @@ export const Result = ({
     setTabActive(tabActive);
   };
 
-  useEffect(() => {
-    try {
-      if (productInfo && productTdcData) {
-        const mappedData = mapToTDCformat(productInfo);
-        console.log('obj__1', mappedData);
-        console.log('obj__2', productTdcData);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }, [productInfo, productTdcData]);
+  // useEffect(() => {
+  //   try {
+  //     if (productInfo && productTdcData) {
+  //       const mappedData = mapToTDCformat(productInfo);
+  //       console.log('obj__1', mappedData);
+  //       console.log('obj__2', productTdcData);
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }, [productInfo, productTdcData]);
 
   return (
     <Tabs

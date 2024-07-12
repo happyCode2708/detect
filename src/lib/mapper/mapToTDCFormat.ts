@@ -1,5 +1,6 @@
 import { AnyARecord } from 'dns';
-import { lowerCase, toLower, toUpper } from 'lodash';
+import { isEmpty, isEqual, lowerCase, toLower, toUpper } from 'lodash';
+import { removeFieldByPath } from '../server_utils';
 
 export const mapToTDCformat = (extractData: any) => {
   const productData = extractData?.product;
@@ -26,7 +27,10 @@ export const mapToTDCformat = (extractData: any) => {
     BrandName: toUpper(header?.[0]?.brandName),
     // PrimarySize: toUpper(header?.[0]?.primarySizeValue),
     // PrimarySizeUOM: toUpper(header?.[0]?.primarySizeUOM),
-    ...mapPrimarySizeAndPrimarySizeUom(header),
+    // ...mapPrimarySizeAndPrimarySizeUom(header),
+    PrimarySize: toUpper(header?.[0]?.primarySizeValue),
+    PrimarySizeUOM: toUpper(header?.[0]?.primarySizeUOM),
+    PrimarySizeText: toUpper(header?.[0]?.fullSizeStatement),
     SecondarySize: toUpper(header?.[0]?.secondarySizeValue),
     SecondarySizeUOM: toUpper(header?.[0]?.secondarySizeUOM),
     TertiarySize: toUpper(header?.[0]?.thirdSizeValue),
@@ -67,7 +71,7 @@ export const mapToTDCformat = (extractData: any) => {
     UsageInstructions: instructions?.[0]?.usageInstruction,
     ConsumerStorage: instructions?.[0]?.validated_storageInstruction,
     CookingInstructions: instructions?.[0]?.cookingInstruction,
-    UseOrFreezeBy: instructions?.[0]?.useOrFreezeBy,
+    UseOrFreezeBy: instructions?.[0]?.validated_useOrFreezeBy,
     // InstructionsAncillary: instructions?.[0]?.otherInstructions,
 
     //* allergen
@@ -116,7 +120,7 @@ export const mapToTDCformat = (extractData: any) => {
     HasPanel: factPanels?.length > 0,
 
     //* Physical
-    UPC12: physical?.[0]?.upc12,
+    UPC12: physical?.[0]?.validated_upc12,
 
     //* marketing
     Website: marketing?.[0]?.website
@@ -196,7 +200,6 @@ export const mapToTDCformat = (extractData: any) => {
       : {}),
   };
 
-  // console.log('result', JSON.stringify(mappedResult));
   return mappedResult;
 };
 
@@ -225,8 +228,6 @@ const mapToNutritionPanels = (
         Amount: '',
         AmountUOM: '',
       });
-
-      console.log('title', title);
 
       if (ingredients?.length > 0) {
         ingredients?.forEach((ingredientItem: any) => {
@@ -294,24 +295,30 @@ const mapToNutritionPanels = (
           PropertyName: toUpper(nutrientItem?.['validated_nutrientName']),
           PropertySource: `${toUpper(
             nutrientItem?.['blendIngredients']
-          )} ${toUpper(nutrientItem?.['parenthesesDescriptor'])}  ${toUpper(
+          )} ${toUpper(nutrientItem?.['parenthesesDescriptor'])} ${toUpper(
             nutrientItem?.['amountPerServingDescriptor']
-          )}`,
+          )}`?.trim(),
           AnalyticalValue: nutrientItem?.['amount'],
-          Amount: `${nutrientItem?.['amount']}`,
+          Amount: `${toUpper(nutrientItem?.['amount'])}`,
           AmountUOM: nutrientItem?.['uom']?.toString() || '',
           Percent: nutrientItem?.['percent'],
+          Indicators: [nutrientItem?.['indicator']]?.filter((item) => !!item),
         } as any;
         // Indicators: nutrientItem?.['indicator']
         //   ? [nutrientItem?.['indicator']]
         //   : '',
 
-        if (nutrientItem?.['indicator']) {
-          nutrientObj = {
-            ...nutrientObj,
-            Indicators: [nutrientItem?.['indicator']],
-          };
-        }
+        Object.entries(nutrientObj)?.forEach(
+          ([key, value]: [key: string, value: any]) => {
+            if ((value !== 0 && !value) || isEqual(value, [])) {
+              removeFieldByPath(nutrientObj, key);
+            }
+
+            if (key === 'PropertyName' && value === 'ADDED SUGAR') {
+              removeFieldByPath(nutrientObj, 'PropertySource');
+            }
+          }
+        );
 
         formatFactPanelPropertyList.push(nutrientObj);
       });
@@ -329,21 +336,19 @@ const mapPrimarySizeAndPrimarySizeUom = (header: any) => {
     countUom,
     fullSizeTextDescription,
   } = header?.[0] || {};
-  if (primarySizeValue) {
-    return {
-      PrimarySize: toUpper(primarySizeValue),
-      PrimarySizeUOM: toUpper(primarySizeUOM),
-      PrimarySizeText: toUpper(fullSizeTextDescription),
-    };
-  }
+  // if (primarySizeValue && ) {
+  //   return {
 
-  if (!primarySizeValue && count) {
-    return {
-      PrimarySize: toUpper(count),
-      PrimarySizeUOM: 'COUNT',
-      PrimarySizeText: toUpper(`${count} ${countUom}`),
-    };
-  }
+  //   };
+  // }
+
+  // if (!primarySizeValue && count) {
+  //   return {
+  //     PrimarySize: toUpper(count),
+  //     PrimarySizeUOM: 'COUNT',
+  //     PrimarySizeText: toUpper(`${count} ${countUom}`),
+  //   };
+  // }
 
   return {};
 };

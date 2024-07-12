@@ -29,6 +29,7 @@ const transformOneFactPanel = (factPanelItem: any) => {
 
       // validateNutrientName(modifiedNutrient);
       // validateSubIngredient(modifiedNutrient);
+      validateNutrientNameByDescriptor(modifiedNutrient);
       validateNutrientName(modifiedNutrient);
       validateAmount(modifiedNutrient);
       validateBlendIngredients(modifiedNutrient);
@@ -52,7 +53,10 @@ const validateBlendIngredients = (modifiedNutrient: any) => {
 };
 
 const validateNutrientName = (modifiedNutrient: any) => {
-  const nutrientName = toLower(modifiedNutrient?.nutrientName?.trim());
+  // const nutrientName = toLower(modifiedNutrient?.['nutrientName']?.trim());
+  const nutrientName = toLower(
+    modifiedNutrient?.['validated_nutrientName_from_descriptor']?.trim()
+  );
 
   const shortFormMap = {
     'vit. a': 'VITAMIN A',
@@ -105,6 +109,7 @@ const validateNutrientName = (modifiedNutrient: any) => {
     'total carbohydrate': 'TOTAL CARBOHYDRATES',
     fiber: 'DIETARY FIBER',
     'total carb.': 'TOTAL CARBOHYDRATES',
+    'total carb .': 'TOTAL CARBOHYDRATES',
     'monounsat. fat': 'MONOUNSATURATED FAT',
     'polyunsat. fat': 'POLYUNSATURATED FAT',
     sugars: 'TOTAL SUGARS',
@@ -160,21 +165,27 @@ const validateFootnote = (modifiedNutrient: any) => {
   // }
 };
 
-// const getDescriptor = (nutrientName: string) => {
-//   const pattern = /(\s*\([^()]*\))+$/;
-//   const match = nutrientName.match(pattern);
-//   return match ? match[0] : null;
-// };
+const getDescriptor = (nutrientName: string) => {
+  const pattern = /(\s*\([^()]*\))+$/;
+  const match = nutrientName.match(pattern);
+  return match ? match[0] : null;
+};
 
-// const validateNutrientName = (modifiedNutrient: any) => {
-//   const logicExtractedDescriptor = getDescriptor(modifiedNutrient?.name);
-//   if (logicExtractedDescriptor && !modifiedNutrient?.['descriptor']) {
-//     modifiedNutrient['descriptor'] = logicExtractedDescriptor;
-//     modifiedNutrient['name'] = modifiedNutrient['name']?.split(
-//       logicExtractedDescriptor
-//     )?.[0];
-//   }
-// };
+const validateNutrientNameByDescriptor = (modifiedNutrient: any) => {
+  const logicExtractedDescriptor = getDescriptor(
+    modifiedNutrient?.['nutrientName']
+  );
+  // if (logicExtractedDescriptor && !modifiedNutrient?.['descriptor']) {
+  if (logicExtractedDescriptor) {
+    modifiedNutrient['validated_descriptor_from_name'] =
+      logicExtractedDescriptor;
+    modifiedNutrient['validated_nutrientName_from_descriptor'] =
+      modifiedNutrient['nutrientName']?.split(logicExtractedDescriptor)?.[0];
+  } else {
+    modifiedNutrient['validated_nutrientName_from_descriptor'] =
+      modifiedNutrient['nutrientName'];
+  }
+};
 
 // const validateSubIngredient = (modifiedNutrient: any) => {
 //   const lowerNutrientName = toLower(modifiedNutrient?.name);

@@ -29,7 +29,7 @@ import {
   useMutateSaveCompareResult,
   useQueryProductsFromTdc,
 } from '@/queries/productDetailQuery';
-import { compare } from 'bcryptjs';
+// import { compare } from 'bcryptjs';
 
 const ProductDetailPage = () => {
   const params = useParams();
@@ -292,7 +292,7 @@ const ProductDetailPage = () => {
           }
           setLoading(false);
         }
-      }, 5000);
+      }, 6000);
     }
     return () => {
       if (!refInterval.current) return;

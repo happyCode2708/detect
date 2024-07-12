@@ -26,8 +26,6 @@ const router = express.Router();
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  console.log('come here');
-
   const user = await prisma.user
     .findUnique({
       where: { email },

@@ -5,6 +5,8 @@ import path from 'path';
 import { writeJsonToFile } from '../../lib/json';
 import { responseValidator } from '../../lib/validator/main';
 import { removeRawFieldData } from '../../lib/server_utils';
+import { mapMarkdownAllToObject } from '../../lib/mapper/mapMdAllToObject';
+import { mapMarkdownNutToObject } from '../../lib/mapper/mapMarkdonwDataToObject';
 
 const router = express.Router();
 
@@ -139,9 +141,9 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       // include: { product: true },  // Include related product details if needed
     });
 
-    // if (session) {
-    //   res.status(404).json({ error: 'Session not found' });
-    // }
+    if (!session) {
+      res.status(404).json({ error: 'Session not found' });
+    }
     const { result_nut, result_all } = session as any;
 
     if (session?.status === 'unknown' && (!result_nut || !result_all)) {
@@ -152,21 +154,46 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       });
     }
 
-    const allRes = JSON.parse(result_all?.['all.json']);
     const nutRes = JSON.parse(result_nut?.['nut.json']);
-    // const ocrClaims = JSON.parse(ocrClaimData);
+    const allRes = JSON.parse(result_all?.['all.json']);
 
-    const { isSuccess: allSuccess, status: allStatus } = allRes || {};
-    const { isSuccess: nutSuccess, status: nutStatus } = nutRes || {};
+    console.log(typeof nutRes);
+
+    const {
+      isSuccess: allSuccess,
+      status: allStatus,
+      data: allResData,
+    } = allRes || {};
+
+    const {
+      isSuccess: nutSuccess,
+      status: nutStatus,
+      data: nutResData,
+    } = nutRes || {};
 
     if (nutSuccess === false || allSuccess === false) {
-      return;
+      session = await prisma.extractSession.update({
+        where: { sessionId },
+        data: {
+          status: 'fail',
+        },
+      });
+      return res.status(404).send({
+        isSuccess: false,
+        status: 'fail',
+        message: 'something went wrong',
+      });
     }
+
+    const allJsonData = mapMarkdownAllToObject(allResData?.markdownContent);
+    const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
 
     let finalResult = {
       product: {
-        ...allRes?.data?.jsonData,
-        factPanels: nutRes?.data?.jsonData, //* markdown converted
+        // ...allRes?.data?.jsonData,
+        ...allJsonData,
+        // factPanels: nutRes?.data?.jsonData, //* markdown converted
+        factPanels: nutJsonData,
         nutMark: nutRes?.data?.markdownContent,
         allMark: allRes?.data?.markdownContent,
       },
@@ -194,9 +221,9 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
 
     if (result && session?.status === 'success') {
       let parsedResult = JSON.parse(result);
-      // if (process.env.NODE_ENV === 'production') {
-      //   removeRawFieldData(parsedResult);
-      // }
+      if (process.env.NODE_ENV === 'production') {
+        removeRawFieldData(parsedResult);
+      }
 
       return res.status(200).json({
         isSuccess: true,

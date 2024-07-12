@@ -25,11 +25,12 @@ import { nonCertifierClaimValidate } from './markdownObjectValidator/nonCertifie
 import { saltClaimValidate } from './markdownObjectValidator/saltClaimValidate';
 import { sugarClaimValidate } from './markdownObjectValidator/sugarClaimValidate';
 import { calorieClaimValidate } from './markdownObjectValidator/calorieClaimValidate';
-import { HeaderValidate } from './markdownObjectValidator/HeaderValidate';
+import { headerValidate } from './markdownObjectValidator/HeaderValidate';
 import { allergenValidate } from './markdownObjectValidator/allergenValidate';
 import { supplyChainValidate } from './markdownObjectValidator/supplyChainValidate';
 import { baseCertifierClaimValidate } from './markdownObjectValidator/baseCertifierClaimValidate';
 import { instructionValidate } from './markdownObjectValidator/instructionValidate';
+import { physicalValidate } from './markdownObjectValidator/physicalValidate';
 
 export const responseValidator = async (response: any, ocrClaims: any) => {
   let validatedResponse = { ...response };
@@ -38,7 +39,6 @@ export const responseValidator = async (response: any, ocrClaims: any) => {
 
   // factPanelValidator(validatedResponse);
   nutFactMarkdownValidator(validatedResponse);
-  HeaderValidate(validatedResponse);
   await validateProductDataPoints(validatedResponse, ocrClaims);
 
   console.log('finish');
@@ -54,6 +54,7 @@ const validateProductDataPoints = async (response: any, ocrClaims: any) => {
 
   allergenValidate(modifiedProductDataPoints);
   supplyChainValidate(modifiedProductDataPoints);
+  await headerValidate(modifiedProductDataPoints);
   await calorieClaimValidate(modifiedProductDataPoints);
   await containAndNotContainClaimValidate(modifiedProductDataPoints, ocrClaims);
   await fatClaimValidate(modifiedProductDataPoints);
@@ -62,6 +63,7 @@ const validateProductDataPoints = async (response: any, ocrClaims: any) => {
   await sugarClaimValidate(modifiedProductDataPoints);
   await baseCertifierClaimValidate(modifiedProductDataPoints);
   await instructionValidate(modifiedProductDataPoints);
+  await physicalValidate(modifiedProductDataPoints);
 
   // ingredientsValidator(modifiedProductDataPoints);
   // highRichExcellentClaimsValidator(modifiedProductDataPoints);

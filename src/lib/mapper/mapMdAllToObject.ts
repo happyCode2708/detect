@@ -224,7 +224,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
     'primarySize',
     'secondarySize',
     'thirdSize',
-    'fullSizeTextDescription',
+    'fullSizeStatement',
     'count',
     'countUom',
   ]);
@@ -242,7 +242,10 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   logger.info(JSON.stringify(ingredientObjList));
 
   //? PHYSICAL
-  const physicalObjList = getObjectDataFromTable(physicalSection, ['upc12']);
+  const physicalObjList = getObjectDataFromTable(physicalSection, [
+    'upc',
+    'lotNumber',
+  ]);
   // logger.error('physical');
   // logger.info(JSON.stringify(physicalObjList));
 
