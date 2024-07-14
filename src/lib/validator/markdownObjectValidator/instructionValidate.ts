@@ -10,10 +10,10 @@ export const instructionValidate = async (modifiedProductDataPoints: any) => {
   const allInstructions =
     modifiedProductDataPoints?.['instructions']?.[0] || {};
 
-  const { storageInstruction } = allInstructions;
+  const { storageInstruction, usageInstruction } = allInstructions;
 
   await validateConsumerStorage(
-    [...storageInstruction],
+    [...storageInstruction, ...usageInstruction],
     modifiedProductDataPoints,
     'validated_storageInstruction'
   );

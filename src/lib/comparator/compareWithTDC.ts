@@ -80,9 +80,9 @@ const compareFactPanelByOrder = (obj1: any, obj2: any) => {
               ? JSON.stringify(extractValue)
               : extractValue;
 
-          console.log(
-            `key -- ${key} -- ${valueString} -- ${extractValueString} `
-          );
+          // console.log(
+          //   `key -- ${key} -- ${valueString} -- ${extractValueString} `
+          // );
 
           if (
             (valueString === '' && extractValueString === '') ||
@@ -193,20 +193,34 @@ const compareFactPanelByMostMatch = (obj1: any, obj2: any) => {
 
     panelPropertyList.forEach((propertyItem: any) => {
       const propertyName = propertyItem?.PropertyName;
+      const propertySource = propertyItem?.PropertySource;
+
       let comparisonResult = { name: propertyName } as any;
 
       const samePropertyOnExtractData = factPanels?.[idx]?.Property?.find(
         (propertyItem: any) => {
-          const matchPercent = getMatchPercent({
+          const matchPercentName = getMatchPercent({
             v1: `${propertyItem?.PropertyName}`,
             v2: `${propertyName}`,
           });
 
-          if (typeof matchPercent === 'string') {
+          const matchPercentPropertySource = getMatchPercent({
+            v1: `${propertyItem?.PropertySource}`,
+            v2: `${propertySource}`,
+          });
+
+          if (
+            matchPercentName === 'NaN' &&
+            matchPercentPropertySource === 'NaN'
+          ) {
             return false;
           }
 
-          if (matchPercent > 85) {
+          if (Number(matchPercentName) > 85) {
+            return true;
+          }
+
+          if (Number(matchPercentPropertySource) > 73) {
             return true;
           }
 
@@ -227,9 +241,9 @@ const compareFactPanelByMostMatch = (obj1: any, obj2: any) => {
               ? JSON.stringify(extractValue)
               : extractValue;
 
-          console.log(
-            `key -- ${key} -- ${valueString} -- ${extractValueString} `
-          );
+          // console.log(
+          //   `key -- ${key} -- ${valueString} -- ${extractValueString} `
+          // );
 
           if (
             (valueString === '' && extractValueString === '') ||

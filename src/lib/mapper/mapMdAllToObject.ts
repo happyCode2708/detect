@@ -243,8 +243,9 @@ export const mapMarkdownAllToObject = (markdown: string) => {
 
   //? PHYSICAL
   const physicalObjList = getObjectDataFromTable(physicalSection, [
-    'upc',
+    'possibleUpc12',
     'lotNumber',
+    'numberAfterLotNumber',
   ]);
   // logger.error('physical');
   // logger.info(JSON.stringify(physicalObjList));

@@ -67,7 +67,9 @@ Ex: you are not allow to infer "no animal ingredients" from "organic certifier"
 
 12) do not collect phone number to website list data. 
 
-13) result must be in order and include all tables below
+13) do not collect number near the UPC barcode it is not UPC code number. Only get number inside the barcode for UPC code. 
+
+14) result must be in order and include all tables below
 SUGAR_CLAIM_TABLE
 FAT_CLAIM_TABLE
 PROCESS_CLAIM_TABLE
@@ -387,6 +389,7 @@ IMPORTANT NOTE:
 + "artificial flavor", "chemical flavors" DO NOT mean "added flavor"
 + "artificial sweeteners" not mean "artificial flavors"
 + "hormones" not mean "added hormones"
++ text like "contain ..." or "contain no ..." is "marketing text on product" and NOT "ingredient list"
 
 FIRST_EXTRA_CLAIM_TABLE
 | extra item | is item mentioned on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain" )  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer is multiple string if needed) | how do you know ? |  
@@ -565,8 +568,8 @@ INGREDIENT_TABLE
 12) Physical info with table format below
 
 PHYSICAL_TABLE
-| UPC code number on barcode | The lot number is located on the left side of the UPC code (only one digit number inside the barcode) |
-| ------- | ------- |
+| upc code on the barcode  | The lot number is located on the left side of the UPC code (only one digit number inside the barcode) | all numbers on the right side of lot number |
+| ------- | ------- | ------- |
 
 13) Marketing info with table format below:
 

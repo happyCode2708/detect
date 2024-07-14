@@ -155,6 +155,14 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       });
     }
 
+    if (session?.status === 'fail') {
+      return res.status(404).send({
+        isSuccess: false,
+        status: 'fail',
+        message: 'something went wrong',
+      });
+    }
+
     const result_nut = JSON.parse(result_nut_raw);
     const result_all = JSON.parse(result_all_raw);
 

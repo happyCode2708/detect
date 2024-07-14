@@ -234,7 +234,7 @@ const mapToNutritionPanels = (
           if (toLower(ingredientItem?.ingredientPrefix)?.includes('other')) {
             formatFactPanelPropertyList.push({
               PropertyName: 'OTHER INGREDIENTS',
-              PropertySource: ingredientItem.ingredientStatement,
+              PropertySource: toUpper(ingredientItem.ingredientStatement),
               Amount: '',
               AmountUOM: '',
             });

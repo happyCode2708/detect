@@ -293,9 +293,9 @@ router.post('/process-product-image', async (req, res) => {
         where: { sessionId },
         data: {
           status: 'fail',
-          result_all: JSON.stringify({}),
-          result_nut: JSON.stringify({}),
-          result: JSON.stringify({}),
+          result_all: null,
+          result_nut: null,
+          result: null,
         },
       });
     }
@@ -412,9 +412,9 @@ const createFinalResult = async ({
       where: { sessionId },
       data: {
         status: 'fail',
-        result_all: JSON.stringify({}),
-        result_nut: JSON.stringify({}),
-        result: JSON.stringify({}),
+        result_all: null,
+        result_nut: null,
+        result: null,
       },
     });
   }

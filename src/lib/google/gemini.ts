@@ -78,6 +78,8 @@ export const generateContent = async (images: any[], text: any) => {
         const value = item?.candidates[0]?.content?.parts?.[0]?.text;
         finalResponse = finalResponse + value;
         // console.log(`...`);
+        //! test chunk error
+
         if (item?.candidates[0]?.content?.parts?.[0]?.text === undefined) {
           console.log(
             'chunk error  ...' + item?.candidates[0]?.content?.parts?.[0]?.text
@@ -91,11 +93,7 @@ export const generateContent = async (images: any[], text: any) => {
     timeoutPromise,
   ]);
 
-  // return finalResponse;
   return { chunkResponse, finalResponse };
-  // } catch (err) {
-  //   console.log('chunk error', err);
-  // }
 };
 
 export const onProcessGemini = async ({
@@ -228,18 +226,17 @@ export const onProcessGemini = async ({
       JSON.stringify({ isSuccess: false })
     );
 
-    console.log('on process gemini error or chunk error', e);
-    // throw e;
-
     const updatedSession = await prisma.extractSession.update({
       where: { sessionId },
       data: {
         status: 'fail',
-        result_all: JSON.stringify({}),
-        result_nut: JSON.stringify({}),
-        result: JSON.stringify({}),
+        result_all: null,
+        result_nut: null,
+        result: null,
       },
     });
+    console.log('on process gemini error or chunk error', e);
+
     return Promise.reject(e);
   }
 };
@@ -288,77 +285,81 @@ export const onProcessOther = async ({
     return Promise.resolve(sessionPayload);
   }
 
-  const prefix = 'all';
+  try {
+    const prefix = 'all';
 
-  const resultFileName = (prefix ? `${prefix}` : '') + '.json';
+    const resultFileName = (prefix ? `${prefix}` : '') + '.json';
 
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    resultFileName,
-    JSON.stringify({
-      isSuccess: 'unknown',
-      status: 'processing',
-    })
-  );
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      resultFileName,
+      JSON.stringify({
+        isSuccess: 'unknown',
+        status: 'processing',
+      })
+    );
 
-  const new_allText = ocrList.reduce(
-    (accumulator: any, currentValue: any, idx: number) => {
-      let [whole_text, ...array_string] = currentValue;
-      let processed_whole_text = array_string.join(' ');
-      return {
-        ...accumulator,
-        [`ocrImage_${idx + 1}`]: processed_whole_text,
-      };
-    },
-    {}
-  );
+    const new_allText = ocrList.reduce(
+      (accumulator: any, currentValue: any, idx: number) => {
+        let [whole_text, ...array_string] = currentValue;
+        let processed_whole_text = array_string.join(' ');
+        return {
+          ...accumulator,
+          [`ocrImage_${idx + 1}`]: processed_whole_text,
+        };
+      },
+      {}
+    );
 
-  // const { ocr_claims } = (await mapOcrToPredictDataPoint(new_allText)) || {};
+    // const { ocr_claims } = (await mapOcrToPredictDataPoint(new_allText)) || {};
 
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    'all-orc.json',
-    JSON.stringify(new_allText)
-  );
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      'all-orc.json',
+      JSON.stringify(new_allText)
+    );
 
-  let sessionPayload = {
-    'all-ocr': JSON.stringify(new_allText),
-  };
+    let sessionPayload = {
+      'all-ocr': JSON.stringify(new_allText),
+    };
 
-  const finalSessionPayload = await onProcessGemini({
-    req,
-    res,
-    sessionId,
-    collateImageName,
-    prefix,
-    //* markdown all
-    collatedOuputPath: [
-      ...invalidatedInput.nutIncluded,
-      ...invalidatedInput.nutExcluded,
-    ],
-
-    prompt: make_markdown_all_prompt({
-      ocrText: JSON.stringify(new_allText),
-      imageCount: [
+    const finalSessionPayload = await onProcessGemini({
+      req,
+      res,
+      sessionId,
+      collateImageName,
+      prefix,
+      //* markdown all
+      collatedOuputPath: [
         ...invalidatedInput.nutIncluded,
         ...invalidatedInput.nutExcluded,
-      ]?.length,
-    }),
-    isMarkdown: true,
-    mapMdToObjectFunct: mapMarkdownAllToObject,
-    sessionPayload,
-  });
+      ],
 
-  await prisma.extractSession.update({
-    where: { sessionId },
-    data: {
-      status: 'unknown',
-      result_all: JSON.stringify(finalSessionPayload),
-      // result_nut: JSON.stringify(finalSessionPayload),
-    },
-  });
+      prompt: make_markdown_all_prompt({
+        ocrText: JSON.stringify(new_allText),
+        imageCount: [
+          ...invalidatedInput.nutIncluded,
+          ...invalidatedInput.nutExcluded,
+        ]?.length,
+      }),
+      isMarkdown: true,
+      mapMdToObjectFunct: mapMarkdownAllToObject,
+      sessionPayload,
+    });
 
-  // return Promise.resolve(finalSessionPayload);
+    console.log('update status to unknown');
+
+    await prisma.extractSession.update({
+      where: { sessionId },
+      data: {
+        status: 'unknown',
+        result_all: JSON.stringify(finalSessionPayload),
+        // result_nut: JSON.stringify(finalSessionPayload),
+      },
+    });
+  } catch (e) {
+    console.log('process other error', e);
+  }
 };
 
 export const onProcessNut = async ({
@@ -468,6 +469,8 @@ export const onProcessNut = async ({
       sessionPayload,
     });
 
+    console.log('update status to unknown');
+
     await prisma.extractSession.update({
       where: { sessionId },
       data: {
@@ -477,8 +480,6 @@ export const onProcessNut = async ({
       },
     });
   } catch (e) {
-    console.log('process nut eror', e);
+    console.log('process nut error', e);
   }
-
-  // return Promise.resolve(finalSessionPayload);
 };
