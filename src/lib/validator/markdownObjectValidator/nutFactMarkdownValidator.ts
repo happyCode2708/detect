@@ -105,7 +105,6 @@ const validateNutrientName = (modifiedNutrient: any) => {
     kcal: 'KILOCALORIES',
     'potas.': 'POTASSIUM',
     'added sugars': 'ADDED SUGAR',
-    //   iu: 'INTERNATIONAL UNITS',
     'total carbohydrate': 'TOTAL CARBOHYDRATES',
     fiber: 'DIETARY FIBER',
     'total carb.': 'TOTAL CARBOHYDRATES',
@@ -115,14 +114,27 @@ const validateNutrientName = (modifiedNutrient: any) => {
     sugars: 'TOTAL SUGARS',
   } as any;
 
-  const mappedNutrientName =
-    shortFormMap?.[nutrientName] || toUpper(nutrientName);
+  let mappedNutrientName;
+
+  //* exceptional cases
+  //? added sugar
+  if (nutrientName?.includes('added sugar')) {
+    mappedNutrientName = 'ADDED SUGAR';
+  } else {
+    mappedNutrientName = shortFormMap?.[nutrientName] || toUpper(nutrientName);
+  }
 
   modifiedNutrient['validated_nutrientName'] = mappedNutrientName;
 };
 
 const validateAmount = (modifiedNutrient: any) => {
   let amountPerServing = modifiedNutrient?.amountPerServing?.trim();
+
+  if (amountPerServing?.includes('%')) {
+    modifiedNutrient['dailyValue'] = amountPerServing;
+    modifiedNutrient['amountPerServing'] = '';
+    return;
+  }
 
   if (!amountPerServing) return;
 

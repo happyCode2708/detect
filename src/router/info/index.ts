@@ -144,15 +144,19 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
     if (!session) {
       res.status(404).json({ error: 'Session not found' });
     }
-    const { result_nut, result_all } = session as any;
+    const { result_nut: result_nut_raw, result_all: result_all_raw } =
+      session as any;
 
-    if (session?.status === 'unknown' && (!result_nut || !result_all)) {
+    if (session?.status === 'unknown' && (!result_nut_raw || !result_all_raw)) {
       return res.status(200).send({
         isSuccess: 'unknown',
         status: 'processing',
         message: 'The result is not ready',
       });
     }
+
+    const result_nut = JSON.parse(result_nut_raw);
+    const result_all = JSON.parse(result_all_raw);
 
     const nutRes = JSON.parse(result_nut?.['nut.json']);
     const allRes = JSON.parse(result_all?.['all.json']);
@@ -232,6 +236,7 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       });
     }
   } catch (error) {
+    console.log('e', error);
     res.status(500).json({ error: 'Failed to fetch session details' });
   }
 });

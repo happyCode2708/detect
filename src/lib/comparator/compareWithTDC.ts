@@ -9,12 +9,15 @@ export const compareWithTDC = ({
   tdcData: any;
 }) => {
   const comparisonResult = compareObjects(tdcFormattedExtractData, tdcData);
-  const compareResultFactPanel = compareFactPanelByOrder(
+  // const compareResultFactPanel = compareFactPanelByOrder(
+  //   tdcFormattedExtractData,
+  //   tdcData
+  // );
+
+  const compareResultFactPanel = compareFactPanelByMostMatch(
     tdcFormattedExtractData,
     tdcData
   );
-
-  compareFactPanelByMostMatch(tdcFormattedExtractData, tdcData);
 
   return {
     ...comparisonResult,
@@ -172,9 +175,9 @@ const compareFactPanelByMostMatch = (obj1: any, obj2: any) => {
   let panelType: any;
 
   if (SupplementPanel_2?.length > 0) {
-    panelType = 'SupplementPanel_compare_by_most_match';
+    panelType = 'SupplementPanel';
   } else {
-    panelType = 'NutritionPanel_compare_by_most_match';
+    panelType = 'NutritionPanel';
   }
 
   if (!factPanels) return {};
@@ -192,55 +195,57 @@ const compareFactPanelByMostMatch = (obj1: any, obj2: any) => {
       const propertyName = propertyItem?.PropertyName;
       let comparisonResult = { name: propertyName } as any;
 
-      const matchPercentList = factPanels?.[idx]?.Property?.map(
-        (extractPropertyItem: any) => {
-          const matchPercent = `${getMatchPercent({
-            v1: JSON.stringify(propertyItem),
-            v2: JSON.stringify(extractPropertyItem),
-          })}`;
-          return matchPercent;
+      const samePropertyOnExtractData = factPanels?.[idx]?.Property?.find(
+        (propertyItem: any) => {
+          const matchPercent = getMatchPercent({
+            v1: `${propertyItem?.PropertyName}`,
+            v2: `${propertyName}`,
+          });
+
+          if (typeof matchPercent === 'string') {
+            return false;
+          }
+
+          if (matchPercent > 85) {
+            return true;
+          }
+
+          return false;
         }
       );
 
-      // console.log(
-      //   'match percent list',
-      //   `key -- ${propertyName} ${JSON.stringify(matchPercentList)}`
-      // );
+      for (const key of Object.keys(propertyItem)) {
+        if (samePropertyOnExtractData?.hasOwnProperty(key)) {
+          const value = propertyItem[key];
+          const extractValue = samePropertyOnExtractData[key];
+          const valueString =
+            typeof value !== 'string' ? JSON.stringify(value) : value;
+          const extractValueString =
+            typeof extractValue === 'undefined'
+              ? ''
+              : typeof extractValue !== 'string'
+              ? JSON.stringify(extractValue)
+              : extractValue;
 
-      // const samePropertyOnExtractData =
+          console.log(
+            `key -- ${key} -- ${valueString} -- ${extractValueString} `
+          );
 
-      // for (const key of Object.keys(propertyItem)) {
-      //   if (samePropertyOnExtractData?.hasOwnProperty(key)) {
-      //     const value = propertyItem[key];
-      //     const extractValue = samePropertyOnExtractData[key];
-      //     const valueString =
-      //       typeof value !== 'string' ? JSON.stringify(value) : value;
-      //     const extractValueString =
-      //       typeof extractValue === 'undefined'
-      //         ? ''
-      //         : typeof extractValue !== 'string'
-      //         ? JSON.stringify(extractValue)
-      //         : extractValue;
+          if (
+            (valueString === '' && extractValueString === '') ||
+            (valueString === '0' && extractValueString === '0')
+          ) {
+            comparisonResult[key] = '100';
+          } else {
+            comparisonResult[key] = `${getMatchPercent({
+              v1: valueString,
+              v2: extractValueString,
+            })}`;
+          }
+        }
+      }
 
-      //     console.log(
-      //       `key -- ${key} -- ${valueString} -- ${extractValueString} `
-      //     );
-
-      //     if (
-      //       (valueString === '' && extractValueString === '') ||
-      //       (valueString === '0' && extractValueString === '0')
-      //     ) {
-      //       comparisonResult[key] = '100';
-      //     } else {
-      //       comparisonResult[key] = `${getMatchPercent({
-      //         v1: valueString,
-      //         v2: extractValueString,
-      //       })}`;
-      //     }
-      //   }
-      // }
-
-      // matchResult[panelType][idx]['Property'].push(comparisonResult);
+      matchResult[panelType][idx]['Property'].push(comparisonResult);
     });
   });
 

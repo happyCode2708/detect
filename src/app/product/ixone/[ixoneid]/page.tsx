@@ -29,6 +29,7 @@ import {
   useMutateSaveCompareResult,
   useQueryProductsFromTdc,
 } from '@/queries/productDetailQuery';
+import { sleep } from '@/lib/utils/time';
 // import { compare } from 'bcryptjs';
 
 const ProductDetailPage = () => {
@@ -171,6 +172,8 @@ const ProductDetailPage = () => {
 
     setLoading(true);
     setProductInfo(null);
+    setSessionId(null);
+    await sleep(1000);
 
     mutationRevalidateProductData.mutate(payload, {
       onError: (e) => {
@@ -396,7 +399,7 @@ const ProductDetailPage = () => {
                   </Button>
                   <Button
                     onClick={handleSaveCompareResult}
-                    disabled={!compareResultData || isCompareSaved}
+                    disabled={!compareResultData || isCompareSaved || loading}
                   >
                     {loading ? (
                       <div className='flex flex-row items-center'>

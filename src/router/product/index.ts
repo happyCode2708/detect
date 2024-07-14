@@ -354,6 +354,7 @@ router.get('/:ixoneid', async (req, res) => {
       }
       const result_nut = JSON.parse(result_nut_raw);
       const result_all = JSON.parse(result_all_raw);
+
       if (isEmpty(result_nut) || isEmpty(result_all)) {
         return res.status(200).json({
           isSuccess: true,

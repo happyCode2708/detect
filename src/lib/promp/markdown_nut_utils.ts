@@ -90,6 +90,7 @@ MARKDOWN RULES:
 IMPORTANT NOTES:
 1) dual-column nutrition panel must be always separated into two different markdown tables. 
 2) text in nutrition panel such as "added sugar", "incl. 2g added sugar", "includes 2g added sugar" must be recorded as a separated nutrient with "nutrient name" = "added sugar"
+3) do not bold any text in the return result
 
 RESULT THAT I NEED:
 Carefully examine provided images above. They are captured images of one product, and return info from provided images that meet all listed requirements and rules above with markdown tables format below

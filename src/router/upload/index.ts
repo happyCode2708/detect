@@ -319,13 +319,17 @@ router.post('/revalidate-product-data', async (req, res) => {
     );
 
     const latestExtractSession = product.extractSessions?.[0];
-    const { result_all, result_nut, sessionId } = latestExtractSession;
+    const {
+      result_all: result_all_raw,
+      result_nut: result_nut_raw,
+      sessionId,
+    } = latestExtractSession;
 
-    if (!result_all || !result_nut) {
+    if (!result_all_raw || !result_nut_raw) {
       return res.status(404).json({ error: 'Product not valid to revalidate' });
     }
-    const finalAll = JSON.parse(result_all);
-    const finalNut = JSON.parse(result_nut);
+    const finalAll = JSON.parse(result_all_raw);
+    const finalNut = JSON.parse(result_nut_raw);
 
     await createFinalResult({ finalAll, finalNut, sessionId, res });
 

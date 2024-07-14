@@ -12,9 +12,9 @@ export const makeSessionResult = (req: any, res: any, next: any) => {
     if (!session) {
       res.status(404).json({ error: 'Session not found' });
     }
-    const { result_nut, result_all } = session as any;
+    const { result_nut: result_nut_raw, result_all: result_all_raw } = session as any;
 
-    if (session?.status === 'unknown' && (!result_nut || !result_all)) {
+    if (session?.status === 'unknown' && (!result_nut_raw || !result_all_raw)) {
       return res.status(200).send({
         isSuccess: 'unknown',
         status: 'processing',
@@ -22,8 +22,11 @@ export const makeSessionResult = (req: any, res: any, next: any) => {
       });
     }
 
-    const nutRes = JSON.parse(JSON.parse(result_nut)?.['nut.json']);
-    const allRes = JSON.parse(JSON.parse(result_all)?.['all.json']);
+    const result_nut = JSON.parse(result_nut_raw);
+    const result_all = JSON.parse(result_all_raw);
+
+    const nutRes = JSON.parse(result_nut?.['nut.json']);
+    const allRes = JSON.parse(result_all?.['all.json']);
 
     console.log(typeof nutRes);
 

@@ -565,7 +565,7 @@ INGREDIENT_TABLE
 12) Physical info with table format below
 
 PHYSICAL_TABLE
- upc code on barcode | The lot number is located on the left side of the UPC code (only one digit number inside the barcode) |
+| UPC code number on barcode | The lot number is located on the left side of the UPC code (only one digit number inside the barcode) |
 | ------- | ------- |
 
 13) Marketing info with table format below:
