@@ -156,6 +156,10 @@ router.post(
   }
 );
 
+const getFilename = (filePath: any) => {
+  return path.basename(filePath);
+};
+
 router.post('/process-product-image', async (req, res) => {
   let responseReturned = false;
   let sessionId;
@@ -169,7 +173,19 @@ router.post('/process-product-image', async (req, res) => {
       return res.status(404).json({ error: 'Product not found' });
     }
 
-    const filePaths = product?.images?.map((imageItem: any) => imageItem?.path);
+    const filePaths = product?.images?.map((imageItem: any) => {
+      const fileName = getFilename(imageItem?.path);
+
+      if (process.env.SOURCE === 'home') {
+        return `/Users/duynguyen/Desktop/foodocr/foodocr/assets/upload/${fileName}`;
+      }
+
+      if (process.env.SOURCE === 'company') {
+        return 'C:/Users/nnqduy/Desktop/ocr/detect/assets/' + fileName;
+      }
+
+      return imageItem?.path;
+    });
 
     try {
       const checkFileExistResults = await checkFilesExist(filePaths);
