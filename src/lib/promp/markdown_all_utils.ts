@@ -166,11 +166,11 @@ type_2 is youtube icon of youtube logo with play button without name youtube
 
 + "social media list" is the list of social media method mentioned on product images (such as "facebook", "google", "instagram", "pinterest", "snapchat", "tiktok", "youtube", "twitter", ...).
 + "website list" are all website links found on product (website link exclude "nongmoproject.org") and be careful the content after website could be phone number.
-Ex 1: www.cocacola.com, www.cocacola.com/policy, www.cocacola.com/fanpage, cocacola.com
-Ex 2: if text "coca.com . 555/200-3529" it seem that "555/200-3529" is a phone number or other number not belong to website link "coca.com"
+Example 1: www.cocacola.com, www.cocacola.com/policy, www.cocacola.com/fanpage, cocacola.com
+Example 2: if text "coca.com . 555/200-3529" it seem that "555/200-3529" is a phone number or other number not belong to website link "coca.com"
 
 + "social media text" is a list of text usually start with "@", or "#" those can be used to search the product on social media. Hint, it is usually next to social media icons.
-Ex 1: @cocacola
+Example 1: @cocacola
 
 + "enlarge to show" is true if statement such as "enlarged to show..." seen on product image.
 
@@ -220,62 +220,45 @@ Carefully examine all text infos, all icons, all logos  from provided images and
 
 IMPORTANT NOTE:
 + only process with provided sugar items below.
-+ stevia is not artificial sweet
 + possible answers of "how product state about it ?" for sugar claim table  are  "free of"/  "free from" / "made without" / "no contain" / "contain" / "lower" / "low" / "0g" / "zero" / "other" / "does not contain" / "not too sweet" / "low sweet" / "sweetened" / "other".
 
 SUGAR_CLAIM_TABLE
-| sugar claim | sugar claim explicitly and directly state in a text on product without implying from other text? (answer is yes/no/unknown) | How product state about it ?  | do you know it through which info ? (answer are "ingredient list","marketing text on product", "nutrition fact", "others") (answer allow multiple sources split by comma) | how do you know ? |
+| sugar item | sugar item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ?  | do you know it through which info ? (answer are "ingredient list","marketing text on product", "nutrition fact", "others") (answer allow multiple sources split by comma) | how do you know ? |
 | ------- | -------- | ------- | ------- | ------- |
-| acesulfame k             |
-| agave                    |
-| allulose                 |
-| artificial sweetener     |
-| aspartame                |
-| beet sugar               |
-| cane sugar               |
-| coconut sugar            |
-| coconut palm sugar       |
-| fruit juice              |
+| acesulfame k |
+| acesulfame potassium |
+| agave |
+| allulose |
+| artificial sweetener |
+| aspartame |
+| beet sugar |
+| cane sugar |
+| coconut sugar |
+| coconut palm sugar |
+| fruit juice |
+| corn syrup |
 | high fructose corn syrup |
-| honey                    |
-| low sugar                |
-| lower sugar              |
-| monk fruit               |
-| natural sweeteners       |
-| no acesulfame k          |
-| no added sugar           |
-| no agave                 |
-| no allulose              |
-| no artificial sweetener  |
-| no aspartame             |
-| no cane sugar            |
-| no coconut sugar         |
-| no coconut palm sugar    |
-| no corn syrup            |
-| no high fructose corn syrup |
-| no refined sugars        |
-| no saccharin             |
-| no splenda               |
-| no sucralose             |
-| no stevia                |
-| no sugar                 |
-| no sugar added           |
-| no sugar alcohol         |
-| no tagatose              |
-| no xylitol               |
-| reduced sugar            |
-| refined sugar            |
-| saccharin                |
-| splenda                  |
-| sucralose    
-| stevia                   |
-| sugar alcohol            |
-| sugar free               |
-| sugars added             |
-| tagatose                 |
-| unsweetened              |
-| xylitol                  |
-
+| honey |
+| low sugar |
+| lower sugar |
+| monk fruit |
+| natural sweeteners |
+| added sugar |
+| refined sugars |
+| saccharin |
+| splenda/sucralose |
+| splenda |
+| sucralose |
+| stevia |
+| sugar |
+| sugar added |
+| sugar alcohol |
+| tagatose |
+| xylitol |
+| reduced sugar |
+| sugar free |
+| unsweetened |
+| xylitol |
 
 2) FAT_CLAIM_TABLE info of product images recorded in markdown table format below:
 

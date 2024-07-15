@@ -228,7 +228,7 @@ router.post('/export-compare-result', async (req, res) => {
 
   try {
     const csvWriter = createObjectCsvWriter({
-      path: 'products-com-1.csv',
+      path: 'products-com-2.csv',
       header: allKeys.map((key: any) => ({ id: key, title: key })),
     });
 

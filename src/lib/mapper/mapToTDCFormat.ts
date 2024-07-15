@@ -39,7 +39,7 @@ export const mapToTDCformat = (extractData: any) => {
 
     //* panel
     NutritionPanel:
-      productType === 'nutrition facts' && factPanels?.length > 0
+      productType != 'supplement facts' && factPanels?.length > 0
         ? mapToNutritionPanels(factPanels, 'NUTRITION FACTS', ingredients)
         : null,
     SupplementPanel:

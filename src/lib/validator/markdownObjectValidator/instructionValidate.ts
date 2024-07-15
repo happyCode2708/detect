@@ -123,5 +123,5 @@ const STORAGE_MAPPING = {
 };
 
 const USE_OR_FREEZE_BY_MAPPING = {
-  'WITH IN': ['consume within', 'use within', 'free'],
+  'WITH IN': ['consume within', 'use within', 'free', 'enjoy within'],
 };

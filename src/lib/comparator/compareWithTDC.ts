@@ -209,6 +209,10 @@ const compareFactPanelByMostMatch = (obj1: any, obj2: any) => {
             v2: `${propertySource}`,
           });
 
+          if (propertyItem?.PropertyName === propertyName) {
+            return true;
+          }
+
           if (
             matchPercentName === 'NaN' &&
             matchPercentPropertySource === 'NaN'

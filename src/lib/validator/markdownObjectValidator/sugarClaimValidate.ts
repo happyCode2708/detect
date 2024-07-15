@@ -23,9 +23,7 @@ const validate = async (
     let valid = await check(analysisItem);
 
     if (valid === true) {
-      // const claimValue = analysisItem['claim'];
       const { claim, statement } = analysisItem;
-      // console.log(`sugar ---- ${claim} ${statement}`);
 
       const currentValues =
         modifiedProductDataPoints?.['attributes']?.[dataPointKey] || [];
@@ -42,8 +40,6 @@ const validate = async (
 
 const check = async (analysisItem: any): Promise<boolean> => {
   const { claim, isClaimed, statement, source, reason } = analysisItem;
-
-  // console.log(`sugar ---- ${claim} ${statement}`);
 
   if (!claim) return Promise.resolve(false);
 
