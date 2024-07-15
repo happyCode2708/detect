@@ -181,7 +181,7 @@ router.post('/process-product-image', async (req, res) => {
       }
 
       if (process.env.SOURCE === 'company') {
-        return 'C:/Users/nnqduy/Desktop/ocr/detect/assets/' + fileName;
+        return 'C:/Users/nnqduy/Desktop/ocr/detect/assets/upload/' + fileName;
       }
 
       return imageItem?.path;

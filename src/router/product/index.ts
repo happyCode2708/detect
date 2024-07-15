@@ -460,6 +460,9 @@ router.post('/:ixoneid/images', upload.array('images'), async (req, res) => {
     const imagePromises = files.map((file) => {
       const imageUrl = `/assets/${file.filename}`;
       const path = `${uploadsDir}/${file.filename}`;
+
+      console.log('path', path);
+
       return prisma.image.create({
         data: {
           url: imageUrl,
