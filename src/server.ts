@@ -36,6 +36,7 @@ export const uploadsDir =
 export const resultsDir = path.join(__dirname, '..', 'assets/result');
 export const historyDir = path.join(__dirname, '..', 'assets/history');
 export const pythonPath = path.join(__dirname, 'python');
+export const productImportDir = path.join(__dirname, '..', 'product-import');
 
 const startServer = async () => {
   app.use(cookieParser());

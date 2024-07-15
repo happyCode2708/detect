@@ -11,7 +11,7 @@ import {
   addUniqueString,
   removeRawFieldData,
 } from '../../lib/server_utils';
-import { port, prisma } from '../../server';
+import { port, prisma, productImportDir } from '../../server';
 import bodyParser from 'body-parser';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -478,6 +478,72 @@ router.post('/:ixoneid/images', upload.array('images'), async (req, res) => {
       .status(200)
       .json({ isSuccess: true, message: 'Images uploaded successfully' });
   } catch (error) {
+    res.status(500).json({ error: 'Failed to upload images' });
+  }
+});
+
+router.post('/import-product', async (req, res) => {
+  try {
+    const folderNames = fs
+      .readdirSync(productImportDir, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
+
+    for (const folderName of folderNames) {
+      let product = await prisma.product.findUnique({
+        where: { ixoneID: folderName },
+      });
+
+      if (!product) {
+        // Create a new product if it doesn't exist
+        let createdProduct = await prisma.product.create({
+          data: {
+            ixoneID: folderName,
+          },
+        });
+        console.log(`Created new product with ixoneID ${folderName}`);
+
+        const imageFiles = fs.readdirSync(
+          path.join(productImportDir, folderName)
+        );
+
+        const imagePromises = imageFiles.map((file) => {
+          const filePath = path.join(productImportDir, folderName, file);
+          const uniqueSuffix = Date.now();
+          const newFileName = `product__${folderName}__${uniqueSuffix}${path.extname(
+            file
+          )}`;
+
+          const newFilePath = path.join(uploadsDir, newFileName);
+          fs.copyFileSync(filePath, newFilePath);
+          // console.log('copy', `}`
+
+          const imageUrl = `/assets/${newFileName}`;
+
+          console.log('New path', path);
+
+          return prisma.image.create({
+            data: {
+              url: imageUrl,
+              path: newFilePath,
+              productId: createdProduct.id,
+            },
+          });
+        });
+
+        await Promise.all(imagePromises);
+      } else {
+        console.log(
+          `Product with ixoneID ${folderName} already exists, skipping...`
+        );
+      }
+    }
+
+    res
+      .status(200)
+      .json({ isSuccess: true, message: 'All images uploaded successfully' });
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to upload images' });
   }
 });

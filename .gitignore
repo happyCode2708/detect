@@ -52,3 +52,4 @@ service_account.json
 /ref/*
 /assets/*
 /assets-old/*
+/product-import/*
