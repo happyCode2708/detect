@@ -191,7 +191,7 @@ export const mapToTDCformat = (extractData: any) => {
     Process: attributes?.validated_nonCertificateClaims || [],
     Contains: attributes?.validated_contain || [],
     DoesNotContain: attributes?.validated_notContain || [],
-    Grade: attributes?.otherAttribute?.[0]?.grade,
+    Grade: [attributes?.otherAttribute?.[0]?.grade],
     JuicePercent: attributes?.otherAttribute?.[0]?.juicePercent,
 
     //* other attributes

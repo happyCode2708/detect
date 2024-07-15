@@ -220,7 +220,7 @@ const compareFactPanelByMostMatch = (obj1: any, obj2: any) => {
             return true;
           }
 
-          if (Number(matchPercentPropertySource) > 73) {
+          if (propertySource && Number(matchPercentPropertySource) > 73) {
             return true;
           }
 
@@ -241,13 +241,14 @@ const compareFactPanelByMostMatch = (obj1: any, obj2: any) => {
               ? JSON.stringify(extractValue)
               : extractValue;
 
-          // console.log(
-          //   `key -- ${key} -- ${valueString} -- ${extractValueString} `
-          // );
+          console.log(
+            `key -- ${key} -- ${valueString} -- ${extractValueString} `
+          );
 
           if (
             (valueString === '' && extractValueString === '') ||
-            (valueString === '0' && extractValueString === '0')
+            (valueString === '0' && extractValueString === '0') ||
+            valueString === extractValueString
           ) {
             comparisonResult[key] = '100';
           } else {
