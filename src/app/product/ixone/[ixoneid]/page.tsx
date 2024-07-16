@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, useRef, MutableRefObject } from 'react';
+import { useEffect, useState, useRef, MutableRefObject, useMemo } from 'react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader, RefreshCcw } from 'lucide-react';
@@ -10,10 +10,11 @@ import {
   useMutateProductExtraction,
   useMutateRevalidateProductData,
   useMutateUploadFile,
+  useQueryProductDetail,
 } from '@/queries/home';
 import { FluidContainer } from '@/components/container/FluidContainer';
 import { Result } from '@/components/result/Result';
-import { useQueryClient } from '@tanstack/react-query';
+import { QueryClient, useQueryClient } from '@tanstack/react-query';
 import { PreviewImage } from '@/components/preview-image/PreviewImage';
 import { ViewListImage } from '@/components/preview-image/ViewListImage';
 import { useToast } from '@/components/ui/use-toast';
@@ -24,13 +25,20 @@ import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
 import { SectionWrapper } from '@/components/wrapper/SectionWrapper';
 import { useParams, useRouter } from 'next/navigation';
-import { useQueryProductsFromTdc } from '@/queries/productDetailQuery';
+import {
+  useMutateSaveCompareResult,
+  useQueryProductsFromTdc,
+} from '@/queries/productDetailQuery';
+import { sleep } from '@/lib/utils/time';
+// import { compare } from 'bcryptjs';
 
 const ProductDetailPage = () => {
-  const { ixoneid } = useParams();
+  const params = useParams();
+
+  const ixoneid = params?.['ixoneid'] as string;
 
   const [files, setFiles] = useState<any>([]);
-  const [productInfo, setProductInfo] = useState(null);
+  const [productInfo, setProductInfo] = useState<any>(null);
   const [inputImages, setInputImages] = useState<any>([]);
   const [procImages, setProcImages] = useState<any>([]);
   const [biasForm, setBiasForm] = useState<any>({});
@@ -40,7 +48,6 @@ const ProductDetailPage = () => {
   });
 
   const [productIxone, setProductIxone] = useState<any>(null);
-
   const [sessionId, setSessionId] = useState<any>();
   const [pdSessionId, setPdSessionId] = useState<any>(null);
 
@@ -49,46 +56,52 @@ const ProductDetailPage = () => {
 
   const refInterval = useRef<number | null>(null);
 
+  const queryClient = useQueryClient();
+
   const mutationProductExtract = useMutateProductExtraction();
   const mutationRevalidateProductData = useMutateRevalidateProductData();
   const mutateGetCompareResultWithTdc = useMutateGetCompareResultWithTdc();
+  const mutateSaveCompareResult = useMutateSaveCompareResult();
 
   const router = useRouter();
 
   const { data: compareResultResponse } = mutateGetCompareResultWithTdc;
   const compareResultData = compareResultResponse?.data;
 
+  const { data: productIxoneRes } = useQueryProductDetail({ ixoneid });
+
   const { data: tdcData } = useQueryProductsFromTdc({
     ixoneIDs: typeof ixoneid === 'string' ? [ixoneid] : [],
   });
-  const queryClient = useQueryClient();
 
   const { toast } = useToast();
 
   const imageUrls = productIxone?.images?.map((item: any) => item?.url);
 
+  const isCompareSaved = useMemo(() => {
+    return (
+      productIxone?.compareResult &&
+      productIxone?.compareResult ===
+        JSON.stringify(compareResultData?.compareResult)
+    );
+  }, [JSON.stringify(productIxone), JSON.stringify(compareResultData)]);
+
   useEffect(() => {
-    if (ixoneid) {
-      const fetchProduct = async () => {
-        const response = await fetch(`/api/product/${ixoneid}`);
-        const data = await response.json();
+    if (!productIxoneRes) return;
 
-        const productData = data?.data;
+    const productData = productIxoneRes?.data;
 
-        const { product: productInfo, latestSession } = productData;
+    const { product: productInfo, latestSession } = productData;
 
-        if (!productInfo) return;
+    if (!productInfo) return;
 
-        setProductIxone(productInfo);
+    setProductIxone(productInfo);
 
-        if (latestSession) {
-          setProductInfo(JSON.parse(latestSession?.result));
-          setPdSessionId(latestSession?.sessionId);
-        }
-      };
-      fetchProduct();
+    if (latestSession?.result) {
+      setProductInfo(JSON.parse(latestSession?.result));
+      setPdSessionId(latestSession?.sessionId);
     }
-  }, [ixoneid]);
+  }, [JSON.stringify(productIxoneRes)]);
 
   useEffect(() => {
     if (pdSessionId || sessionId) {
@@ -159,10 +172,13 @@ const ProductDetailPage = () => {
 
     setLoading(true);
     setProductInfo(null);
+    setSessionId(null);
+    await sleep(1000);
 
     mutationRevalidateProductData.mutate(payload, {
       onError: (e) => {
         console.log(e);
+        setLoading(false);
       },
       onSuccess: (res) => {
         const { data, messages } = res;
@@ -171,6 +187,34 @@ const ProductDetailPage = () => {
         setSessionId(sessionId);
         setLoading(false);
         // queryClient.invalidateQueries({ queryKey: ['history'] });
+      },
+    });
+  };
+
+  const handleSaveCompareResult = async () => {
+    const payload = {
+      ixoneid: ixoneid as string,
+      compareResult: compareResultData?.compareResult || '',
+    };
+
+    setLoading(true);
+
+    mutateSaveCompareResult.mutate(payload, {
+      onError: (e) => {
+        setLoading(false);
+      },
+      onSuccess: (res) => {
+        const { message } = res;
+        toast({
+          title: 'Info',
+          description: message,
+          variant: 'success',
+          duration: 2000,
+        });
+        setLoading(false);
+        queryClient.invalidateQueries({
+          queryKey: ['product', 'ixoneid', `${ixoneid}`],
+        });
       },
     });
   };
@@ -251,7 +295,7 @@ const ProductDetailPage = () => {
           }
           setLoading(false);
         }
-      }, 4000);
+      }, 6000);
     }
     return () => {
       if (!refInterval.current) return;
@@ -263,8 +307,6 @@ const ProductDetailPage = () => {
   if (!productIxone) {
     return <div>Loading...</div>;
   }
-
-  console.log('session id', sessionId);
 
   return (
     <FluidContainer>
@@ -329,7 +371,6 @@ const ProductDetailPage = () => {
             <div className='flex flex-row gap-2 flex-1'>
               <Button
                 disabled={loading || imageUrls?.length <= 0}
-                // onClick={handleSubmit}
                 onClick={handleSubmitImageUrl}
               >
                 {loading ? (
@@ -341,19 +382,36 @@ const ProductDetailPage = () => {
                   'Extract'
                 )}
               </Button>
-              <Button
-                disabled={loading || imageUrls?.length <= 0}
-                onClick={handleRevalidateProductData}
-              >
-                {loading ? (
-                  <div className='flex flex-row items-center'>
-                    <RefreshCcw className='mr-1 animate-spin' />
-                    <span>Processing</span>
-                  </div>
-                ) : (
-                  'Revalidate'
-                )}
-              </Button>
+              {process.env.NODE_ENV !== 'production' && (
+                <>
+                  <Button
+                    disabled={loading || imageUrls?.length <= 0}
+                    onClick={handleRevalidateProductData}
+                  >
+                    {loading ? (
+                      <div className='flex flex-row items-center'>
+                        <RefreshCcw className='mr-1 animate-spin' />
+                        <span>Processing</span>
+                      </div>
+                    ) : (
+                      'Revalidate'
+                    )}
+                  </Button>
+                  <Button
+                    onClick={handleSaveCompareResult}
+                    disabled={!compareResultData || isCompareSaved || loading}
+                  >
+                    {loading ? (
+                      <div className='flex flex-row items-center'>
+                        <RefreshCcw className='mr-1 animate-spin' />
+                        <span>Processing</span>
+                      </div>
+                    ) : (
+                      'Save Compare Result'
+                    )}
+                  </Button>
+                </>
+              )}
               {loading && (
                 <Button variant='secondary' onClick={onCancel}>
                   Cancel

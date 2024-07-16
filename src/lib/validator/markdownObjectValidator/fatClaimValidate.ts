@@ -7,6 +7,8 @@ export const fatClaimValidate = async (modifiedProductDataPoints: any) => {
     modifiedProductDataPoints,
     'validated_fatClaims'
   );
+
+  console.log('finish validate fat claim');
 };
 
 const validate = async (

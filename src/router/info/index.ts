@@ -5,6 +5,8 @@ import path from 'path';
 import { writeJsonToFile } from '../../lib/json';
 import { responseValidator } from '../../lib/validator/main';
 import { removeRawFieldData } from '../../lib/server_utils';
+import { mapMarkdownAllToObject } from '../../lib/mapper/mapMdAllToObject';
+import { mapMarkdownNutToObject } from '../../lib/mapper/mapMarkdonwDataToObject';
 
 const router = express.Router();
 
@@ -133,18 +135,19 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
   // Validate that the file extension is .json
   try {
     const sessionId = req.params.sessionId;
-    if (!sessionId) {
-      res.status(404).json({ error: 'Session not found' });
-    }
 
-    const session = await prisma.extractSession.findUnique({
+    let session = await prisma.extractSession.findUnique({
       where: { sessionId },
       // include: { product: true },  // Include related product details if needed
     });
 
-    const result = session?.result;
+    if (!session) {
+      res.status(404).json({ error: 'Session not found' });
+    }
+    const { result_nut: result_nut_raw, result_all: result_all_raw } =
+      session as any;
 
-    if (!result && session?.status === 'unknown') {
+    if (session?.status === 'unknown' && (!result_nut_raw || !result_all_raw)) {
       return res.status(200).send({
         isSuccess: 'unknown',
         status: 'processing',
@@ -152,8 +155,76 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       });
     }
 
+    if (session?.status === 'fail') {
+      return res.status(404).send({
+        isSuccess: false,
+        status: 'fail',
+        message: 'something went wrong',
+      });
+    }
+
+    const result_nut = JSON.parse(result_nut_raw);
+    const result_all = JSON.parse(result_all_raw);
+
+    const nutRes = JSON.parse(result_nut?.['nut.json']);
+    const allRes = JSON.parse(result_all?.['all.json']);
+
+    console.log(typeof nutRes);
+
+    const {
+      isSuccess: allSuccess,
+      status: allStatus,
+      data: allResData,
+    } = allRes || {};
+
+    const {
+      isSuccess: nutSuccess,
+      status: nutStatus,
+      data: nutResData,
+    } = nutRes || {};
+
+    if (nutSuccess === false || allSuccess === false) {
+      session = await prisma.extractSession.update({
+        where: { sessionId },
+        data: {
+          status: 'fail',
+        },
+      });
+      return res.status(404).send({
+        isSuccess: false,
+        status: 'fail',
+        message: 'something went wrong',
+      });
+    }
+
+    const allJsonData = mapMarkdownAllToObject(allResData?.markdownContent);
+    const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
+
+    let finalResult = {
+      product: {
+        // ...allRes?.data?.jsonData,
+        ...allJsonData,
+        // factPanels: nutRes?.data?.jsonData, //* markdown converted
+        factPanels: nutJsonData,
+        nutMark: nutRes?.data?.markdownContent,
+        allMark: allRes?.data?.markdownContent,
+      },
+    };
+
+    let validatedResponse = await responseValidator(finalResult, '');
+
+    session = await prisma.extractSession.update({
+      where: { sessionId },
+      data: {
+        status: 'success',
+        result: JSON.stringify(validatedResponse),
+      },
+    });
+
+    const result = session?.result;
+
     if (!result && session?.status === 'fail') {
-      return res.status(200).send({
+      return res.status(404).send({
         isSuccess: false,
         status: 'fail',
         message: 'something went wrong',
@@ -173,6 +244,7 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       });
     }
   } catch (error) {
+    console.log('e', error);
     res.status(500).json({ error: 'Failed to fetch session details' });
   }
 });

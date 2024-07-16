@@ -11,6 +11,8 @@ ${ocrText}
 
 VALIDATION AND FIX BUGS:
 1) why you keep not separating the dual-column nutrition fact panel? please please help me always separated into multiple table of info for dual-column nutrition fact panel.
+2) only give me the information visibly seen on provided images and do not assume the values.
+3) only give me exact nutrition panel info that can be visibly seen from provided image. Gemini please stop assuming that product have nutrition fact panel
 
 IMPORTANT REQUIREMENTS:
 1) do not provide data that you cannot see it by human eyes on provided images.
@@ -60,7 +62,8 @@ remember they are put in orders from low index [1] to higher index like [2] and 
 
 specific rules:
 1) "nutrient name descriptor" rules:
-+ is descriptor of nutrient name ( with text look like "as something", "naturally occurring from something", or other equivalent name of nutrient, ...)  
++ "nutrient name descriptor" is descriptor of nutrient name ( with text look like "as something", "naturally occurring from something", or other equivalent name of nutrient, ...)
++ "nutrient name descriptor" is usually text inside parentheses at the end of nutrient name.
 + nutrient could be a type of Extract so its nutrition name must contain "Extract". And the "parenthetical statement about nutrient name" will be the remaining text after word "Extract".
 + nutrient could be a type of Concentrate so its nutrition name must contain "Concentrate". And the "parenthetical statement about nutrient name" will be the remaining text after word "Extract".
 + nutrient info could have text "standardized to something ..." so the text start with "standardized to" should be recorded as "nutrient name descriptor"
@@ -85,8 +88,14 @@ MARKDOWN RULES:
 3) do not use bold or heading markdown syntax for table_name
 4) content in a markdown table cell can only use <br> as line break instead of "\n"
 
+IMPORTANT NOTES:
+1) dual-column nutrition panel must be always separated into two different markdown tables. 
+2) text in nutrition panel such as "added sugar", "incl. 2g added sugar", "includes 2g added sugar" must be recorded as a separated nutrient with "nutrient name" = "added sugar"
+3) do not bold any text in the return result
+
 RESULT THAT I NEED:
-carefully examine provided images above. They are captured images of one product, and return info from provided images that match all listed requirements and rules above with markdown tables format below
+Carefully examine provided images above. They are captured images of one product, and return info from provided images that meet all listed requirements and rules above with markdown tables format below
+
 
 1) Nutrition fact info recorded in table
 + TABLE_NAME = "NUTRITION_FACT_TABLE [index number] " (example: NUTRITION_FACT_TABLE [1])

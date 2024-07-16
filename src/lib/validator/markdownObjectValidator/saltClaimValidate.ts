@@ -7,6 +7,8 @@ export const saltClaimValidate = async (modifiedProductDataPoints: any) => {
     modifiedProductDataPoints,
     'validated_saltClaims'
   );
+
+  console.log('finish validate salt claim');
 };
 
 const validate = async (

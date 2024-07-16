@@ -26,8 +26,6 @@ const router = express.Router();
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  console.log('come here');
-
   const user = await prisma.user
     .findUnique({
       where: { email },
@@ -54,7 +52,7 @@ router.post('/login', async (req, res) => {
         httpOnly: true,
         // secure: process.env.NODE_ENV !== 'development',
         secure: false,
-        maxAge: 3600,
+        maxAge: 3600 * 10,
         sameSite: 'lax',
         path: '/',
       })

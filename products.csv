@@ -1,0 +1,10 @@
+idx,ixoneId,NutritionPanel,BrandName,Allergens,DoesNotContain,GlutenFreeYN,Process,PrimarySize,PrimarySizeText,PrimarySizeUOM,ProductDescription,SecondarySize,SecondarySizeUOM,IngredientBreakout,IngredientsStatement,ConsumerStorage,CookingInstructions,MarketingClaims,UPC12,ManufacturerCityPackaging,ManufacturerNamePackaging,ManufacturerStatePackaging,ManufacturerStreetPackaging,ManufacturerZipCodePackaging,HasPanel,HasSupplementPanel,HasNutritionPanel,generalFactPanels,SupplementPanel,AllergensAncillary,FreeOf,PlantBasedDerivedClaim,VeganYN,Website,CountryOfOriginName,CountryOfOriginText,DistributedBy,NonGMOYN,OrganicYN,SugarSweetener,ProcessedOnEquipment,SocialMedia,ProcessedManufacturedInFacilityStatement,Contains,KetoYN,UnitCount,PaleoYN,SupplementIngredientStatement,UsageInstructions,QRCode,ManufacturerPhoneNumberPackaging
+0,SNL472619,NA,38.75,100,100.00,100.00,100.00,100,14.18,100,14.56,100,100,95.65,96.85,100,53.05,100,100,100,71.74,100,100,100,100,100,100,100,NA,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,SNL689326,NA,41.42,100,,,,100,100.00,100,32.89,100,0.00,86.92,83.19,100.00,,69.82,0,,,,,,100,100,100,100,NA,100.00,100,100.00,100.00,NaN,100,100,84.42,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,SNL252267,NA,100,100,,,,100,7.66,100,71.74,100,100,87.23,78.36,71.74,,95.56,100,,,,,,100,100,100,100,NA,100.00,100,,100.00,100,100,100,100.00,100.00,100.00,100.00,,,,,,,,,,,
+5,SNL748385,NA,51.10,100.00,,,,100,100.00,100,100,100,100,100.00,100.00,,,67.86,100,,,,,,100,100,100,100,NA,100.00,,,,100,100,100,100.00,,,,100,76.53,100.00,,,,,,,,
+6,SNL463323,NA,100,,100.00,,,100,0.00,100,51.10,100,100,,,,,18.25,0,,,,,,100,100,100,,NA,,,,,100,,,,,100.00,,,51.10,,,,,,,,,
+7,SNL657669,NA,51.10,100.00,82.44,100.00,100.00,0,100.00,100,36.27,0,100,100.00,100.00,71.74,,57.92,0,,,,,,100,100,100,100,NA,100,,,,97.37,100,58.57,80.83,,,100.00,100.00,42.23,100,100.00,100.00,0,,,,,
+8,SNL745854,NA,100,,,100.00,,100,100,100,32.89,100,100,,,,,81.97,0,0,46.44,0,0,0,100,100,100,100,NA,,100,,,48.79,,,,,,,,,,100.00,100.00,100,100.00,45.62,76.53,100,0

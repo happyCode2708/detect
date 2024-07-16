@@ -1,3 +1,4 @@
+import logger from '../../../lib/logger';
 import { toLower } from 'lodash';
 
 export const sugarClaimValidate = async (modifiedProductDataPoints: any) => {
@@ -9,6 +10,8 @@ export const sugarClaimValidate = async (modifiedProductDataPoints: any) => {
     modifiedProductDataPoints,
     'validated_sugarClaims'
   );
+
+  console.log('finish validate sugar claim');
 };
 
 const validate = async (
@@ -20,7 +23,6 @@ const validate = async (
     let valid = await check(analysisItem);
 
     if (valid === true) {
-      // const claimValue = analysisItem['claim'];
       const { claim, statement } = analysisItem;
 
       const currentValues =
@@ -37,7 +39,7 @@ const validate = async (
 };
 
 const check = async (analysisItem: any): Promise<boolean> => {
-  const { claim, isClaimed, statement, source } = analysisItem;
+  const { claim, isClaimed, statement, source, reason } = analysisItem;
 
   if (!claim) return Promise.resolve(false);
 
@@ -45,7 +47,7 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
   }
 
-  if (source === 'ingredient list' || source === 'nutrition fact') {
+  if (!source.includes('marketing text on product')) {
     return Promise.resolve(false);
   }
 
@@ -53,16 +55,43 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
   }
 
-  if (source === 'marketing text on product' && isClaimed === 'yes') {
+  if (statement === 'other') {
+    logger.error(`sugar claim -- ${claim}`);
+    return Promise.resolve(false);
+  }
+
+  if (
+    SUGAR_ITEMS_REASON?.[toLower(claim)]
+      ? SUGAR_ITEMS_REASON?.[toLower(claim)]
+          ?.map((word: string) => {
+            if (toLower(reason)?.includes(word)) return true;
+
+            return false;
+          })
+          .some((result: boolean) => result === false)
+      : false
+  ) {
+    return Promise.resolve(false);
+  }
+
+  if (source?.includes('marketing text on product') && isClaimed === 'yes') {
     return Promise.resolve(true);
   }
 
   return Promise.resolve(false);
 };
 
+const SUGAR_ITEMS_REASON = {
+  'lower sugar': ['lower', 'sugar'],
+  'low sugar': ['low', 'sugar'],
+  'reduced sugar': ['reduced', 'sugar'],
+  'sugar free': ['sugar', 'free'],
+  'cane sugar': ['cane', 'sugar'],
+  'artificial sweetener': ['artificial', 'sweetener'],
+} as any;
+
 const SUGAR_ITEMS = [
   'acesulfame k',
-  'acesulfame potassium',
   'agave',
   'allulose',
   'artificial sweetener',
@@ -72,32 +101,92 @@ const SUGAR_ITEMS = [
   'coconut sugar',
   'coconut palm sugar',
   'fruit juice',
-  'corn syrup',
   'high fructose corn syrup',
   'honey',
   'low sugar',
   'lower sugar',
   'monk fruit',
   'natural sweeteners',
-  'added sugar',
+  'no acesulfame k',
+  'no added sugar',
+  'no agave',
+  'no allulose',
+  'no artificial sweetener',
+  'no aspartame',
+  'no cane sugar',
+  'no coconut sugar',
+  'no coconut palm sugar',
+  'no corn syrup',
+  'no high fructose corn syrup',
+  'no refined sugars',
+  'no saccharin',
+  'no splenda',
+  'no sucralose',
+  'no stevia',
+  'no sugar',
+  'no sugar added',
+  'no sugar alcohol',
+  'no tagatose',
+  'no xylitol',
+  'reduced sugar',
+  'refined sugar',
   'saccharin',
-  'splenda/sucralose',
   'splenda',
   'sucralose',
   'stevia',
-  'sugar',
-  'sugar added',
   'sugar alcohol',
-  'tagatose',
-  'xylitol',
-  'refined sugars',
-  'reduced sugar',
   'sugar free',
+  'sugars added',
+  'tagatose',
   'unsweetened',
   'xylitol',
 ];
 
 const SUGAR_CLAIMS_MAP = {
+  low: {
+    'low sugar': 'low sugar',
+  },
+  lower: {
+    'lower sugar': 'lower sugar',
+  },
+  unsweetened: {
+    unsweetened: 'unsweetened',
+  },
+  sweetened: {
+    xylitol: 'xylitol',
+  },
+  reduced: {
+    'reduced sugar': 'reduced sugar',
+  },
+  'sugar free': {
+    'sugar free': 'sugar free',
+  },
+  no: {
+    'acesulfame k': 'no acesulfame k',
+    'acesulfame potassium': 'no acesulfame k',
+    'added sugar': 'no added sugar',
+    agave: 'no agave',
+    allulose: 'no allulose',
+    'artificial sweetener': 'no artificial sweetener',
+    aspartame: 'no aspartame',
+    'cane sugar': 'no cane sugar',
+    'coconut/coconut palm sugar': 'no coconut/coconut palm sugar',
+    'coconut sugar': 'no coconut/coconut palm sugar',
+    'coconut palm sugar': 'no coconut/coconut palm sugar',
+    'corn syrup': 'no corn syrup',
+    'high fructose corn syrup': 'no high fructose corn syrup',
+    'refined sugars': 'no refined sugars',
+    saccharin: 'no saccharin',
+    'splenda/sucralose': 'no splenda/sucralose',
+    slpenda: 'no splenda/sucralose',
+    sucralose: 'no splenda/sucralose',
+    stevia: 'no stevia',
+    sugar: 'no sugar',
+    'sugar added': 'no sugar added',
+    'sugar alcohol': 'no sugar alcohol',
+    tagatose: 'no tagatose',
+    xylitol: 'no xylitol',
+  },
   'no contain': {
     'acesulfame k': 'no acesulfame k',
     'acesulfame potassium': 'no acesulfame k',
@@ -124,6 +213,34 @@ const SUGAR_CLAIMS_MAP = {
     tagatose: 'no tagatose',
     xylitol: 'no xylitol',
   },
+  free: {
+    'acesulfame k': 'no acesulfame k',
+    'acesulfame potassium': 'no acesulfame k',
+    'added sugar': 'no added sugar',
+    agave: 'no agave',
+    allulose: 'no allulose',
+    'artificial sweetener': 'no artificial sweetener',
+    aspartame: 'no aspartame',
+    'cane sugar': 'no cane sugar',
+    'coconut/coconut palm sugar': 'no coconut/coconut palm sugar',
+    'coconut sugar': 'no coconut/coconut palm sugar',
+    'coconut palm sugar': 'no coconut/coconut palm sugar',
+    'corn syrup': 'no corn syrup',
+    'high fructose corn syrup': 'no high fructose corn syrup',
+    'refined sugars': 'no refined sugars',
+    saccharin: 'no saccharin',
+    'splenda/sucralose': 'no splenda/sucralose',
+    slpenda: 'no splenda/sucralose',
+    sucralose: 'no splenda/sucralose',
+    stevia: 'no stevia',
+    // sugar: 'no sugar',
+    sugar: 'sugar free',
+    'sugar added': 'no sugar added',
+    'sugar alcohol': 'no sugar alcohol',
+    tagatose: 'no tagatose',
+    xylitol: 'no xylitol',
+    'sugar free': 'sugar free',
+  },
   'free from': {
     'acesulfame k': 'no acesulfame k',
     'acesulfame potassium': 'no acesulfame k',
@@ -144,11 +261,11 @@ const SUGAR_CLAIMS_MAP = {
     slpenda: 'no splenda/sucralose',
     sucralose: 'no splenda/sucralose',
     stevia: 'no stevia',
-    sugar: 'no sugar',
     'sugar added': 'no sugar added',
     'sugar alcohol': 'no sugar alcohol',
     tagatose: 'no tagatose',
     xylitol: 'no xylitol',
+    'sugar free': 'sugar free',
   },
   '0g': {
     'acesulfame k': 'no acesulfame k',
@@ -196,11 +313,11 @@ const SUGAR_CLAIMS_MAP = {
     slpenda: 'no splenda/sucralose',
     sucralose: 'no splenda/sucralose',
     stevia: 'no stevia',
-    sugar: 'no sugar',
     'sugar added': 'no sugar added',
     'sugar alcohol': 'no sugar alcohol',
     tagatose: 'no tagatose',
     xylitol: 'no xylitol',
+    'sugar free': 'sugar free',
   },
   'does not contain': {
     'acesulfame k': 'no acesulfame k',
@@ -227,12 +344,6 @@ const SUGAR_CLAIMS_MAP = {
     'sugar alcohol': 'no sugar alcohol',
     tagatose: 'no tagatose',
     xylitol: 'no xylitol',
-  },
-  low: {
-    'low sugar': 'low sugar',
-  },
-  lower: {
-    'lower sugar': 'low sugar',
   },
   contain: {
     'reduced sugar': 'reduced sugar',

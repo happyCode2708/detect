@@ -9,7 +9,12 @@ export const compareWithTDC = ({
   tdcData: any;
 }) => {
   const comparisonResult = compareObjects(tdcFormattedExtractData, tdcData);
-  const compareResultFactPanel = compareFactPanel(
+  // const compareResultFactPanel = compareFactPanelByOrder(
+  //   tdcFormattedExtractData,
+  //   tdcData
+  // );
+
+  const compareResultFactPanel = compareFactPanelByMostMatch(
     tdcFormattedExtractData,
     tdcData
   );
@@ -17,10 +22,12 @@ export const compareWithTDC = ({
   return {
     ...comparisonResult,
     ...compareResultFactPanel,
+    generalFactPanels:
+      comparisonResult?.NutritionPanel || comparisonResult?.SupplementPanel,
   };
 };
 
-const compareFactPanel = (obj1: any, obj2: any) => {
+const compareFactPanelByOrder = (obj1: any, obj2: any) => {
   const {
     NutritionPanel: NutritionPanel_1,
     SupplementPanel: SupplementPanel_1,
@@ -62,25 +69,31 @@ const compareFactPanel = (obj1: any, obj2: any) => {
 
       for (const key of Object.keys(propertyItem)) {
         if (samePropertyOnExtractData?.hasOwnProperty(key)) {
-          const value = `${propertyItem[key]}`;
-          const sameValue = `${samePropertyOnExtractData[key]}`;
+          const value = propertyItem[key];
+          const extractValue = samePropertyOnExtractData[key];
+          const valueString =
+            typeof value !== 'string' ? JSON.stringify(value) : value;
+          const extractValueString =
+            typeof extractValue === 'undefined'
+              ? ''
+              : typeof extractValue !== 'string'
+              ? JSON.stringify(extractValue)
+              : extractValue;
+
+          // console.log(
+          //   `key -- ${key} -- ${valueString} -- ${extractValueString} `
+          // );
 
           if (
-            (value === '' && sameValue === '') ||
-            (value === '0' && sameValue === '0')
+            (valueString === '' && extractValueString === '') ||
+            (valueString === '0' && extractValueString === '0')
           ) {
-            comparisonResult[key] = '100%';
+            comparisonResult[key] = '100';
           } else {
             comparisonResult[key] = `${getMatchPercent({
-              v1:
-                typeof propertyItem[key] !== 'string'
-                  ? JSON.stringify(propertyItem[key])
-                  : propertyItem[key],
-              v2:
-                typeof samePropertyOnExtractData[key] !== 'string'
-                  ? JSON.stringify(samePropertyOnExtractData[key])
-                  : samePropertyOnExtractData[key],
-            })}%`;
+              v1: valueString,
+              v2: extractValueString,
+            })}`;
           }
         }
       }
@@ -93,37 +106,167 @@ const compareFactPanel = (obj1: any, obj2: any) => {
 };
 
 const compareObjects = (obj1: any, obj2: any) => {
-  const comparisonResult = {} as any;
+  try {
+    const comparisonResult = {} as any;
 
-  for (const key of Object.keys(obj2)) {
-    if (obj1.hasOwnProperty(key)) {
-      if (obj1[key] === undefined && obj2[key] !== undefined) {
-        comparisonResult[key] = '0%';
+    for (const key of Object.keys(obj2)) {
+      if (obj1.hasOwnProperty(key)) {
+        const extractedDataObj = obj1;
+        const tdcDataObj = obj2;
+
+        const extractValue = extractedDataObj[key];
+        const value = tdcDataObj[key];
+        const valueString =
+          typeof value !== 'string' ? JSON.stringify(value) : value;
+        const extractValueString =
+          typeof extractValue === 'undefined'
+            ? ''
+            : typeof extractValue !== 'string'
+            ? JSON.stringify(extractValue)
+            : extractValue;
+
+        if (
+          (valueString === '' && extractValueString === '') ||
+          (valueString === '0' && extractValueString === '0')
+        ) {
+          comparisonResult[key] = '100';
+        } else {
+          comparisonResult[key] = `${getMatchPercent({
+            v1: valueString,
+            v2: extractValueString,
+          })}`;
+        }
       } else {
-        comparisonResult[key] = `${getMatchPercent({
-          v1:
-            typeof obj1[key] !== 'string'
-              ? JSON.stringify(obj1[key])
-              : obj1[key],
-          v2:
-            typeof obj2[key] !== 'string'
-              ? JSON.stringify(obj2[key])
-              : obj2[key],
-        })}%`;
+        // comparisonResult[key] = '';
       }
-    } else {
-      // comparisonResult[key] = '';
     }
+
+    for (const key of Object.keys(obj1)) {
+      if (!obj2.hasOwnProperty(key)) {
+        if (obj1[key] === '' || obj1[key] === null) {
+          break;
+        }
+        comparisonResult[key] = '0';
+      }
+    }
+
+    return comparisonResult;
+  } catch (e) {
+    console.log('compare object error ---', e);
+    // console.log(`error --- key---${key} -- ${obj1[key]} --- ${obj2[key]}`);
+
+    return {};
+  }
+};
+
+const compareFactPanelByMostMatch = (obj1: any, obj2: any) => {
+  const {
+    NutritionPanel: NutritionPanel_1,
+    SupplementPanel: SupplementPanel_1,
+  } = obj1;
+  const {
+    NutritionPanel: NutritionPanel_2,
+    SupplementPanel: SupplementPanel_2,
+  } = obj2;
+
+  let factPanels = NutritionPanel_1 || SupplementPanel_1;
+  let tdc_factPanels = NutritionPanel_2 || SupplementPanel_2;
+
+  let panelType: any;
+
+  if (SupplementPanel_2?.length > 0) {
+    panelType = 'SupplementPanel';
+  } else {
+    panelType = 'NutritionPanel';
   }
 
-  for (const key of Object.keys(obj1)) {
-    if (!obj2.hasOwnProperty(key)) {
-      if (obj1[key] === '' || obj1[key] === null) {
-        break;
-      }
-      comparisonResult[key] = '0%';
-    }
-  }
+  if (!factPanels) return {};
 
-  return comparisonResult;
+  let matchResult = {
+    [panelType]: [],
+  } as any;
+
+  tdc_factPanels?.forEach((panelItem: any, idx: number) => {
+    const panelPropertyList = panelItem?.Property || [];
+
+    matchResult[panelType].push({ Property: [] });
+
+    panelPropertyList.forEach((propertyItem: any) => {
+      const propertyName = propertyItem?.PropertyName;
+      const propertySource = propertyItem?.PropertySource;
+
+      let comparisonResult = { name: propertyName } as any;
+
+      const samePropertyOnExtractData = factPanels?.[idx]?.Property?.find(
+        (propertyItem: any) => {
+          const matchPercentName = getMatchPercent({
+            v1: `${propertyItem?.PropertyName}`,
+            v2: `${propertyName}`,
+          });
+
+          const matchPercentPropertySource = getMatchPercent({
+            v1: `${propertyItem?.PropertySource}`,
+            v2: `${propertySource}`,
+          });
+
+          if (propertyItem?.PropertyName === propertyName) {
+            return true;
+          }
+
+          if (
+            matchPercentName === 'NaN' &&
+            matchPercentPropertySource === 'NaN'
+          ) {
+            return false;
+          }
+
+          if (Number(matchPercentName) > 85) {
+            return true;
+          }
+
+          if (propertySource && Number(matchPercentPropertySource) > 73) {
+            return true;
+          }
+
+          return false;
+        }
+      );
+
+      for (const key of Object.keys(propertyItem)) {
+        if (samePropertyOnExtractData?.hasOwnProperty(key)) {
+          const value = propertyItem[key];
+          const extractValue = samePropertyOnExtractData[key];
+          const valueString =
+            typeof value !== 'string' ? JSON.stringify(value) : value;
+          const extractValueString =
+            typeof extractValue === 'undefined'
+              ? ''
+              : typeof extractValue !== 'string'
+              ? JSON.stringify(extractValue)
+              : extractValue;
+
+          console.log(
+            `key -- ${key} -- ${valueString} -- ${extractValueString} `
+          );
+
+          if (
+            (valueString === '' && extractValueString === '') ||
+            (valueString === '0' && extractValueString === '0') ||
+            valueString === extractValueString
+          ) {
+            comparisonResult[key] = '100';
+          } else {
+            comparisonResult[key] = `${getMatchPercent({
+              v1: valueString,
+              v2: extractValueString,
+            })}`;
+          }
+        }
+      }
+
+      matchResult[panelType][idx]['Property'].push(comparisonResult);
+    });
+  });
+
+  return matchResult;
 };

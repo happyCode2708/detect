@@ -24,21 +24,74 @@ export const generateContent = async (images: any[], text: any) => {
     contents: [{ role: 'user', parts: [...images, text] }],
   };
 
+  // try {
+  // const streamingResp = await (
+  //   global as any
+  // ).generativeModel.generateContentStream(req);
+
+  // let chunkResponse = [];
+
+  // let finalResponse = '';
+
+  // for await (const item of streamingResp.stream) {
+  //   chunkResponse.push(item);
+  //   if (!item?.candidates) return;
+  //   finalResponse =
+  //     finalResponse + item?.candidates[0]?.content?.parts?.[0]?.text;
+  //   if (!item?.candidates[0]?.content?.parts?.[0]?.text) {
+  //     console.log(
+  //       'chunk error  ...' + item?.candidates[0]?.content?.parts?.[0]?.text
+  //     );
+  //   }
+  // }
+
+  // return { chunkResponse, finalResponse };
+
   const streamingResp = await (
     global as any
   ).generativeModel.generateContentStream(req);
-
-  let chunkResponse = [];
-
+  let chunkResponse = [] as any;
   let finalResponse = '';
 
-  for await (const item of streamingResp.stream) {
-    chunkResponse.push(item);
-    if (!item?.candidates) return;
-    finalResponse =
-      finalResponse + item?.candidates[0]?.content?.parts?.[0]?.text;
-    console.log('chunk ...' + item?.candidates[0]?.content?.parts?.[0]?.text);
-  }
+  // Set a timeout for the streaming process
+  const timeoutPromise = new Promise(
+    (_, reject) =>
+      setTimeout(() => reject(new Error('Streaming timeout')), 220000) // 30 seconds timeout
+  );
+
+  // Process the stream with error handling and timeout
+  await Promise.race([
+    (async () => {
+      // for await (const item of streamingResp.stream) {
+      //   if (!item?.candidates) return;
+      //   chunkResponse.push(item);
+      //   const textPart = item?.candidates[0]?.content?.parts?.[0]?.text;
+      //   if (!textPart) {
+      //     console.log('chunk error  ...' + textPart);
+      //     continue;
+      //   }
+      //   finalResponse += textPart;
+      // }
+      for await (const item of streamingResp.stream) {
+        chunkResponse.push(item);
+        if (!item?.candidates) return;
+        const value = item?.candidates[0]?.content?.parts?.[0]?.text;
+        finalResponse = finalResponse + value;
+        // console.log(`...`);
+        //! test chunk error
+
+        if (item?.candidates[0]?.content?.parts?.[0]?.text === undefined) {
+          console.log(
+            'chunk error  ...' + item?.candidates[0]?.content?.parts?.[0]?.text
+          );
+          return Promise.reject('chunk empty answer');
+        } else {
+          console.log('generating...');
+        }
+      }
+    })(),
+    timeoutPromise,
+  ]);
 
   return { chunkResponse, finalResponse };
 };
@@ -138,27 +191,18 @@ export const onProcessGemini = async ({
     }
 
     if (isMarkdown) {
-      // const jsonResult = mapMarkdownNutToObject(procResult);
-      // if (!mapMdToObjectFunct) {
-      // writeJsonToFile(
-      //   resultsDir + `/${sessionId}`,
-      //   resultFileName,
-      //   JSON.stringify({
-      //     isSuccess: true,
-      //     data: { allMark: procResult },
-      //   })
-      // );
-      // return;
-      // }
-
-      const jsonResult = mapMdToObjectFunct(procResult);
+      //? important
+      //* const jsonResult = mapMdToObjectFunct(procResult);
 
       writeJsonToFile(
         resultsDir + `/${sessionId}`,
         resultFileName,
         JSON.stringify({
           isSuccess: true,
-          data: { jsonData: jsonResult, markdownContent: procResult },
+          data: {
+            // ** jsonData: jsonResult,
+            markdownContent: procResult,
+          },
         })
       );
 
@@ -166,17 +210,12 @@ export const onProcessGemini = async ({
         ...sessionPayload,
         [resultFileName]: JSON.stringify({
           isSuccess: true,
-          data: { jsonData: jsonResult, markdownContent: procResult },
+          data: {
+            //* jsonData: jsonResult,
+            markdownContent: procResult,
+          },
         }),
       };
-
-      // const updatedSession = await prisma.extractSession.update({
-      //   where: { sessionId },
-      //   data: {
-      //     status: 'success',
-      //     ['result' + '_' + prefix]: JSON.stringify(sessionPayload),
-      //   },
-      // });
 
       return Promise.resolve(sessionPayload);
     }
@@ -187,17 +226,18 @@ export const onProcessGemini = async ({
       JSON.stringify({ isSuccess: false })
     );
 
-    console.log('on process gemini error', e);
-
     const updatedSession = await prisma.extractSession.update({
       where: { sessionId },
       data: {
         status: 'fail',
-        result_all: JSON.stringify({}),
-        result_nut: JSON.stringify({}),
-        result: JSON.stringify({}),
+        result_all: null,
+        result_nut: null,
+        result: null,
       },
     });
+    console.log('on process gemini error or chunk error', e);
+
+    return Promise.reject(e);
   }
 };
 
@@ -232,11 +272,6 @@ export const onProcessOther = async ({
       JSON.stringify({})
     );
 
-    // writeJsonToFile(
-    //   resultsDir + `/${sessionId}`,
-    //   'orc-claims.json',
-    //   JSON
-
     let sessionPayload = {
       ['all.json']: JSON.stringify({
         isSuccess: true,
@@ -250,91 +285,56 @@ export const onProcessOther = async ({
     return Promise.resolve(sessionPayload);
   }
 
-  const prefix = 'all';
-
-  const resultFileName = (prefix ? `${prefix}` : '') + '.json';
-
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    resultFileName,
-    JSON.stringify({
-      isSuccess: 'unknown',
-      status: 'processing',
-    })
-  );
-
-  // const allText = ocrList.reduce(
-  //   (accumulator: any, currentValue: any, idx: number) => {
-  //     return {
-  //       ...accumulator,
-  //       [`ocrImage_${idx + 1}`]: currentValue,
-  //     };
-  //   },
-  //   {}
-  // );
-
-  const new_allText = ocrList.reduce(
-    (accumulator: any, currentValue: any, idx: number) => {
-      let [whole_text, ...array_string] = currentValue;
-      let processed_whole_text = array_string.join(' ');
-      return {
-        ...accumulator,
-        [`ocrImage_${idx + 1}`]: processed_whole_text,
-      };
-    },
-    {}
-  );
-
-  // const { ocr_claims } = (await mapOcrToPredictDataPoint(new_allText)) || {};
-
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    'all-orc.json',
-    JSON.stringify(new_allText)
-  );
-
-  let sessionPayload = {
-    'all-ocr': JSON.stringify(new_allText),
-  };
-
-  // writeJsonToFile(
-  //   resultsDir + `/${sessionId}`,
-  //   'orc-claims.json',
-  //   JSON.stringify(ocr_claims)
-  // );
   try {
+    const prefix = 'all';
+
+    const resultFileName = (prefix ? `${prefix}` : '') + '.json';
+
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      resultFileName,
+      JSON.stringify({
+        isSuccess: 'unknown',
+        status: 'processing',
+      })
+    );
+
+    const new_allText = ocrList.reduce(
+      (accumulator: any, currentValue: any, idx: number) => {
+        let [whole_text, ...array_string] = currentValue;
+        let processed_whole_text = array_string.join(' ');
+        return {
+          ...accumulator,
+          [`ocrImage_${idx + 1}`]: processed_whole_text,
+        };
+      },
+      {}
+    );
+
+    // const { ocr_claims } = (await mapOcrToPredictDataPoint(new_allText)) || {};
+
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      'all-orc.json',
+      JSON.stringify(new_allText)
+    );
+
+    let sessionPayload = {
+      'all-ocr': JSON.stringify(new_allText),
+    };
+
     const finalSessionPayload = await onProcessGemini({
       req,
       res,
       sessionId,
       collateImageName,
-
       prefix,
-      // collatedOuputPath: [
-      //   ...invalidatedInput.nutIncluded,
-      //   ...invalidatedInput.nutExcluded,
-      // ],
-      // prompt: makePrompt({
-      //   ocrText: JSON.stringify(new_allText),
-      //   imageCount: [
-      //     ...invalidatedInput.nutIncluded,
-      //     ...invalidatedInput.nutExcluded,
-      //   ]?.length,
-      //   detectedClaims: JSON.stringify(ocr_claims),
-      // }),
-
       //* markdown all
       collatedOuputPath: [
         ...invalidatedInput.nutIncluded,
         ...invalidatedInput.nutExcluded,
       ],
-      // prompt: make_markdown_all_prompt({
-      //   ocrText: JSON.stringify(new_allText),
-      //   imageCount: [
-      //     ...invalidatedInput.nutIncluded,
-      //     ...invalidatedInput.nutExcluded,
-      //   ]?.length,
-      // }),
+
       prompt: make_markdown_all_prompt({
         ocrText: JSON.stringify(new_allText),
         imageCount: [
@@ -347,17 +347,18 @@ export const onProcessOther = async ({
       sessionPayload,
     });
 
-    return Promise.resolve(finalSessionPayload);
+    console.log('update status to unknown');
+
+    await prisma.extractSession.update({
+      where: { sessionId },
+      data: {
+        status: 'unknown',
+        result_all: JSON.stringify(finalSessionPayload),
+        // result_nut: JSON.stringify(finalSessionPayload),
+      },
+    });
   } catch (e) {
-    // const updatedSession = await prisma.extractSession.update({
-    //   where: { sessionId },
-    //   data: {
-    //     status: 'fail',
-    //     result_all: JSON.stringify({}),
-    //     result_nut: JSON.stringify({}),
-    //     result: JSON.stringify({}),
-    //   },
-    // });
+    console.log('process other error', e);
   }
 };
 
@@ -378,7 +379,8 @@ export const onProcessNut = async ({
   collateImageName: string;
   outputConfig: any;
 }) => {
-  if (invalidatedInput?.nutIncluded?.length === 0 || !outputConfig.nut) {
+  // if (invalidatedInput?.nutIncluded?.length === 0 || !outputConfig.nut) {
+  if (!outputConfig.nut) {
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
       'nut.json',
@@ -407,91 +409,77 @@ export const onProcessNut = async ({
     return Promise.resolve(sessionPayload);
   }
 
-  const prefix = 'nut';
+  try {
+    const prefix = 'nut';
 
-  const resultFileName = (prefix ? `${prefix}` : '') + '.json';
+    const resultFileName = (prefix ? `${prefix}` : '') + '.json';
 
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    resultFileName,
-    JSON.stringify({
-      isSuccess: 'unknown',
-      status: 'processing',
-    })
-  );
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      resultFileName,
+      JSON.stringify({
+        isSuccess: 'unknown',
+        status: 'processing',
+      })
+    );
 
-  // const nutText = ocrList.reduce(
-  //   (accumulator: any, currentValue: any, idx: number) => {
-  //     return {
-  //       ...accumulator,
-  //       [`ocrImage_${idx + 1}`]: currentValue,
-  //     };
-  //   },
-  //   {}
-  // );
+    const new_nutText = ocrList.reduce(
+      (accumulator: any, currentValue: any, idx: number) => {
+        let [whole_text, ...array_string] = currentValue;
+        let processed_whole_text = array_string.join(' ');
+        return {
+          ...accumulator,
+          [`ocrImage_${idx + 1}`]: processed_whole_text,
+        };
+      },
+      {}
+    );
 
-  const new_nutText = ocrList.reduce(
-    (accumulator: any, currentValue: any, idx: number) => {
-      let [whole_text, ...array_string] = currentValue;
-      let processed_whole_text = array_string.join(' ');
-      return {
-        ...accumulator,
-        [`ocrImage_${idx + 1}`]: processed_whole_text,
-      };
-    },
-    {}
-  );
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      'nut-orc.json',
+      JSON.stringify(new_nutText)
+    );
 
-  writeJsonToFile(
-    resultsDir + `/${sessionId}`,
-    'nut-orc.json',
-    JSON.stringify(new_nutText)
-  );
+    let sessionPayload = {
+      'nut-ocr': JSON.stringify(new_nutText),
+    };
 
-  let sessionPayload = {
-    'nut-ocr': JSON.stringify(new_nutText),
-  };
+    const finalSessionPayload = await onProcessGemini({
+      req,
+      res,
+      sessionId,
+      collateImageName,
+      prefix,
 
-  const finalSessionPayload = await onProcessGemini({
-    req,
-    res,
-    sessionId,
-    collateImageName,
-    prefix,
-    // collatedOuputPath: invalidatedInput.nutIncluded,
-    // prompt: make_nut_prompt({
-    //   ocrText: JSON.stringify(new_nutText),
-    //   imageCount: invalidatedInput.nutIncluded?.length,
-    // }),
-    //* flash
-    // collatedOuputPath: [
-    //   ...invalidatedInput.nutIncluded,
-    //   ...invalidatedInput.nutExcluded,
-    // ],
-    // prompt: make_nut_prompt({
-    //   ocrText: JSON.stringify(new_nutText),
-    //   imageCount: [
-    //     ...invalidatedInput.nutIncluded,
-    //     ...invalidatedInput.nutExcluded,
-    //   ]?.length,
-    // }),
-
-    //* markdown nut
-    collatedOuputPath: [
-      ...invalidatedInput.nutIncluded,
-      ...invalidatedInput.nutExcluded,
-    ],
-    prompt: make_markdown_nut_prompt({
-      ocrText: JSON.stringify(new_nutText),
-      imageCount: [
+      //* markdown nut
+      collatedOuputPath: [
         ...invalidatedInput.nutIncluded,
         ...invalidatedInput.nutExcluded,
-      ]?.length,
-    }),
-    isMarkdown: true,
-    mapMdToObjectFunct: mapMarkdownNutToObject,
-    sessionPayload,
-  });
+      ],
+      prompt: make_markdown_nut_prompt({
+        ocrText: JSON.stringify(new_nutText),
+        imageCount: [
+          ...invalidatedInput.nutIncluded,
+          ...invalidatedInput.nutExcluded,
+        ]?.length,
+      }),
+      isMarkdown: true,
+      mapMdToObjectFunct: mapMarkdownNutToObject,
+      sessionPayload,
+    });
 
-  return Promise.resolve(finalSessionPayload);
+    console.log('update status to unknown');
+
+    await prisma.extractSession.update({
+      where: { sessionId },
+      data: {
+        status: 'unknown',
+        // result_all: JSON.stringify({}),
+        result_nut: JSON.stringify(finalSessionPayload),
+      },
+    });
+  } catch (e) {
+    console.log('process nut error', e);
+  }
 };

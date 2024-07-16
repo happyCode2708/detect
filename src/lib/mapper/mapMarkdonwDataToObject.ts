@@ -6,8 +6,8 @@ export const mapMarkdownNutToObject = (markdown: string) => {
     const [nutrientSection, headerToRest] = section.split('HEADER_TABLE');
     const [nutHeader, footnoteToRest] = headerToRest.split('FOOTNOTE_TABLE');
     const [footnoteSection, debugSection] = footnoteToRest.split('DEBUG_TABLE');
-    logger.error('debug section');
-    logger.info(debugSection);
+    // logger.error('debug section');
+    // logger.info(debugSection);
 
     const [headerTitle, ...nutritionLines] = nutrientSection
       .trim()
@@ -38,7 +38,15 @@ export const mapMarkdownNutToObject = (markdown: string) => {
           blendIngredients: blendIngredients || null,
         };
       })
-      .filter((nutrient) => nutrient.nutrientName !== '-------');
+      .filter((nutrient) => {
+        if (
+          nutrient?.nutrientName !== '-------' &&
+          nutrient?.nutrientName !== '**'
+        ) {
+          return true;
+        }
+        return false;
+      });
 
     console.log('nut header --', JSON.stringify(nutHeader));
 
@@ -70,8 +78,8 @@ export const mapMarkdownNutToObject = (markdown: string) => {
       calories,
     };
 
-    logger.error('footnote');
-    logger.info(footnoteSection);
+    // logger.error('footnote');
+    // logger.info(footnoteSection);
 
     const footnoteLines = footnoteSection
       .trim()
@@ -94,8 +102,8 @@ export const mapMarkdownNutToObject = (markdown: string) => {
 
     let debugTable;
 
-    logger.error('debug');
-    logger.info(debugSection);
+    // logger.error('debug');
+    // logger.info(debugSection);
 
     if (debugSection) {
       const debugLines = debugSection
@@ -117,8 +125,8 @@ export const mapMarkdownNutToObject = (markdown: string) => {
       });
     }
 
-    logger.error('debug table');
-    logger.info(debugTable);
+    // logger.error('debug table');
+    // logger.info(debugTable);
 
     let result: any = {
       title: headerTitle.trim(),
@@ -132,7 +140,7 @@ export const mapMarkdownNutToObject = (markdown: string) => {
       result = { ...result, debugTable: debugTable };
     }
 
-    console.log('result ---', JSON.stringify(result));
+    // console.log('result ---', JSON.stringify(result));
 
     return result;
   });

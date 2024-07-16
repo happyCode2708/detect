@@ -19,6 +19,8 @@ import { writeJsonToFile } from '../../lib/json';
 import { prisma } from '../../server';
 import { responseValidator } from '../../lib/validator/main';
 import { checkFilesExist } from '../../lib/utils/checkFile';
+import { mapMarkdownAllToObject } from '../../lib/mapper/mapMdAllToObject';
+import { mapMarkdownNutToObject } from '../../lib/mapper/mapMarkdonwDataToObject';
 
 // import OpenAI from 'openai';
 
@@ -154,7 +156,13 @@ router.post(
   }
 );
 
+const getFilename = (filePath: any) => {
+  return path.basename(filePath);
+};
+
 router.post('/process-product-image', async (req, res) => {
+  let responseReturned = false;
+  let sessionId;
   try {
     const product = await prisma.product.findUnique({
       where: { ixoneID: req.body.ixoneId },
@@ -165,7 +173,19 @@ router.post('/process-product-image', async (req, res) => {
       return res.status(404).json({ error: 'Product not found' });
     }
 
-    const filePaths = product?.images?.map((imageItem: any) => imageItem?.path);
+    const filePaths = product?.images?.map((imageItem: any) => {
+      const fileName = getFilename(imageItem?.path);
+
+      if (process.env.SOURCE === 'home') {
+        return `/Users/duynguyen/Desktop/foodocr/foodocr/assets/upload/${fileName}`;
+      }
+
+      if (process.env.SOURCE === 'company') {
+        return 'C:/Users/nnqduy/Desktop/ocr/detect/assets/upload/' + fileName;
+      }
+
+      return imageItem?.path;
+    });
 
     try {
       const checkFileExistResults = await checkFilesExist(filePaths);
@@ -193,7 +213,8 @@ router.post('/process-product-image', async (req, res) => {
         status: 'unknown',
       },
     });
-    const sessionId = newSession.sessionId;
+
+    sessionId = newSession.sessionId;
 
     const biasForm = JSON.parse(req.body?.biasForm);
     const outputConfig = JSON.parse(req.body?.outputConfig);
@@ -240,61 +261,60 @@ router.post('/process-product-image', async (req, res) => {
       ],
     });
 
-    try {
-      const [finalNut, finalAll] = await Promise.all([
-        onProcessNut({
-          req,
-          res,
-          invalidatedInput,
-          //* flash version
-          ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-          // ocrList: nutImagesOCRresult,
-          sessionId,
-          collateImageName,
-          outputConfig,
-        }),
-        onProcessOther({
-          req,
-          res,
-          invalidatedInput,
-          ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-          sessionId,
-          collateImageName,
-          outputConfig,
-        }),
-      ]);
+    responseReturned = true;
 
-      await prisma.extractSession.update({
-        where: { sessionId },
-        data: {
-          status: 'fail',
-          result_all: JSON.stringify({}),
-          result_nut: JSON.stringify({}),
-        },
+    // const [finalNut, finalAll] = await Promise.all([
+    onProcessNut({
+      req,
+      res,
+      invalidatedInput,
+      //* flash version
+      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+      // ocrList: nutImagesOCRresult,
+      sessionId,
+      collateImageName,
+      outputConfig,
+    });
+    onProcessOther({
+      req,
+      res,
+      invalidatedInput,
+      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+      sessionId,
+      collateImageName,
+      outputConfig,
+    });
+    // ]);
+
+    // await prisma.extractSession.update({
+    //   where: { sessionId },
+    //   data: {
+    //     status: 'fail',
+    //     result_all: JSON.stringify({}),
+    //     result_nut: JSON.stringify({}),
+    //   },
+    // });
+    //* await createFinalResult({ finalAll, finalNut, sessionId, res });
+  } catch (e) {
+    console.log('process-image-error', e);
+
+    if (!responseReturned) {
+      res.status(500).json({
+        isSuccess: false,
+        error: JSON.stringify(e),
+        message: 'Failed to create session',
       });
-      await createFinalResult({ finalAll, finalNut, sessionId, res });
-    } catch (e) {
-      console.log(e);
+    } else {
       await prisma.extractSession.update({
         where: { sessionId },
         data: {
           status: 'fail',
-          result_all: JSON.stringify({}),
-          result_nut: JSON.stringify({}),
-          result: JSON.stringify({}),
+          result_all: null,
+          result_nut: null,
+          result: null,
         },
       });
     }
-
-    // console.log('test 1', final1);
-    // console.log('test 2', final2);
-  } catch (error) {
-    console.log('error', error);
-    // res.status(500).json({
-    //   isSuccess: false,
-    //   error: JSON.stringify(error),
-    //   message: 'Failed to create session',
-    // });
   }
 });
 
@@ -315,13 +335,17 @@ router.post('/revalidate-product-data', async (req, res) => {
     );
 
     const latestExtractSession = product.extractSessions?.[0];
-    const { result_all, result_nut, sessionId } = latestExtractSession;
+    const {
+      result_all: result_all_raw,
+      result_nut: result_nut_raw,
+      sessionId,
+    } = latestExtractSession;
 
-    if (!result_all || !result_nut) {
+    if (!result_all_raw || !result_nut_raw) {
       return res.status(404).json({ error: 'Product not valid to revalidate' });
     }
-    const finalAll = JSON.parse(result_all);
-    const finalNut = JSON.parse(result_nut);
+    const finalAll = JSON.parse(result_all_raw);
+    const finalNut = JSON.parse(result_nut_raw);
 
     await createFinalResult({ finalAll, finalNut, sessionId, res });
 
@@ -356,17 +380,31 @@ const createFinalResult = async ({
     const nutRes = JSON.parse(finalNut?.['nut.json']);
     // const ocrClaims = JSON.parse(ocrClaimData);
 
-    const { isSuccess: allSuccess, status: allStatus } = allRes || {};
-    const { isSuccess: nutSuccess, status: nutStatus } = nutRes || {};
+    const {
+      isSuccess: allSuccess,
+      status: allStatus,
+      data: allResData,
+    } = allRes || {};
+    const {
+      isSuccess: nutSuccess,
+      status: nutStatus,
+      data: nutResData,
+    } = nutRes || {};
 
     if (nutSuccess === false || allSuccess === false) {
       return;
     }
 
+    //* if both process success
+    const allJsonData = mapMarkdownAllToObject(allResData?.markdownContent);
+    const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
+
     let finalResult = {
       product: {
-        ...allRes?.data?.jsonData,
-        factPanels: nutRes?.data?.jsonData, //* markdown converted
+        // ...allRes?.data?.jsonData,
+        ...allJsonData,
+        // factPanels: nutRes?.data?.jsonData, //* markdown converted
+        factPanels: nutJsonData,
         nutMark: nutRes?.data?.markdownContent,
         allMark: allRes?.data?.markdownContent,
       },
@@ -390,9 +428,9 @@ const createFinalResult = async ({
       where: { sessionId },
       data: {
         status: 'fail',
-        result_all: JSON.stringify({}),
-        result_nut: JSON.stringify({}),
-        result: JSON.stringify({}),
+        result_all: null,
+        result_nut: null,
+        result: null,
       },
     });
   }

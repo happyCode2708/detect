@@ -3,6 +3,7 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
+import { createObjectCsvWriter } from 'csv-writer';
 
 import {
   getOcrTextAllImages,
@@ -10,7 +11,7 @@ import {
   addUniqueString,
   removeRawFieldData,
 } from '../../lib/server_utils';
-import { port, prisma } from '../../server';
+import { port, prisma, productImportDir } from '../../server';
 import bodyParser from 'body-parser';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -25,6 +26,13 @@ import axios from 'axios';
 import logger from '../../lib/logger';
 import { mapToTDCformat } from '../../lib/mapper/mapToTDCFormat';
 import { compareWithTDC } from '../../lib/comparator/compareWithTDC';
+// import { makeSessionResult } from '@/lib/middleware/ makeSessionResult';
+import { isEmpty, sample } from 'lodash';
+import { responseValidator } from '../../lib/validator/main';
+import { mapMarkdownAllToObject } from '../../lib/mapper/mapMdAllToObject';
+import { mapMarkdownNutToObject } from '../../lib/mapper/mapMarkdonwDataToObject';
+import { TDC_FIELD_OBJ } from '../../constants/tdcField';
+import _ from 'lodash';
 
 const router = express.Router();
 
@@ -125,6 +133,219 @@ router.delete('/delete-products', async (req, res) => {
   }
 });
 
+router.post('/save-compare-result', async (req, res) => {
+  const { ixoneid, compareResult } = req.body;
+
+  try {
+    //* update compare result to product
+    await prisma.product.update({
+      data: {
+        compareResult: JSON.stringify(compareResult),
+      },
+      where: {
+        ixoneID: ixoneid,
+      },
+    });
+    res
+      .status(201)
+      .json({ isSucess: true, message: 'save compare result  successfully' });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ isSuccess: false, message: 'fail to save compare result' });
+  }
+});
+
+router.post('/export-compare-result', async (req, res) => {
+  const {} = req.body;
+
+  const products = await prisma.product.findMany({
+    orderBy: {
+      createdAt: 'desc', // Order by creation date, newest first
+    },
+    // include: { images: true },
+  });
+
+  if (!products) {
+    return res.status(404).json({
+      isSuccess: false,
+      message: 'There is no compare result to export',
+    });
+  }
+
+  let exportProductsList = products
+    ?.filter((item) => !!item?.compareResult)
+    ?.map((productItem: any, idx: number) => {
+      const compareResult = JSON.parse(productItem?.compareResult);
+
+      let {
+        SupplementPanel,
+        NutritionPanel,
+        generalFactPanels,
+        ...restFields
+      } = compareResult;
+
+      return productItem?.compareResult
+        ? {
+            idx,
+            ixoneId: productItem?.ixoneID,
+            NutritionOrSupplementFactPanel: generalFactPanels,
+            ...restFields,
+            // NutritionPanel: 'NA',
+            // SupplementPanel: 'NA',
+            // NutritionPanel: 'produc',
+            // SupplementPanel: 'NA',
+            // generalFactPanels:
+          }
+        : [];
+    });
+
+  // Determine all unique keys across all products
+  const allKeys = Array.from(
+    exportProductsList.reduce((keys: Set<string>, product: any) => {
+      Object.keys(product).forEach((key) => keys.add(key));
+      return keys;
+    }, new Set())
+  );
+
+  // Calculate the average rating
+  const ratings = products
+    .filter((product: any) => 'rating' in product)
+    .map((product: any) => product.rating);
+  const averageRating =
+    ratings.reduce((sum: any, rating: any) => sum + rating, 0) / ratings.length;
+
+  // Add average rating to the product array as a separate object
+  let accuracy = {} as any;
+  let sampleAmount = {} as any;
+
+  const AVERAGE_KEY_EXCLUDED = ['idx', 'ixoneId'];
+
+  allKeys.forEach((key: string) => {
+    if (AVERAGE_KEY_EXCLUDED.includes(key)) return;
+
+    const accuracyStatistic = computeAverage(exportProductsList, key);
+    accuracy[key] = accuracyStatistic?.matchPercent;
+    sampleAmount[key] = accuracyStatistic?.sampleAmount;
+  });
+
+  exportProductsList.push({
+    idx: '',
+    ixoneId: '',
+    ...accuracy,
+  });
+
+  // Define the CSV writer
+
+  let exportAccuracyList = allKeys
+    ?.filter((key) => key !== 'idx' && key !== 'ixoneId')
+    ?.map((key: string) => {
+      return {
+        group: TDC_FIELD_OBJ?.[key]?.DataGroup || 'N/A',
+        fieldName: key,
+        matchPercent: accuracy[key]?.toFixed(2),
+        sampleAmount: sampleAmount[key],
+      };
+    });
+
+  let exportAccuracyListHeader = [
+    {
+      id: 'group',
+      title: 'Group',
+    },
+    {
+      id: 'fieldName',
+      title: 'Field Name',
+    },
+    {
+      id: 'matchPercent',
+      title: 'Match Percent',
+    },
+    {
+      id: 'sampleAmount',
+      title: `Sample Amount in 251 products`,
+    },
+  ];
+
+  const sortedAccuracyList = _.sortBy(exportAccuracyList, ['group']);
+
+  try {
+    //* export all product
+    const csvWriter = createObjectCsvWriter({
+      path: 'products-com-2.csv',
+      header: allKeys.map((key: any) => ({ id: key, title: key })),
+    });
+
+    // Write the products to the CSV file
+    csvWriter
+      .writeRecords(exportProductsList)
+      .then(() => {
+        console.log('CSV file was written successfully');
+
+        res.status(201).json({
+          isSucess: true,
+          message: 'export compare result  successfully',
+        });
+      })
+      .catch((err: any) => {
+        console.error('Error writing CSV file:', err);
+      });
+
+    //* export accuracy list
+
+    const csvWriter2 = createObjectCsvWriter({
+      path: 'accuracy_list_251_products.csv',
+      header: exportAccuracyListHeader,
+    });
+
+    // Write the products to the CSV file
+    csvWriter2
+      .writeRecords(sortedAccuracyList)
+      .then(() => {
+        console.log('CSV file was written successfully');
+
+        // res.status(201).json({
+        //   isSucess: true,
+        //   message: 'export compare result  successfully',
+        // });
+      })
+      .catch((err: any) => {
+        console.error('Error writing CSV file:', err);
+      });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ isSucess: false, message: 'fail to export compare result' });
+  }
+});
+
+const computeAverage = (products: any, field: string) => {
+  const allPercents = products
+    .filter(
+      (product: any) =>
+        field in product &&
+        product[field] !== '' &&
+        product[field] !== 'NA' &&
+        product[field] !== undefined
+    )
+    .map((product: any) => product?.[field]);
+  const averagePercent =
+    allPercents.reduce((sum: any, percentValue: any) => {
+      if (field === 'NutritionOrSupplementFactPanel') {
+        console.log('value', percentValue);
+      }
+      return sum + (percentValue === 'NaN' ? 0 : Number(percentValue));
+    }, 0) / allPercents.length;
+
+  // console.log('allpercents', JSON.stringify(allPercents));
+
+  // const final = averagePercent;
+  return {
+    matchPercent: averagePercent,
+    sampleAmount: allPercents.length,
+  };
+};
+
 // router.post('/create-session', async (req, res) => {
 //   const { ixoneId, session } = req.body;
 
@@ -152,54 +373,130 @@ router.delete('/delete-products', async (req, res) => {
 // });
 
 router.get('/:ixoneid', async (req, res) => {
-  const { ixoneid } = req.params;
   try {
+    const { ixoneid } = req.params;
     const product = await prisma.product.findUnique({
       where: { ixoneID: ixoneid },
       include: { images: true, extractSessions: true },
     });
+    if (!product) {
+      res.status(404).json({ message: 'Product not found', isSuccess: false });
+    }
     if (product) {
       product.extractSessions.sort(
         (a: any, b: any) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
+      let latestExtractSession = product.extractSessions?.[0] || {};
+      const { result, status } = latestExtractSession;
 
-      let latestExtractSession = product.extractSessions?.[0] as any;
-
-      if (!latestExtractSession && !latestExtractSession?.result) {
-        res.status(200).json({
+      //* if the result of latest extract session is success
+      if (result && status === 'success') {
+        let latestExtractSession_result = JSON.parse(result);
+        if (process.env.NODE_ENV === 'production') {
+          removeRawFieldData(latestExtractSession_result);
+        }
+        latestExtractSession['result'] = JSON.stringify(
+          latestExtractSession_result
+        );
+        return res.status(200).json({
+          isSuccess: true,
+          data: {
+            product,
+            latestSession: latestExtractSession,
+          },
+        });
+      }
+      //* if result is not ready
+      const {
+        result_nut: result_nut_raw,
+        result_all: result_all_raw,
+        sessionId,
+      } = latestExtractSession as any;
+      if (!result_nut_raw || !result_all_raw) {
+        return res.status(200).json({
           isSuccess: true,
           data: {
             product,
             latestSession: {},
           },
         });
-        return;
       }
+      const result_nut = JSON.parse(result_nut_raw);
+      const result_all = JSON.parse(result_all_raw);
 
-      let latestExtractSession_result = JSON.parse(
-        latestExtractSession?.result
-      );
-
-      if (process.env.NODE_ENV === 'production') {
-        removeRawFieldData(latestExtractSession_result);
+      if (isEmpty(result_nut) || isEmpty(result_all)) {
+        return res.status(200).json({
+          isSuccess: true,
+          data: {
+            product,
+            latestSession: {},
+          },
+        });
       }
+      console.log('sessionId', sessionId);
+      const nutRes = JSON.parse(result_nut?.['nut.json']);
+      const allRes = JSON.parse(result_all?.['all.json']);
+      const { isSuccess: allSuccess, data: allResData } = allRes || {};
+      const { isSuccess: nutSuccess, data: nutResData } = nutRes || {};
 
-      latestExtractSession['result'] = JSON.stringify(
-        latestExtractSession_result
-      );
+      console.log('type of', typeof allResData);
 
-      res.status(200).json({
+      //* if one of process fail
+      if (allSuccess === false || nutSuccess === false) {
+        await prisma.extractSession.update({
+          where: { sessionId },
+          data: {
+            status: 'fail',
+          },
+        });
+        return res.status(200).json({
+          isSuccess: true,
+          data: {
+            product,
+            latestSession: {},
+          },
+        });
+      }
+      //* if both process success
+      const allJsonData = mapMarkdownAllToObject(allResData?.markdownContent);
+      const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
+
+      let finalResult = {
+        product: {
+          // ...allRes?.data?.jsonData,
+          ...allJsonData,
+          // factPanels: nutRes?.data?.jsonData, //* markdown converted
+          factPanels: nutJsonData,
+          nutMark: nutRes?.data?.markdownContent,
+          allMark: allRes?.data?.markdownContent,
+        },
+      };
+      let validatedResponse = await responseValidator(finalResult, '');
+
+      let updatedSession = await prisma.extractSession.update({
+        where: { sessionId },
+        data: {
+          status: 'success',
+          result: JSON.stringify(validatedResponse),
+        },
+      });
+      // if (updatedSession?.result && updatedSession?.status === 'success') {
+      // let parsedResult = JSON.parse(updatedSession?.result);
+      // if (process.env.NODE_ENV === 'production') {
+      //   removeRawFieldData(parsedResult);
+      // }
+      return res.status(200).json({
         isSuccess: true,
         data: {
           product,
-          latestSession: latestExtractSession,
+          latestSession: updatedSession,
         },
       });
-    } else {
-      res.status(404).json({ error: 'Product not found' });
+      // }
     }
   } catch (error) {
+    console.log('error', error);
     res.status(500).json({ error: 'Failed to fetch product' });
   }
 });
@@ -233,6 +530,9 @@ router.post('/:ixoneid/images', upload.array('images'), async (req, res) => {
     const imagePromises = files.map((file) => {
       const imageUrl = `/assets/${file.filename}`;
       const path = `${uploadsDir}/${file.filename}`;
+
+      console.log('path', path);
+
       return prisma.image.create({
         data: {
           url: imageUrl,
@@ -248,6 +548,72 @@ router.post('/:ixoneid/images', upload.array('images'), async (req, res) => {
       .status(200)
       .json({ isSuccess: true, message: 'Images uploaded successfully' });
   } catch (error) {
+    res.status(500).json({ error: 'Failed to upload images' });
+  }
+});
+
+router.post('/import-product', async (req, res) => {
+  try {
+    const folderNames = fs
+      .readdirSync(productImportDir, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
+
+    for (const folderName of folderNames) {
+      let product = await prisma.product.findUnique({
+        where: { ixoneID: folderName },
+      });
+
+      if (!product) {
+        // Create a new product if it doesn't exist
+        let createdProduct = await prisma.product.create({
+          data: {
+            ixoneID: folderName,
+          },
+        });
+        console.log(`Created new product with ixoneID ${folderName}`);
+
+        const imageFiles = fs.readdirSync(
+          path.join(productImportDir, folderName)
+        );
+
+        const imagePromises = imageFiles.map((file) => {
+          const filePath = path.join(productImportDir, folderName, file);
+          const uniqueSuffix = Date.now();
+          const newFileName = `product__${folderName}__${uniqueSuffix}${path.extname(
+            file
+          )}`;
+
+          const newFilePath = path.join(uploadsDir, newFileName);
+          fs.copyFileSync(filePath, newFilePath);
+          // console.log('copy', `}`
+
+          const imageUrl = `/assets/${newFileName}`;
+
+          console.log('New path', path);
+
+          return prisma.image.create({
+            data: {
+              url: imageUrl,
+              path: newFilePath,
+              productId: createdProduct.id,
+            },
+          });
+        });
+
+        await Promise.all(imagePromises);
+      } else {
+        console.log(
+          `Product with ixoneID ${folderName} already exists, skipping...`
+        );
+      }
+    }
+
+    res
+      .status(200)
+      .json({ isSuccess: true, message: 'All images uploaded successfully' });
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to upload images' });
   }
 });
@@ -331,6 +697,7 @@ router.post('/get-compare-result-tdc', async (req, res) => {
       data: {
         compareResult,
         mappedExtractToTdc: mappedData,
+        tdcData: foundTdcProduct,
       },
     });
   } catch (error) {

@@ -81,7 +81,9 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         <CamelFieldStringRender objectValues={supplyChain?.[0]} />
       </SectionWrapper>
       <SectionWrapper name='ingredients'>
-        <CamelFieldStringRender objectValues={ingredients?.[0]} />
+        {ingredients?.map((ingredientsItem: any) => {
+          return <CamelFieldStringRender objectValues={ingredientsItem} />;
+        })}
       </SectionWrapper>
     </div>
   );

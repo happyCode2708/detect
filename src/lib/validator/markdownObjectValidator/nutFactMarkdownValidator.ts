@@ -29,6 +29,7 @@ const transformOneFactPanel = (factPanelItem: any) => {
 
       // validateNutrientName(modifiedNutrient);
       // validateSubIngredient(modifiedNutrient);
+      validateNutrientNameByDescriptor(modifiedNutrient);
       validateNutrientName(modifiedNutrient);
       validateAmount(modifiedNutrient);
       validateBlendIngredients(modifiedNutrient);
@@ -52,23 +53,41 @@ const validateBlendIngredients = (modifiedNutrient: any) => {
 };
 
 const validateNutrientName = (modifiedNutrient: any) => {
-  const nutrientName = toLower(modifiedNutrient?.nutrientName?.trim());
+  // const nutrientName = toLower(modifiedNutrient?.['nutrientName']?.trim());
+  const nutrientName = toLower(
+    modifiedNutrient?.['validated_nutrientName_from_descriptor']?.trim()
+  );
 
   const shortFormMap = {
     'vit. a': 'VITAMIN A',
+    'vit a': 'VITAMIN A',
     'vit. b1': 'VITAMIN B1',
+    'vit b1': 'VITAMIN B1',
     'vit. b2': 'VITAMIN B2',
+    'vit b2': 'VITAMIN B2',
     'vit. b3': 'VITAMIN B3',
+    'vit b3': 'VITAMIN B3',
     'vit. b5': 'VITAMIN B5',
+    'vit b5': 'VITAMIN B5',
     'vit. b6': 'VITAMIN B6',
+    'vit b6': 'VITAMIN B6',
     'vit. b7': 'VITAMIN B7',
+    'vit b7': 'VITAMIN B7',
     'vit. b9': 'VITAMIN B9',
+    'vit b9': 'VITAMIN B9',
     'vit. b12': 'VITAMIN B12',
+    'vit b12': 'VITAMIN B12',
     'vit. c': 'VITAMIN C',
+    'vit c': 'VITAMIN C',
     'vit. d': 'VITAMIN D',
+    'vit d': 'VITAMIN D',
+    'vit . d': 'VITAMIN D',
     'vit. e': 'VITAMIN E',
+    'vit e': 'VITAMIN E',
     'vit. k': 'VITAMIN K',
+    'vit k': 'VITAMIN K',
     'vit.': 'VITAMIN',
+    vit: 'VITAMIN',
     ca: 'CALCIUM',
     fe: 'IRON',
     mg: 'MAGNESIUM',
@@ -86,8 +105,11 @@ const validateNutrientName = (modifiedNutrient: any) => {
     carbs: 'CARBOHYDRATES',
     fat: 'FAT',
     'sat. fat': 'SATURATED FAT',
+    saturated: 'SATURATED FAT',
     'trans. fat': 'TRANS FAT',
+    trans: 'TRANS FAT',
     chol: 'CHOLESTEROL',
+    'cholest.': 'CHOLESTEROL',
     sug: 'SUGARS',
     fib: 'FIBER',
     'omega-3': 'OMEGA-3 FATTY ACIDS',
@@ -99,19 +121,39 @@ const validateNutrientName = (modifiedNutrient: any) => {
     cal: 'CALORIES',
     kcal: 'KILOCALORIES',
     'potas.': 'POTASSIUM',
+    potas: 'POTASSIUM',
     'added sugars': 'ADDED SUGAR',
-    //   iu: 'INTERNATIONAL UNITS',
     'total carbohydrate': 'TOTAL CARBOHYDRATES',
+    fiber: 'DIETARY FIBER',
+    'total carb.': 'TOTAL CARBOHYDRATES',
+    'total carb': 'TOTAL CARBOHYDRATES',
+    'total carb .': 'TOTAL CARBOHYDRATES',
+    'monounsat. fat': 'MONOUNSATURATED FAT',
+    'polyunsat. fat': 'POLYUNSATURATED FAT',
+    sugars: 'TOTAL SUGARS',
   } as any;
 
-  const mappedNutrientName =
-    shortFormMap?.[nutrientName] || toUpper(nutrientName);
+  let mappedNutrientName;
+
+  //* exceptional cases
+  //? added sugar
+  if (nutrientName?.includes('added sugar')) {
+    mappedNutrientName = 'ADDED SUGAR';
+  } else {
+    mappedNutrientName = shortFormMap?.[nutrientName] || toUpper(nutrientName);
+  }
 
   modifiedNutrient['validated_nutrientName'] = mappedNutrientName;
 };
 
 const validateAmount = (modifiedNutrient: any) => {
   let amountPerServing = modifiedNutrient?.amountPerServing?.trim();
+
+  if (amountPerServing?.includes('%')) {
+    modifiedNutrient['dailyValue'] = amountPerServing;
+    modifiedNutrient['amountPerServing'] = '';
+    return;
+  }
 
   if (!amountPerServing) return;
 
@@ -154,21 +196,27 @@ const validateFootnote = (modifiedNutrient: any) => {
   // }
 };
 
-// const getDescriptor = (nutrientName: string) => {
-//   const pattern = /(\s*\([^()]*\))+$/;
-//   const match = nutrientName.match(pattern);
-//   return match ? match[0] : null;
-// };
+const getDescriptor = (nutrientName: string) => {
+  const pattern = /(\s*\([^()]*\))+$/;
+  const match = nutrientName.match(pattern);
+  return match ? match[0] : null;
+};
 
-// const validateNutrientName = (modifiedNutrient: any) => {
-//   const logicExtractedDescriptor = getDescriptor(modifiedNutrient?.name);
-//   if (logicExtractedDescriptor && !modifiedNutrient?.['descriptor']) {
-//     modifiedNutrient['descriptor'] = logicExtractedDescriptor;
-//     modifiedNutrient['name'] = modifiedNutrient['name']?.split(
-//       logicExtractedDescriptor
-//     )?.[0];
-//   }
-// };
+const validateNutrientNameByDescriptor = (modifiedNutrient: any) => {
+  const logicExtractedDescriptor = getDescriptor(
+    modifiedNutrient?.['nutrientName']
+  );
+  // if (logicExtractedDescriptor && !modifiedNutrient?.['descriptor']) {
+  if (logicExtractedDescriptor) {
+    modifiedNutrient['validated_descriptor_from_name'] =
+      logicExtractedDescriptor;
+    modifiedNutrient['validated_nutrientName_from_descriptor'] =
+      modifiedNutrient['nutrientName']?.split(logicExtractedDescriptor)?.[0];
+  } else {
+    modifiedNutrient['validated_nutrientName_from_descriptor'] =
+      modifiedNutrient['nutrientName'];
+  }
+};
 
 // const validateSubIngredient = (modifiedNutrient: any) => {
 //   const lowerNutrientName = toLower(modifiedNutrient?.name);

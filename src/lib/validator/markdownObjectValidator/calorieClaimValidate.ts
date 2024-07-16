@@ -7,6 +7,8 @@ export const calorieClaimValidate = async (modifiedProductDataPoints: any) => {
     modifiedProductDataPoints,
     'validated_calorieClaim'
   );
+
+  console.log('finish validate calorie');
 };
 
 const validate = async (
