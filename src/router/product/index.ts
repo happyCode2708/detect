@@ -27,10 +27,12 @@ import logger from '../../lib/logger';
 import { mapToTDCformat } from '../../lib/mapper/mapToTDCFormat';
 import { compareWithTDC } from '../../lib/comparator/compareWithTDC';
 // import { makeSessionResult } from '@/lib/middleware/ makeSessionResult';
-import { isEmpty } from 'lodash';
+import { isEmpty, sample } from 'lodash';
 import { responseValidator } from '../../lib/validator/main';
 import { mapMarkdownAllToObject } from '../../lib/mapper/mapMdAllToObject';
 import { mapMarkdownNutToObject } from '../../lib/mapper/mapMarkdonwDataToObject';
+import { TDC_FIELD_OBJ } from '../../constants/tdcField';
+import _ from 'lodash';
 
 const router = express.Router();
 
@@ -176,12 +178,18 @@ router.post('/export-compare-result', async (req, res) => {
     ?.map((productItem: any, idx: number) => {
       const compareResult = JSON.parse(productItem?.compareResult);
 
-      let { SupplementPanel, NutritionPanel, ...restFields } = compareResult;
+      let {
+        SupplementPanel,
+        NutritionPanel,
+        generalFactPanels,
+        ...restFields
+      } = compareResult;
 
       return productItem?.compareResult
         ? {
             idx,
             ixoneId: productItem?.ixoneID,
+            NutritionOrSupplementFactPanel: generalFactPanels,
             ...restFields,
             // NutritionPanel: 'NA',
             // SupplementPanel: 'NA',
@@ -209,13 +217,16 @@ router.post('/export-compare-result', async (req, res) => {
 
   // Add average rating to the product array as a separate object
   let accuracy = {} as any;
+  let sampleAmount = {} as any;
 
   const AVERAGE_KEY_EXCLUDED = ['idx', 'ixoneId'];
 
   allKeys.forEach((key: string) => {
     if (AVERAGE_KEY_EXCLUDED.includes(key)) return;
 
-    accuracy[key] = computeAverage(exportProductsList, key);
+    const accuracyStatistic = computeAverage(exportProductsList, key);
+    accuracy[key] = accuracyStatistic?.matchPercent;
+    sampleAmount[key] = accuracyStatistic?.sampleAmount;
   });
 
   exportProductsList.push({
@@ -226,7 +237,40 @@ router.post('/export-compare-result', async (req, res) => {
 
   // Define the CSV writer
 
+  let exportAccuracyList = allKeys
+    ?.filter((key) => key !== 'idx' && key !== 'ixoneId')
+    ?.map((key: string) => {
+      return {
+        group: TDC_FIELD_OBJ?.[key]?.DataGroup || 'N/A',
+        fieldName: key,
+        matchPercent: accuracy[key]?.toFixed(2),
+        sampleAmount: sampleAmount[key],
+      };
+    });
+
+  let exportAccuracyListHeader = [
+    {
+      id: 'group',
+      title: 'Group',
+    },
+    {
+      id: 'fieldName',
+      title: 'Field Name',
+    },
+    {
+      id: 'matchPercent',
+      title: 'Match Percent',
+    },
+    {
+      id: 'sampleAmount',
+      title: `Sample Amount in 251 products`,
+    },
+  ];
+
+  const sortedAccuracyList = _.sortBy(exportAccuracyList, ['group']);
+
   try {
+    //* export all product
     const csvWriter = createObjectCsvWriter({
       path: 'products-com-2.csv',
       header: allKeys.map((key: any) => ({ id: key, title: key })),
@@ -246,6 +290,28 @@ router.post('/export-compare-result', async (req, res) => {
       .catch((err: any) => {
         console.error('Error writing CSV file:', err);
       });
+
+    //* export accuracy list
+
+    const csvWriter2 = createObjectCsvWriter({
+      path: 'accuracy_list_251_products.csv',
+      header: exportAccuracyListHeader,
+    });
+
+    // Write the products to the CSV file
+    csvWriter2
+      .writeRecords(sortedAccuracyList)
+      .then(() => {
+        console.log('CSV file was written successfully');
+
+        // res.status(201).json({
+        //   isSucess: true,
+        //   message: 'export compare result  successfully',
+        // });
+      })
+      .catch((err: any) => {
+        console.error('Error writing CSV file:', err);
+      });
   } catch (error) {
     res
       .status(500)
@@ -258,22 +324,26 @@ const computeAverage = (products: any, field: string) => {
     .filter(
       (product: any) =>
         field in product &&
-        product[field] !== 'NAN' &&
-        product[field] !== 'NaN' &&
         product[field] !== '' &&
-        product[field] !== 'NA'
+        product[field] !== 'NA' &&
+        product[field] !== undefined
     )
     .map((product: any) => product?.[field]);
   const averagePercent =
-    allPercents.reduce(
-      (sum: any, percentValue: any) => sum + Number(percentValue),
-      0
-    ) / allPercents.length;
+    allPercents.reduce((sum: any, percentValue: any) => {
+      if (field === 'NutritionOrSupplementFactPanel') {
+        console.log('value', percentValue);
+      }
+      return sum + (percentValue === 'NaN' ? 0 : Number(percentValue));
+    }, 0) / allPercents.length;
 
-  console.log('allpercents', JSON.stringify(allPercents));
+  // console.log('allpercents', JSON.stringify(allPercents));
 
-  const final = averagePercent;
-  return final;
+  // const final = averagePercent;
+  return {
+    matchPercent: averagePercent,
+    sampleAmount: allPercents.length,
+  };
 };
 
 // router.post('/create-session', async (req, res) => {

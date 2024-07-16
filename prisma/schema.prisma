@@ -2,12 +2,13 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 // "postgresql://postgres:@localhost:5432/ocr"
 //  url      = "postgresql://admin:congacon@localhost:5432/ocr"
+//  url      = "postgresql://admin:congacon@localhost:5432/ocrfood"
 //  url      = "postgresql://duy:1234@localhost:5432/ocr"
 // env("DATABASE_URL")
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://admin:congacon@localhost:5432/ocrfood"
+  url      = "postgresql://postgres:@localhost:5432/ocrfood"
 }
 
 generator client {

@@ -1,0 +1,69 @@
+Group,Field Name,Match Percent,Sample Amount in 68 products
+Allergens,Allergens,95.51,155
+Allergens,ProcessedOnEquipment,68.84,29
+Allergens,ProcessedManufacturedInFacilityStatement,69.15,28
+Allergens,FreeOf,59.34,65
+Allergens,InFacilityOnEquipmentStatement,88.15,21
+Allergens,InFacilityOnEquipmentIncluding,96.16,20
+Attributes,DoesNotContain,81.11,117
+Attributes,Process,64.56,54
+Attributes,SugarSweetener,40.99,89
+Attributes,PlantBasedDerivedClaim,100.00,24
+Attributes,VeganYN,100.00,70
+Attributes,GlutenFreeYN,100.00,134
+Attributes,KosherYN,100.00,55
+Attributes,NonGMOYN,100.00,102
+Attributes,CarbonFootprintYN,100.00,1
+Attributes,OrganicYN,100.00,65
+Attributes,Contains,64.25,108
+Attributes,LowGlycemicYN,100.00,5
+Attributes,PaleoYN,100.00,11
+Attributes,FairTradeYN,100.00,5
+Attributes,WholeGrainYN,100.00,15
+Attributes,BioengineeredYN,100.00,4
+Attributes,KetoYN,100.00,14
+Attributes,GrassFedYN,100.00,4
+Attributes,RainForestAllianceYN,100.00,1
+Attributes,LiveAndActiveCulture,100.00,46
+Attributes,Grade,97.14,35
+Attributes,HalalYN,100.00,7
+Attributes,JuicePercent,100.00,1
+Attributes,GlyphosateResidueFreeClaim,100.00,1
+Attributes,BeeBetterClaim,100.00,3
+Attributes,CrueltyFreeYN,100.00,3
+Attributes,HeartHealthyYN,100.00,2
+Certifications,CertifiedBCorporation,100.00,23
+Header,BrandName,82.69,251
+Header,PrimarySize,84.86,251
+Header,PrimarySizeText,80.16,251
+Header,PrimarySizeUOM,89.24,251
+Header,ProductDescription,40.74,251
+Header,SecondarySize,82.11,246
+Header,SecondarySizeUOM,87.40,246
+Header,HasPanel,98.01,251
+Header,HasSupplementPanel,100.00,251
+Header,HasNutritionPanel,99.20,251
+Header,TertiarySize,58.33,36
+Header,TertiarySizeUOM,61.11,36
+Header,UnitCount,81.94,72
+Ingredients,IngredientBreakout,90.88,238
+Ingredients,IngredientsStatement,90.29,238
+Instructions,ConsumerStorage,90.05,167
+Instructions,CookingInstructions,66.09,31
+Instructions,UseOrFreezeBy,44.68,27
+Instructions,UsageInstructions,51.37,42
+Marketing Claims - Unit,QRCode,89.39,66
+Marketing Claims - Unit,SocialMedia,49.53,81
+Marketing Claims - Unit,SocialMediaAddresses,63.97,65
+Marketing Claims - Unit,Website,92.86,214
+Nutrition/Supplement Fact,NutritionOrSupplementFactPanel,93.52,243
+Physical - Unit,UPC12,44.62,251
+Supply Chain - Unit,ManufacturerCityPackaging,93.82,145
+Supply Chain - Unit,ManufacturerNamePackaging,77.72,136
+Supply Chain - Unit,ManufacturerStatePackaging,96.95,131
+Supply Chain - Unit,ManufacturerZipCodePackaging,95.79,142
+Supply Chain - Unit,CountryOfOriginName,86.84,93
+Supply Chain - Unit,CountryOfOriginText,85.88,93
+Supply Chain - Unit,DistributedBy,89.58,101
+Supply Chain - Unit,ManufacturerPhoneNumberPackaging,78.13,32
+Supply Chain - Unit,ManufacturerStreetPackaging,97.83,46
