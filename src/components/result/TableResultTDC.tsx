@@ -18,11 +18,9 @@ export const TableResultTDC = ({
     <>
       {productTdcData ? (
         <div className='p-4 border rounded-md flex-1 overflow-auto max-h-screen'>
-          {/* <MetaInfo productInfo={productInfo} />
-           */}
           <CamelFieldStringRender
             objectValues={{ ...metaData, generalFactPanels: 'N/A' }}
-            evaluations={evaluation}
+            evaluations={process.env.NODE_ENV !== 'production' && evaluation}
           />
 
           {SupplementPanel?.length > 0 && (
