@@ -31,6 +31,7 @@ import { supplyChainValidate } from './markdownObjectValidator/supplyChainValida
 import { baseCertifierClaimValidate } from './markdownObjectValidator/baseCertifierClaimValidate';
 import { instructionValidate } from './markdownObjectValidator/instructionValidate';
 import { physicalValidate } from './markdownObjectValidator/physicalValidate';
+import { ingredientValidate } from './markdownObjectValidator/ingredientValidate';
 
 export const responseValidator = async (response: any, ocrClaims: any) => {
   let validatedResponse = { ...response };
@@ -54,6 +55,7 @@ const validateProductDataPoints = async (response: any, ocrClaims: any) => {
 
   allergenValidate(modifiedProductDataPoints);
   supplyChainValidate(modifiedProductDataPoints);
+  await ingredientValidate(modifiedProductDataPoints);
   await headerValidate(modifiedProductDataPoints);
   await calorieClaimValidate(modifiedProductDataPoints);
   await containAndNotContainClaimValidate(modifiedProductDataPoints, ocrClaims);

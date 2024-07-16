@@ -49,3 +49,5 @@ export const ingredientsValidator = async (modifiedProductDataPoints: any) => {
 
   console.log('ingredients validator -- finish');
 };
+
+const validateIngredientBreakdown = () => {};
