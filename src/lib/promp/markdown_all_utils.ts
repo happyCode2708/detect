@@ -156,7 +156,7 @@ Ex 4: "24 K-CUP PODS - 0.55 OZ (5.2)G/EA NET WT 4.44 OZ (38g)"
 5) "ingredient" table rules:
 + is the list of statements about ingredients of product (since product can have many ingredients list)
 + "ingredient statement" is content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "other ingredients:".
-+ "ingredient break-down list" is the list of ingredient in ingredient statement split by ", "
++ "ingredient break-down list" is the list of ingredient in ingredient statement split by "/"
 + "product type from nutrition panel" could be detected through nutrition panel text title which are NUTRITION FACTS or SUPPLEMENT FACTS
 
 6) "marketing" table rules:
@@ -562,7 +562,7 @@ HEADER_TABLE
 11) Ingredient info with table format below:
 
 INGREDIENT_TABLE
-| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement |  ingredient break-down list (answer in multiple string splitted by comma) |
+| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement |  ingredient break-down list (answer in multiple string splitted by "/") |
 | ------- | ------- | -------- | -------- |
 
 12) Physical info with table format below
