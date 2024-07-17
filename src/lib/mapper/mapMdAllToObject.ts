@@ -237,6 +237,8 @@ export const mapMarkdownAllToObject = (markdown: string) => {
     'ingredientPrefix',
     'ingredientStatement',
     'ingredientBreakdown',
+    'liveAndActiveCulturesStatement',
+    'liveAndActiveCulturesBreakdown',
   ]);
   logger.error('ingredient list');
   logger.info(JSON.stringify(ingredientObjList));

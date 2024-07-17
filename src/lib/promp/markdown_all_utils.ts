@@ -135,7 +135,7 @@ ex 1: "oats, milk"
 
 4) "header" table rules:
 + header table only have 1 row item so you must carefully examine the images.
-+ "primary size" and "secondary size" and "third size" are a quantity measurement of product in there different unit of measurement. They are not info from "serving size" in nutrition fact.
++ "primary size" and "secondary size" and "third size" are a quantity measurement of product in there different unit of measurement. They are not info from "serving size" in nutrition fact panel.
 Ex 1: "primary size" = "100 gram"
 Ex 3: "WT 2.68 OZ (40g) should recorded as "primary size" = "2.68 OZ" and "secondary size" = "40g"
 Ex 2: "32 fl oz ( 2 pt ) 946 mL" should recorded as "primary size" = "32 fl oz" and "secondary size" = "2 pt" and "third size" = "946 mL"
@@ -223,7 +223,7 @@ IMPORTANT NOTE:
 + possible answers of "how product state about it ?" for sugar claim table  are  "free of"/  "free from" / "made without" / "no contain" / "contain" / "lower" / "low" / "0g" / "zero" / "other" / "does not contain" / "not too sweet" / "low sweet" / "sweetened" / "other".
 
 SUGAR_CLAIM_TABLE
-| sugar item | sugar item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ?  | do you know it through which info ? (answer are "ingredient list","marketing text on product", "nutrition fact", "others") (answer allow multiple sources split by comma) | how do you know ? |
+| sugar item | sugar item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ?  | do you know it through which info ? (answer are "ingredient list","marketing text on product", "nutrition fact panel", "others") (answer allow multiple sources split by comma) | how do you know ? |
 | ------- | -------- | ------- | ------- | ------- |
 | acesulfame k |
 | acesulfame potassium |
@@ -263,29 +263,27 @@ SUGAR_CLAIM_TABLE
 2) FAT_CLAIM_TABLE info of product images recorded in markdown table format below:
 
 FAT_CLAIM_TABLE
-| fat claim | does product claim that fat claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| fat claim | does product claim that fat claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through those sources of info ? (multiple sources allowed) (answer are "ingredient list"/ "nutrition fact panel"/ "marketing text on product"/ "others") | how do you know that ? and give me you explain (answer in string) |
 | ------- | -------- | -------- | -------- |
-| is fat free | ...
-| is free of saturated fat | ...
-| is low fat | ...
-| is low in saturated fat | ...
-| have no fat | ...
-| have no trans fat | ...
-| is reduced fat | ...
-| is trans fat free | ...
-| have zero grams trans fat per serving | ...
-| have zero trans fat | ...
+| is fat free |
+| is free of saturated fat |
+| is low fat |
+| is low in saturated fat |
+| have no fat | 
+| nonfat |
+| have no trans fat |
+| is reduced fat |
+| is trans fat free | 
+| have zero grams trans fat per serving |
+| have zero trans fat |
 
 3) PROCESS_CLAIM_TABLE info recorded in markdown table format below:
-
-CONDITION FOR ROW TO SHOW IN TABLE BELOW: 
-+ only return row items that its "does product explicitly claim this claim" value = "yes" and remove all rows with "does product explicitly claim this claim" value = "unknown" or "no")
 
 IMPORTANT NOTE:
 + "live food" is living animals used as food for pet.
 
 PROCESS_CLAIM_TABLE
-| proces claim | does product explicitly claim this process claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
+| proces claim | does product explicitly claim this process claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact panel"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) | how do you know that ? and give me you explain (answer in string) |
 | ------- | -------- | -------- | -------- |
 | 100% natural | ...
 | 100% natural ingredients | ...
@@ -354,7 +352,7 @@ CONDITION FOR ROW TO SHOW FOR TABLE BELOW:
 + only return row items that its "does product explicitly claim the calorie claim" value = "yes" and remove all rows with "does product explicitly claim the calorie claim" value = "unknown" or "no")
 
 CALORIE_CLAIM_TABLE
-| calorie claim | does product explicitly claim the calorie claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| calorie claim | does product explicitly claim the calorie claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact panel"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
 | ------- | -------- | -------- |
 | have low calorie | ...
 | have reduced calorie | ...
@@ -366,7 +364,7 @@ CONDITION FOR ROW TO SHOW FOR TABLE BELOW:
 + only return row items that its "does product explicitly claim this claim" value = "yes" and remove all rows with "does product explicitly claim this claim" value  = "unknown" or "no" )
 
 SALT_CLAIM_TABLE
-| salt claim | does product explicitly claim this claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| salt claim | does product explicitly claim this claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact panel"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
 | ------- | -------- | -------- |
 | lightly salted | ...
 | low sodium | ...
@@ -392,7 +390,7 @@ IMPORTANT NOTE:
 + text like "contain ..." or "contain no ..." is "marketing text on product" and NOT "ingredient list"
 
 FIRST_EXTRA_CLAIM_TABLE
-| extra item | is item mentioned on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain" )  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer is multiple string if needed) | how do you know ? |  
+| extra item | is item mentioned on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain" )  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer is multiple string if needed) | how do you know ? |  
 | ------- | -------- | ------- | ------- | ------- | 
 | additives | ...
 | artificial additives | ...
@@ -455,7 +453,7 @@ IMPORTANT NOTE:
 + "no dairy" DO NOT mean "no lactose"
 
 SECOND_EXTRA_CLAIM_TABLE
-| extra item | is item mentioned on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| extra item | is item mentioned on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
 | ------- | -------- | ------- | ------- | ------- |
 | omega fatty acids | ...
 | pesticides | ...
@@ -496,7 +494,7 @@ IMPORTANT NOTE:
 + "vegan" not mean "vegan ingredients"
 
 THIRD_EXTRA_CLAIM_TABLE
-| extra item | is item mentioned on provided images? (answer is yes/no/unknown) |  How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
+| extra item | is item mentioned on provided images? (answer is yes/no/unknown) |  How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | how do you know ? |
 | ------- | -------- | ------- | ------- | ------- |
 | petro chemical | ...
 | petrolatum | ...
@@ -562,8 +560,8 @@ HEADER_TABLE
 11) Ingredient info with table format below:
 
 INGREDIENT_TABLE
-| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement |  ingredient break-down list (answer in multiple string splitted by "/") |
-| ------- | ------- | -------- | -------- |
+| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement |  ingredient break-down list (answer in multiple string splitted by "/") | live and active cultures list statement | live and active cultures break-down list (answer in multiple string splitted by "/")  | 
+| ------- | ------- | -------- | -------- | -------- | -------- |
 
 12) Physical info with table format below
 
@@ -666,6 +664,10 @@ ATTRIBUTE_TABLE
 
 `;
 };
+
+//* proces
+// CONDITION FOR ROW TO SHOW IN TABLE BELOW:
+// + only return row items that its "does product explicitly claim this claim" value = "yes" and remove all rows with "does product explicitly claim this claim" value = "unknown" or "no")
 
 //* second
 // CONDITION FOR ROW TO SHOW FOR TABLE BELOW:

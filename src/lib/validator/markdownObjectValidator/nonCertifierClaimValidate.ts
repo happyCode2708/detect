@@ -46,7 +46,7 @@ const check = async (analysisItem: any): Promise<boolean> => {
 
   if (
     source?.includes('ingredient list') ||
-    source?.includes('nutrition fact')
+    source?.includes('nutrition fact panel')
   ) {
     return Promise.resolve(false);
   }
@@ -94,6 +94,8 @@ const NON_CERTIFICATE_REASON = {
     ['vegan', 'diet'],
     ['vegan', 'feed'],
   ],
+  'all natural': [['all', 'natural']],
+  'all natural ingredients': [['all', 'natural', 'ingredient']],
 } as any;
 
 const NON_CERTIFICATE_CLAIMS = [

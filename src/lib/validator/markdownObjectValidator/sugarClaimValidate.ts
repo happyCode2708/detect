@@ -47,7 +47,13 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
   }
 
-  if (!source.includes('marketing text on product')) {
+  //
+  // if (!source.includes('marketing text on product')) {
+  //   return Promise.resolve(false);
+  // }
+
+  //? temp change
+  if (source?.includes('nutrition fact panel')) {
     return Promise.resolve(false);
   }
 
@@ -74,7 +80,12 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
   }
 
-  if (source?.includes('marketing text on product') && isClaimed === 'yes') {
+  //! teno hide
+  // if (source?.includes('marketing text on product') && isClaimed === 'yes') {
+  //   return Promise.resolve(true);
+  // }
+  //? temp change
+  if (isClaimed === 'yes') {
     return Promise.resolve(true);
   }
 
@@ -92,6 +103,7 @@ const SUGAR_ITEMS_REASON = {
 
 const SUGAR_ITEMS = [
   'acesulfame k',
+  'acesulfame potassium',
   'agave',
   'allulose',
   'artificial sweetener',
@@ -101,46 +113,82 @@ const SUGAR_ITEMS = [
   'coconut sugar',
   'coconut palm sugar',
   'fruit juice',
+  'corn syrup',
   'high fructose corn syrup',
   'honey',
   'low sugar',
   'lower sugar',
   'monk fruit',
   'natural sweeteners',
-  'no acesulfame k',
-  'no added sugar',
-  'no agave',
-  'no allulose',
-  'no artificial sweetener',
-  'no aspartame',
-  'no cane sugar',
-  'no coconut sugar',
-  'no coconut palm sugar',
-  'no corn syrup',
-  'no high fructose corn syrup',
-  'no refined sugars',
-  'no saccharin',
-  'no splenda',
-  'no sucralose',
-  'no stevia',
-  'no sugar',
-  'no sugar added',
-  'no sugar alcohol',
-  'no tagatose',
-  'no xylitol',
-  'reduced sugar',
-  'refined sugar',
+  'added sugar',
+  'refined sugars',
   'saccharin',
+  'splenda/sucralose',
   'splenda',
   'sucralose',
   'stevia',
+  'sugar',
+  'sugar added',
   'sugar alcohol',
-  'sugar free',
-  'sugars added',
   'tagatose',
+  'xylitol',
+  'reduced sugar',
+  'sugar free',
   'unsweetened',
   'xylitol',
 ];
+
+// const SUGAR_ITEMS = [
+//   'acesulfame k',
+//   'agave',
+//   'allulose',
+//   'artificial sweetener',
+//   'aspartame',
+//   'beet sugar',
+//   'cane sugar',
+//   'coconut sugar',
+//   'coconut palm sugar',
+//   'fruit juice',
+//   'high fructose corn syrup',
+//   'honey',
+//   'low sugar',
+//   'lower sugar',
+//   'monk fruit',
+//   'natural sweeteners',
+//   'no acesulfame k',
+//   'no added sugar',
+//   'no agave',
+//   'no allulose',
+//   'no artificial sweetener',
+//   'no aspartame',
+//   'no cane sugar',
+//   'no coconut sugar',
+//   'no coconut palm sugar',
+//   'no corn syrup',
+//   'no high fructose corn syrup',
+//   'no refined sugars',
+//   'no saccharin',
+//   'no splenda',
+//   'no sucralose',
+//   'no stevia',
+//   'no sugar',
+//   'no sugar added',
+//   'no sugar alcohol',
+//   'no tagatose',
+//   'no xylitol',
+//   'reduced sugar',
+//   'refined sugar',
+//   'saccharin',
+//   'splenda',
+//   'sucralose',
+//   'stevia',
+//   'sugar alcohol',
+//   'sugar free',
+//   'sugars added',
+//   'tagatose',
+//   'unsweetened',
+//   'xylitol',
+// ];
 
 const SUGAR_CLAIMS_MAP = {
   low: {

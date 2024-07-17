@@ -96,21 +96,31 @@ export const mapToTDCformat = (extractData: any) => {
     //     ? [toUpper(ingredients[0].ingredientStatement)]
     //     : undefined,
 
-    IngredientsStatement:
-      ingredients?.[0]?.ingredientStatement && ingredients?.length > 0
-        ? ingredients?.map((ingredientItem: any) => {
-            return toUpper(ingredientItem?.ingredientStatement);
-          })
-        : undefined,
-    IngredientBreakout:
-      ingredients?.length > 0
-        ? ingredients?.map((ingredientItem: any) => {
-            return ingredientItem?.ingredientBreakdown
-              ?.split(', ')
-              .filter((item: string) => item !== '')
-              .map((item: string) => toUpper(item?.trim()));
-          })
-        : undefined,
+    ...mapIngredients(ingredients),
+
+    // IngredientsStatement:
+    //   ingredients?.[0]?.ingredientStatement && ingredients?.length > 0
+    //     ? ingredients?.map((ingredientItem: any) => {
+    //         return toUpper(ingredientItem?.ingredientStatement);
+    //       })
+    //     : undefined,
+    // IngredientBreakout:
+    //   ingredients?.length > 0
+    //     ? ingredients
+    //         ?.map((ingredientItem: any) => {
+    //           return ingredientItem?.ingredientBreakdown
+    //             ?.split('/')
+    //             .filter((item: string) => item !== '')
+    //             .map((item: string) => toUpper(item?.trim()));
+    //         })
+    //         ?.reduce(
+    //           (ingredientList: string[], partialIngredientList: any) => [
+    //             ...ingredientList,
+    //             ...partialIngredientList,
+    //           ],
+    //           []
+    //         )
+    //     : undefined,
 
     //* additional
     HasSupplementPanel:
@@ -376,3 +386,52 @@ const mapPrimarySizeAndPrimarySizeUom = (header: any) => {
 
 //   return {};
 // };
+
+const mapIngredients = (ingredients: any) => {
+  let IngredientsStatement = [] as any;
+  let IngredientBreakout = [] as any;
+
+  ingredients?.forEach((ingredientItem: any) => {
+    const {
+      ingredientStatement,
+      ingredientBreakdown,
+      liveAndActiveCulturesStatement,
+      validatedIngredientBreakdown,
+    } = ingredientItem;
+
+    if (ingredientItem?.['ingredientStatement']) {
+      IngredientsStatement.push(ingredientItem?.['ingredientStatement']);
+    }
+
+    if (ingredientItem?.['liveAndActiveCulturesStatement']) {
+      IngredientsStatement.push(
+        ingredientItem?.['liveAndActiveCulturesStatement']
+      );
+    }
+
+    if (
+      ingredientItem?.['ingredientBreakdown'] &&
+      ingredientItem?.['validated_ingredientBreakdown']
+    ) {
+      IngredientBreakout = [
+        ...IngredientBreakout,
+        ...ingredientItem?.['validated_ingredientBreakdown'],
+      ];
+    }
+
+    if (
+      ingredientItem?.['liveAndActiveCulturesBreakdown'] &&
+      ingredientItem?.['validated_liveAndActiveCulturesBreakdown']
+    ) {
+      IngredientBreakout = [
+        ...IngredientBreakout,
+        ...ingredientItem?.['validated_liveAndActiveCulturesBreakdown'],
+      ];
+    }
+  });
+
+  return {
+    IngredientsStatement,
+    IngredientBreakout,
+  };
+};

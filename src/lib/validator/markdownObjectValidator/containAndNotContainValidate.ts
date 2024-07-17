@@ -175,11 +175,16 @@ const check = async (
     return Promise.resolve(false);
   }
 
-  if (
-    (source?.includes('ingredient list') ||
-      source?.includes('nutrition fact')) &&
-    !source?.includes('marketing text on product')
-  ) {
+  //! temp remove ingredient list condition
+  // if (
+  //   (source?.includes('ingredient list') ||
+  //     source?.includes('nutrition fact')) &&
+  //   !source?.includes('marketing text on product')
+  // ) {
+  //   return Promise.resolve(false);
+  // }
+  //? replacement
+  if (source?.includes('nutrition fact panel')) {
     return Promise.resolve(false);
   }
 
@@ -213,7 +218,12 @@ const check = async (
     }
   }
 
-  if (source.includes('marketing text on product') && mentioned === 'yes') {
+  //! temp remove ingredient list condition
+  // if (source.includes('marketing text on product') && mentioned === 'yes') {
+  //   return Promise.resolve(true);
+  // }
+  //? replacement
+  if (mentioned === 'yes') {
     return Promise.resolve(true);
   }
 

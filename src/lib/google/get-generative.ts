@@ -16,7 +16,7 @@ export const getGenerative = () => {
   const googleCredential = JSON.parse(googleCredentialString);
 
   const vertex_ai = new VertexAI({
-    project: 'vibrant-abbey-421304',
+    project: 'splendid-sonar-429704-g9',
     location: 'asia-east1',
     googleAuthOptions: {
       credentials: googleCredential,
@@ -39,19 +39,19 @@ export const getGenerative = () => {
     safetySettings: [
       {
         category: 'HARM_CATEGORY_HATE_SPEECH',
-        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+        threshold: 'BLOCK_ONLY_HIGH',
       },
       {
         category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
-        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+        threshold: 'BLOCK_ONLY_HIGH',
       },
       {
         category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+        threshold: 'BLOCK_ONLY_HIGH',
       },
       {
         category: 'HARM_CATEGORY_HARASSMENT',
-        threshold: 'BLOCK_MEDIUM_AND_ABOVE',
+        threshold: 'BLOCK_ONLY_HIGH',
       },
     ] as any,
   });

@@ -40,7 +40,7 @@ const check = async (analysisItem: any): Promise<boolean> => {
   if (isClaimed === 'no' || isClaimed === 'unknown')
     return Promise.resolve(false);
 
-  if (source === 'ingredient list' || source === 'nutrition fact') {
+  if (source === 'ingredient list' || source === 'nutrition fact panel') {
     return Promise.resolve(false);
   }
 
