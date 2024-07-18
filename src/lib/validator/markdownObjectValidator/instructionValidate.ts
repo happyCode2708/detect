@@ -13,13 +13,13 @@ export const instructionValidate = async (modifiedProductDataPoints: any) => {
   const { storageInstruction, usageInstruction } = allInstructions;
 
   await validateConsumerStorage(
-    [...storageInstruction, ...usageInstruction],
+    [...(storageInstruction || []), ...(usageInstruction || [])],
     modifiedProductDataPoints,
     'validated_storageInstruction'
   );
 
   await validateUseOrFreezeBy(
-    [...storageInstruction],
+    [...(storageInstruction || [])],
     modifiedProductDataPoints,
     'validated_useOrFreezeBy'
   );

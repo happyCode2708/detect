@@ -1,6 +1,10 @@
 import logger from '../logger/index';
 
 export const mapMarkdownAllToObject = (markdown: string) => {
+  const lablingInfoSection = markdown
+    .split('LABELING_INFO_TABLE')?.[1]
+    ?.split('SUGAR_CLAIM_TABLE')?.[0];
+
   const sugarClaimSection = markdown
     .split('SUGAR_CLAIM_TABLE')?.[1]
     ?.split('FAT_CLAIM_TABLE')?.[0];
@@ -126,6 +130,12 @@ export const mapMarkdownAllToObject = (markdown: string) => {
 
   // logger.error('marketingTextSection');
   // logger.info(marketingTextSection);
+
+  //? LABELING INFO
+  const labelingObjList = getObjectDataFromTable(lablingInfoSection, [
+    'free',
+    'contain',
+  ]);
 
   //? EXTRA
   const extraClaimsObjList_1 = getObjectDataFromTable(extraClaimSection_1, [
@@ -343,6 +353,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   // logger.info(JSON.stringify(marketingTextObjList));
 
   return {
+    labeling: labelingObjList,
     header: headerObjList,
     physical: physicalObjList,
     attributes: {

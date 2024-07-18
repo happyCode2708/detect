@@ -15,6 +15,7 @@ export const mapToTDCformat = (extractData: any) => {
     factPanels,
     header,
     allergens,
+    validated_allergens,
     attributes,
     physical,
   } = productData;
@@ -75,19 +76,26 @@ export const mapToTDCformat = (extractData: any) => {
     // InstructionsAncillary: instructions?.[0]?.otherInstructions,
 
     //* allergen
-    Allergens: allergens?.[0]?.validated_containList,
+    // Allergens: allergens?.[0]?.validated_containList,
+    AllergensAncillary: validated_allergens?.allergensAncillary,
+    Allergens: validated_allergens?.allergens,
+    FreeOf: validated_allergens?.freeOf,
+    ProcessedOnEquipment: validated_allergens?.processedOnEquipment,
+    ProcessedManufacturedInFacilityStatement:
+      validated_allergens?.processedManufacturedInFacilityStatement,
+    InFacilityOnEquipmentStatement:
+      validated_allergens?.processedManufacturedInFacilityStatement,
+    InFacilityOnEquipmentIncluding: validated_allergens?.processedOnEquipment,
 
-    FreeOf: allergens?.[0]?.validated_notContainList,
+    // FreeOf: allergens?.[0]?.validated_notContainList,
     // AllergensAncillary: [
     //   toUpper(allergens?.[0]?.containStatement),
     //   toUpper(allergens?.[0]?.notContainStatement),
     // ], //? in progress
-    ProcessedOnEquipment: allergens?.[0]?.validated_containOnEquipmentList,
-    ProcessedManufacturedInFacilityStatement:
-      allergens?.[0]?.containOnEquipmentStatement,
-    InFacilityOnEquipmentStatement: allergens?.[0]?.containOnEquipmentStatement,
-    InFacilityOnEquipmentIncluding:
-      allergens?.[0]?.validated_containOnEquipmentList,
+    // ProcessedOnEquipment: allergens?.[0]?.validated_containOnEquipmentList,
+    // InFacilityOnEquipmentStatement: allergens?.[0]?.containOnEquipmentStatement,
+    // InFacilityOnEquipmentIncluding:
+    //   allergens?.[0]?.validated_containOnEquipmentList,
 
     //* ingredients
     // SupplementIngredientStatement:

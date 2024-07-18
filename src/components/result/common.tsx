@@ -26,6 +26,7 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     attributes,
     ingredients,
     allergens,
+    validated_allergens,
     instructions,
     marketing,
     supplyChain,
@@ -69,7 +70,21 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         <CamelFieldStringRender objectValues={{ salt: validated_saltClaims }} />
       </SectionWrapper>
       <SectionWrapper name='allergens'>
-        <CamelFieldStringRender objectValues={allergens?.[0]} />
+        {allergens?.map((allergenItem: any) => {
+          return (
+            <div className='border rounded-md mb-2 p-1'>
+              <CamelFieldStringRender objectValues={allergenItem} />
+            </div>
+          );
+        })}
+        {validated_allergens && (
+          <div className='border rounded-md mb-2 p-1'>
+            <div className='font-bold uppercase p-1 rounded-md bg-green-500 text-white inline-block'>
+              validated result
+            </div>
+            <CamelFieldStringRender objectValues={validated_allergens} />
+          </div>
+        )}
       </SectionWrapper>
       <SectionWrapper name='instructions'>
         <CamelFieldStringRender objectValues={instructions?.[0]} />

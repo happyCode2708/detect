@@ -32,6 +32,8 @@
 // + "all other instructions" are all other instructions see examples
 // Ex 1: SEE NUTRITION INFORMATION FOR FAT AND SATURATED FAT ...
 
+// + allergen table only must have one row data so the list must be recorded in one cell and split by ", "
+
 export const make_markdown_all_prompt = ({
   ocrText,
   imageCount,
@@ -70,6 +72,7 @@ Ex: you are not allow to infer "no animal ingredients" from "organic certifier"
 13) do not collect number near the UPC barcode it is not UPC code number. Only get number inside the barcode for UPC code. 
 
 14) result must be in order and include all tables below
+LABELING_INFO_TABLE
 SUGAR_CLAIM_TABLE
 FAT_CLAIM_TABLE
 PROCESS_CLAIM_TABLE
@@ -111,12 +114,12 @@ IMPORTANT RULES:
 "tree nuts"
 "wheat".
 
-+ "allergen does-not-contain statement" are the exact contexts that you found on provided images about allergen info, that product claim not to contain.
++ "allergen does-not-contain statement or label" are the exact contexts that you found on provided images about allergen info, that product claim to not contain or free of or free.
+ane "allergen does-not-contain statement or label" could be claim from a label on product images about allergen thing that not contain or free of or free.
 Ex 1: "contain no wheat, milk"
 Ex 2: "does not contain wheat, milk"
 Ex 3: "free of wheat, milk"
 Ex 4: "non-dairy" text mean does not contain allergen ingredient of "dairy"
-Ex 5:  "no soy"
 
 + "allergen contain statement" are the exact contexts that you found on provided images about allergen info, usually start with "contains", "contains:", "may contains:", ....
 
@@ -127,8 +130,8 @@ ex 1: "manufactured on equipment that also processes product containing ..."
 ex 2: "made in a facility that also processes ... "
 ex 3: "tree nuts, wheat present in facility"
 
-+ "allergen break-down list" is a string list
-ex 1: "oats, milk"
++ "allergen break-down list from that statement" is a string list
+ex 1: "oats/milk"
 
 3) "SUGAR_CLAIM_TABLE" rules:
 + possible answers of "how product state about it ?" are "free of"/  "free from" / "made without" / "no contain" / "contain" / "lower" / "low" / "0g" / "zero" / "other" / "does not contain" / "not too sweet" / "low sweet" / "sweetened" / "other".
@@ -216,6 +219,18 @@ Ex: logo U kosher found mean "kosher claim" = "yes"
 RESULT THAT I NEED:
 Carefully examine all text infos, all icons, all logos  from provided images and help me return output with all markdown tables format below remember that all provided images are captured pictured of one product only from different angles.
 
+1) LABELING_INFO_TABLE info recorded in markdown table format below
+
+IMPORTANT NOTE:
++ labeling info could be easily detected by some icons with text on provided images.
++ remember when product state "something free" it mean product free of that thing
+Example 1: "gluten free" mean product not contain "gluten"
+Example 2: "nuts free" mean product not contain "nuts"
+
+LABELING_INFO_TABLE
+| things labeling free of (split by "/")| things labeling that product contain (split by "/")|
+| ------- | -------- |
+
 1) SUGAR_CLAIM_TABLE info recorded in markdown table format below:
 
 IMPORTANT NOTE:
@@ -223,7 +238,7 @@ IMPORTANT NOTE:
 + possible answers of "how product state about it ?" for sugar claim table  are  "free of"/  "free from" / "made without" / "no contain" / "contain" / "lower" / "low" / "0g" / "zero" / "other" / "does not contain" / "not too sweet" / "low sweet" / "sweetened" / "other".
 
 SUGAR_CLAIM_TABLE
-| sugar item | sugar item explicitly and directly state in a text on product  without implying from other text? (answer is yes/no/unknown) | How product state about it ?  | do you know it through which info ? (answer are "ingredient list","marketing text on product", "nutrition fact panel", "others") (answer allow multiple sources split by comma) | how do you know ? |
+| sugar item | is item mentioned on provided images? (answer is yes/no/unknown)? (answer is yes/no/unknown) | How product state about it ?  | do you know it through those sources of info ? (multiple sources allowed and split by "/") (answer are "ingredient list","marketing text on product", "nutrition fact panel", "others")| how do you know ? |
 | ------- | -------- | ------- | ------- | ------- |
 | acesulfame k |
 | acesulfame potassium |
@@ -543,11 +558,10 @@ THIRD_EXTRA_CLAIM_TABLE
 9) Allergen info recorded in markdown table format below:
  
 IMPORTANT NOTE:
-+ allergen table only must have one row data so the list must be recorded in one cell and split by ", "
 + tree nuts also includes "coconut"
 
 ALLERGEN_TABLE
-| allergen contain statement (allow multiple string split by comma) | allergen contain break-down list | allergen does-not-contain statement (allow multiple string split by comma) | allergen does-not-contain statement break-down list | allergen contain on equipment statement | allergen contain on equipment break-down list| 
+| allergen contain statement | allergen contain break-down list from that statement (split by "/") | allergen does-not-contain statement or label | allergen does-not-contain statement break-down list from that statement or label (split by "/") | allergen contain on equipment statement | allergen contain on equipment break-down list for that statement (split by "/")| 
 | ------- | -------- | -------- | ------- | -------- | -------- |
 
 10) Header info with table format below:
@@ -560,7 +574,7 @@ HEADER_TABLE
 11) Ingredient info with table format below:
 
 INGREDIENT_TABLE
-| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement |  ingredient break-down list (answer in multiple string splitted by "/") | live and active cultures list statement | live and active cultures break-down list (answer in multiple string splitted by "/")  | 
+| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement |  ingredient break-down list from ingredient statement (answer in multiple string splitted by "/") | live and active cultures list statement | live and active cultures break-down list (answer in multiple string splitted by "/")  | 
 | ------- | ------- | -------- | -------- | -------- | -------- |
 
 12) Physical info with table format below

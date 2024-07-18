@@ -28,10 +28,14 @@ const validate = async (
       const currentValues =
         modifiedProductDataPoints?.['attributes']?.[dataPointKey] || [];
 
+      console.log(`why sugar --- ${statement} --- ${claim}`);
+
       modifiedProductDataPoints['attributes'][dataPointKey] = Array.from(
         new Set([
           ...currentValues,
-          SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim],
+          SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim]
+            ? SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim]
+            : `unsure-${claim}`,
         ])
       );
     }
@@ -66,18 +70,44 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
   }
 
-  if (
-    SUGAR_ITEMS_REASON?.[toLower(claim)]
-      ? SUGAR_ITEMS_REASON?.[toLower(claim)]
-          ?.map((word: string) => {
-            if (toLower(reason)?.includes(word)) return true;
+  // if (
+  //   SUGAR_ITEMS_REASON?.[toLower(claim)]
+  //     ? SUGAR_ITEMS_REASON?.[toLower(claim)]
+  //         ?.map((word: string) => {
+  //           if (toLower(reason)?.includes(word)) return true;
 
-            return false;
+  //           return false;
+  //         })
+  //         .some((result: boolean) => result === false)
+  //     : false
+  // ) {
+  //   return Promise.resolve(false);
+  // }
+
+  const sugarClaim = SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim];
+
+  if (
+    SUGAR_ITEMS_REASON?.[toLower(sugarClaim)]
+      ?.map((wordList: any) => {
+        return wordList
+          .map((word: any) => {
+            if (toLower(reason)?.includes(word)) {
+              return true;
+            } else {
+              return false;
+            }
           })
-          .some((result: boolean) => result === false)
-      : false
+          .every((result: any) => result === true);
+      })
+      .every((result: any) => result === false)
   ) {
     return Promise.resolve(false);
+  } else {
+    //* exceptional cases
+    // if (toLower(claim) === 'alcohol' && toLower(reason)?.includes('sugar')) {
+    //   //? it could be about 'alcohol sugar' so must return false
+    //   return Promise.resolve(false);
+    // }
   }
 
   //! teno hide
@@ -93,12 +123,16 @@ const check = async (analysisItem: any): Promise<boolean> => {
 };
 
 const SUGAR_ITEMS_REASON = {
-  'lower sugar': ['lower', 'sugar'],
-  'low sugar': ['low', 'sugar'],
-  'reduced sugar': ['reduced', 'sugar'],
-  'sugar free': ['sugar', 'free'],
-  'cane sugar': ['cane', 'sugar'],
-  'artificial sweetener': ['artificial', 'sweetener'],
+  'lower sugar': [['lower', 'sugar']],
+  'low sugar': [['low', 'sugar']],
+  'reduced sugar': [['reduced', 'sugar']],
+  'sugar free': [['sugar', 'free']],
+  'cane sugar': [['cane', 'sugar']],
+  'no artificial sweetener': [
+    ['not contain', 'artificial', 'sweetener'],
+    ['free from', 'artificial', 'sweetener'],
+  ],
+  unsweetened: [['unsweetened']],
 } as any;
 
 const SUGAR_ITEMS = [
@@ -314,6 +348,7 @@ const SUGAR_CLAIMS_MAP = {
     tagatose: 'no tagatose',
     xylitol: 'no xylitol',
     'sugar free': 'sugar free',
+    unsweetened: 'unsweetened',
   },
   '0g': {
     'acesulfame k': 'no acesulfame k',
@@ -413,6 +448,8 @@ const SUGAR_CLAIMS_MAP = {
     'beet sugar': 'beet sugar',
     'cane sugar': 'cane sugar',
     'coconut/coconut palm sugar': 'coconut/coconut palm sugar',
+    'coconut sugar': 'coconut/coconut palm sugar',
+    'coconut palm sugar': 'coconut/coconut palm sugar',
     'fruit juice': 'fruit juice',
     'high fructose corn syrup': 'high fructose corn syrup',
     honey: 'honey',
