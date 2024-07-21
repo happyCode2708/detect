@@ -22,7 +22,11 @@ import { checkFilesExist } from '../../lib/utils/checkFile';
 import { mapMarkdownAllToObject } from '../../lib/mapper/mapMdAllToObject';
 import { mapMarkdownNutToObject } from '../../lib/mapper/mapMarkdonwDataToObject';
 
-// import OpenAI from 'openai';
+import OpenAI from 'openai';
+import { encodeImageToBase64 } from '../../lib/image';
+import { ChatCompletionContentPartImage } from 'openai/resources/chat/completions';
+import { make_gpt4_o_prompt } from '../../lib/promp/gpt4-o-mini';
+import { findUpcFromImages } from '../../lib/utils/findUpc';
 
 // const openai = new OpenAI({
 //   apiKey: process.env.OPENAI_API_KEY,
@@ -157,7 +161,8 @@ router.post(
 );
 
 const getFilename = (filePath: any) => {
-  return path.basename(filePath);
+  const match = filePath.match(/[^\\\/]+$/);
+  return match ? match[0] : null;
 };
 
 router.post('/process-product-image', async (req, res) => {
@@ -175,6 +180,8 @@ router.post('/process-product-image', async (req, res) => {
 
     const filePaths = product?.images?.map((imageItem: any) => {
       const fileName = getFilename(imageItem?.path);
+
+      console.log('filename', fileName);
 
       if (process.env.SOURCE === 'home') {
         return `/Users/duynguyen/Desktop/foodocr/foodocr/assets/upload/${fileName}`;
@@ -226,6 +233,9 @@ router.post('/process-product-image', async (req, res) => {
     console.log('filePath', JSON.stringify(filePaths));
 
     let invalidatedInput = await findImagesContainNutFact(filePaths);
+    let foundUpc12 = await findUpcFromImages(filePaths);
+
+    console.log('upc', foundUpc12);
 
     // await createCollage(filePaths, collatedOuputPath);
 
@@ -283,6 +293,11 @@ router.post('/process-product-image', async (req, res) => {
       sessionId,
       collateImageName,
       outputConfig,
+      extraInfo: {
+        physical: {
+          upc12: foundUpc12,
+        },
+      },
     });
     // ]);
 
@@ -396,7 +411,10 @@ const createFinalResult = async ({
     }
 
     //* if both process success
-    const allJsonData = mapMarkdownAllToObject(allResData?.markdownContent);
+    const allJsonData = mapMarkdownAllToObject(
+      allResData?.markdownContent,
+      allResData?.extraInfo
+    );
     const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
 
     let finalResult = {
@@ -436,101 +454,120 @@ const createFinalResult = async ({
   }
 };
 
-// app.post('/api/upload', upload.single('file'), async (req, res) => {
-//   if (!req.file?.path) return res.json({ isSuccess: false, message: 'failed' });
-//   const file = req.file;
-//   const otherParams = req.body;
-//   if (!file) {
-//     return res.status(400).send('No file uploaded.');
-//   }
+router.post('/gpt-test', upload.single('file'), async (req, res) => {
+  let responseReturned = false;
+  let sessionId;
+  try {
+    const product = await prisma.product.findUnique({
+      where: { ixoneID: req.body.ixoneId },
+      include: { images: true },
+    });
 
-//   try {
-//     const maxTokens = 4000;
-//     const base64Image = encodeImageToBase64(req.file.path);
-//     const imagePath = `data:image/jpeg;base64,${base64Image}`;
-//     const resultFileName = req.file.filename + '.json';
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
 
-//     console.log('resultFileName: ', resultFileName);
+    const filePaths = product?.images?.map((imageItem: any) => {
+      const fileName = getFilename(imageItem?.path);
 
-//     res.json({ resultFileName, image: imagePath });
+      console.log('filename', fileName);
 
-//     const response = await openai.chat.completions.create({
-//       model: 'gpt-4-turbo',
-//       messages: [
-//         {
-//           role: 'user',
-//           content: [
-//             {
-//               type: 'text',
-//               text: `Carefully examine the image provided and created a neatly formatted JSON output containing a list of objects. Each object should contain:
-//               json
-//               [
-//                {
-//                "panelName": string ,
-//                "amountPerServing": {"value": float?, "uom": string},
-//                "servingSize": {"value": string, "uom": string},
-//                "servingPerContainer": {"value": float?, "uom": string},
-//                "nutrients": [{"name": string, "value": float?, "uom": string, "percentDailyValue": float}],
-//                "note": string,
-//                "ingredients": string
-//                }
-//               ]
+      if (process.env.SOURCE === 'home') {
+        return `/Users/duynguyen/Desktop/foodocr/foodocr/assets/upload/${fileName}`;
+      }
 
-//               Some rules for you:
+      if (process.env.SOURCE === 'company') {
+        return 'C:/Users/nnqduy/Desktop/ocr/detect/assets/upload/' + fileName;
+      }
 
-//               1) Extract exact numbers provided. No calculations or approximations are permitted.
+      return imageItem?.path;
+    });
 
-//               2) Notations like 'Includes 7g of Added Sugars' should be recorded as "name": "Added Sugars", "value": 7, "uom": "g".
+    try {
+      const checkFileExistResults = await checkFilesExist(filePaths);
+      const fileExistList = checkFileExistResults.filter(
+        (item: any) => item?.exists === true
+      );
 
-//               3) Each nutritional line's values must stay unique. Do not interchange numbers between lines or make false inferences. For instance, "total sugar 18g, included 5g added sugar 4%," should create two objects: one as "name": "total sugar", "value": 18, "uom": "g", "percentDailyValue": null, and another as "name": "added sugar", "value": 5, "uom": "g", "percentDailyValue": 14%.
+      if (fileExistList?.length < filePaths?.length) {
+        res
+          .status(404)
+          .json({ isSuccess: false, message: 'not enough file path' });
 
-//               4) The fields 'value', 'uom' (unit of measure), and 'percentDailyValue' can be empty or null. The 'value' is a float number, 'uom' is a string with no numeric characters, and 'percentDailyValue' is a float (without the percentage symbol).
+        return;
+      }
+    } catch (err) {
+      res.status(404).json({
+        isSuccess: false,
+        message: 'some thing went wrong when checking for image files',
+      });
+    }
 
-//               5) Be cautious of potential typos and characters that may look similar but mean different (e.g., '8g' may appear as 'Bg', '0mg' as 'Omg').
+    const images = filePaths.map((path) => {
+      const base64Image = encodeImageToBase64(path);
+      // return {
+      //   inlineData: {
+      //     mimeType: 'image/png',
+      //     data: base64Image,
+      //   },
+      // };
+      return `data:image/jpeg;base64,${base64Image}`;
+    });
 
-//               6) Special characters like *, +, ., before the note section are crucial - they usually have specific implications.
+    const imagesPromptList: ChatCompletionContentPartImage[] = images?.map(
+      (imagePath) => {
+        return {
+          type: 'image_url',
+          image_url: { url: imagePath },
+        };
+      }
+    );
 
-//               7) In case of multiple panels in the image, create separate panel objects for each. Attempt to decipher the panel name from the adjacent text. It might be challenging to find it sometimes.
+    const maxTokens = 8000;
 
-//               8) If there is only the name of the nutrient and the percentage, then it is considered the 'percentDailyValue', and 'value' and 'uom' are both null.
+    // const imagePath = `data:image/jpeg;base64,${base64Image}`;
 
-//               9) Ingredients usually appear below or next to the nutrition panel and start with "ingredients:".
+    const response = await (global as any)?.openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: make_gpt4_o_prompt(),
+            },
+            // ...imagesPromptList,
+            // {
+            //   type: 'image_url',
+            //   image_url: { url: imagePath },
+            // },
+          ],
+        },
+      ],
+      temperature: 1,
+      max_tokens: maxTokens,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+    });
 
-//               10) The fact info could be put side by side and may need to be extract data just like we are reading a table
+    console.log('response', JSON.stringify(response));
 
-//               11) The fact panel has two or more than two different nutrition info for two different sizes of serving. Please read the image carefully to check how many sizes of serving on the the fact panel
+    const result = response.choices[0]?.message?.content;
+  } catch (error) {
+    console.error('Error calling OpenAI API:', error);
+    res.status(500).send('Failed to generate text');
+  }
 
-//               12) Please only return the json in the response
-//               `,
-//             },
-//             {
-//               type: 'image_url',
-//               image_url: { url: imagePath },
-//             },
-//           ],
-//         },
-//       ],
-//       temperature: 1,
-//       max_tokens: maxTokens,
-//       top_p: 1,
-//       frequency_penalty: 0,
-//       presence_penalty: 0,
-//     });
+  // if (!result) return;
+  // const proc_result = result.split('```json\n')[1].split('```')[0];
 
-//     const result = response.choices[0]?.message?.content;
+  // writeJsonToFile(resultsDir, resultFileName, JSON.stringify(proc_result));
 
-//     if (!result) return;
-//     const proc_result = result.split('```json\n')[1].split('```')[0];
-
-//     writeJsonToFile(resultsDir, resultFileName, JSON.stringify(proc_result));
-
-//     console.log('response', response.choices[0].message);
-//     res.json({ result, image: imagePath });
-//   } catch (error) {
-//     console.error('Error calling OpenAI API:', error);
-//     res.status(500).send('Failed to generate text');
-//   }
-// });
+  // console.log('response', response.choices[0].message);
+  // res.json({ result, image: imagePath });
+});
 
 // const onProcessNut = async ({
 //   req,

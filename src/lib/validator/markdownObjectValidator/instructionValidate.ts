@@ -3,26 +3,53 @@ import { toLower } from 'lodash';
 export const instructionValidate = async (modifiedProductDataPoints: any) => {
   if (!modifiedProductDataPoints?.['instructions']) {
     console.log('finish validate storage instruction');
-
     return;
   }
 
-  const allInstructions =
+  modifiedProductDataPoints['validated_instructions'] = {
+    storageInstruction: [],
+    cookingInstruction: [],
+    usageInstruction: [],
+    useOrFreezeBy: [],
+  };
+
+  const instructionsData =
     modifiedProductDataPoints?.['instructions']?.[0] || {};
 
-  const { storageInstruction, usageInstruction } = allInstructions;
+  const {
+    storageInstruction,
+    usageInstruction,
+    cookingInstruction,
+    otherInstruction,
+  } = instructionsData;
+
+  const allInstructions = [
+    ...(storageInstruction || []),
+    ...(usageInstruction || []),
+    ...(cookingInstruction || []),
+  ];
 
   await validateConsumerStorage(
-    [...(storageInstruction || []), ...(usageInstruction || [])],
+    [
+      ...(storageInstruction || []),
+      ...(usageInstruction || []),
+      ...(otherInstruction || []),
+    ],
     modifiedProductDataPoints,
-    'validated_storageInstruction'
+    'storageInstruction'
   );
 
   await validateUseOrFreezeBy(
-    [...(storageInstruction || [])],
+    [
+      ...(storageInstruction || []),
+      ...(usageInstruction || []),
+      ...(otherInstruction || []),
+    ],
     modifiedProductDataPoints,
-    'validated_useOrFreezeBy'
+    'useOrFreezeBy'
   );
+
+  await validateAllInstructions(modifiedProductDataPoints, allInstructions);
 
   console.log('finish validate storage instruction');
 };
@@ -37,11 +64,11 @@ const validateConsumerStorage = async (
 
     if (validEnumValues) {
       const currentValues =
-        modifiedProductDataPoints?.['instructions']?.[0]?.[dataPointKey] || [];
+        modifiedProductDataPoints?.['validated_instructions']?.[dataPointKey] ||
+        [];
 
-      modifiedProductDataPoints['instructions'][0][dataPointKey] = Array.from(
-        new Set([...currentValues, ...validEnumValues])
-      );
+      modifiedProductDataPoints['validated_instructions'][dataPointKey] =
+        Array.from(new Set([...currentValues, ...validEnumValues]));
     }
   }
 };
@@ -78,11 +105,11 @@ const validateUseOrFreezeBy = async (
 
     if (validStatement) {
       const currentValues =
-        modifiedProductDataPoints?.['instructions']?.[0]?.[dataPointKey] || [];
+        modifiedProductDataPoints?.['validated_instructions']?.[dataPointKey] ||
+        [];
 
-      modifiedProductDataPoints['instructions'][0][dataPointKey] = Array.from(
-        new Set([...currentValues, validStatement])
-      );
+      modifiedProductDataPoints['validated_instructions'][dataPointKey] =
+        Array.from(new Set([...currentValues, validStatement]));
     }
   }
 };
@@ -90,23 +117,69 @@ const validateUseOrFreezeBy = async (
 const checkUserOfFreezeBy = async (statement: string) => {
   let validInstructionStatement = '';
 
-  Object.entries(USE_OR_FREEZE_BY_MAPPING)?.forEach(([key, phraseList]) => {
-    const isStatementMatchPhrase = phraseList.find((phrase) => {
-      return toLower(statement).includes(phrase);
-    });
-
-    if (isStatementMatchPhrase) {
-      validInstructionStatement = statement;
+  Object.entries(USE_OR_FREEZE_BY_MAPPING)?.forEach(
+    ([key, phraseWorldList]) => {
+      if (
+        phraseWorldList
+          ?.map((wordList: any) => {
+            return wordList
+              .map((word: any) => {
+                if (toLower(statement)?.includes(word)) {
+                  return true;
+                } else {
+                  return false;
+                }
+              })
+              .every((result: any) => result === true);
+          })
+          .some((result: any) => result === true)
+      ) {
+        validInstructionStatement = statement;
+      }
     }
-  });
-
-  console.log(validInstructionStatement);
+  );
 
   if (!validInstructionStatement) {
     return Promise.resolve(false);
   }
 
   return Promise.resolve(validInstructionStatement);
+};
+
+const validateAllInstructions = async (
+  modifiedProductDataPoints: any,
+  allInstructions: any
+) => {
+  const instructionsData =
+    modifiedProductDataPoints?.['instructions']?.[0] || {};
+  const validatedInstructionData =
+    modifiedProductDataPoints?.['validated_instructions'];
+
+  const { storageInstruction, usageInstruction, cookingInstruction } =
+    instructionsData;
+
+  const { usageInstruction: validated_usageInstruction, useOrFreezeBy } =
+    validatedInstructionData;
+
+  if (usageInstruction) {
+    let validUsageInstructions = [] as any;
+    usageInstruction?.forEach((instructionItem: any) => {
+      if (
+        !useOrFreezeBy?.find((useBy: string) => {
+          toLower(useBy) === instructionItem;
+        })
+      ) {
+        validUsageInstructions.push(instructionItem);
+      }
+    });
+
+    modifiedProductDataPoints['validated_instructions']['usageInstructions'] =
+      validUsageInstructions;
+  }
+
+  //* temp cooking instruction validate
+  modifiedProductDataPoints['validated_instructions']['cookingInstruction'] =
+    cookingInstruction;
 };
 
 const STORAGE_MAPPING = {
@@ -123,5 +196,9 @@ const STORAGE_MAPPING = {
 };
 
 const USE_OR_FREEZE_BY_MAPPING = {
-  'WITH IN': ['consume within', 'use within', 'free', 'enjoy within'],
+  'WITH IN': [
+    ['consume', ' within'],
+    ['use', 'within'],
+    ['enjoy', 'within'],
+  ],
 };

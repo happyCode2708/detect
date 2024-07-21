@@ -3,20 +3,26 @@ import { Button } from '../ui/button';
 import { useToast } from '../ui/use-toast';
 import { useQueryClient } from '@tanstack/react-query';
 
-const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
-  const [ixoneID, setIxoneID] = useState('');
+const EditProductForm = ({
+  product,
+  onSuccess,
+}: {
+  product: any;
+  onSuccess: () => void;
+}) => {
+  // const [ixoneID, setIxoneID] = useState('');
 
   const { toast } = useToast();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const response = await fetch('/api/product/create', {
+    const response = await fetch('/api/product/edit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ ixoneID }),
+      body: JSON.stringify({ productId }),
     });
 
     if (response.ok) {
@@ -49,6 +55,15 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
           className='p-2 border border-gray-300 rounded'
         />
       </div>
+      <div>
+        <label className='block mb-2'>Ixone ID (not required)</label>
+        <input
+          type='text'
+          value={ixoneID}
+          onChange={(e) => setIxoneID(e.target.value)}
+          className='p-2 border border-gray-300 rounded'
+        />
+      </div>
       <div className='flex justify-end'>
         <Button type='submit'>Create Product</Button>
       </div>
@@ -56,4 +71,4 @@ const AddProductForm = ({ onSuccess }: { onSuccess: () => void }) => {
   );
 };
 
-export default AddProductForm;
+export default EditProductForm;

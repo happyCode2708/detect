@@ -6,7 +6,7 @@ export const useQueryProductsFromTdc = ({
   ixoneIDs: string[];
 }) => {
   return useQuery({
-    queryKey: ['product', 'tdc'],
+    queryKey: ['product', 'tdc', `${ixoneIDs}`],
     queryFn: async () => {
       const response = await fetch('/api/product/get-product-data-tdc', {
         method: 'POST',

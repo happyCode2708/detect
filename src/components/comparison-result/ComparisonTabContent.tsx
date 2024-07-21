@@ -11,6 +11,8 @@ export const ComparisonTabContent = ({
   compareResultData: any;
 }) => {
   console.log('mapped', compareResultData);
+
+  console.log('tdc', productTdcData);
   return (
     <div
       className={
@@ -23,12 +25,16 @@ export const ComparisonTabContent = ({
       {compareResultData?.mappedExtractToTdc && (
         <TableResultTDC
           productTdcData={compareResultData?.mappedExtractToTdc}
+          key='1'
         />
       )}
-      <TableResultTDC
-        productTdcData={productTdcData}
-        evaluation={compareResultData?.compareResult}
-      />
+      {compareResultData?.compareResult && (
+        <TableResultTDC
+          productTdcData={productTdcData}
+          evaluation={compareResultData?.compareResult}
+          key='2'
+        />
+      )}
     </div>
   );
 };

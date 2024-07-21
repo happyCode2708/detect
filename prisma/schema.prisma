@@ -8,7 +8,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://duy:1234@localhost:5432/ocr"
+  url      = "postgresql://admin:congacon@localhost:5432/ocrfood"
 }
 
 generator client {
@@ -30,7 +30,8 @@ model User {
 
 model Product {
   id              String    @id @default(uuid())
-  ixoneID         String    @unique
+  ixoneID         String?   @unique
+  upc12           String?   
   createdAt       DateTime  @default(now())
   validationResult String?
   images          Image[]

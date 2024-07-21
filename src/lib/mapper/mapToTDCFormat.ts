@@ -12,6 +12,7 @@ export const mapToTDCformat = (extractData: any) => {
     marketing,
     supplyChain,
     instructions,
+    validated_instructions,
     factPanels,
     header,
     allergens,
@@ -69,10 +70,14 @@ export const mapToTDCformat = (extractData: any) => {
     CountryOfOriginName: toUpper(supplyChain?.[0]?.validated_countryOfOrigin),
 
     //* instructions
-    UsageInstructions: instructions?.[0]?.usageInstruction,
-    ConsumerStorage: instructions?.[0]?.validated_storageInstruction,
-    CookingInstructions: instructions?.[0]?.cookingInstruction,
-    UseOrFreezeBy: instructions?.[0]?.validated_useOrFreezeBy,
+    // UsageInstructions: instructions?.[0]?.usageInstruction,
+    // ConsumerStorage: instructions?.[0]?.validated_storageInstruction,
+    // CookingInstructions: instructions?.[0]?.cookingInstruction,
+    // UseOrFreezeBy: instructions?.[0]?.validated_useOrFreezeBy,
+    UsageInstructions: validated_instructions?.usageInstruction,
+    ConsumerStorage: validated_instructions?.storageInstruction,
+    CookingInstructions: validated_instructions?.cookingInstruction,
+    UseOrFreezeBy: validated_instructions?.useOrFreezeBy,
     // InstructionsAncillary: instructions?.[0]?.otherInstructions,
 
     //* allergen
@@ -138,7 +143,7 @@ export const mapToTDCformat = (extractData: any) => {
     HasPanel: factPanels?.length > 0,
 
     //* Physical
-    UPC12: physical?.[0]?.validated_upc12,
+    UPC12: physical?.upc12,
 
     //* marketing
     Website: marketing?.[0]?.website
@@ -209,7 +214,9 @@ export const mapToTDCformat = (extractData: any) => {
     Process: attributes?.validated_nonCertificateClaims || [],
     Contains: attributes?.validated_contain || [],
     DoesNotContain: attributes?.validated_notContain || [],
-    Grade: [attributes?.otherAttribute?.[0]?.grade],
+    Grade: attributes?.otherAttribute?.[0]?.grade
+      ? [attributes?.otherAttribute?.[0]?.grade]
+      : undefined,
     JuicePercent: attributes?.otherAttribute?.[0]?.juicePercent,
 
     //* other attributes

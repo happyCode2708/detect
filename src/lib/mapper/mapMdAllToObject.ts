@@ -1,6 +1,9 @@
+import { Group } from 'lucide-react';
 import logger from '../logger/index';
+import { group } from 'console';
+import _ from 'lodash';
 
-export const mapMarkdownAllToObject = (markdown: string) => {
+export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   const lablingInfoSection = markdown
     .split('LABELING_INFO_TABLE')?.[1]
     ?.split('SUGAR_CLAIM_TABLE')?.[0];
@@ -77,14 +80,14 @@ export const mapMarkdownAllToObject = (markdown: string) => {
 
   const ingredientSection = markdown
     .split('INGREDIENT_TABLE')?.[1]
-    ?.split('PHYSICAL_TABLE')?.[0];
+    ?.split('MARKETING_TABLE')?.[0];
 
   // logger.error('ingredient');
   // logger.info(ingredientSection);
 
-  const physicalSection = markdown
-    .split('PHYSICAL_TABLE')?.[1]
-    ?.split('MARKETING_TABLE')?.[0];
+  // const physicalSection = markdown
+  //   .split('PHYSICAL_TABLE')?.[1]
+  //   ?.split('MARKETING_TABLE')?.[0];
 
   // logger.error('physical');
   // logger.info(physicalSection);
@@ -216,14 +219,41 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   // logger.info(JSON.stringify(saltClaimsObjList));
 
   //? ALLERGEN
-  const allergenObjList = getObjectDataFromTable(allergenClaimSection, [
-    'containStatement',
-    'containList',
-    'notContainStatement',
-    'notContainList',
-    'containOnEquipmentStatement',
-    'containOnEquipmentList',
-  ]);
+  // const allergenObjList = getObjectDataFromTable(allergenClaimSection, [
+  //   'containOnEquipmentStatement',
+  //   'containOnEquipmentList',
+  //   'containStatement',
+  //   'containList',
+  //   'notContainStatement',
+  //   'notContainList',
+  // ]);
+
+  const allergenObjList = getObjectDataFromHorizontalTable(
+    allergenClaimSection,
+    {
+      'allergen contain on equipment statement': 'containOnEquipmentStatement',
+      'allergen contain on equipment break-down list for that statement':
+        'containOnEquipmentList',
+      'allergen contain statement': 'containStatement',
+      'allergen contain break-down list from that statement': 'containList',
+      // 'statements or labels that tell allergen things product does not contain':
+      //   'notContainStatement',
+      // 'statements or labels that tell allergen things product does not contain':
+      // 'notContainStatement',
+      'statements that tell allergen things product does not contain':
+        'notContainStatement',
+      'exact text on images that tell allergen things product does not contain':
+        'notContainStatement',
+      // statements that tell allergen things product does not contain
+      // 'break-down list from statements or label that about allergen things product does not contain':
+      //   'notContainList',
+      'break-down list from the text that about allergen things product does not contain':
+        'notContainList',
+    },
+    {
+      groupVertical: true,
+    }
+  );
   // logger.error('allergen list');
   // logger.info(JSON.stringify(allergenObjList));
 
@@ -253,12 +283,12 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   logger.error('ingredient list');
   logger.info(JSON.stringify(ingredientObjList));
 
-  //? PHYSICAL
-  const physicalObjList = getObjectDataFromTable(physicalSection, [
-    'possibleUpc12',
-    'lotNumber',
-    'numberAfterLotNumber',
-  ]);
+  // //? PHYSICAL
+  // const physicalObjList = getObjectDataFromTable(physicalSection, [
+  //   'possibleUpc12',
+  //   'lotNumber',
+  //   'numberAfterLotNumber',
+  // ]);
   // logger.error('physical');
   // logger.info(JSON.stringify(physicalObjList));
 
@@ -286,6 +316,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
       'storage instructions': 'storageInstruction',
       'cooking instructions': 'cookingInstruction',
       'usage instructions': 'usageInstruction',
+      'other instructions': 'otherInstruction',
     }
   );
   logger.error('instruction');
@@ -355,7 +386,7 @@ export const mapMarkdownAllToObject = (markdown: string) => {
   return {
     labeling: labelingObjList,
     header: headerObjList,
-    physical: physicalObjList,
+    // physical: physicalObjList,
     attributes: {
       containAndNotContain: [
         ...extraClaimsObjList_1,
@@ -382,6 +413,10 @@ export const mapMarkdownAllToObject = (markdown: string) => {
       },
     ],
     supplyChain: supplyChainObjList,
+    extraInfo,
+    physical: {
+      upc12: extraInfo?.physical?.upc12,
+    },
   };
 };
 
@@ -415,7 +450,10 @@ const getObjectDataFromTable = (
 
 const getObjectDataFromHorizontalTable = (
   sectionContent: string,
-  propertyListMap: any
+  propertyListMap: any,
+  options?: {
+    groupVertical?: boolean;
+  }
 ) => {
   if (!sectionContent) return [];
 
@@ -427,6 +465,7 @@ const getObjectDataFromHorizontalTable = (
     .filter((line) => line.trim() !== '**');
 
   const obj: Record<string, any> = {};
+  let verticalGroupObj: any = [];
 
   itemStringList.forEach((line, idx) => {
     const values = line
@@ -435,12 +474,46 @@ const getObjectDataFromHorizontalTable = (
       .map((item) => item.trim());
     const [name, ...multiValues] = values;
 
+    console.log('name --', name);
+
     // const currentPropertyValue
 
-    obj[propertyListMap?.[name]] = multiValues?.filter(
-      (item: string) => item !== ''
+    const foundHeaderName = Object.entries(propertyListMap)?.find(
+      ([header, key]) => {
+        return name?.includes(header);
+      }
     );
+    // (foundHeaderName?.[1] as string) ||
+    if (options?.groupVertical === true) {
+      multiValues?.forEach((value: any, valueIdx: number) => {
+        _.set(
+          verticalGroupObj,
+          `[${valueIdx}][${(foundHeaderName?.[1] as string) || 'undefined'}]`,
+          value
+        );
+      });
+    } else {
+      obj[(foundHeaderName?.[1] as string) || 'undefined'] =
+        multiValues?.filter((item: string) => item !== '');
+    }
+
+    // obj[propertyListMap?.[name]] = multiValues?.filter(
+    //   (item: string) => item !== ''
+    // );
   });
 
-  return [obj];
+  if (options?.groupVertical) {
+    return verticalGroupObj?.filter((item: any) => !areAllFieldsEmpty(item));
+  } else {
+    return [obj];
+  }
+};
+
+const areAllFieldsEmpty = (obj: any) => {
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key) && !_.isEmpty(obj[key])) {
+      return false;
+    }
+  }
+  return true;
 };

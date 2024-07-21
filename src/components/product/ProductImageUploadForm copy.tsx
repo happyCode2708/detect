@@ -4,12 +4,10 @@ import { Button } from '../ui/button';
 
 const ProductImageUploadForm = ({
   onSuccess,
-  // ixoneID,
-  product,
+  ixoneID,
 }: {
   onSuccess: any;
-  // ixoneID: string;
-  product: any;
+  ixoneID: string;
 }) => {
   const [images, setImages] = useState<FileList | null>(null);
 
@@ -28,7 +26,7 @@ const ProductImageUploadForm = ({
       formData.append('images', image);
     });
 
-    const response = await fetch(`/api/product/${product?.id}/images`, {
+    const response = await fetch(`/api/product/${ixoneID}/images`, {
       method: 'POST',
       body: formData,
     });

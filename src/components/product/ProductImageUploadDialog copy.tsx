@@ -27,7 +27,7 @@ interface ImageUploadDialogProps {
   isOpen: boolean;
   toggleDialog: (ixoneId: string) => void;
   // ixoneID: string;
-  product: any;
+  product;
 }
 
 const ProductImageUploadDialog: React.FC<ImageUploadDialogProps> = ({

@@ -30,14 +30,18 @@ const validate = async (
 
       console.log(`why sugar --- ${statement} --- ${claim}`);
 
-      modifiedProductDataPoints['attributes'][dataPointKey] = Array.from(
-        new Set([
-          ...currentValues,
-          SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim]
-            ? SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim]
-            : `unsure-${claim}`,
-        ])
-      );
+      if (SUGAR_CLAIMS_MAP?.[toLower(statement)][claim] === false) {
+        //* false mean not a valid claim in defined claim list
+      } else {
+        modifiedProductDataPoints['attributes'][dataPointKey] = Array.from(
+          new Set([
+            ...currentValues,
+            SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim]
+              ? SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim]
+              : `unsure-${claim}`,
+          ])
+        );
+      }
     }
   }
 };
@@ -104,10 +108,13 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
   } else {
     //* exceptional cases
-    // if (toLower(claim) === 'alcohol' && toLower(reason)?.includes('sugar')) {
-    //   //? it could be about 'alcohol sugar' so must return false
-    //   return Promise.resolve(false);
-    // }
+    if (
+      toLower(claim) === 'corn syrup' &&
+      toLower(reason)?.includes('high fructose')
+    ) {
+      //? it could be about 'HIGH FRUCTOSE CORN SYRUP' so must return false
+      return Promise.resolve(false);
+    }
   }
 
   //! teno hide
@@ -172,57 +179,57 @@ const SUGAR_ITEMS = [
   'xylitol',
 ];
 
-// const SUGAR_ITEMS = [
-//   'acesulfame k',
-//   'agave',
-//   'allulose',
-//   'artificial sweetener',
-//   'aspartame',
-//   'beet sugar',
-//   'cane sugar',
-//   'coconut sugar',
-//   'coconut palm sugar',
-//   'fruit juice',
-//   'high fructose corn syrup',
-//   'honey',
-//   'low sugar',
-//   'lower sugar',
-//   'monk fruit',
-//   'natural sweeteners',
-//   'no acesulfame k',
-//   'no added sugar',
-//   'no agave',
-//   'no allulose',
-//   'no artificial sweetener',
-//   'no aspartame',
-//   'no cane sugar',
-//   'no coconut sugar',
-//   'no coconut palm sugar',
-//   'no corn syrup',
-//   'no high fructose corn syrup',
-//   'no refined sugars',
-//   'no saccharin',
-//   'no splenda',
-//   'no sucralose',
-//   'no stevia',
-//   'no sugar',
-//   'no sugar added',
-//   'no sugar alcohol',
-//   'no tagatose',
-//   'no xylitol',
-//   'reduced sugar',
-//   'refined sugar',
-//   'saccharin',
-//   'splenda',
-//   'sucralose',
-//   'stevia',
-//   'sugar alcohol',
-//   'sugar free',
-//   'sugars added',
-//   'tagatose',
-//   'unsweetened',
-//   'xylitol',
-// ];
+const SUGAR_CLAIMS = [
+  'acesulfame k',
+  'agave',
+  'allulose',
+  'artificial sweetener',
+  'aspartame',
+  'beet sugar',
+  'cane sugar',
+  'coconut sugar',
+  'coconut palm sugar',
+  'fruit juice',
+  'high fructose corn syrup',
+  'honey',
+  'low sugar',
+  'lower sugar',
+  'monk fruit',
+  'natural sweeteners',
+  'no acesulfame k',
+  'no added sugar',
+  'no agave',
+  'no allulose',
+  'no artificial sweetener',
+  'no aspartame',
+  'no cane sugar',
+  'no coconut sugar',
+  'no coconut palm sugar',
+  'no corn syrup',
+  'no high fructose corn syrup',
+  'no refined sugars',
+  'no saccharin',
+  'no splenda',
+  'no sucralose',
+  'no stevia',
+  'no sugar',
+  'no sugar added',
+  'no sugar alcohol',
+  'no tagatose',
+  'no xylitol',
+  'reduced sugar',
+  'refined sugar',
+  'saccharin',
+  'splenda',
+  'sucralose',
+  'stevia',
+  'sugar alcohol',
+  'sugar free',
+  'sugars added',
+  'tagatose',
+  'unsweetened',
+  'xylitol',
+];
 
 const SUGAR_CLAIMS_MAP = {
   low: {
@@ -429,6 +436,7 @@ const SUGAR_CLAIMS_MAP = {
     xylitol: 'no xylitol',
   },
   contain: {
+    sugar: false,
     'reduced sugar': 'reduced sugar',
     'refined sugar': 'refined sugar',
     saccharin: 'saccharin',
@@ -452,6 +460,7 @@ const SUGAR_CLAIMS_MAP = {
     'coconut palm sugar': 'coconut/coconut palm sugar',
     'fruit juice': 'fruit juice',
     'high fructose corn syrup': 'high fructose corn syrup',
+    'corn syrup': 'no corn syrup',
     honey: 'honey',
     'low sugar': 'low sugar',
     'lower sugar': 'lower sugar',

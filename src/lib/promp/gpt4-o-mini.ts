@@ -1,60 +1,5 @@
-// | extra item | is mentioned on product ?  | mentioned on which text on product ? | do you know it through which source of info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (multiple string) | product contain it ? (answer is yes/no) |
-// MARKETING_TEXT_TABLE
-
-// 10) "marketing text table" rules:
-// + is the list of all texts or paragraphs to marketing for products that appeal customer to buy
-
-// IMPORTANT DEFINITIONS:
-// + "added color" is not "artificial color".
-// + "vegan" is not mean "vegan ingredients".
-// + "natural" is not mean "natural ingredients".
-// + "gluten free" is not mean "allergen".
-// + "Gluten Free" is not mean "colors".
-// + "real ingredient" not mean "natural flavor" or "naturally flavored".
-// + "pesticide" is not mean "antibiotics".
-// + "Organic" not mean "no animal ingredients"
-// + "vegan certifier" not mean "vegan ingredient"
-// + "international ingredients" not mean "chemical ingredient"
-// + "allergen" claim detected from text such as "allergen free", "do not contain allergen", "product contain allergen", ...
-
-// CONDITION FOR ROW TO SHOW IN TABLE BELOW:
-// + only return row items that its "sugar item explicitly and directly state in a text on product  without implying from other text" value = "yes" and remove all unqualified rows from table)
-
-// CONDITION FOR ROWS TO SHOW FOR TABLE BELOW:
-// + only return row items if its answer of "item explicitly and directly state in a text on product  without implying from other text" = "yes" and remove all unqualified rows from table below
-
-// + "ingredient break-down" is the break-down list of ingredients statement. Remember that sub-ingredients in the parenthesis or bracket of main ingredient item is recorded as one ingredient item info.
-// Ex1: "STARCH (TAPIOCA, POTATO, CORN)" is an ingredient item in the list
-
-// 11) "marketing text table" rules:
-//  + is the list of all texts or paragraphs to marketing for products that appeal customer to buy
-
-// + "all other instructions" are all other instructions see examples
-// Ex 1: SEE NUTRITION INFORMATION FOR FAT AND SATURATED FAT ...
-
-// + allergen table only must have one row data so the list must be recorded in one cell and split by ", "
-
-// + "break-down list about allergen things product does not contain"
-// example 1: "milk and peanut free" should be recorded as "milk/peanut"
-
-// PHYSICAL_TABLE
-
-// 12) Physical info with table format below
-
-// PHYSICAL_TABLE
-// | upc code on the barcode  | The lot number is located on the left side of the UPC code (only one digit number inside the barcode) | all numbers on the right side of lot number |
-// | ------- | ------- | ------- |
-
-export const make_markdown_all_prompt = ({
-  ocrText,
-  imageCount,
-}: {
-  ocrText?: string;
-  imageCount?: number;
-}) => {
-  return `OCR texts from ${imageCount} provided images:
-${ocrText}
-
+export const make_gpt4_o_prompt = () => {
+  return `
 VALIDATION AND FIX BUGS:
 1) To avoid any deduction and ensure accuracy.
 
@@ -95,6 +40,7 @@ THIRD_EXTRA_CLAIM_TABLE
 ALLERGEN_TABLE
 HEADER_TABLE
 INGREDIENT_TABLE
+PHYSICAL_TABLE
 MARKETING_TABLE
 INSTRUCTION_TABLE
 SUPPLY_CHAIN_TABLE
@@ -124,20 +70,20 @@ IMPORTANT RULES:
 "tree nuts"
 "wheat".
 
-+ "statements that tell allergen things product does not contain" are the exact contexts that you found on provided images about allergen info, that product claim to not contain or free of or free.
++ "allergen does-not-contain statement or label" are the exact contexts that you found on provided images about allergen info, that product claim to not contain or free of or free.
+ane "allergen does-not-contain statement or label" could be claim from a label on product images about allergen thing that not contain or free of or free.
 Ex 1: "contain no wheat, milk"
 Ex 2: "does not contain wheat, milk"
 Ex 3: "free of wheat, milk"
 Ex 4: "non-dairy" text mean does not contain allergen ingredient of "dairy"
-Ex 5: "no egg"
 
-+ "allergen contain statements" are the exact contexts that you found on provided images about allergen info, usually start with "contains:", "contain", "may contain", "may contain:", "allergen statement:, ....
++ "allergen contain statement" are the exact contexts that you found on provided images about allergen info, usually start with "contains", "contains:", "may contains:", "allergen statement:, ....
 Example 1: "allergen statement: contains milk"
 Example 2: "may contain: milk, peanut"
 
 + "allergen contain break-down list" is the allergen ingredients from "allergen contain statement" and do not collect from product ingredient list.
 
-+ "allergen contain on equipment statements" are the exact contexts that you found on provided images about list of allergen ingredients that is said they could be contained in manufacturing equipments.
++ "allergen contain on equipment statement" are the exact contexts that you found on provided images about list of allergen ingredients that is said they could be contained in manufacturing equipments.
 ex 1: "manufactured on equipment that also processes product containing ..."
 ex 2: "made in a facility that also processes ... "
 ex 3: "tree nuts, wheat present in facility"
@@ -172,8 +118,6 @@ Ex 4: "24 K-CUP PODS - 0.55 OZ (5.2)G/EA NET WT 4.44 OZ (38g)"
 + is the list of statements about ingredients of product (since product can have many ingredients list)
 + "ingredient statement" is content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "other ingredients:".
 + "ingredient break-down list" is the list of ingredients in ingredient statement split by "/"
-Example 1:
-
 + "product type from nutrition panel" could be detected through nutrition panel text title which are NUTRITION FACTS or SUPPLEMENT FACTS
 
 6) "marketing" table rules:
@@ -241,7 +185,6 @@ IMPORTANT NOTE:
 + remember when product state "something free" it mean product free of that thing
 Example 1: "gluten free" mean product not contain "gluten"
 Example 2: "nuts free" mean product not contain "nuts"
-
 
 LABELING_INFO_TABLE
 | things that labels/logos indicate product free of (multiple things name split by "/")| things that labels/logos indicate product contain (multiple things name split by "/")|
@@ -320,7 +263,7 @@ PROCESS_CLAIM_TABLE
 | 100% natural ingredients | ...
 | 100% pure | ...
 | acid free | ...
-| aeroponic grown | ...ingre
+| aeroponic grown | ...
 | all natural | ...
 | all natural ingredients | ...
 | aquaponic/aquaculture grown | ...
@@ -567,14 +510,8 @@ IMPORTANT NOTE:
 + tree nuts also includes "coconut"
 
 ALLERGEN_TABLE
-| allergen info | value 1 | value 2 | value 3 | ... (more columns if needed)
-| ------- | -------- | -------- | -------- | ...
-| allergen contain on equipment statements |
-| allergen contain on equipment break-down list for that statement (split by "/") |
-| allergen contain statements | 
-| allergen contain break-down list from that statement (split by "/") |
-| exact text on images that tell allergen things product does not contain |
-| break-down list from the text that about allergen things product does not contain (split by "/") |
+| allergen contain on equipment statement | allergen contain on equipment break-down list for that statement (split by "/") | allergen contain statement | allergen contain break-down list from that statement (split by "/") | statements or labels that tell allergen things product does not contain | break-down list from statements or label that about allergen things product does not contain  (split by "/") | 
+| ------- | -------- | -------- | ------- | -------- | -------- |
 
 10) Header info with table format below:
 (IMPORTANT NOTE: remember header table only have one row item)
@@ -586,17 +523,22 @@ HEADER_TABLE
 11) Ingredient info with table format below:
 
 INGREDIENT_TABLE
-| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement | ingredient break-down list from ingredient statement (splitted by "/") | live and active cultures list statement | live and active cultures break-down list (splitted by "/")  | 
+| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement |  ingredient break-down list from ingredient statement (answer in multiple string splitted by "/") | live and active cultures list statement | live and active cultures break-down list (answer in multiple string splitted by "/")  | 
 | ------- | ------- | -------- | -------- | -------- | -------- |
 
+12) Physical info with table format below
 
-12) Marketing info with table format below:
+PHYSICAL_TABLE
+| upc code on the barcode  | The lot number is located on the left side of the UPC code (only one digit number inside the barcode) | all numbers on the right side of lot number |
+| ------- | ------- | ------- |
+
+13) Marketing info with table format below:
 
 MARKETING_TABLE
 | have QR code (answer is boolean) | have Instagram icon or info ? | have Pinterest icon or info ? | have Youtube icon or info ? | youtube icon type (if have youtube icon or info )  | have Facebook icon or info ? | have twitter icon or info ? | social media list | website list (multiple split by comma) | social media text list | enlarged to show (answer is boolean) |
 | ------- | -------- | -------- | ------- | ------- | ------- | -------- | -------- | ------- | ------- | ------- |
 
-13) Instruction info with table format below:
+14) Instruction info with table format below:
 
 IMPORTANT NOTE:
 + each type of instruction could have multiple value
@@ -609,7 +551,7 @@ INSTRUCTION_TABLE
 | usage instructions | 
 | other instructions |
 
-14) supply chain info with table format below:
+15) supply chain info with table format below:
 
 SUPPLY_CHAIN_TABLE
 | info item | value |
@@ -631,7 +573,7 @@ SUPPLY_CHAIN_TABLE
 | manufacture state 
 | manufacture zipCode |
 
-15) Base certifier claim info with table format below:
+16) Base certifier claim info with table format below:
 
 BASE_CERTIFIER_CLAIM_TABLE
 | claim | is product claim that ? (answer is yes/no/unknown) |
@@ -677,111 +619,10 @@ BASE_CERTIFIER_CLAIM_TABLE
 | Viticulture Claim |
 | Whole Grain Claim |
 
-16) some other attribute info recorded with table format below:
+17) some other attribute info recorded with table format below:
 
 ATTRIBUTE_TABLE
 | grade (answer are 'A'/ 'B') | juice percent (answer is number) |
 | ------- | ------- |
-
 `;
 };
-
-// and "statements that tell allergen things product does not contain" could be claim from a label text on product images about allergen thing that not contain or free of or free.
-
-// + "allergen does-not-contain statement or label" are the exact contexts that you found on provided images about allergen info, that product claim to not contain or free of or free.
-// ane "allergen does-not-contain statement or label" could be claim from a label on product images about allergen thing that not contain or free of or free.
-// | statements or labels that tell allergen things product does not contain |
-
-// | allergen info | value 1 | value 2 | ...
-// | ------- | -------- | -------- | ...
-// | allergen contain on equipment statement |
-// | allergen contain on equipment break-down list for that statement (split by "/") |
-// | allergen contain statement | allergen contain break-down list from that statement (split by "/") |
-// | statements or labels that tell allergen things product does not contain |
-// | break-down list from statements or label that about allergen things product does not contain  (split by "/") |
-
-//* calorie
-// CONDITION FOR ROW TO SHOW FOR TABLE BELOW:
-// + only return row items that its "does product explicitly claim the calorie claim" value = "yes" and remove all rows with "does product explicitly claim the calorie claim" value = "unknown" or "no")
-
-//* fat claim
-// CONDITION FOR ROW TO SHOW FOR TABLE BELOW:
-// + only return row items that its "does product explicitly claim this claim" value = "yes" and remove all rows with "does product explicitly claim this claim" value  = "unknown" or "no" )
-
-//* first claim
-// CONDITION FOR ROW TO SHOW FOR TABLE BELOW:
-// + have no rows return condition it means that you must return all rows items listed below
-
-//* proces
-// CONDITION FOR ROW TO SHOW IN TABLE BELOW:
-// + only return row items that its "does product explicitly claim this claim" value = "yes" and remove all rows with "does product explicitly claim this claim" value = "unknown" or "no")
-
-//* second
-// CONDITION FOR ROW TO SHOW FOR TABLE BELOW:
-// + only return row items if its answer of "item explicitly and directly state in a text on product  without implying from other text" = "yes" and remove all unqualified rows from table below
-
-//* third
-// CONDITION FOR ROWS TO SHOW FOR TABLE BELOW:
-// + only return row items if its answer of "item explicitly and directly state in a text on product  without implying from other text" = "yes" and remove all unqualified rows from table below
-
-//* fat claim
-// CONDITION FOR ROW TO SHOW IN TABLE BELOW:
-// + only return row items if its answer of "does product claim that fat claim" value = "yes" and remove all rows with "does product claim that fat claim" value = "unknown" or "no" )
-
-// 18) Marketing text with table format below:
-
-// MARKETING_TEXT_TABLE
-// | index | marketing text |
-// | ------- | -------- |
-
-// MARKETING_TEXT_TABLE
-
-// | high potency |
-// | ITAL CERTIFIED SEAL Claim |
-// | ITAL CONSCIOUS SEAL Claim |
-// | ITAL SACRAMENT SEAL Claim |
-
-// 16) Attribute info with table format below:
-
-// ATTRIBUTE_TABLE
-// | juice percent (answer is number / NA) |
-// | ------- |
-
-// CONDITION FOR ROWS TO SHOW FOR TABLE BELOW:
-// + only return row items if its answer of "is product claim that ?" = "yes" and remove all other rows with answer of "no" or "unknown"
-
-// 16) Marketing text with table format below:
-
-// MARKETING_TEXT_TABLE
-// | index | marketing text |
-// | ------- | -------- |
-
-// + "added color" does not mean product claim "artificial color".
-// + "added color" claim does not mean product claim "artificial color".
-// + "vegan" text only does not mean "vegan ingredients".
-// + "natural" text only does not mean "natural ingredients".
-// + "gluten free" not mean contain "allergen".
-// + "Gluten Free" not mean "no added colors".
-// + "allergen" claim detected from text such as "allergen free", "do not contain allergen", "product contain allergen", ...
-// + "real ingredient" not mean "natural flavor" or "naturally flavored".
-// + "pesticide" is not "antibiotics".
-// + "Organic" not mean "no animal ingredients"
-// + "vegan certifier" not mean "vegan ingredient"
-// + "international ingredients" not mean "chemical ingredient"
-
-// DEBUG_TABLE
-// 16) Debug table is gemini answer recorded in markdown table format below:
-
-// DEBUG_TABLE
-// | question (question from DEBUG LIST below) | gemini answer |
-// | ------- | -------- |
-
-// DEBUG LIST:
-// 1) i see you think too deeply for example when you see "free from artificial flavor" and you think product claim "does not contain added flavor". That is not what i want it must say that product claim "does not contain artificial flavor". I do not how to prompt and make you understand that so next time you will no make same mistake help me write prompt sentences to fix that
-// 2) product does not say about antibiotics but you still include in extra claim list ? why ?
-
-// 2) the problem is that some claim you concluded from ingredient list? but the product claim is not retrieved from ingredient list
-// 3) i only require the result of table with nutrient row that match my conditions but i see you actually created row with initial data not provided by me ? i do not want that can you help me with write prompt to fix that?
-
-//! | extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
-// (ROW RETURN CONDITION: only return row item if "explicitly and directly mentioned in product info without implied from other text" value = "true")

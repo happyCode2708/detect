@@ -33,6 +33,7 @@ import { mapMarkdownAllToObject } from '../../lib/mapper/mapMdAllToObject';
 import { mapMarkdownNutToObject } from '../../lib/mapper/mapMarkdonwDataToObject';
 import { TDC_FIELD_OBJ } from '../../constants/tdcField';
 import _ from 'lodash';
+import { Pagination } from '@/components/ui/pagination';
 
 const router = express.Router();
 
@@ -65,14 +66,19 @@ const upload = multer({ storage: Storage });
 
 router.post('/list', async (req, res) => {
   try {
-    const { ixoneID } = req.query;
+    const { search, page = '1', limit = '10' } = req.query;
+    const pageNumber = parseInt(page as string);
+    const limitNumber = parseInt(limit as string);
+    const skip = (pageNumber - 1) * limitNumber;
+
+    console.log('page Number', page);
 
     const products = await prisma.product.findMany({
       where:
-        ixoneID && typeof ixoneID === 'string'
+        search && typeof search === 'string'
           ? {
               ixoneID: {
-                contains: ixoneID,
+                contains: search,
                 mode: 'insensitive',
               },
             }
@@ -80,10 +86,33 @@ router.post('/list', async (req, res) => {
       orderBy: {
         createdAt: 'desc', // Order by creation date, newest first
       },
+      skip: skip,
+      take: limitNumber,
       include: { images: true },
     });
 
-    res.status(200).json(products);
+    const totalProducts = await prisma.product.count({
+      where:
+        search && typeof search === 'string'
+          ? {
+              ixoneID: {
+                contains: search,
+                mode: 'insensitive',
+              },
+            }
+          : {},
+    });
+
+    const totalPages = Math.ceil(totalProducts / limitNumber);
+
+    res.status(200).json({
+      data: products,
+      pagination: {
+        totalPages,
+        currentPage: pageNumber,
+        totalProducts,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Failed to fetch products' });
@@ -95,9 +124,11 @@ router.post('/create', async (req, res) => {
 
   try {
     const newProduct = await prisma.product.create({
-      data: {
-        ixoneID,
-      },
+      data: ixoneID
+        ? {
+            ixoneID,
+          }
+        : {},
     });
     res.status(201).json(newProduct);
   } catch (error) {
@@ -372,11 +403,11 @@ const computeAverage = (products: any, field: string) => {
 //   }
 // });
 
-router.get('/:ixoneid', async (req, res) => {
+router.get('/:productId', async (req, res) => {
   try {
-    const { ixoneid } = req.params;
+    const { productId } = req.params;
     const product = await prisma.product.findUnique({
-      where: { ixoneID: ixoneid },
+      where: { id: productId },
       include: { images: true, extractSessions: true },
     });
     if (!product) {
@@ -459,7 +490,10 @@ router.get('/:ixoneid', async (req, res) => {
         });
       }
       //* if both process success
-      const allJsonData = mapMarkdownAllToObject(allResData?.markdownContent);
+      const allJsonData = mapMarkdownAllToObject(
+        allResData?.markdownContent,
+        allResData?.extraInfo
+      );
       const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
 
       let finalResult = {
@@ -501,11 +535,11 @@ router.get('/:ixoneid', async (req, res) => {
   }
 });
 
-router.post('/:ixoneid/images', upload.array('images'), async (req, res) => {
-  const { ixoneid } = req.params;
+router.post('/:productId/images', upload.array('images'), async (req, res) => {
+  const { productId } = req.params;
   try {
     const product = await prisma.product.findUnique({
-      where: { ixoneID: ixoneid },
+      where: { id: productId },
     });
 
     if (!product) {
@@ -661,7 +695,7 @@ router.post('/get-compare-result-tdc', async (req, res) => {
 
   try {
     const productDetailRes = await axios.get(
-      `http://localhost:${port}/api/product/${ixoneid}`
+      `http://localhost:${port}/api/product/ixoneId/${ixoneid}`
     );
 
     const productDetailData = productDetailRes?.data?.data;
@@ -704,6 +738,138 @@ router.post('/get-compare-result-tdc', async (req, res) => {
     // logger.error(error);
     console.log(error);
     res.status(500).json({ error: 'Failed to compare with TDC data' });
+  }
+});
+
+router.get('/ixoneId/:ixoneId', async (req, res) => {
+  try {
+    const { ixoneId } = req.params;
+    const product = await prisma.product.findUnique({
+      where: { ixoneID: ixoneId },
+      include: { images: true, extractSessions: true },
+    });
+    if (!product) {
+      res.status(404).json({ message: 'Product not found', isSuccess: false });
+    }
+    if (product) {
+      product.extractSessions.sort(
+        (a: any, b: any) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      let latestExtractSession = product.extractSessions?.[0] || {};
+      const { result, status } = latestExtractSession;
+
+      //* if the result of latest extract session is success
+      if (result && status === 'success') {
+        let latestExtractSession_result = JSON.parse(result);
+        if (process.env.NODE_ENV === 'production') {
+          removeRawFieldData(latestExtractSession_result);
+        }
+        latestExtractSession['result'] = JSON.stringify(
+          latestExtractSession_result
+        );
+        return res.status(200).json({
+          isSuccess: true,
+          data: {
+            product,
+            latestSession: latestExtractSession,
+          },
+        });
+      }
+      //* if result is not ready
+      const {
+        result_nut: result_nut_raw,
+        result_all: result_all_raw,
+        sessionId,
+      } = latestExtractSession as any;
+      if (!result_nut_raw || !result_all_raw) {
+        return res.status(200).json({
+          isSuccess: true,
+          data: {
+            product,
+            latestSession: {},
+          },
+        });
+      }
+      const result_nut = JSON.parse(result_nut_raw);
+      const result_all = JSON.parse(result_all_raw);
+
+      if (isEmpty(result_nut) || isEmpty(result_all)) {
+        return res.status(200).json({
+          isSuccess: true,
+          data: {
+            product,
+            latestSession: {},
+          },
+        });
+      }
+      console.log('sessionId', sessionId);
+      const nutRes = JSON.parse(result_nut?.['nut.json']);
+      const allRes = JSON.parse(result_all?.['all.json']);
+      const { isSuccess: allSuccess, data: allResData } = allRes || {};
+      const { isSuccess: nutSuccess, data: nutResData } = nutRes || {};
+
+      console.log('type of', typeof allResData);
+
+      //* if one of process fail
+      if (allSuccess === false || nutSuccess === false) {
+        await prisma.extractSession.update({
+          where: { sessionId },
+          data: {
+            status: 'fail',
+          },
+        });
+        return res.status(200).json({
+          isSuccess: true,
+          data: {
+            product,
+            latestSession: {},
+          },
+        });
+      }
+      //* if both process success
+      const allJsonData = mapMarkdownAllToObject(
+        allResData?.markdownContent,
+        allResData?.extraInfo
+      );
+      const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
+
+      let finalResult = {
+        product: {
+          // ...allRes?.data?.jsonData,
+          ...allJsonData,
+          // factPanels: nutRes?.data?.jsonData, //* markdown converted
+          factPanels: nutJsonData,
+          nutMark: nutRes?.data?.markdownContent,
+          allMark: allRes?.data?.markdownContent,
+        },
+      };
+      let validatedResponse = await responseValidator(finalResult, '');
+
+      let updatedSession = await prisma.extractSession.update({
+        where: { sessionId },
+        data: {
+          status: 'success',
+          result: JSON.stringify(validatedResponse),
+        },
+      });
+      // if (updatedSession?.result && updatedSession?.status === 'success') {
+      // let parsedResult = JSON.parse(updatedSession?.result);
+      // if (process.env.NODE_ENV === 'production') {
+      //   removeRawFieldData(parsedResult);
+      // }
+      return res.status(200).json({
+        isSuccess: true,
+        data: {
+          product,
+          latestSession: updatedSession,
+        },
+      });
+      // }
+    }
+  } catch (error) {
+    console.log('error', error);
+    res.status(500).json({ error: 'Failed to fetch product' });
   }
 });
 

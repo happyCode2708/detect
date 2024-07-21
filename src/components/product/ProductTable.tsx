@@ -14,20 +14,23 @@ import {
 import { Button, buttonVariants } from '../ui/button';
 import Link from 'next/link';
 import ProductImageUploadDialog from './ProductImageUploadDialog';
+import { ProductListPagination } from './ProductListPagination';
 
 const ProductTable = ({
   products,
   onProductSelect,
   selectedProducts,
+  pagination,
 }: {
   products: any[];
   onProductSelect: (id: string) => void;
   selectedProducts: Set<string>;
+  pagination: any;
 }) => {
   const [uploadDialogActive, setUploadDialogActive] = useState('');
 
-  const toggleUploadDialog = (ixoneId: string) => {
-    setUploadDialogActive(ixoneId);
+  const toggleUploadDialog = (productId: string) => {
+    setUploadDialogActive(productId);
   };
 
   return (
@@ -37,7 +40,9 @@ const ProductTable = ({
         <TableHeader>
           <TableRow>
             <TableHead>Select</TableHead>
+            <TableHead>Id</TableHead>
             <TableHead>Ixone Id</TableHead>
+            <TableHead>Upc12</TableHead>
             <TableHead>Images</TableHead>
             {/* <TableHead>Extract Session</TableHead> */}
             {process.env.NODE_ENV !== 'production' && (
@@ -56,7 +61,9 @@ const ProductTable = ({
                   onChange={() => onProductSelect(product.id)}
                 />
               </TableCell>
+              <TableCell>{product?.id}</TableCell>
               <TableCell>{product?.ixoneID}</TableCell>
+              <TableCell>{product?.upc12}</TableCell>
               <TableCell>
                 <div className='flex space-x-2'>
                   {product?.images?.map((imageItem: any) => {
@@ -79,15 +86,22 @@ const ProductTable = ({
               <TableCell>
                 <div className='flex space-x-2'>
                   <Link
-                    className={buttonVariants({ variant: 'destructive' })}
+                    className={buttonVariants({ variant: 'default' })}
                     href={'/product/ixone/' + product?.ixoneID}
+                  >
+                    Edit
+                  </Link>
+                  <Link
+                    className={buttonVariants({ variant: 'destructive' })}
+                    href={'/product/productId/' + product?.id}
                   >
                     View
                   </Link>
                   <ProductImageUploadDialog
-                    isOpen={uploadDialogActive === product?.ixoneID}
+                    isOpen={uploadDialogActive === product?.id && product?.id}
                     toggleDialog={toggleUploadDialog}
-                    ixoneID={product?.ixoneID}
+                    // ixoneID={product?.ixoneID}
+                    product={product}
                   ></ProductImageUploadDialog>
                   {/* <Button>Extract</Button>
                   <Button variant='destructive'>Validate</Button> */}
@@ -97,6 +111,7 @@ const ProductTable = ({
           ))}
         </TableBody>
       </Table>
+      <ProductListPagination pagination={pagination} />
     </div>
   );
 };

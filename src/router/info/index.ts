@@ -197,7 +197,10 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       });
     }
 
-    const allJsonData = mapMarkdownAllToObject(allResData?.markdownContent);
+    const allJsonData = mapMarkdownAllToObject(
+      allResData?.markdownContent,
+      allResData?.extraInfo
+    );
     const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
 
     let finalResult = {

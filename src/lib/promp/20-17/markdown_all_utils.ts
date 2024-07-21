@@ -37,14 +37,6 @@
 // + "break-down list about allergen things product does not contain"
 // example 1: "milk and peanut free" should be recorded as "milk/peanut"
 
-// PHYSICAL_TABLE
-
-// 12) Physical info with table format below
-
-// PHYSICAL_TABLE
-// | upc code on the barcode  | The lot number is located on the left side of the UPC code (only one digit number inside the barcode) | all numbers on the right side of lot number |
-// | ------- | ------- | ------- |
-
 export const make_markdown_all_prompt = ({
   ocrText,
   imageCount,
@@ -95,6 +87,7 @@ THIRD_EXTRA_CLAIM_TABLE
 ALLERGEN_TABLE
 HEADER_TABLE
 INGREDIENT_TABLE
+PHYSICAL_TABLE
 MARKETING_TABLE
 INSTRUCTION_TABLE
 SUPPLY_CHAIN_TABLE
@@ -124,20 +117,20 @@ IMPORTANT RULES:
 "tree nuts"
 "wheat".
 
-+ "statements that tell allergen things product does not contain" are the exact contexts that you found on provided images about allergen info, that product claim to not contain or free of or free.
++ "allergen does-not-contain statement or label" are the exact contexts that you found on provided images about allergen info, that product claim to not contain or free of or free.
+ane "allergen does-not-contain statement or label" could be claim from a label on product images about allergen thing that not contain or free of or free.
 Ex 1: "contain no wheat, milk"
 Ex 2: "does not contain wheat, milk"
 Ex 3: "free of wheat, milk"
 Ex 4: "non-dairy" text mean does not contain allergen ingredient of "dairy"
-Ex 5: "no egg"
 
-+ "allergen contain statements" are the exact contexts that you found on provided images about allergen info, usually start with "contains:", "contain", "may contain", "may contain:", "allergen statement:, ....
++ "allergen contain statement" are the exact contexts that you found on provided images about allergen info, usually start with "contains", "contains:", "may contains:", "allergen statement:, ....
 Example 1: "allergen statement: contains milk"
 Example 2: "may contain: milk, peanut"
 
 + "allergen contain break-down list" is the allergen ingredients from "allergen contain statement" and do not collect from product ingredient list.
 
-+ "allergen contain on equipment statements" are the exact contexts that you found on provided images about list of allergen ingredients that is said they could be contained in manufacturing equipments.
++ "allergen contain on equipment statement" are the exact contexts that you found on provided images about list of allergen ingredients that is said they could be contained in manufacturing equipments.
 ex 1: "manufactured on equipment that also processes product containing ..."
 ex 2: "made in a facility that also processes ... "
 ex 3: "tree nuts, wheat present in facility"
@@ -172,8 +165,6 @@ Ex 4: "24 K-CUP PODS - 0.55 OZ (5.2)G/EA NET WT 4.44 OZ (38g)"
 + is the list of statements about ingredients of product (since product can have many ingredients list)
 + "ingredient statement" is content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "other ingredients:".
 + "ingredient break-down list" is the list of ingredients in ingredient statement split by "/"
-Example 1:
-
 + "product type from nutrition panel" could be detected through nutrition panel text title which are NUTRITION FACTS or SUPPLEMENT FACTS
 
 6) "marketing" table rules:
@@ -241,7 +232,6 @@ IMPORTANT NOTE:
 + remember when product state "something free" it mean product free of that thing
 Example 1: "gluten free" mean product not contain "gluten"
 Example 2: "nuts free" mean product not contain "nuts"
-
 
 LABELING_INFO_TABLE
 | things that labels/logos indicate product free of (multiple things name split by "/")| things that labels/logos indicate product contain (multiple things name split by "/")|
@@ -320,7 +310,7 @@ PROCESS_CLAIM_TABLE
 | 100% natural ingredients | ...
 | 100% pure | ...
 | acid free | ...
-| aeroponic grown | ...ingre
+| aeroponic grown | ...
 | all natural | ...
 | all natural ingredients | ...
 | aquaponic/aquaculture grown | ...
@@ -567,14 +557,8 @@ IMPORTANT NOTE:
 + tree nuts also includes "coconut"
 
 ALLERGEN_TABLE
-| allergen info | value 1 | value 2 | value 3 | ... (more columns if needed)
-| ------- | -------- | -------- | -------- | ...
-| allergen contain on equipment statements |
-| allergen contain on equipment break-down list for that statement (split by "/") |
-| allergen contain statements | 
-| allergen contain break-down list from that statement (split by "/") |
-| exact text on images that tell allergen things product does not contain |
-| break-down list from the text that about allergen things product does not contain (split by "/") |
+| allergen contain on equipment statement | allergen contain on equipment break-down list for that statement (split by "/") | allergen contain statement | allergen contain break-down list from that statement (split by "/") | statements or labels that tell allergen things product does not contain | break-down list from statements or label that about allergen things product does not contain  (split by "/")| 
+| ------- | -------- | -------- | ------- | -------- | -------- |
 
 10) Header info with table format below:
 (IMPORTANT NOTE: remember header table only have one row item)
@@ -586,17 +570,22 @@ HEADER_TABLE
 11) Ingredient info with table format below:
 
 INGREDIENT_TABLE
-| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement | ingredient break-down list from ingredient statement (splitted by "/") | live and active cultures list statement | live and active cultures break-down list (splitted by "/")  | 
+| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement |  ingredient break-down list from ingredient statement (answer in multiple string splitted by "/") | live and active cultures list statement | live and active cultures break-down list (answer in multiple string splitted by "/")  | 
 | ------- | ------- | -------- | -------- | -------- | -------- |
 
+12) Physical info with table format below
 
-12) Marketing info with table format below:
+PHYSICAL_TABLE
+| upc code on the barcode  | The lot number is located on the left side of the UPC code (only one digit number inside the barcode) | all numbers on the right side of lot number |
+| ------- | ------- | ------- |
+
+13) Marketing info with table format below:
 
 MARKETING_TABLE
 | have QR code (answer is boolean) | have Instagram icon or info ? | have Pinterest icon or info ? | have Youtube icon or info ? | youtube icon type (if have youtube icon or info )  | have Facebook icon or info ? | have twitter icon or info ? | social media list | website list (multiple split by comma) | social media text list | enlarged to show (answer is boolean) |
 | ------- | -------- | -------- | ------- | ------- | ------- | -------- | -------- | ------- | ------- | ------- |
 
-13) Instruction info with table format below:
+14) Instruction info with table format below:
 
 IMPORTANT NOTE:
 + each type of instruction could have multiple value
@@ -609,7 +598,7 @@ INSTRUCTION_TABLE
 | usage instructions | 
 | other instructions |
 
-14) supply chain info with table format below:
+15) supply chain info with table format below:
 
 SUPPLY_CHAIN_TABLE
 | info item | value |
@@ -631,7 +620,7 @@ SUPPLY_CHAIN_TABLE
 | manufacture state 
 | manufacture zipCode |
 
-15) Base certifier claim info with table format below:
+16) Base certifier claim info with table format below:
 
 BASE_CERTIFIER_CLAIM_TABLE
 | claim | is product claim that ? (answer is yes/no/unknown) |
@@ -677,7 +666,7 @@ BASE_CERTIFIER_CLAIM_TABLE
 | Viticulture Claim |
 | Whole Grain Claim |
 
-16) some other attribute info recorded with table format below:
+17) some other attribute info recorded with table format below:
 
 ATTRIBUTE_TABLE
 | grade (answer are 'A'/ 'B') | juice percent (answer is number) |
@@ -685,20 +674,6 @@ ATTRIBUTE_TABLE
 
 `;
 };
-
-// and "statements that tell allergen things product does not contain" could be claim from a label text on product images about allergen thing that not contain or free of or free.
-
-// + "allergen does-not-contain statement or label" are the exact contexts that you found on provided images about allergen info, that product claim to not contain or free of or free.
-// ane "allergen does-not-contain statement or label" could be claim from a label on product images about allergen thing that not contain or free of or free.
-// | statements or labels that tell allergen things product does not contain |
-
-// | allergen info | value 1 | value 2 | ...
-// | ------- | -------- | -------- | ...
-// | allergen contain on equipment statement |
-// | allergen contain on equipment break-down list for that statement (split by "/") |
-// | allergen contain statement | allergen contain break-down list from that statement (split by "/") |
-// | statements or labels that tell allergen things product does not contain |
-// | break-down list from statements or label that about allergen things product does not contain  (split by "/") |
 
 //* calorie
 // CONDITION FOR ROW TO SHOW FOR TABLE BELOW:
