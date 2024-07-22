@@ -13,6 +13,7 @@ VALIDATION AND FIX BUGS:
 1) why you keep not separating the dual-column nutrition fact panel? please please help me always separated into multiple table of info for dual-column nutrition fact panel.
 2) only give me the information visibly seen on provided images and do not assume the values.
 3) only give me exact nutrition panel info that can be visibly seen from provided image. Gemini please stop assuming that product have nutrition fact panel
+4) only extract nutrition info data a from nutrition panel on image.
 
 IMPORTANT REQUIREMENTS:
 1) do not provide data that you cannot see it by human eyes on provided images.

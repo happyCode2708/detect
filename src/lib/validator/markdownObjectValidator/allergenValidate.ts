@@ -214,7 +214,7 @@ const mapToValidatedAllergenObject = async (modifiedProductDataPoints: any) => {
     allergensAncillary: [],
     allergens: [],
     processedOnEquipment: [],
-    InFacilityOnEquipmentIncluding: [],
+    inFacilityOnEquipmentIncluding: [],
     processedManufacturedInFacilityStatement: [],
     inFacilityOnEquipmentStatement: [],
     freeOf: [],
@@ -242,17 +242,17 @@ const mapToValidatedAllergenObject = async (modifiedProductDataPoints: any) => {
       ];
     }
 
-    if (notContainStatement && validated_notContainList) {
-      const currentValue =
-        modifiedProductDataPoints?.['validated_allergens']?.[
-          'allergensAncillary'
-        ];
+    // if (notContainStatement && validated_notContainList) {
+    //   const currentValue =
+    //     modifiedProductDataPoints?.['validated_allergens']?.[
+    //       'allergensAncillary'
+    //     ];
 
-      modifiedProductDataPoints['validated_allergens']['allergensAncillary'] = [
-        ...currentValue,
-        notContainStatement,
-      ];
-    }
+    //   modifiedProductDataPoints['validated_allergens']['allergensAncillary'] = [
+    //     ...currentValue,
+    //     notContainStatement,
+    //   ];
+    // }
 
     if (containOnEquipmentStatement) {
       const currentValue =
@@ -273,20 +273,17 @@ const mapToValidatedAllergenObject = async (modifiedProductDataPoints: any) => {
       const currentValue =
         modifiedProductDataPoints?.['validated_allergens']?.['allergens'];
 
-      modifiedProductDataPoints['validated_allergens']['allergens'] = [
-        ...currentValue,
-        ...validated_containList,
-      ];
+      modifiedProductDataPoints['validated_allergens']['allergens'] =
+        Array.from(new Set([...currentValue, ...validated_containList]));
     }
 
     if (validated_notContainList) {
       const currentValue =
         modifiedProductDataPoints?.['validated_allergens']?.['freeOf'];
 
-      modifiedProductDataPoints['validated_allergens']['freeOf'] = [
-        ...currentValue,
-        ...validated_notContainList,
-      ];
+      modifiedProductDataPoints['validated_allergens']['freeOf'] = Array.from(
+        new Set([...currentValue, ...validated_notContainList])
+      );
     }
 
     if (validated_containOnEquipmentList) {
@@ -299,8 +296,10 @@ const mapToValidatedAllergenObject = async (modifiedProductDataPoints: any) => {
         [...currentValue, ...validated_containOnEquipmentList];
 
       modifiedProductDataPoints['validated_allergens'][
-        'InFacilityOnEquipmentIncluding'
-      ] = [...currentValue, ...validated_containOnEquipmentList];
+        'inFacilityOnEquipmentIncluding'
+      ] = Array.from(
+        new Set([...currentValue, ...validated_containOnEquipmentList])
+      );
     }
   });
 

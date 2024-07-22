@@ -1,4 +1,5 @@
 import { cn, removeDuplicates } from '@/lib/utils';
+import { findIntersectionArrayString } from '@/lib/utils/array';
 import { isEqual } from 'lodash';
 
 export const SectionWrapper = ({
@@ -45,6 +46,16 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
 
   const { allergensAncillary, ...rest_validated_allergens } =
     validated_allergens || {};
+
+  const { processedOnEquipment, freeOf, containList } =
+    validated_allergens || {};
+
+  const missMatchEquipmentList = findIntersectionArrayString(
+    processedOnEquipment,
+    freeOf
+  );
+
+  const missMatchContainList = findIntersectionArrayString(containList, freeOf);
 
   return (
     <div>
@@ -137,7 +148,15 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
                 },
               }}
             />
-            <CamelFieldStringRender objectValues={rest_validated_allergens} />
+            <CamelFieldStringRender
+              objectValues={rest_validated_allergens}
+              possibleWrongValues={{
+                containList: missMatchContainList,
+                inFacilityOnEquipmentIncluding: missMatchEquipmentList,
+                freeOf: [...missMatchContainList, ...missMatchEquipmentList],
+                processedOnEquipment: missMatchEquipmentList,
+              }}
+            />
           </div>
         )}
       </SectionWrapper>
@@ -171,10 +190,12 @@ export const CamelFieldStringRender = ({
   objectValues,
   evaluations,
   styleConfig,
+  possibleWrongValues,
 }: {
   objectValues: Object;
   evaluations?: any;
   styleConfig?: Record<string, Record<string, { className: string }>>;
+  possibleWrongValues?: any;
 }) => {
   if (!objectValues) return null;
 
@@ -215,9 +236,16 @@ export const CamelFieldStringRender = ({
               <div>
                 {Array.isArray(value)
                   ? value?.map((childValue: any) => {
+                      const wrongValues = possibleWrongValues?.[key];
+
+                      const showPossibleWrongStyle =
+                        !!wrongValues && wrongValues?.includes(childValue);
+
                       return (
-                        <div>
-                          +{' '}
+                        <div
+                          className={showPossibleWrongStyle ? 'bg-red-300' : ''}
+                        >
+                          +
                           {typeof value === 'boolean' ? `${value}` : childValue}{' '}
                         </div>
                       );

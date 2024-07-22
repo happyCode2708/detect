@@ -15,6 +15,7 @@ import { Button, buttonVariants } from '../ui/button';
 import Link from 'next/link';
 import ProductImageUploadDialog from './ProductImageUploadDialog';
 import { ProductListPagination } from './ProductListPagination';
+import { cn } from '@/lib/utils';
 
 const ProductTable = ({
   products,
@@ -86,8 +87,12 @@ const ProductTable = ({
               <TableCell>
                 <div className='flex space-x-2'>
                   <Link
-                    className={buttonVariants({ variant: 'default' })}
-                    href={'/product/ixone/' + product?.ixoneID}
+                    className={cn(
+                      buttonVariants({ variant: 'default' }),
+                      'pointer-events-none bg-gray-400'
+                    )}
+                    // href={'/product/ixone/' + product?.ixoneID}
+                    href='#'
                   >
                     Edit
                   </Link>

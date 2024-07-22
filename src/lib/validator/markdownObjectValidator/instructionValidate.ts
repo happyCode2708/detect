@@ -84,7 +84,12 @@ const checkConsumerStorage = async (
       return toLower(statement).includes(word);
     });
     if (isStatementMatchEnum) {
-      validEnumValues.push(key);
+      //* exceptional case
+      if (key === 'DRY PLACE' && validEnumValues?.includes('COOL DRY PLACE')) {
+        //* COOL DRY PLACE matched no need DRY PLACE
+      } else {
+        validEnumValues.push(key);
+      }
     }
   });
 
@@ -185,9 +190,9 @@ const validateAllInstructions = async (
 const STORAGE_MAPPING = {
   'COOL DARK PLACE': ['cool', 'dark', 'place'],
   'COOL DRY PLACE': ['cool', 'dry', 'place'],
+  'DRY PLACE': ['dry', 'place'],
   'DO NOT FREEZE': ['not', 'freeze'],
   'DO NOT REFRIGERATE': ['not', 'refrigerate'],
-  'DRY PLACE': ['dry', 'place'],
   'KEEP FROZEN': ['keep', 'frozen'],
   'KEEP REFRIGERATED': ['keep', 'refrigerated'],
   'REFRIGERATE AFTER OPENING': ['refrigerate', 'after', 'open'],

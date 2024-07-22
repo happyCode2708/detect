@@ -231,11 +231,11 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   const allergenObjList = getObjectDataFromHorizontalTable(
     allergenClaimSection,
     {
+      'allergen contain statement': 'containStatement',
+      'allergen contain break-down list from that statement': 'containList',
       'allergen contain on equipment statement': 'containOnEquipmentStatement',
       'allergen contain on equipment break-down list for that statement':
         'containOnEquipmentList',
-      'allergen contain statement': 'containStatement',
-      'allergen contain break-down list from that statement': 'containList',
       // 'statements or labels that tell allergen things product does not contain':
       //   'notContainStatement',
       // 'statements or labels that tell allergen things product does not contain':

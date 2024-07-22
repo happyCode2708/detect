@@ -26,8 +26,7 @@ import { useQueryClient } from '@tanstack/react-query';
 interface ImageUploadDialogProps {
   isOpen: boolean;
   toggleDialog: (ixoneId: string) => void;
-  // ixoneID: string;
-  product;
+  product: any;
 }
 
 const ProductImageUploadDialog: React.FC<ImageUploadDialogProps> = ({

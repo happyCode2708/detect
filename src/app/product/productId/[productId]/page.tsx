@@ -30,6 +30,8 @@ import {
   useQueryProductsFromTdc,
 } from '@/queries/productDetailQuery';
 import { sleep } from '@/lib/utils/time';
+import ProductImageUploadDialog from '@/components/product/ProductImageUploadDialog';
+import { CamelFieldStringRender } from '@/components/result/common';
 // import { compare } from 'bcryptjs';
 
 const ProductDetailPage = () => {
@@ -37,6 +39,7 @@ const ProductDetailPage = () => {
 
   const productId = params?.['productId'] as string;
 
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [files, setFiles] = useState<any>([]);
   const [productInfo, setProductInfo] = useState<any>(null);
   const [inputImages, setInputImages] = useState<any>([]);
@@ -74,14 +77,11 @@ const ProductDetailPage = () => {
 
   const { product: productDetail } = productData || {};
 
-  const ixoneid = productDetail?.ixoneID;
-  console.log('test ---', ixoneid);
+  const { ixoneID: ixoneid, upc12 } = productDetail || {};
 
   const { data: tdcData } = useQueryProductsFromTdc({
     ixoneIDs: typeof ixoneid === 'string' ? [ixoneid] : [],
   });
-
-  console.log('tdcData', tdcData);
 
   const { toast } = useToast();
 
@@ -123,7 +123,6 @@ const ProductDetailPage = () => {
 
     formData.append('imageUrls', JSON.stringify(imageUrls));
 
-    // Append other form data
     formData.append('biasForm', JSON.stringify(biasForm));
     formData.append('outputConfig', JSON.stringify(outputConfig));
 
@@ -295,6 +294,7 @@ const ProductDetailPage = () => {
             }
 
             mutateGetCompareResultWithTdc.mutate({ ixoneid });
+            queryClient.invalidateQueries({ queryKey: ['product', 'id'] });
             setLoading(false);
           }
         } catch (error) {
@@ -316,6 +316,8 @@ const ProductDetailPage = () => {
   if (!productIxone) {
     return <div>Loading...</div>;
   }
+
+  console.log('productInfo', productInfo);
 
   return (
     <FluidContainer>
@@ -368,7 +370,10 @@ const ProductDetailPage = () => {
           <div className='flex flex-wrap align-middle'>
             {productIxone?.images?.map((imageItem: any) => {
               return (
-                <div className='w-[80px] max-h-[80px] flex justify-center align-middle p-2'>
+                <div
+                  className='w-[80px] max-h-[80px] flex justify-center align-middle p-2'
+                  onClick={() => setPreviewImage(imageItem?.url)}
+                >
                   <img className='object-fit' src={imageItem?.url}></img>
                 </div>
               );
@@ -421,6 +426,14 @@ const ProductDetailPage = () => {
                   </Button>
                 </>
               )}
+              <ProductImageUploadDialog
+                isOpen={uploadDialogOpen}
+                toggleDialog={() => {
+                  setUploadDialogOpen(!uploadDialogOpen);
+                }}
+                // ixoneID={product?.ixoneID}
+                product={{ id: productId }}
+              ></ProductImageUploadDialog>
               {loading && (
                 <Button variant='secondary' onClick={onCancel}>
                   Cancel
@@ -429,6 +442,16 @@ const ProductDetailPage = () => {
             </div>
           </SectionWrapper>
         </div>
+        {(upc12 || ixoneid) && (
+          <SectionWrapper title={'Product Identification'}>
+            <CamelFieldStringRender
+              objectValues={{
+                ixoneid,
+                upc12,
+              }}
+            />
+          </SectionWrapper>
+        )}
 
         <div className='flex flex-row'>
           <div>
@@ -495,6 +518,7 @@ const ProductDetailPage = () => {
               </SectionWrapper>
             </div>
           )}
+
           {loading && (
             <div className='flex-1 overflow-hidden pt-6'>
               <Alert>

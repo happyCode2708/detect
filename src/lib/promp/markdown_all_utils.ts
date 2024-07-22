@@ -137,10 +137,13 @@ Example 2: "may contain: milk, peanut"
 
 + "allergen contain break-down list" is the allergen ingredients from "allergen contain statement" and do not collect from product ingredient list.
 
-+ "allergen contain on equipment statements" are the exact contexts that you found on provided images about list of allergen ingredients that is said they could be contained in manufacturing equipments.
++ "allergen contain on equipment statements" are the exact contexts that you found on provided images about list of allergen ingredients that is said they could present on the product since manufacturing equipments are also used to make other products or in facility .
 ex 1: "manufactured on equipment that also processes product containing ..."
 ex 2: "made in a facility that also processes ... "
 ex 3: "tree nuts, wheat present in facility"
+
++ "allergen contain on equipment break-down list for that statement" is the break-down list of all ingredients that is stated to present in facility or manufacturing equipments. Do not include ingredients that say is not present on facility or manufacturing equipment.
+Example 1: Manufactured in a egg and milk free facility that also processes peanut, wheat products should be recorded as "peanut/wheat" since text "in a egg and milk free facility" mean the egg and milk is not present in facility.
 
 + "allergen break-down list from that statement" is a string list
 ex 1: "oats/milk"
@@ -172,7 +175,7 @@ Ex 4: "24 K-CUP PODS - 0.55 OZ (5.2)G/EA NET WT 4.44 OZ (38g)"
 + is the list of statements about ingredients of product (since product can have many ingredients list)
 + "ingredient statement" is content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "other ingredients:".
 + "ingredient break-down list" is the list of ingredients in ingredient statement split by "/"
-Example 1:
+Example 1: "Cookies ( Gluten Free Oat Flour , Organic Coconut Sugar , Sustainable Palm Oil),  Creme Filling (milk, onion) , Potato" should be recorded as "Cookies ( Gluten Free Oat Flour , Organic Coconut Sugar , Sustainable Palm Oil)/Creme Filling (milk, onion)/Potato"
 
 + "product type from nutrition panel" could be detected through nutrition panel text title which are NUTRITION FACTS or SUPPLEMENT FACTS
 
@@ -411,7 +414,7 @@ IMPORTANT NOTE:
 + text like "contain ..." or "contain no ..." is "marketing text on product" and NOT "ingredient list"
 
 FIRST_EXTRA_CLAIM_TABLE
-| extra item | is item mentioned on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain" )  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer is multiple string if needed) | return text on provided image that prove it  |  
+| extra item | is item mentioned on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain" )  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer is multiple string if needed) | return exact sentence or phrase on provided image that prove it  |  
 | ------- | -------- | ------- | ------- | ------- | 
 | additives | ...
 | artificial additives | ...
@@ -474,7 +477,7 @@ IMPORTANT NOTE:
 + "no dairy" DO NOT mean "no lactose"
 
 SECOND_EXTRA_CLAIM_TABLE
-| extra item | is item mentioned on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | return text on provided image that prove it |
+| extra item | is item mentioned on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | return exact sentence or phrase on provided image that prove it |
 | ------- | -------- | ------- | ------- | ------- |
 | omega fatty acids | ...
 | pesticides | ...
@@ -515,7 +518,7 @@ IMPORTANT NOTE:
 + "vegan" not mean "vegan ingredients"
 
 THIRD_EXTRA_CLAIM_TABLE
-| extra item | is item mentioned on provided images? (answer is yes/no/unknown) |  How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | return text on provided image that prove it |
+| extra item | is item mentioned on provided images? (answer is yes/no/unknown) |  How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | return exact sentence or phrase on provided image that prove it |
 | ------- | -------- | ------- | ------- | ------- |
 | petro chemical | ...
 | petrolatum | ...
@@ -569,10 +572,10 @@ IMPORTANT NOTE:
 ALLERGEN_TABLE
 | allergen info | value 1 | value 2 | value 3 | ... (more columns if needed)
 | ------- | -------- | -------- | -------- | ...
-| allergen contain on equipment statements |
-| allergen contain on equipment break-down list for that statement (split by "/") |
 | allergen contain statements | 
 | allergen contain break-down list from that statement (split by "/") |
+| allergen contain on equipment statements |
+| allergen contain on equipment break-down list for that statement (split by "/") |
 | exact text on images that tell allergen things product does not contain |
 | break-down list from the text that about allergen things product does not contain (split by "/") |
 

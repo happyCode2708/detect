@@ -27,6 +27,7 @@ import { encodeImageToBase64 } from '../../lib/image';
 import { ChatCompletionContentPartImage } from 'openai/resources/chat/completions';
 import { make_gpt4_o_prompt } from '../../lib/promp/gpt4-o-mini';
 import { findUpcFromImages } from '../../lib/utils/findUpc';
+import { processProductImage } from './handler/process-product-image';
 
 // const openai = new OpenAI({
 //   apiKey: process.env.OPENAI_API_KEY,
@@ -165,173 +166,175 @@ const getFilename = (filePath: any) => {
   return match ? match[0] : null;
 };
 
-router.post('/process-product-image', async (req, res) => {
-  let responseReturned = false;
-  let sessionId;
-  try {
-    const product = await prisma.product.findUnique({
-      where: { ixoneID: req.body.ixoneId },
-      include: { images: true },
-    });
+router.post('/process-product-image', processProductImage);
 
-    if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
+// router.post('/process-product-image', async (req, res) => {
+//   let responseReturned = false;
+//   let sessionId;
+//   try {
+//     const product = await prisma.product.findUnique({
+//       where: { ixoneID: req.body.ixoneId },
+//       include: { images: true },
+//     });
 
-    const filePaths = product?.images?.map((imageItem: any) => {
-      const fileName = getFilename(imageItem?.path);
+//     if (!product) {
+//       return res.status(404).json({ error: 'Product not found' });
+//     }
 
-      console.log('filename', fileName);
+//     const filePaths = product?.images?.map((imageItem: any) => {
+//       const fileName = getFilename(imageItem?.path);
 
-      if (process.env.SOURCE === 'home') {
-        return `/Users/duynguyen/Desktop/foodocr/foodocr/assets/upload/${fileName}`;
-      }
+//       console.log('filename', fileName);
 
-      if (process.env.SOURCE === 'company') {
-        return 'C:/Users/nnqduy/Desktop/ocr/detect/assets/upload/' + fileName;
-      }
+//       if (process.env.SOURCE === 'home') {
+//         return `/Users/duynguyen/Desktop/foodocr/foodocr/assets/upload/${fileName}`;
+//       }
 
-      return imageItem?.path;
-    });
+//       if (process.env.SOURCE === 'company') {
+//         return 'C:/Users/nnqduy/Desktop/ocr/detect/assets/upload/' + fileName;
+//       }
 
-    try {
-      const checkFileExistResults = await checkFilesExist(filePaths);
-      const fileExistList = checkFileExistResults.filter(
-        (item: any) => item?.exists === true
-      );
+//       return imageItem?.path;
+//     });
 
-      if (fileExistList?.length < filePaths?.length) {
-        res
-          .status(404)
-          .json({ isSuccess: false, message: 'not enough file path' });
+//     try {
+//       const checkFileExistResults = await checkFilesExist(filePaths);
+//       const fileExistList = checkFileExistResults.filter(
+//         (item: any) => item?.exists === true
+//       );
 
-        return;
-      }
-    } catch (err) {
-      res.status(404).json({
-        isSuccess: false,
-        message: 'some thing went wrong when checking for image files',
-      });
-    }
+//       if (fileExistList?.length < filePaths?.length) {
+//         res
+//           .status(404)
+//           .json({ isSuccess: false, message: 'not enough file path' });
 
-    const newSession = await prisma.extractSession.create({
-      data: {
-        productId: product.id,
-        status: 'unknown',
-      },
-    });
+//         return;
+//       }
+//     } catch (err) {
+//       res.status(404).json({
+//         isSuccess: false,
+//         message: 'some thing went wrong when checking for image files',
+//       });
+//     }
 
-    sessionId = newSession.sessionId;
+//     const newSession = await prisma.extractSession.create({
+//       data: {
+//         productId: product.id,
+//         status: 'unknown',
+//       },
+//     });
 
-    const biasForm = JSON.parse(req.body?.biasForm);
-    const outputConfig = JSON.parse(req.body?.outputConfig);
+//     sessionId = newSession.sessionId;
 
-    const collateImageName = `${sessionId}.jpeg`;
+//     const biasForm = JSON.parse(req.body?.biasForm);
+//     const outputConfig = JSON.parse(req.body?.outputConfig);
 
-    console.log('run on model ', (global as any).generativeModelName);
+//     const collateImageName = `${sessionId}.jpeg`;
 
-    console.log('filePath', JSON.stringify(filePaths));
+//     console.log('run on model ', (global as any).generativeModelName);
 
-    let invalidatedInput = await findImagesContainNutFact(filePaths);
-    let foundUpc12 = await findUpcFromImages(filePaths);
+//     console.log('filePath', JSON.stringify(filePaths));
 
-    console.log('upc', foundUpc12);
+//     let invalidatedInput = await findImagesContainNutFact(filePaths);
+//     let foundUpc12 = await findUpcFromImages(filePaths);
 
-    // await createCollage(filePaths, collatedOuputPath);
+//     console.log('upc', foundUpc12);
 
-    Object.entries(biasForm).forEach(([key, value]: any) => {
-      if (value?.haveNutFact === true) {
-        let newNutIncluded = addUniqueString(
-          invalidatedInput.nutIncluded,
-          filePaths[key]
-        );
+//     // await createCollage(filePaths, collatedOuputPath);
 
-        invalidatedInput.nutIncluded = newNutIncluded;
-      }
-    });
+//     Object.entries(biasForm).forEach(([key, value]: any) => {
+//       if (value?.haveNutFact === true) {
+//         let newNutIncluded = addUniqueString(
+//           invalidatedInput.nutIncluded,
+//           filePaths[key]
+//         );
 
-    console.log('result', JSON.stringify(invalidatedInput));
+//         invalidatedInput.nutIncluded = newNutIncluded;
+//       }
+//     });
 
-    const nutImagesOCRresult = await getOcrTextAllImages(
-      invalidatedInput.nutIncluded
-    );
+//     console.log('result', JSON.stringify(invalidatedInput));
 
-    const nutExcludedImagesOCRresult = await getOcrTextAllImages(
-      invalidatedInput.nutExcluded
-    );
+//     const nutImagesOCRresult = await getOcrTextAllImages(
+//       invalidatedInput.nutIncluded
+//     );
 
-    res.json({
-      sessionId,
-      images: [],
-      nutIncludedIdx: invalidatedInput?.nutIncludedIdx,
-      messages: [
-        invalidatedInput.nutIncluded?.length === 0
-          ? 'There is no nut/supp facts panel detected by nut/supp fact panel detector module. If nut/supp fact panels are on provided image. Please set up bias of nut/supp for image to extract info. (Nutrition and Supplement Panel detector is on development state)'
-          : null,
-      ],
-    });
+//     const nutExcludedImagesOCRresult = await getOcrTextAllImages(
+//       invalidatedInput.nutExcluded
+//     );
 
-    responseReturned = true;
+//     res.json({
+//       sessionId,
+//       images: [],
+//       nutIncludedIdx: invalidatedInput?.nutIncludedIdx,
+//       messages: [
+//         invalidatedInput.nutIncluded?.length === 0
+//           ? 'There is no nut/supp facts panel detected by nut/supp fact panel detector module. If nut/supp fact panels are on provided image. Please set up bias of nut/supp for image to extract info. (Nutrition and Supplement Panel detector is on development state)'
+//           : null,
+//       ],
+//     });
 
-    // const [finalNut, finalAll] = await Promise.all([
-    onProcessNut({
-      req,
-      res,
-      invalidatedInput,
-      //* flash version
-      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-      // ocrList: nutImagesOCRresult,
-      sessionId,
-      collateImageName,
-      outputConfig,
-    });
-    onProcessOther({
-      req,
-      res,
-      invalidatedInput,
-      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-      sessionId,
-      collateImageName,
-      outputConfig,
-      extraInfo: {
-        physical: {
-          upc12: foundUpc12,
-        },
-      },
-    });
-    // ]);
+//     responseReturned = true;
 
-    // await prisma.extractSession.update({
-    //   where: { sessionId },
-    //   data: {
-    //     status: 'fail',
-    //     result_all: JSON.stringify({}),
-    //     result_nut: JSON.stringify({}),
-    //   },
-    // });
-    //* await createFinalResult({ finalAll, finalNut, sessionId, res });
-  } catch (e) {
-    console.log('process-image-error', e);
+//     // const [finalNut, finalAll] = await Promise.all([
+//     onProcessNut({
+//       req,
+//       res,
+//       invalidatedInput,
+//       //* flash version
+//       ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+//       // ocrList: nutImagesOCRresult,
+//       sessionId,
+//       collateImageName,
+//       outputConfig,
+//     });
+//     onProcessOther({
+//       req,
+//       res,
+//       invalidatedInput,
+//       ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+//       sessionId,
+//       collateImageName,
+//       outputConfig,
+//       extraInfo: {
+//         physical: {
+//           upc12: foundUpc12,
+//         },
+//       },
+//     });
+//     // ]);
 
-    if (!responseReturned) {
-      res.status(500).json({
-        isSuccess: false,
-        error: JSON.stringify(e),
-        message: 'Failed to create session',
-      });
-    } else {
-      await prisma.extractSession.update({
-        where: { sessionId },
-        data: {
-          status: 'fail',
-          result_all: null,
-          result_nut: null,
-          result: null,
-        },
-      });
-    }
-  }
-});
+//     // await prisma.extractSession.update({
+//     //   where: { sessionId },
+//     //   data: {
+//     //     status: 'fail',
+//     //     result_all: JSON.stringify({}),
+//     //     result_nut: JSON.stringify({}),
+//     //   },
+//     // });
+//     //* await createFinalResult({ finalAll, finalNut, sessionId, res });
+//   } catch (e) {
+//     console.log('process-image-error', e);
+
+//     if (!responseReturned) {
+//       res.status(500).json({
+//         isSuccess: false,
+//         error: JSON.stringify(e),
+//         message: 'Failed to create session',
+//       });
+//     } else {
+//       await prisma.extractSession.update({
+//         where: { sessionId },
+//         data: {
+//           status: 'fail',
+//           result_all: null,
+//           result_nut: null,
+//           result: null,
+//         },
+//       });
+//     }
+//   }
+// });
 
 router.post('/revalidate-product-data', async (req, res) => {
   try {

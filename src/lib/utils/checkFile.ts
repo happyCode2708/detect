@@ -17,3 +17,8 @@ export const checkFilesExist = async (
   const results = await Promise.all(filePaths.map(checkFileExists));
   return results;
 };
+
+export const getFilename = (filePath: any) => {
+  const match = filePath.match(/[^\\\/]+$/);
+  return match ? match[0] : null;
+};

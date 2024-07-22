@@ -67,7 +67,7 @@ export const decodeUpc = async (filePath: string) => {
     console.log('Decoded barcode:', result.getText());
     return Promise.resolve(result.getText());
   } catch (error) {
-    // console.error('Error decoding barcode:', error);
+    console.error('Error decoding barcode:', error);
     return Promise.resolve(null);
   }
 };

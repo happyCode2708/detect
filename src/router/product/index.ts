@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
@@ -20,7 +19,7 @@ import cookie from 'cookie';
 import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
 
 import { uploadsDir } from '../../server';
-import { error } from 'console';
+
 import { makePostPayloadProductTDC } from './utils';
 import axios from 'axios';
 import logger from '../../lib/logger';
@@ -70,8 +69,6 @@ router.post('/list', async (req, res) => {
     const pageNumber = parseInt(page as string);
     const limitNumber = parseInt(limit as string);
     const skip = (pageNumber - 1) * limitNumber;
-
-    console.log('page Number', page);
 
     const products = await prisma.product.findMany({
       where:
@@ -130,7 +127,7 @@ router.post('/create', async (req, res) => {
           }
         : {},
     });
-    res.status(201).json(newProduct);
+    res.status(201).json({ data: newProduct, isSuccess: true });
   } catch (error) {
     res.status(500).json({ error: 'Failed to create product' });
   }

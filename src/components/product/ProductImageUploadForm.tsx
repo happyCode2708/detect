@@ -4,11 +4,9 @@ import { Button } from '../ui/button';
 
 const ProductImageUploadForm = ({
   onSuccess,
-  // ixoneID,
   product,
 }: {
   onSuccess: any;
-  // ixoneID: string;
   product: any;
 }) => {
   const [images, setImages] = useState<FileList | null>(null);

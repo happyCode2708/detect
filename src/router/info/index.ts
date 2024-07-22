@@ -224,6 +224,20 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       },
     });
 
+    const extraInfo = allResData?.extraInfo;
+    const upc12 = extraInfo?.physical?.upc12;
+
+    if (upc12) {
+      await prisma.product.update({
+        where: {
+          id: session?.productId,
+        },
+        data: {
+          upc12: upc12 as string,
+        },
+      });
+    }
+
     const result = session?.result;
 
     if (!result && session?.status === 'fail') {
