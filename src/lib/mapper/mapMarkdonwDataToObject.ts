@@ -105,7 +105,7 @@ export const mapMarkdownNutToObject = (markdown: string) => {
     // logger.error('debug');
     // logger.info(debugSection);
 
-    if (debugSection && process.env.NODE_ENV !== 'production') {
+    if (debugSection) {
       const debugLines = debugSection
         .trim()
         .split('\n')
@@ -133,11 +133,12 @@ export const mapMarkdownNutToObject = (markdown: string) => {
       servingInfo,
       nutritionFacts: nutrients,
       footnotes: footnoteData,
-      markdown,
     };
 
-    if (debugTable) {
-      result = { ...result, debugTable: debugTable };
+    if (process.env.NODE_ENV !== 'production') {
+      if (debugTable) {
+        result = { ...result, debugTable: debugTable, markdown };
+      }
     }
 
     // console.log('result ---', JSON.stringify(result));
