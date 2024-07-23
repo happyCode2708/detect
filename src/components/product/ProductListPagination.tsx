@@ -43,7 +43,7 @@ export const ProductListPagination = ({ pagination }: { pagination: any }) => {
         <PaginationNumber page={3} /> */}
 
         {pageArray?.map((pageNumber: any) => {
-          return <PaginationNumber page={pageNumber} />;
+          return <PaginationNumber page={pageNumber} key={pageNumber} />;
         })}
 
         {showEllipsis && (

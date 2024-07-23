@@ -7,14 +7,13 @@ import { isEqual } from 'lodash';
 import { useState } from 'react';
 
 export const Result = ({ productInfo }: { productInfo: any }) => {
-  if (!productInfo) return null;
-
   const [tabActive, setTabActive] = useState<string>('table');
 
   const onValueChange = (tabActive: string) => {
     setTabActive(tabActive);
   };
 
+  if (!productInfo) return null;
   return (
     <Tabs
       defaultValue='table'
@@ -161,7 +160,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
             <div className='pl-6'>
               {recyclable?.map((recyclableItem: any, idx: number) => {
                 return (
-                  <div className='mb-2'>
+                  <div className='mb-2' key={idx}>
                     <CamelFieldStringRender objectValues={recyclableItem} />
                   </div>
                 );
@@ -175,7 +174,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
           {validated_ingredients_group?.map(
             (ingredientListObject: any, idx: number) => {
               return (
-                <div>
+                <div key={idx}>
                   <div className='font-bold'>
                     Validated Ingredient No.{idx + 1}:{' '}
                   </div>
@@ -200,7 +199,7 @@ const MetaInfo = ({ productInfo }: { productInfo: any }) => {
           {validated_other_ingredients_group?.map(
             (ingredientListObject: any, idx: number) => {
               return (
-                <div>
+                <div key={idx}>
                   <div className='font-bold'>
                     Validated Ingredient No.{idx + 1}:{' '}
                   </div>

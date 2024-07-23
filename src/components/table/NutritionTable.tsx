@@ -185,9 +185,9 @@ const NutritionTable = ({ data }: { data: any }) => {
         <div className='font-bold'>Footnote: </div>
         <p>
           {data?.footnotes?.length > 0 &&
-            data?.footnotes?.map((footnote: any) => {
+            data?.footnotes?.map((footnote: any, idx: number) => {
               return (
-                <span>
+                <span key={idx}>
                   {footnote?.footnoteContentEnglish ||
                     footnote?.footnoteContent}
                 </span>

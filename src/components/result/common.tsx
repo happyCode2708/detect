@@ -128,9 +128,9 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         />
       </SectionWrapper>
       <SectionWrapper name='allergens'>
-        {allergens?.map((allergenItem: any) => {
+        {allergens?.map((allergenItem: any, idx: number) => {
           return (
-            <div className='border rounded-md mb-2 p-1'>
+            <div className='border rounded-md mb-2 p-1' key={idx}>
               <CamelFieldStringRender objectValues={allergenItem} />
             </div>
           );
@@ -178,8 +178,10 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         <CamelFieldStringRender objectValues={supplyChain?.[0]} />
       </SectionWrapper>
       <SectionWrapper name='ingredients'>
-        {ingredients?.map((ingredientsItem: any) => {
-          return <CamelFieldStringRender objectValues={ingredientsItem} />;
+        {ingredients?.map((ingredientsItem: any, idx: number) => {
+          return (
+            <CamelFieldStringRender objectValues={ingredientsItem} key={idx} />
+          );
         })}
       </SectionWrapper>
     </div>
@@ -235,7 +237,7 @@ export const CamelFieldStringRender = ({
               </div>
               <div>
                 {Array.isArray(value)
-                  ? value?.map((childValue: any) => {
+                  ? value?.map((childValue: any, idx: number) => {
                       const wrongValues = possibleWrongValues?.[key];
 
                       const showPossibleWrongStyle =
@@ -244,6 +246,7 @@ export const CamelFieldStringRender = ({
                       return (
                         <div
                           className={showPossibleWrongStyle ? 'bg-red-300' : ''}
+                          key={idx}
                         >
                           +
                           {typeof value === 'boolean' ? `${value}` : childValue}{' '}
