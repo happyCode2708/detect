@@ -47,51 +47,56 @@ export const generateContent = async (images: any[], text: any) => {
 
   // return { chunkResponse, finalResponse };
 
-  const streamingResp = await (
-    global as any
-  ).generativeModel.generateContentStream(req);
+  const streamingResp = await (global as any).generativeModel.generateContent(
+    req
+  );
   let chunkResponse = [] as any;
   let finalResponse = '';
 
   // Set a timeout for the streaming process
-  const timeoutPromise = new Promise(
-    (_, reject) =>
-      setTimeout(() => reject(new Error('Streaming timeout')), 220000) // 30 seconds timeout
-  );
+  // const timeoutPromise = new Promise(
+  //   (_, reject) =>
+  //     setTimeout(() => reject(new Error('Streaming timeout')), 220000) // 30 seconds timeout
+  // );
 
-  // Process the stream with error handling and timeout
-  await Promise.race([
-    (async () => {
-      // for await (const item of streamingResp.stream) {
-      //   if (!item?.candidates) return;
-      //   chunkResponse.push(item);
-      //   const textPart = item?.candidates[0]?.content?.parts?.[0]?.text;
-      //   if (!textPart) {
-      //     console.log('chunk error  ...' + textPart);
-      //     continue;
-      //   }
-      //   finalResponse += textPart;
-      // }
-      for await (const item of streamingResp.stream) {
-        chunkResponse.push(item);
-        if (!item?.candidates) return;
-        const value = item?.candidates[0]?.content?.parts?.[0]?.text;
-        finalResponse = finalResponse + value;
-        // console.log(`...`);
-        //! test chunk error
+  // // Process the stream with error handling and timeout
+  // await Promise.race([
+  //   (async () => {
+  //     // for await (const item of streamingResp.stream) {
+  //     //   if (!item?.candidates) return;
+  //     //   chunkResponse.push(item);
+  //     //   const textPart = item?.candidates[0]?.content?.parts?.[0]?.text;
+  //     //   if (!textPart) {
+  //     //     console.log('chunk error  ...' + textPart);
+  //     //     continue;
+  //     //   }
+  //     //   finalResponse += textPart;
+  //     // }
+  //     for await (const item of streamingResp.stream) {
+  //       chunkResponse.push(item);
+  //       if (!item?.candidates) return;
+  //       const value = item?.candidates[0]?.content?.parts?.[0]?.text;
+  //       finalResponse = finalResponse + value;
+  //       //! test chunk error
 
-        if (item?.candidates[0]?.content?.parts?.[0]?.text === undefined) {
-          console.log(
-            'chunk error  ...' + item?.candidates[0]?.content?.parts?.[0]?.text
-          );
-          return Promise.reject('chunk empty answer');
-        } else {
-          console.log('generating...');
-        }
-      }
-    })(),
-    timeoutPromise,
-  ]);
+  //       if (item?.candidates[0]?.content?.parts?.[0]?.text === undefined) {
+  //         console.log(
+  //           'chunk error  ...' + item?.candidates[0]?.content?.parts?.[0]?.text
+  //         );
+  //         return Promise.reject('chunk empty answer');
+  //       } else {
+  //         console.log('generating...');
+  //       }
+  //     }
+  //   })(),
+  //   timeoutPromise,
+  // ]);
+
+  chunkResponse = streamingResp;
+  finalResponse =
+    streamingResp?.response?.candidates[0]?.content?.parts?.[0]?.text || '';
+
+  // console.log('result response ====', JSON.stringify(streamingResp));
 
   return { chunkResponse, finalResponse };
 };
@@ -105,8 +110,8 @@ export const onProcessGemini = async ({
   prefix = '',
   prompt,
   isMarkdown,
-  mapMdToObjectFunct,
   sessionPayload = {},
+  extraInfo,
 }: {
   req: any;
   res: any;
@@ -116,8 +121,8 @@ export const onProcessGemini = async ({
   prefix?: string;
   prompt: string;
   isMarkdown?: boolean;
-  mapMdToObjectFunct?: any;
   sessionPayload: any;
+  extraInfo?: any;
 }) => {
   const images = collatedOuputPath.map((path) => {
     const base64Image = encodeImageToBase64(path);
@@ -213,6 +218,7 @@ export const onProcessGemini = async ({
           data: {
             //* jsonData: jsonResult,
             markdownContent: procResult,
+            extraInfo,
           },
         }),
       };
@@ -249,6 +255,7 @@ export const onProcessOther = async ({
   sessionId,
   collateImageName,
   outputConfig,
+  extraInfo,
 }: {
   req: any;
   res: any;
@@ -257,6 +264,7 @@ export const onProcessOther = async ({
   sessionId: string;
   collateImageName: string;
   outputConfig: any;
+  extraInfo?: any;
 }) => {
   if (!outputConfig.other) {
     const resultFileName = 'all.json';
@@ -343,8 +351,9 @@ export const onProcessOther = async ({
         ]?.length,
       }),
       isMarkdown: true,
-      mapMdToObjectFunct: mapMarkdownAllToObject,
+      // mapMdToObjectFunct: mapMarkdownAllToObject,
       sessionPayload,
+      extraInfo,
     });
 
     console.log('update status to unknown');
@@ -465,7 +474,7 @@ export const onProcessNut = async ({
         ]?.length,
       }),
       isMarkdown: true,
-      mapMdToObjectFunct: mapMarkdownNutToObject,
+      // mapMdToObjectFunct: mapMarkdownNutToObject,
       sessionPayload,
     });
 

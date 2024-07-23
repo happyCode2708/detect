@@ -44,9 +44,9 @@ export const PreviewImage = (props: {
             />
           )}
         </div>
-        <DialogFooter className='h-[50px]'>
+        {/* <DialogFooter className='h-[50px]'>
           <Button type='submit'>Close</Button>
-        </DialogFooter>
+        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   );

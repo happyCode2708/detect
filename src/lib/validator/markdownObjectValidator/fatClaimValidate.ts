@@ -1,3 +1,5 @@
+import { toLower } from 'lodash';
+
 export const fatClaimValidate = async (modifiedProductDataPoints: any) => {
   const claim_list =
     modifiedProductDataPoints?.['attributes']?.['fatClaims'] || [];
@@ -33,14 +35,19 @@ const validate = async (
 };
 
 const check = async (analysisItem: any): Promise<boolean> => {
-  const { claim, isClaimed, source } = analysisItem;
+  const { claim, isClaimed, source, reason } = analysisItem;
 
   if (!claim) return Promise.resolve(false);
 
   if (isClaimed === 'no' || isClaimed === 'unknown')
     return Promise.resolve(false);
 
-  if (source === 'ingredient list' || source === 'nutrition fact') {
+  //! temp hide
+  // if (source === 'ingredient list' || source === 'nutrition fact panel') {
+  //   return Promise.resolve(false);
+  // }
+  //? temp replace
+  if (source?.includes('nutrition fact panel')) {
     return Promise.resolve(false);
   }
 
@@ -48,8 +55,48 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
   }
 
+  if (
+    FAT_CLAIMS_REASON?.[toLower(claim)]
+      ?.map((wordList: any) => {
+        return wordList
+          .map((word: any) => {
+            if (toLower(reason)?.includes(word)) {
+              return true;
+            } else {
+              return false;
+            }
+          })
+          .every((result: any) => result === true);
+      })
+      .every((result: any) => result === false)
+  ) {
+    return Promise.resolve(false);
+  } else {
+    //* exceptional cases
+    // if (toLower(claim) === 'alcohol' && toLower(reason)?.includes('sugar')) {
+    //   //? it could be about 'alcohol sugar' so must return false
+    //   return Promise.resolve(false);
+    // }
+  }
+
   return Promise.resolve(true);
 };
+
+const FAT_CLAIMS_REASON = {
+  'low fat': [['low', 'fat']],
+  'fat free': [['fat', 'free']],
+  'free of saturated fat': [['free', 'saturated', 'fat']],
+  'low in saturated fat': [['low', 'saturated', 'fat']],
+  'no fat': [['no', 'fat']],
+  'no trans fat': [['no', 'trans', 'fat']],
+  'reduced fat': [['reduced', 'fat']],
+  'trans fat free': [['trans', 'fat', 'free']],
+  'zero grams trans fat per serving': [
+    ['0', 'g', 'trans', 'fat', 'per serving'],
+    ['zero', 'gram', 'trans', 'fat', 'per serving'],
+  ],
+  'zero trans fat': [['zero', 'trans', 'fat']],
+} as any;
 
 const FAT_CLAIMS = [
   'is fat free',

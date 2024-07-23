@@ -123,6 +123,7 @@ const validateNutrientName = (modifiedNutrient: any) => {
     'potas.': 'POTASSIUM',
     potas: 'POTASSIUM',
     'added sugars': 'ADDED SUGAR',
+    'sugar alcohols': 'SUGAR ALCOHOL',
     'total carbohydrate': 'TOTAL CARBOHYDRATES',
     fiber: 'DIETARY FIBER',
     'total carb.': 'TOTAL CARBOHYDRATES',

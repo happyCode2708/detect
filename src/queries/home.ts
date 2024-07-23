@@ -93,11 +93,11 @@ export const useMutationExportCompareResult = () => {
   });
 };
 
-export const useQueryProductDetail = ({ ixoneid }: { ixoneid: string }) => {
+export const useQueryProductDetail = ({ productId }: { productId: string }) => {
   return useQuery({
-    queryKey: ['product', 'ixoneid', `${ixoneid}`],
+    queryKey: ['product', 'id', `${productId}`],
     queryFn: async (payload: any) => {
-      const response = await fetch(`/api/product/${ixoneid}`);
+      const response = await fetch(`/api/product/${productId}`);
 
       if (!response.ok) {
         throw new Error('Network response was not ok');

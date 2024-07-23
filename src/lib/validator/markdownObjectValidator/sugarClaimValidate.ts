@@ -28,12 +28,20 @@ const validate = async (
       const currentValues =
         modifiedProductDataPoints?.['attributes']?.[dataPointKey] || [];
 
-      modifiedProductDataPoints['attributes'][dataPointKey] = Array.from(
-        new Set([
-          ...currentValues,
-          SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim],
-        ])
-      );
+      console.log(`why sugar --- ${statement} --- ${claim}`);
+
+      if (SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim] === false) {
+        //* false mean not a valid claim in defined claim list
+      } else {
+        modifiedProductDataPoints['attributes'][dataPointKey] = Array.from(
+          new Set([
+            ...currentValues,
+            SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim]
+              ? SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim]
+              : `unsure-${claim}`,
+          ])
+        );
+      }
     }
   }
 };
@@ -47,7 +55,13 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
   }
 
-  if (!source.includes('marketing text on product')) {
+  //
+  // if (!source.includes('marketing text on product')) {
+  //   return Promise.resolve(false);
+  // }
+
+  //? temp change
+  if (source?.includes('nutrition fact panel')) {
     return Promise.resolve(false);
   }
 
@@ -60,21 +74,55 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
   }
 
-  if (
-    SUGAR_ITEMS_REASON?.[toLower(claim)]
-      ? SUGAR_ITEMS_REASON?.[toLower(claim)]
-          ?.map((word: string) => {
-            if (toLower(reason)?.includes(word)) return true;
+  // if (
+  //   SUGAR_ITEMS_REASON?.[toLower(claim)]
+  //     ? SUGAR_ITEMS_REASON?.[toLower(claim)]
+  //         ?.map((word: string) => {
+  //           if (toLower(reason)?.includes(word)) return true;
 
-            return false;
+  //           return false;
+  //         })
+  //         .some((result: boolean) => result === false)
+  //     : false
+  // ) {
+  //   return Promise.resolve(false);
+  // }
+
+  const sugarClaim = SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim];
+
+  if (
+    SUGAR_ITEMS_REASON?.[toLower(sugarClaim)]
+      ?.map((wordList: any) => {
+        return wordList
+          .map((word: any) => {
+            if (toLower(reason)?.includes(word)) {
+              return true;
+            } else {
+              return false;
+            }
           })
-          .some((result: boolean) => result === false)
-      : false
+          .every((result: any) => result === true);
+      })
+      .every((result: any) => result === false)
   ) {
     return Promise.resolve(false);
+  } else {
+    //* exceptional cases
+    if (
+      toLower(claim) === 'corn syrup' &&
+      toLower(reason)?.includes('high fructose')
+    ) {
+      //? it could be about 'HIGH FRUCTOSE CORN SYRUP' so must return false
+      return Promise.resolve(false);
+    }
   }
 
-  if (source?.includes('marketing text on product') && isClaimed === 'yes') {
+  //! teno hide
+  // if (source?.includes('marketing text on product') && isClaimed === 'yes') {
+  //   return Promise.resolve(true);
+  // }
+  //? temp change
+  if (isClaimed === 'yes') {
     return Promise.resolve(true);
   }
 
@@ -82,15 +130,56 @@ const check = async (analysisItem: any): Promise<boolean> => {
 };
 
 const SUGAR_ITEMS_REASON = {
-  'lower sugar': ['lower', 'sugar'],
-  'low sugar': ['low', 'sugar'],
-  'reduced sugar': ['reduced', 'sugar'],
-  'sugar free': ['sugar', 'free'],
-  'cane sugar': ['cane', 'sugar'],
-  'artificial sweetener': ['artificial', 'sweetener'],
+  'lower sugar': [['lower', 'sugar']],
+  'low sugar': [['low', 'sugar']],
+  'reduced sugar': [['reduced', 'sugar']],
+  'sugar free': [['sugar', 'free']],
+  'cane sugar': [['cane', 'sugar']],
+  'no artificial sweetener': [
+    ['not contain', 'artificial', 'sweetener'],
+    ['free from', 'artificial', 'sweetener'],
+  ],
+  unsweetened: [['unsweetened']],
 } as any;
 
 const SUGAR_ITEMS = [
+  'acesulfame k',
+  'acesulfame potassium',
+  'agave',
+  'allulose',
+  'artificial sweetener',
+  'aspartame',
+  'beet sugar',
+  'cane sugar',
+  'coconut sugar',
+  'coconut palm sugar',
+  'fruit juice',
+  'corn syrup',
+  'high fructose corn syrup',
+  'honey',
+  'low sugar',
+  'lower sugar',
+  'monk fruit',
+  'natural sweeteners',
+  'added sugar',
+  'refined sugars',
+  'saccharin',
+  'splenda/sucralose',
+  'splenda',
+  'sucralose',
+  'stevia',
+  'sugar',
+  'sugar added',
+  'sugar alcohol',
+  'tagatose',
+  'xylitol',
+  'reduced sugar',
+  'sugar free',
+  'unsweetened',
+  'xylitol',
+];
+
+const SUGAR_CLAIMS = [
   'acesulfame k',
   'agave',
   'allulose',
@@ -266,6 +355,7 @@ const SUGAR_CLAIMS_MAP = {
     tagatose: 'no tagatose',
     xylitol: 'no xylitol',
     'sugar free': 'sugar free',
+    unsweetened: 'unsweetened',
   },
   '0g': {
     'acesulfame k': 'no acesulfame k',
@@ -345,7 +435,34 @@ const SUGAR_CLAIMS_MAP = {
     tagatose: 'no tagatose',
     xylitol: 'no xylitol',
   },
+  'made without': {
+    'acesulfame k': 'no acesulfame k',
+    'acesulfame potassium': 'no acesulfame k',
+    'added sugar': 'no added sugar',
+    agave: 'no agave',
+    allulose: 'no allulose',
+    'artificial sweetener': 'no artificial sweetener',
+    aspartame: 'no aspartame',
+    'cane sugar': 'no cane sugar',
+    'coconut/coconut palm sugar': 'no coconut/coconut palm sugar',
+    'coconut sugar': 'no coconut/coconut palm sugar',
+    'coconut palm sugar': 'no coconut/coconut palm sugar',
+    'corn syrup': 'no corn syrup',
+    'high fructose corn syrup': 'no high fructose corn syrup',
+    'refined sugars': 'no refined sugars',
+    saccharin: 'no saccharin',
+    'splenda/sucralose': 'no splenda/sucralose',
+    slpenda: 'no splenda/sucralose',
+    sucralose: 'no splenda/sucralose',
+    stevia: 'no stevia',
+    sugar: 'no sugar',
+    'sugar added': 'no sugar added',
+    'sugar alcohol': 'no sugar alcohol',
+    tagatose: 'no tagatose',
+    xylitol: 'no xylitol',
+  },
   contain: {
+    sugar: false,
     'reduced sugar': 'reduced sugar',
     'refined sugar': 'refined sugar',
     saccharin: 'saccharin',
@@ -365,8 +482,11 @@ const SUGAR_CLAIMS_MAP = {
     'beet sugar': 'beet sugar',
     'cane sugar': 'cane sugar',
     'coconut/coconut palm sugar': 'coconut/coconut palm sugar',
+    'coconut sugar': 'coconut/coconut palm sugar',
+    'coconut palm sugar': 'coconut/coconut palm sugar',
     'fruit juice': 'fruit juice',
     'high fructose corn syrup': 'high fructose corn syrup',
+    'corn syrup': 'no corn syrup',
     honey: 'honey',
     'low sugar': 'low sugar',
     'lower sugar': 'lower sugar',

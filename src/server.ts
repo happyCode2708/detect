@@ -11,6 +11,9 @@ import { getGoogleApiOcr } from './lib/google/get-gg-api-ocr';
 import nextBuild from 'next/dist/build';
 import { nextMiddleware } from './middleware/nextMiddleware';
 import { PrismaClient } from '@prisma/client';
+import OpenAI from 'openai';
+import errorHandler from './middleware/errorHandler';
+
 export const prisma = new PrismaClient();
 
 const env = process.env.NODE_ENV || 'development';
@@ -18,6 +21,12 @@ require('dotenv').config({ path: `.env.${env}` });
 
 getGenerative();
 getGoogleApiOcr();
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+(global as any).openai = openai;
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
@@ -62,6 +71,8 @@ const startServer = async () => {
     nextMiddleware,
     async (req: Request, res: Response) => await nextHandler(req, res)
   );
+
+  app.use(errorHandler);
 
   nextApp.prepare().then(() => {
     app.listen(port, async () => {

@@ -1,31 +1,50 @@
-const getDescriptor = (nutrientName) => {
-  const pattern = /(\s*\([^()]*\))+$/;
-  const match = nutrientName.match(pattern);
-  return match ? match[0] : null;
-};
+const { toLower } = require('lodash');
 
-const validateNutrientNameByDescriptor = (modifiedNutrient) => {
-  const logicExtractedDescriptor = getDescriptor(
-    modifiedNutrient?.['nutrientName']
+const checkUserOfFreezeBy = async (statement) => {
+  let validInstructionStatement = '';
+
+  Object.entries(USE_OR_FREEZE_BY_MAPPING)?.forEach(
+    ([key, phraseWorldList]) => {
+      if (
+        phraseWorldList
+          ?.map((wordList) => {
+            return wordList
+              .map((word) => {
+                if (toLower(statement)?.includes(word)) {
+                  return true;
+                } else {
+                  return false;
+                }
+              })
+              .every((result) => result === true);
+          })
+          .some((result) => result === true)
+      ) {
+        validInstructionStatement = statement;
+      }
+    }
   );
 
-  console.log('extracted descriptor', logicExtractedDescriptor);
-  // if (logicExtractedDescriptor && !modifiedNutrient?.['descriptor']) {
-  if (logicExtractedDescriptor) {
-    modifiedNutrient['validated_descriptor_from_name'] =
-      logicExtractedDescriptor;
-    modifiedNutrient['validated_nutrientName_from_descriptor'] =
-      modifiedNutrient['nutrientName']?.split(logicExtractedDescriptor)?.[0];
-  } else {
-    modifiedNutrient['validated_nutrientName_from_descriptor'] =
-      modifiedNutrient['nutrientName'];
+  // console.log(validInstructionStatement);
+
+  if (!validInstructionStatement) {
+    return Promise.resolve(false);
   }
 
-  console.log(modifiedNutrient);
+  return Promise.resolve(validInstructionStatement);
 };
 
-let modifiedNutrient = {
-  nutrientName: 'Monounsaturated Fat',
+const USE_OR_FREEZE_BY_MAPPING = {
+  'WITH IN': [
+    ['consume', 'within'],
+    ['use', 'within'],
+    ['enjoy', 'within'],
+  ],
 };
 
-validateNutrientNameByDescriptor(modifiedNutrient);
+const test = async () => {
+  const result = await checkUserOfFreezeBy('DO NOT FREEZE.');
+  console.log(result);
+};
+
+test();

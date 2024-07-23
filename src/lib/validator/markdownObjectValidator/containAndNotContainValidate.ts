@@ -175,11 +175,16 @@ const check = async (
     return Promise.resolve(false);
   }
 
-  if (
-    (source?.includes('ingredient list') ||
-      source?.includes('nutrition fact')) &&
-    !source?.includes('marketing text on product')
-  ) {
+  //! temp remove ingredient list condition
+  // if (
+  //   (source?.includes('ingredient list') ||
+  //     source?.includes('nutrition fact')) &&
+  //   !source?.includes('marketing text on product')
+  // ) {
+  //   return Promise.resolve(false);
+  // }
+  //? replacement
+  if (source?.includes('nutrition fact panel')) {
     return Promise.resolve(false);
   }
 
@@ -195,14 +200,38 @@ const check = async (
     return Promise.resolve(false);
   }
 
+  // if (
+  //   CONTAIN_AND_NOT_CONTAIN_REASON?.[toLower(claim)]
+  //     ?.map((word: string) => {
+  //       if (toLower(reason)?.includes(word)) return true;
+
+  //       return false;
+  //     })
+  //     .some((result: boolean) => result === false)
+  // ) {
+  //   return Promise.resolve(false);
+  // } else {
+  //   //* exceptional cases
+  //   if (toLower(claim) === 'alcohol' && toLower(reason)?.includes('sugar')) {
+  //     //? it could be about 'alcohol sugar' so must return false
+  //     return Promise.resolve(false);
+  //   }
+  // }
+
   if (
     CONTAIN_AND_NOT_CONTAIN_REASON?.[toLower(claim)]
-      ?.map((word: string) => {
-        if (toLower(reason)?.includes(word)) return true;
-
-        return false;
+      ?.map((wordList: any) => {
+        return wordList
+          .map((word: any) => {
+            if (toLower(reason)?.includes(word)) {
+              return true;
+            } else {
+              return false;
+            }
+          })
+          .every((result: any) => result === true);
       })
-      .some((result: boolean) => result === false)
+      .every((result: any) => result === false)
   ) {
     return Promise.resolve(false);
   } else {
@@ -211,9 +240,19 @@ const check = async (
       //? it could be about 'alcohol sugar' so must return false
       return Promise.resolve(false);
     }
+    //* exceptional cases
+    // if (toLower(claim) === 'alcohol' && toLower(reason)?.includes('sugar')) {
+    //   //? it could be about 'alcohol sugar' so must return false
+    //   return Promise.resolve(false);
+    // }
   }
 
-  if (source.includes('marketing text on product') && mentioned === 'yes') {
+  //! temp remove ingredient list condition
+  // if (source.includes('marketing text on product') && mentioned === 'yes') {
+  //   return Promise.resolve(true);
+  // }
+  //? replacement
+  if (mentioned === 'yes') {
     return Promise.resolve(true);
   }
 
@@ -227,6 +266,8 @@ const DATA_POINT_KEY_MAP = {
     'other',
     'naturally flavored',
     'naturally',
+    'flavor with',
+    'flavored with',
   ],
   validated_notContain: [
     'free of',
@@ -242,135 +283,136 @@ const DATA_POINT_KEY_MAP = {
 };
 
 const CONTAIN_AND_NOT_CONTAIN_REASON = {
-  '1,4-dioxane': ['1,4-dioxane'],
-  'active yeast': ['active', 'yeast'],
-  'added antibiotics': ['added', 'antibiotic'],
-  'added colors': ['added', 'color'],
-  'added dyes': ['added', 'dye'],
-  'added flavors': ['added', 'flavor'],
-  'added fragrances': ['added', 'fragrance'],
-  'added hormones': ['added', 'hormone'],
-  'added nitrates': ['added', 'nitrate'],
-  'added nitrites': ['added', 'nitrite'],
-  'added preservatives': ['added', 'preservative'],
-  additives: ['additive'],
-  alcohol: ['alcohol'],
-  allergen: ['allergen'],
-  aluminum: ['aluminum'],
-  'amino acids': ['amino', 'acid'],
-  ammonia: ['ammonia'],
-  'animal by-products': ['animal', 'by-product'],
-  'animal derivatives': ['animal', 'derivative'],
-  'animal ingredients': ['animal', 'ingredient'],
-  'animal products': ['animal', 'product'],
-  'animal rennet': ['animal', 'rennet'],
-  antibiotics: ['antibiotic'],
-  'artificial additives': ['artificial', 'additive'],
-  'artificial colors': ['artificial', 'color'],
-  'artificial dyes': ['artificial', 'dye'],
-  'artificial flavors': ['artificial', 'flavor'],
-  'artificial fragrance': ['artificial', 'fragrance'],
-  'artificial ingredients': ['artificial', 'ingredient'],
-  'artificial preservatives': ['artificial', 'preservative'],
-  'binders and/or fillers': ['binder', 'and/or', 'filler'],
-  bleach: ['bleach'],
-  'bpa (bisphenol-a)': ['bpa', 'bisphenol-a'],
-  'butylene glycol': ['butylene', 'glycol'],
-  'by-products': ['by-product'],
-  caffeine: ['caffeine'],
-  carrageenan: ['carrageenan'],
-  casein: ['casein'],
-  'cbd / cannabidiol': ['cbd', 'cannabidiol'],
-  cbd: ['cbd'],
-  cannabidiol: ['cannabidiol'],
-  'chemical additives': ['chemical', 'additive'],
-  'chemical colors': ['chemical', 'color'],
-  'chemical dyes': ['chemical', 'dye'],
-  'chemical flavors': ['chemical', 'flavor'],
-  'chemical fragrances': ['chemical', 'fragrance'],
-  'chemical ingredients': ['chemical', 'ingredient'],
-  'chemical preservatives': ['chemical', 'preservative'],
-  'chemical sunscreens': ['chemical', 'sunscreen'],
-  chemicals: ['chemical'],
-  chlorine: ['chlorine'],
-  cholesterol: ['cholesterol'],
-  coatings: ['coating'],
-  'corn fillers': ['corn', 'filler'],
-  'cottonseed oil': ['cottonseed', 'oil'],
-  dyes: ['dye'],
-  edta: ['edta'],
-  emulsifiers: ['emulsifier'],
-  erythorbates: ['erythorbate'],
-  'expeller-pressed oils': ['expeller-pressed', 'oil'],
-  fillers: ['filler'],
-  fluoride: ['fluoride'],
-  formaldehyde: ['formaldehyde'],
-  fragrances: ['fragrance'],
-  grain: ['grain'],
-  hexane: ['hexane'],
-  hormones: ['hormone'],
-  'hydrogenated oils': ['hydrogenated', 'oil'],
-  kitniyos: ['kitniyos'],
-  kitniyot: ['kitniyot'],
-  lactose: ['lactose'],
-  latex: ['latex'],
-  msg: ['msg'],
-  'natural additives': ['natural', 'additive'],
-  'natural colors': ['natural', 'color'],
-  'natural dyes': ['natural', 'dye'],
-  'natural flavors or naturally flavored': ['natural', 'flavor'],
-  'natural flavors': ['natural', 'flavor'],
-  'naturally flavored': ['natural', 'flavor'],
-  'natural ingredients': ['natural', 'ingredient'],
-  'natural preservatives': ['natural', 'preservative'],
-  nitrates: ['nitrate'],
-  nitrites: ['nitrite'],
-  'omega fatty acids': ['omega'],
-  paba: ['paba'],
-  'palm oil': ['palm', 'oil'],
-  parabens: ['paraben'],
-  pesticides: ['pesticide'],
-  'petro chemical': ['petro', 'chemical'],
-  petrolatum: ['petrolatum'],
-  'petroleum byproducts': ['petroleum', 'byproduct'],
-  phosphates: ['phosphate'],
-  phosphorus: ['phosphorus'],
-  phthalates: ['phthalate'],
-  pits: ['pit'],
-  preservatives: ['preservative'],
-  probiotics: ['probiotic'],
-  rbgh: ['rbgh'],
-  rbst: ['rbst'],
-  rennet: ['rennet'],
-  salicylates: ['salicylate'],
-  'sea salt': ['sea', 'salt'],
-  'shells/ shell pieces': ['shell', 'shell piece'],
-  silicone: ['silicone'],
-  'sles (sodium laureth sulfate)': ['sles'],
-  'sls (sodium lauryl sulfate)': ['sls'],
-  stabilizers: ['stabilizer'],
-  starch: ['starch'],
-  sulfates: ['sulfate'],
-  sulfides: ['sulfide'],
-  sulfites: ['sulfite'],
-  sulphites: ['sulphite'],
-  'sulfur dioxide': ['sulfur', 'dioxide'],
-  'synthetic additives': ['synthetic', 'additive'],
-  'synthetic colors': ['synthetic', 'color'],
-  'synthetic dyes': ['synthetic', 'dye'],
-  'synthetic flavors': ['synthetic', 'flavor'],
-  'synthetic fragrance': ['synthetic', 'fragrance'],
-  'synthetic ingredients': ['synthetic', 'ingredient'],
-  'synthetic preservatives': ['synthetic', 'preservative'],
-  synthetics: ['synthetic'],
-  thc: ['thc'],
-  tetrahydrocannabinol: ['tetrahydrocannabinol'],
-  'toxic pesticides': ['toxic', 'pesticide'],
-  triclosan: ['triclosan'],
-  'vegan ingredients': ['vegan', 'ingredient'],
-  'vegetarian ingredients': ['vegetarian', 'ingredient'],
-  yeast: ['yeast'],
-  yolks: ['yolk'],
+  '1,4-dioxane': [['1,4-dioxane']],
+  'active yeast': [['active', 'yeast']],
+  'added antibiotics': [['added', 'antibiotic']],
+  'added colors': [['added', 'color']],
+  'added dyes': [['added', 'dye']],
+  'added flavors': [['added', 'flavor']],
+  'added fragrances': [['added', 'fragrance']],
+  'added hormones': [['added', 'hormone']],
+  'added nitrates': [['added', 'nitrate']],
+  'added nitrites': [['added', 'nitrite']],
+  'added preservatives': [['added', 'preservative']],
+  additives: [['additive']],
+  alcohol: [['alcohol']],
+  allergen: [['allergen']],
+  aluminum: [['aluminum']],
+  'amino acids': [['amino', 'acid']],
+  ammonia: [['ammonia']],
+  'animal by-products': [['animal', 'by-product']],
+  'animal derivatives': [['animal', 'derivative']],
+  'animal ingredients': [['animal', 'ingredient']],
+  'animal products': [['animal', 'product']],
+  'animal rennet': [['animal', 'rennet']],
+  antibiotics: [['antibiotic']],
+  'artificial additives': [['artificial', 'additive']],
+  'artificial colors': [['artificial', 'color']],
+  'artificial dyes': [['artificial', 'dye']],
+  'artificial flavors': [['artificial', 'flavor']],
+  'artificial fragrance': [['artificial', 'fragrance']],
+  'artificial ingredients': [['artificial', 'ingredient']],
+  'artificial preservatives': [['artificial', 'preservative']],
+  'binders and/or fillers': [['binder', 'and/or', 'filler']],
+  bleach: [['bleach']],
+  'bpa (bisphenol-a)': [['bpa', 'bisphenol-a']],
+  'butylene glycol': [['butylene', 'glycol']],
+  'by-products': [['by-product']],
+  caffeine: [['caffeine']],
+  carrageenan: [['carrageenan']],
+  casein: [['casein']],
+  'cbd / cannabidiol': [['cbd', 'cannabidiol']],
+  cbd: [['cbd']],
+  cannabidiol: [['cannabidiol']],
+  'chemical additives': [['chemical', 'additive']],
+  'chemical colors': [['chemical', 'color']],
+  'chemical dyes': [['chemical', 'dye']],
+  'chemical flavors': [['chemical', 'flavor']],
+  'chemical fragrances': [['chemical', 'fragrance']],
+  'chemical ingredients': [['chemical', 'ingredient']],
+  'chemical preservatives': [['chemical', 'preservative']],
+  'chemical sunscreens': [['chemical', 'sunscreen']],
+  chemicals: [['chemical']],
+  chlorine: [['chlorine']],
+  cholesterol: [['cholesterol']],
+  coatings: [['coating']],
+  'corn fillers': [['corn', 'filler']],
+  'cottonseed oil': [['cottonseed', 'oil']],
+  dyes: [['dye']],
+  edta: [['edta']],
+  emulsifiers: [['emulsifier']],
+  erythorbates: [['erythorbate']],
+  'expeller-pressed oils': [['expeller-pressed', 'oil']],
+  fillers: [['filler']],
+  fluoride: [['fluoride']],
+  formaldehyde: [['formaldehyde']],
+  fragrances: [['fragrance']],
+  grain: [['grain']],
+  hexane: [['hexane']],
+  hormones: [['hormone']],
+  'hydrogenated oils': [['hydrogenated', 'oil']],
+  kitniyos: [['kitniyos']],
+  kitniyot: [['kitniyot']],
+  lactose: [['lactose']],
+  latex: [['latex']],
+  msg: [['msg']],
+  'natural additives': [['natural', 'additive']],
+  'natural colors': [['natural', 'color']],
+  'natural dyes': [['natural', 'dye']],
+  'natural flavors': [
+    ['natural', 'flavor'],
+    ['naturally', 'flavored'],
+  ],
+  'natural ingredients': [['natural', 'ingredient']],
+  'natural preservatives': [['natural', 'preservative']],
+  nitrates: [['nitrate']],
+  nitrites: [['nitrite']],
+  'omega fatty acids': [['omega']],
+  paba: [['paba']],
+  'palm oil': [['palm', 'oil']],
+  parabens: [['paraben']],
+  pesticides: [['pesticide']],
+  'petro chemical': [['petro', 'chemical']],
+  petrolatum: [['petrolatum']],
+  'petroleum byproducts': [['petroleum', 'byproduct']],
+  phosphates: [['phosphate']],
+  phosphorus: [['phosphorus']],
+  phthalates: [['phthalate']],
+  pits: [['pit']],
+  preservatives: [['preservative']],
+  probiotics: [['probiotic']],
+  rbgh: [['rbgh']],
+  rbst: [['rbst']],
+  rennet: [['rennet']],
+  salicylates: [['salicylate']],
+  'sea salt': [['sea', 'salt']],
+  'shells/ shell pieces': [['shell', 'shell piece']],
+  silicone: [['silicone']],
+  'sles (sodium laureth sulfate)': [['sles']],
+  'sls (sodium lauryl sulfate)': [['sls']],
+  stabilizers: [['stabilizer']],
+  starch: [['starch']],
+  sulfates: [['sulfate']],
+  sulfides: [['sulfide']],
+  sulfites: [['sulfite']],
+  sulphites: [['sulphite']],
+  'sulfur dioxide': [['sulfur', 'dioxide']],
+  'synthetic additives': [['synthetic', 'additive']],
+  'synthetic colors': [['synthetic', 'color']],
+  'synthetic dyes': [['synthetic', 'dye']],
+  'synthetic flavors': [['synthetic', 'flavor']],
+  'synthetic fragrance': [['synthetic', 'fragrance']],
+  'synthetic ingredients': [['synthetic', 'ingredient']],
+  'synthetic preservatives': [['synthetic', 'preservative']],
+  synthetics: [['synthetic']],
+  thc: [['thc']],
+  tetrahydrocannabinol: [['tetrahydrocannabinol']],
+  'toxic pesticides': [['toxic', 'pesticide']],
+  triclosan: [['triclosan']],
+  'vegan ingredients': [['vegan', 'ingredient']],
+  'vegetarian ingredients': [['vegetarian', 'ingredient']],
+  yeast: [['yeast']],
+  yolks: [['yolk']],
 } as any;
 
 const CONTAIN_AND_NOT_CONTAIN_CLAIMS = [

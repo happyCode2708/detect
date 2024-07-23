@@ -46,7 +46,7 @@ const check = async (analysisItem: any): Promise<boolean> => {
 
   if (
     source?.includes('ingredient list') ||
-    source?.includes('nutrition fact')
+    source?.includes('nutrition fact panel')
   ) {
     return Promise.resolve(false);
   }
@@ -87,13 +87,73 @@ const check = async (analysisItem: any): Promise<boolean> => {
 };
 
 const NON_CERTIFICATE_REASON = {
-  '100% natural ingredients': [['100%', 'natural', 'ingredient']],
+  '100% natural ingredients': [['100%', 'natural', 'ingredients']],
   '100% natural': [['100%', 'natural']],
+  '100% pure': [['100%', 'pure']],
+  'acid free': [['acid', 'free']],
+  'aeroponic grown': [['aeroponic', 'grown']],
+  'all natural': [['all', 'natural']],
+  'all natural ingredients': [['all', 'natural', 'ingredients']],
+  'aquaponic/aquaculture grown': [
+    ['aquaponic', 'grown'],
+    ['aquaculture', 'grown'],
+  ],
+  baked: [['baked']],
+  biodegradable: [['biodegradable']],
+  'cage free': [['cage', 'free']],
+  'cold-pressed': [['cold-pressed']],
+  'direct trade': [['direct', 'trade']],
+  'dolphin safe': [['dolphin', 'safe']],
+  'dry roasted': [['dry', 'roasted']],
+  'eco-friendly': [['eco-friendly']],
+  'farm raised': [['farm', 'raised']],
+  filtered: [['filtered']],
+  'free range': [['free', 'range']],
+  'freeze-dried': [['freeze-dried']],
+  'from concentrate': [['from', 'concentrate']],
+  'grade a': [['grade', 'a']],
+  'greenhouse grown': [['greenhouse', 'grown']],
+  'heat treated': [['heat', 'treated']],
+  heirloom: [['heirloom']],
+  homeopathic: [['homeopathic']],
+  homogenized: [['homogenized']],
+  'hydroponic grown': [['hydroponic', 'grown']],
+  'hypo-allergenic': [['hypo-allergenic']],
+  irradiated: [['irradiated']],
+  'live food': [['live', 'food']],
+  'low acid': [['low', 'acid']],
+  'low carbohydrate': [['low', 'carbohydrate']],
+  'low cholesterol': [['low', 'cholesterol']],
+  macrobiotic: [['macrobiotic']],
+  'minimally processed': [['minimally', 'processed']],
+  natural: [['natural']],
+  'natural botanicals': [['natural', 'botanicals']],
+  'natural fragrances': [['natural', 'fragrances']],
+  'natural ingredients': [['natural', 'ingredients']],
+  'no animal testing': [['no', 'animal', 'testing']],
+  'no sulfites added': [['no', 'sulfites', 'added']],
+  'non gebrokts': [['non', 'gebrokts']],
+  'non-alcoholic': [['non-alcoholic']],
+  'non-irradiated': [['non-irradiated']],
+  'non-toxic': [['non-toxic']],
+  'not fried': [['not', 'fried']],
+  'not from concentrate': [['not', 'from', 'concentrate']],
+  pasteurized: [['pasteurized']],
+  'pasture raised': [['pasture', 'raised']],
+  'prairie raised': [['prairie', 'raised']],
+  raw: [['raw']],
+  'responsibly sourced palm oil': [['responsibly', 'sourced', 'palm', 'oil']],
+  sprouted: [['sprouted']],
+  'un-filtered': [['un-filtered']],
+  'un-pasteurized': [['un-pasteurized']],
+  unscented: [['unscented']],
   'vegetarian or vegan diet/feed': [
     ['vegetarian'],
     ['vegan', 'diet'],
     ['vegan', 'feed'],
   ],
+  wild: [['wild']],
+  'wild caught': [['wild', 'caught']],
 } as any;
 
 const NON_CERTIFICATE_CLAIMS = [

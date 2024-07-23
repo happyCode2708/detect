@@ -1,12 +1,15 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-export const useQueryProductsFromTdc = ({
-  ixoneIDs,
-}: {
-  ixoneIDs: string[];
-}) => {
+export const useQueryProductsFromTdc = (
+  {
+    ixoneIDs,
+  }: {
+    ixoneIDs: string[];
+  },
+  options: any
+) => {
   return useQuery({
-    queryKey: ['product', 'tdc'],
+    queryKey: ['product', 'tdc', `${ixoneIDs}`],
     queryFn: async () => {
       const response = await fetch('/api/product/get-product-data-tdc', {
         method: 'POST',
@@ -22,6 +25,7 @@ export const useQueryProductsFromTdc = ({
       return response.json();
     },
     retry: false,
+    ...options,
   });
 };
 

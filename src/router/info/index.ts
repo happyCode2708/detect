@@ -197,7 +197,10 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       });
     }
 
-    const allJsonData = mapMarkdownAllToObject(allResData?.markdownContent);
+    const allJsonData = mapMarkdownAllToObject(
+      allResData?.markdownContent,
+      allResData?.extraInfo
+    );
     const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
 
     let finalResult = {
@@ -220,6 +223,20 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
         result: JSON.stringify(validatedResponse),
       },
     });
+
+    const extraInfo = allResData?.extraInfo;
+    const upc12 = extraInfo?.physical?.upc12;
+
+    if (upc12) {
+      await prisma.product.update({
+        where: {
+          id: session?.productId,
+        },
+        data: {
+          upc12: upc12 as string,
+        },
+      });
+    }
 
     const result = session?.result;
 

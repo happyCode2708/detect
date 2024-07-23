@@ -10,7 +10,8 @@ export const ComparisonTabContent = ({
   productTdcData: any;
   compareResultData: any;
 }) => {
-  console.log('mapped', compareResultData);
+  // console.log('mapped', compareResultData);
+
   return (
     <div
       className={
@@ -23,12 +24,20 @@ export const ComparisonTabContent = ({
       {compareResultData?.mappedExtractToTdc && (
         <TableResultTDC
           productTdcData={compareResultData?.mappedExtractToTdc}
+          key='1'
         />
       )}
-      <TableResultTDC
-        productTdcData={productTdcData}
-        evaluation={compareResultData?.compareResult}
-      />
+      {process.env.NODE_ENV !== 'production' && (
+        <>
+          {compareResultData?.compareResult && (
+            <TableResultTDC
+              productTdcData={productTdcData}
+              evaluation={compareResultData?.compareResult}
+              key='2'
+            />
+          )}
+        </>
+      )}
     </div>
   );
 };

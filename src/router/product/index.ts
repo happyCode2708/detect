@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
@@ -20,7 +19,7 @@ import cookie from 'cookie';
 import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
 
 import { uploadsDir } from '../../server';
-import { error } from 'console';
+
 import { makePostPayloadProductTDC } from './utils';
 import axios from 'axios';
 import logger from '../../lib/logger';
@@ -33,6 +32,7 @@ import { mapMarkdownAllToObject } from '../../lib/mapper/mapMdAllToObject';
 import { mapMarkdownNutToObject } from '../../lib/mapper/mapMarkdonwDataToObject';
 import { TDC_FIELD_OBJ } from '../../constants/tdcField';
 import _ from 'lodash';
+import { Pagination } from '@/components/ui/pagination';
 
 const router = express.Router();
 
@@ -65,14 +65,17 @@ const upload = multer({ storage: Storage });
 
 router.post('/list', async (req, res) => {
   try {
-    const { ixoneID } = req.query;
+    const { search, page = '1', limit = '10' } = req.query;
+    const pageNumber = parseInt(page as string);
+    const limitNumber = parseInt(limit as string);
+    const skip = (pageNumber - 1) * limitNumber;
 
     const products = await prisma.product.findMany({
       where:
-        ixoneID && typeof ixoneID === 'string'
+        search && typeof search === 'string'
           ? {
               ixoneID: {
-                contains: ixoneID,
+                contains: search,
                 mode: 'insensitive',
               },
             }
@@ -80,10 +83,33 @@ router.post('/list', async (req, res) => {
       orderBy: {
         createdAt: 'desc', // Order by creation date, newest first
       },
+      skip: skip,
+      take: limitNumber,
       include: { images: true },
     });
 
-    res.status(200).json(products);
+    const totalProducts = await prisma.product.count({
+      where:
+        search && typeof search === 'string'
+          ? {
+              ixoneID: {
+                contains: search,
+                mode: 'insensitive',
+              },
+            }
+          : {},
+    });
+
+    const totalPages = Math.ceil(totalProducts / limitNumber);
+
+    res.status(200).json({
+      data: products,
+      pagination: {
+        totalPages,
+        currentPage: pageNumber,
+        totalProducts,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Failed to fetch products' });
@@ -95,11 +121,13 @@ router.post('/create', async (req, res) => {
 
   try {
     const newProduct = await prisma.product.create({
-      data: {
-        ixoneID,
-      },
+      data: ixoneID
+        ? {
+            ixoneID,
+          }
+        : {},
     });
-    res.status(201).json(newProduct);
+    res.status(201).json({ data: newProduct, isSuccess: true });
   } catch (error) {
     res.status(500).json({ error: 'Failed to create product' });
   }
@@ -372,11 +400,11 @@ const computeAverage = (products: any, field: string) => {
 //   }
 // });
 
-router.get('/:ixoneid', async (req, res) => {
+router.get('/:productId', async (req, res) => {
   try {
-    const { ixoneid } = req.params;
+    const { productId } = req.params;
     const product = await prisma.product.findUnique({
-      where: { ixoneID: ixoneid },
+      where: { id: productId },
       include: { images: true, extractSessions: true },
     });
     if (!product) {
@@ -459,7 +487,10 @@ router.get('/:ixoneid', async (req, res) => {
         });
       }
       //* if both process success
-      const allJsonData = mapMarkdownAllToObject(allResData?.markdownContent);
+      const allJsonData = mapMarkdownAllToObject(
+        allResData?.markdownContent,
+        allResData?.extraInfo
+      );
       const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
 
       let finalResult = {
@@ -501,11 +532,11 @@ router.get('/:ixoneid', async (req, res) => {
   }
 });
 
-router.post('/:ixoneid/images', upload.array('images'), async (req, res) => {
-  const { ixoneid } = req.params;
+router.post('/:productId/images', upload.array('images'), async (req, res) => {
+  const { productId } = req.params;
   try {
     const product = await prisma.product.findUnique({
-      where: { ixoneID: ixoneid },
+      where: { id: productId },
     });
 
     if (!product) {
@@ -648,11 +679,11 @@ router.post('/get-product-data-tdc', async (req, res) => {
 });
 
 router.post('/get-compare-result-tdc', async (req, res) => {
-  const ixoneid = req.body.ixoneid;
+  const { ixoneid, productId } = req?.body;
 
-  if (!ixoneid) {
-    res.status(404).json({ isSuccess: false, message: 'Ixoneid is required' });
-  }
+  // if (!ixoneid) {
+  //   res.status(404).json({ isSuccess: false, message: 'Ixoneid is required' });
+  // }
 
   const bearerToken =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySW5mbyI6ImNBRUFBQUZ3QVkvK1ZLWUFublNvVjVlbXp5VWgxQlhPWUlZS1czOVJ2SFBqanhmTENscDhCNDNvenJNaWI2ZjdHMEMwemovdjN1cUg0MFlpUEQvSE9mSy93ckJhYmlFSHh4MkFPWnozVlBuQW9iVlExUDdJZ1ZBM2ZHVnpFcjV0QlpxbFZBeG5jWkpiZ1FSTEZGbzlyQ0IzUTdPWERZQ0lIWTNreFlyTkJ2cVM1TjUvN3d1dWlrNGJtV3FXdnVZdlBaL1VGazExWFU4a2dTdkxFdXpPMnJnQWEwNGpvaUo5UUJTTWNoa0ZibWwva0tHWG5QdXlVUW5DUVJiYXJNTFBUdGlJdkFmMzJWUkMwQ21nN1FUcDhGTHFrVjQrRWN0N3pmWExlUlNwQ1lCMVFZcTh3VExRa1ZwMFREVGZSN2xXUm8xOE94ajhkYnAvK0tKU2svNDVJMlkwbXFkbGlidkQyTDlhSjM1ZkJna0NkTEhhc3V2Z2x0bWkwSk1ubnhLL3prZUxhemlQbUNpVVJ4NjYwNUlWQVNKaTFSbzVPWU5iOXZIRVphSW84elV2OUpSKzM5SFVLanI0SU1BWFg1YlB0TVR5cFFYYW0rd0NHY2NlT1hYUlMySFN4M3RMSUVJU0xseUplS3B5SGNFTzNZVXY3aWUyMkFrPSIsIm5iZiI6MTcxOTgyMzU3OSwiZXhwIjoxNzUxMzU5NTc5LCJpYXQiOjE3MTk4MjM1Nzl9.NxaCMTHIuWB2GJHVSgHhNjFVg95EHaWtZkK2XJxVbdc';
@@ -660,9 +691,13 @@ router.post('/get-compare-result-tdc', async (req, res) => {
   const payload = makePostPayloadProductTDC([ixoneid]);
 
   try {
-    const productDetailRes = await axios.get(
-      `http://localhost:${port}/api/product/${ixoneid}`
-    );
+    const productDetailRes = ixoneid
+      ? await axios.get(
+          `http://localhost:${port}/api/product/ixoneId/${ixoneid}`
+        )
+      : productId
+      ? await axios.get(`http://localhost:${port}/api/product/${productId}`)
+      : null;
 
     const productDetailData = productDetailRes?.data?.data;
 
@@ -670,27 +705,33 @@ router.post('/get-compare-result-tdc', async (req, res) => {
 
     const mappedData = mapToTDCformat(JSON.parse(newestExtractedData?.result));
 
-    const response = await axios.post(
-      'https://exchange.ix-one.net/services/products/filtered',
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    const response = ixoneid
+      ? await axios.post(
+          'https://exchange.ix-one.net/services/products/filtered',
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${bearerToken}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+      : null;
 
     const foundTdcProduct = response?.data?.Products?.[0];
 
-    if (!foundTdcProduct) {
-      res.status(404).json({ isSuccess: false, message: 'Product not found' });
-    }
+    // if (!foundTdcProduct) {
+    //   return res
+    //     .status(404)
+    //     .json({ isSuccess: false, message: 'Product not found' });
+    // }
 
-    const compareResult = compareWithTDC({
-      tdcFormattedExtractData: mappedData,
-      tdcData: foundTdcProduct,
-    });
+    const compareResult = foundTdcProduct
+      ? compareWithTDC({
+          tdcFormattedExtractData: mappedData,
+          tdcData: foundTdcProduct,
+        })
+      : null;
 
     res.json({
       isSuccess: true,
@@ -704,6 +745,138 @@ router.post('/get-compare-result-tdc', async (req, res) => {
     // logger.error(error);
     console.log(error);
     res.status(500).json({ error: 'Failed to compare with TDC data' });
+  }
+});
+
+router.get('/ixoneId/:ixoneId', async (req, res) => {
+  try {
+    const { ixoneId } = req.params;
+    const product = await prisma.product.findUnique({
+      where: { ixoneID: ixoneId },
+      include: { images: true, extractSessions: true },
+    });
+    if (!product) {
+      res.status(404).json({ message: 'Product not found', isSuccess: false });
+    }
+    if (product) {
+      product.extractSessions.sort(
+        (a: any, b: any) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      let latestExtractSession = product.extractSessions?.[0] || {};
+      const { result, status } = latestExtractSession;
+
+      //* if the result of latest extract session is success
+      if (result && status === 'success') {
+        let latestExtractSession_result = JSON.parse(result);
+        if (process.env.NODE_ENV === 'production') {
+          removeRawFieldData(latestExtractSession_result);
+        }
+        latestExtractSession['result'] = JSON.stringify(
+          latestExtractSession_result
+        );
+        return res.status(200).json({
+          isSuccess: true,
+          data: {
+            product,
+            latestSession: latestExtractSession,
+          },
+        });
+      }
+      //* if result is not ready
+      const {
+        result_nut: result_nut_raw,
+        result_all: result_all_raw,
+        sessionId,
+      } = latestExtractSession as any;
+      if (!result_nut_raw || !result_all_raw) {
+        return res.status(200).json({
+          isSuccess: true,
+          data: {
+            product,
+            latestSession: {},
+          },
+        });
+      }
+      const result_nut = JSON.parse(result_nut_raw);
+      const result_all = JSON.parse(result_all_raw);
+
+      if (isEmpty(result_nut) || isEmpty(result_all)) {
+        return res.status(200).json({
+          isSuccess: true,
+          data: {
+            product,
+            latestSession: {},
+          },
+        });
+      }
+      console.log('sessionId', sessionId);
+      const nutRes = JSON.parse(result_nut?.['nut.json']);
+      const allRes = JSON.parse(result_all?.['all.json']);
+      const { isSuccess: allSuccess, data: allResData } = allRes || {};
+      const { isSuccess: nutSuccess, data: nutResData } = nutRes || {};
+
+      console.log('type of', typeof allResData);
+
+      //* if one of process fail
+      if (allSuccess === false || nutSuccess === false) {
+        await prisma.extractSession.update({
+          where: { sessionId },
+          data: {
+            status: 'fail',
+          },
+        });
+        return res.status(200).json({
+          isSuccess: true,
+          data: {
+            product,
+            latestSession: {},
+          },
+        });
+      }
+      //* if both process success
+      const allJsonData = mapMarkdownAllToObject(
+        allResData?.markdownContent,
+        allResData?.extraInfo
+      );
+      const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
+
+      let finalResult = {
+        product: {
+          // ...allRes?.data?.jsonData,
+          ...allJsonData,
+          // factPanels: nutRes?.data?.jsonData, //* markdown converted
+          factPanels: nutJsonData,
+          nutMark: nutRes?.data?.markdownContent,
+          allMark: allRes?.data?.markdownContent,
+        },
+      };
+      let validatedResponse = await responseValidator(finalResult, '');
+
+      let updatedSession = await prisma.extractSession.update({
+        where: { sessionId },
+        data: {
+          status: 'success',
+          result: JSON.stringify(validatedResponse),
+        },
+      });
+      // if (updatedSession?.result && updatedSession?.status === 'success') {
+      // let parsedResult = JSON.parse(updatedSession?.result);
+      // if (process.env.NODE_ENV === 'production') {
+      //   removeRawFieldData(parsedResult);
+      // }
+      return res.status(200).json({
+        isSuccess: true,
+        data: {
+          product,
+          latestSession: updatedSession,
+        },
+      });
+      // }
+    }
+  } catch (error) {
+    console.log('error', error);
+    res.status(500).json({ error: 'Failed to fetch product' });
   }
 });
 

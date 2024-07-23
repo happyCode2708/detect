@@ -12,9 +12,11 @@ export const mapToTDCformat = (extractData: any) => {
     marketing,
     supplyChain,
     instructions,
+    validated_instructions,
     factPanels,
     header,
     allergens,
+    validated_allergens,
     attributes,
     physical,
   } = productData;
@@ -68,26 +70,37 @@ export const mapToTDCformat = (extractData: any) => {
     CountryOfOriginName: toUpper(supplyChain?.[0]?.validated_countryOfOrigin),
 
     //* instructions
-    UsageInstructions: instructions?.[0]?.usageInstruction,
-    ConsumerStorage: instructions?.[0]?.validated_storageInstruction,
-    CookingInstructions: instructions?.[0]?.cookingInstruction,
-    UseOrFreezeBy: instructions?.[0]?.validated_useOrFreezeBy,
+    // UsageInstructions: instructions?.[0]?.usageInstruction,
+    // ConsumerStorage: instructions?.[0]?.validated_storageInstruction,
+    // CookingInstructions: instructions?.[0]?.cookingInstruction,
+    // UseOrFreezeBy: instructions?.[0]?.validated_useOrFreezeBy,
+    UsageInstructions: validated_instructions?.usageInstruction,
+    ConsumerStorage: validated_instructions?.storageInstruction,
+    CookingInstructions: validated_instructions?.cookingInstruction,
+    UseOrFreezeBy: validated_instructions?.useOrFreezeBy,
     // InstructionsAncillary: instructions?.[0]?.otherInstructions,
 
     //* allergen
-    Allergens: allergens?.[0]?.validated_containList,
+    // Allergens: allergens?.[0]?.validated_containList,
+    AllergensAncillary: validated_allergens?.allergensAncillary,
+    Allergens: validated_allergens?.allergens,
+    FreeOf: validated_allergens?.freeOf,
+    ProcessedOnEquipment: validated_allergens?.processedOnEquipment,
+    ProcessedManufacturedInFacilityStatement:
+      validated_allergens?.processedManufacturedInFacilityStatement,
+    InFacilityOnEquipmentStatement:
+      validated_allergens?.processedManufacturedInFacilityStatement,
+    InFacilityOnEquipmentIncluding: validated_allergens?.processedOnEquipment,
 
-    FreeOf: allergens?.[0]?.validated_notContainList,
+    // FreeOf: allergens?.[0]?.validated_notContainList,
     // AllergensAncillary: [
     //   toUpper(allergens?.[0]?.containStatement),
     //   toUpper(allergens?.[0]?.notContainStatement),
     // ], //? in progress
-    ProcessedOnEquipment: allergens?.[0]?.validated_containOnEquipmentList,
-    ProcessedManufacturedInFacilityStatement:
-      allergens?.[0]?.containOnEquipmentStatement,
-    InFacilityOnEquipmentStatement: allergens?.[0]?.containOnEquipmentStatement,
-    InFacilityOnEquipmentIncluding:
-      allergens?.[0]?.validated_containOnEquipmentList,
+    // ProcessedOnEquipment: allergens?.[0]?.validated_containOnEquipmentList,
+    // InFacilityOnEquipmentStatement: allergens?.[0]?.containOnEquipmentStatement,
+    // InFacilityOnEquipmentIncluding:
+    //   allergens?.[0]?.validated_containOnEquipmentList,
 
     //* ingredients
     // SupplementIngredientStatement:
@@ -96,21 +109,31 @@ export const mapToTDCformat = (extractData: any) => {
     //     ? [toUpper(ingredients[0].ingredientStatement)]
     //     : undefined,
 
-    IngredientsStatement:
-      ingredients?.[0]?.ingredientStatement && ingredients?.length > 0
-        ? ingredients?.map((ingredientItem: any) => {
-            return toUpper(ingredientItem?.ingredientStatement);
-          })
-        : undefined,
-    IngredientBreakout:
-      ingredients?.length > 0
-        ? ingredients?.map((ingredientItem: any) => {
-            return ingredientItem?.ingredientBreakdown
-              ?.split(', ')
-              .filter((item: string) => item !== '')
-              .map((item: string) => toUpper(item?.trim()));
-          })
-        : undefined,
+    ...mapIngredients(ingredients),
+
+    // IngredientsStatement:
+    //   ingredients?.[0]?.ingredientStatement && ingredients?.length > 0
+    //     ? ingredients?.map((ingredientItem: any) => {
+    //         return toUpper(ingredientItem?.ingredientStatement);
+    //       })
+    //     : undefined,
+    // IngredientBreakout:
+    //   ingredients?.length > 0
+    //     ? ingredients
+    //         ?.map((ingredientItem: any) => {
+    //           return ingredientItem?.ingredientBreakdown
+    //             ?.split('/')
+    //             .filter((item: string) => item !== '')
+    //             .map((item: string) => toUpper(item?.trim()));
+    //         })
+    //         ?.reduce(
+    //           (ingredientList: string[], partialIngredientList: any) => [
+    //             ...ingredientList,
+    //             ...partialIngredientList,
+    //           ],
+    //           []
+    //         )
+    //     : undefined,
 
     //* additional
     HasSupplementPanel:
@@ -120,7 +143,7 @@ export const mapToTDCformat = (extractData: any) => {
     HasPanel: factPanels?.length > 0,
 
     //* Physical
-    UPC12: physical?.[0]?.validated_upc12,
+    UPC12: physical?.upc12,
 
     //* marketing
     Website: marketing?.[0]?.website
@@ -191,7 +214,9 @@ export const mapToTDCformat = (extractData: any) => {
     Process: attributes?.validated_nonCertificateClaims || [],
     Contains: attributes?.validated_contain || [],
     DoesNotContain: attributes?.validated_notContain || [],
-    Grade: [attributes?.otherAttribute?.[0]?.grade],
+    Grade: attributes?.otherAttribute?.[0]?.grade
+      ? [attributes?.otherAttribute?.[0]?.grade]
+      : undefined,
     JuicePercent: attributes?.otherAttribute?.[0]?.juicePercent,
 
     //* other attributes
@@ -376,3 +401,52 @@ const mapPrimarySizeAndPrimarySizeUom = (header: any) => {
 
 //   return {};
 // };
+
+const mapIngredients = (ingredients: any) => {
+  let IngredientsStatement = [] as any;
+  let IngredientBreakout = [] as any;
+
+  ingredients?.forEach((ingredientItem: any) => {
+    const {
+      ingredientStatement,
+      ingredientBreakdown,
+      liveAndActiveCulturesStatement,
+      validatedIngredientBreakdown,
+    } = ingredientItem;
+
+    if (ingredientItem?.['ingredientStatement']) {
+      IngredientsStatement.push(ingredientItem?.['ingredientStatement']);
+    }
+
+    if (ingredientItem?.['liveAndActiveCulturesStatement']) {
+      IngredientsStatement.push(
+        ingredientItem?.['liveAndActiveCulturesStatement']
+      );
+    }
+
+    if (
+      ingredientItem?.['ingredientBreakdown'] &&
+      ingredientItem?.['validated_ingredientBreakdown']
+    ) {
+      IngredientBreakout = [
+        ...IngredientBreakout,
+        ...ingredientItem?.['validated_ingredientBreakdown'],
+      ];
+    }
+
+    if (
+      ingredientItem?.['liveAndActiveCulturesBreakdown'] &&
+      ingredientItem?.['validated_liveAndActiveCulturesBreakdown']
+    ) {
+      IngredientBreakout = [
+        ...IngredientBreakout,
+        ...ingredientItem?.['validated_liveAndActiveCulturesBreakdown'],
+      ];
+    }
+  });
+
+  return {
+    IngredientsStatement,
+    IngredientBreakout,
+  };
+};

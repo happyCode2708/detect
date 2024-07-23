@@ -1,4 +1,5 @@
-import { removeDuplicates } from '@/lib/utils';
+import { cn, removeDuplicates } from '@/lib/utils';
+import { findIntersectionArrayString } from '@/lib/utils/array';
 import { isEqual } from 'lodash';
 
 export const SectionWrapper = ({
@@ -26,7 +27,9 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     attributes,
     ingredients,
     allergens,
+    validated_allergens,
     instructions,
+    validated_instructions,
     marketing,
     supplyChain,
   } = productInfo;
@@ -41,38 +44,132 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     validated_sugarClaims,
   } = attributes || {};
 
+  const { allergensAncillary, ...rest_validated_allergens } =
+    validated_allergens || {};
+
+  const { processedOnEquipment, freeOf, containList } =
+    validated_allergens || {};
+
+  const missMatchEquipmentList = findIntersectionArrayString(
+    processedOnEquipment,
+    freeOf
+  );
+
+  const missMatchContainList = findIntersectionArrayString(containList, freeOf);
+
   return (
     <div>
       <SectionWrapper name='Header'>
         <CamelFieldStringRender objectValues={header?.[0]} />
       </SectionWrapper>
       <SectionWrapper name='Physical'>
-        <CamelFieldStringRender objectValues={physical?.[0]} />
+        <CamelFieldStringRender objectValues={physical} />
       </SectionWrapper>
       <SectionWrapper name='Attributes'>
         <CamelFieldStringRender
-          objectValues={{ doesNotContain: validated_notContain }}
+          objectValues={{
+            'possible doesNotContain claim': validated_notContain,
+          }}
+          styleConfig={{
+            'possible doesNotContain claim': {
+              keyName: { className: 'bg-red-400' },
+            },
+          }}
         />
-        <CamelFieldStringRender objectValues={{ contain: validated_contain }} />
         <CamelFieldStringRender
-          objectValues={{ calorie: validated_calorieClaim }}
+          objectValues={{ 'possible contain claim': validated_contain }}
+          styleConfig={{
+            'possible contain claim': {
+              keyName: { className: 'bg-red-400' },
+            },
+          }}
         />
-        <CamelFieldStringRender objectValues={{ fat: validated_fatClaims }} />
         <CamelFieldStringRender
-          objectValues={{ sugar: validated_sugarClaims }}
+          objectValues={{ 'possible calorie claim': validated_calorieClaim }}
+          styleConfig={{
+            'possible calorie claim': {
+              keyName: { className: 'bg-red-400' },
+            },
+          }}
+        />
+        <CamelFieldStringRender
+          objectValues={{ 'possible fat claim': validated_fatClaims }}
+          styleConfig={{
+            'possible fat claim': {
+              keyName: { className: 'bg-red-400' },
+            },
+          }}
+        />
+        <CamelFieldStringRender
+          objectValues={{ 'possible sugar claim': validated_sugarClaims }}
+          styleConfig={{
+            'possible sugar claim': {
+              keyName: { className: 'bg-red-400' },
+            },
+          }}
         />
         <CamelFieldStringRender
           objectValues={{
-            ['non certificate claim']: validated_nonCertificateClaims,
+            'possible non certificate claim': validated_nonCertificateClaims,
+          }}
+          styleConfig={{
+            'possible non certificate claim': {
+              keyName: { className: 'bg-red-400' },
+            },
           }}
         />
-        <CamelFieldStringRender objectValues={{ salt: validated_saltClaims }} />
+        <CamelFieldStringRender
+          objectValues={{ 'possible salt claim': validated_saltClaims }}
+          styleConfig={{
+            'possible salt claim': {
+              keyName: { className: 'bg-red-400' },
+            },
+          }}
+        />
       </SectionWrapper>
       <SectionWrapper name='allergens'>
-        <CamelFieldStringRender objectValues={allergens?.[0]} />
+        {allergens?.map((allergenItem: any) => {
+          return (
+            <div className='border rounded-md mb-2 p-1'>
+              <CamelFieldStringRender objectValues={allergenItem} />
+            </div>
+          );
+        })}
+        {validated_allergens && (
+          <div className='border rounded-md mb-2 p-1'>
+            <div className='font-bold uppercase p-1 rounded-md bg-green-600 text-white inline-block'>
+              validated result
+            </div>
+            <CamelFieldStringRender
+              objectValues={{ possibleAllergensAncillary: allergensAncillary }}
+              styleConfig={{
+                possibleAllergensAncillary: {
+                  keyName: { className: 'bg-red-400' },
+                },
+              }}
+            />
+            <CamelFieldStringRender
+              objectValues={rest_validated_allergens}
+              possibleWrongValues={{
+                containList: missMatchContainList,
+                inFacilityOnEquipmentIncluding: missMatchEquipmentList,
+                freeOf: [...missMatchContainList, ...missMatchEquipmentList],
+                processedOnEquipment: missMatchEquipmentList,
+              }}
+            />
+          </div>
+        )}
       </SectionWrapper>
       <SectionWrapper name='instructions'>
         <CamelFieldStringRender objectValues={instructions?.[0]} />
+        {validated_instructions && (
+          <div className='border rounded-md mb-2 p-1'>
+            <div className='font-bold uppercase p-1 rounded-md bg-green-600 text-white inline-block'>
+              validated result
+            </div>
+            <CamelFieldStringRender objectValues={validated_instructions} />
+          </div>
+        )}
       </SectionWrapper>
       <SectionWrapper name='marketing'>
         <CamelFieldStringRender objectValues={marketing?.[0]} />
@@ -92,9 +189,13 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
 export const CamelFieldStringRender = ({
   objectValues,
   evaluations,
+  styleConfig,
+  possibleWrongValues,
 }: {
   objectValues: Object;
   evaluations?: any;
+  styleConfig?: Record<string, Record<string, { className: string }>>;
+  possibleWrongValues?: any;
 }) => {
   if (!objectValues) return null;
 
@@ -116,9 +217,17 @@ export const CamelFieldStringRender = ({
           return (
             <div key={key} className='flex flex-col mb-4'>
               <div className='font-bold whitespace-nowrap'>
-                {camelCaseToSeparated(key) ?? 'N/A'}{' '}
+                <span
+                  className={styleConfig?.[key]?.['keyName']?.className || ''}
+                >
+                  {camelCaseToSeparated(key) ?? 'N/A'}{' '}
+                </span>
                 {evaluationItem && (
-                  <div className='inline-block rounded-md bg-green-600 text-white px-1'>
+                  <div
+                    className={cn(
+                      'inline-block rounded-md bg-green-600 text-white px-1'
+                    )}
+                  >
                     {evaluationItem}
                   </div>
                 )}
@@ -127,9 +236,16 @@ export const CamelFieldStringRender = ({
               <div>
                 {Array.isArray(value)
                   ? value?.map((childValue: any) => {
+                      const wrongValues = possibleWrongValues?.[key];
+
+                      const showPossibleWrongStyle =
+                        !!wrongValues && wrongValues?.includes(childValue);
+
                       return (
-                        <div>
-                          +{' '}
+                        <div
+                          className={showPossibleWrongStyle ? 'bg-red-300' : ''}
+                        >
+                          +
                           {typeof value === 'boolean' ? `${value}` : childValue}{' '}
                         </div>
                       );
