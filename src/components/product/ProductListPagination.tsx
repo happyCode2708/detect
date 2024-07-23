@@ -29,36 +29,38 @@ export const ProductListPagination = ({ pagination }: { pagination: any }) => {
   const pageArray = Array.from({ length: range }, (_, i) => startPage + i + 1);
 
   return (
-    <Pagination>
-      <PaginationContent>
-        {currentPage !== 1 && (
-          <PaginationItem>
-            <PaginationPrevious href={`/product?page=${currentPage - 1}}`} />
-          </PaginationItem>
-        )}
-        {/* <PaginationItem>
+    <Suspense>
+      <Pagination>
+        <PaginationContent>
+          {currentPage !== 1 && (
+            <PaginationItem>
+              <PaginationPrevious href={`/product?page=${currentPage - 1}}`} />
+            </PaginationItem>
+          )}
+          {/* <PaginationItem>
           <PaginationLink href='/product?page=1'>1</PaginationLink>
         </PaginationItem> */}
-        {/* <PaginationNumber page={1} />
+          {/* <PaginationNumber page={1} />
         <PaginationNumber page={2} />
         <PaginationNumber page={3} /> */}
 
-        {pageArray?.map((pageNumber: any) => {
-          return <PaginationNumber page={pageNumber} key={pageNumber} />;
-        })}
+          {pageArray?.map((pageNumber: any) => {
+            return <PaginationNumber page={pageNumber} key={pageNumber} />;
+          })}
 
-        {showEllipsis && (
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-        )}
-        {currentPage !== totalPages && (
-          <PaginationItem>
-            <PaginationNext href={`/product?page=${currentPage + 1}}`} />
-          </PaginationItem>
-        )}
-      </PaginationContent>
-    </Pagination>
+          {showEllipsis && (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          )}
+          {currentPage !== totalPages && (
+            <PaginationItem>
+              <PaginationNext href={`/product?page=${currentPage + 1}}`} />
+            </PaginationItem>
+          )}
+        </PaginationContent>
+      </Pagination>
+    </Suspense>
   );
 };
 
