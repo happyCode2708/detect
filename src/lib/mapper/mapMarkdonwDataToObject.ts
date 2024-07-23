@@ -105,7 +105,7 @@ export const mapMarkdownNutToObject = (markdown: string) => {
     // logger.error('debug');
     // logger.info(debugSection);
 
-    if (debugSection) {
+    if (debugSection && process.env.NODE_ENV !== 'production') {
       const debugLines = debugSection
         .trim()
         .split('\n')

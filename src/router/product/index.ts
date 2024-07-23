@@ -512,19 +512,23 @@ router.get('/:productId', async (req, res) => {
           result: JSON.stringify(validatedResponse),
         },
       });
-      // if (updatedSession?.result && updatedSession?.status === 'success') {
-      // let parsedResult = JSON.parse(updatedSession?.result);
-      // if (process.env.NODE_ENV === 'production') {
-      //   removeRawFieldData(parsedResult);
-      // }
+
+      let return_session = updatedSession;
+      if (updatedSession?.result) {
+        if (process.env.NODE_ENV === 'production') {
+          let return_result = JSON.parse(updatedSession?.result);
+          removeRawFieldData(return_result);
+          return_session['result'] = JSON.stringify(return_result);
+        }
+      }
+
       return res.status(200).json({
         isSuccess: true,
         data: {
           product,
-          latestSession: updatedSession,
+          latestSession: return_session,
         },
       });
-      // }
     }
   } catch (error) {
     console.log('error', error);

@@ -547,3 +547,16 @@ END_
 2024-07-23 12:39:57 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","website":"","socialMediaText":"","enlargedToShow":"false"}]
 2024-07-23 12:39:57 [31merror[39m: instruction
 2024-07-23 12:39:57 [32minfo[39m: [{"storageInstruction":[],"cookingInstruction":[],"usageInstruction":["USE : Apply a quarter - sized amount to shaved skin ."],"otherInstruction":[]}]
+2024-07-23 14:00:58 [31merror[39m: header
+2024-07-23 14:00:58 [32minfo[39m: 
+| product name | brand name | primary size | secondary size | third size | full size statement | count | count uom |
+| ------- | -------- | -------- | ------- | -------- | -------- | -------- | -------- |
+| ENERGY SUPERFOOD BAR | B.T.R. NATION | 1.23 oz | 35g |  | 1.23 oz ( 35g ) Superfood Snack Bars | 12 |  |
+
+2024-07-23 14:00:58 [31merror[39m: ingredient list
+2024-07-23 14:00:58 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS :","ingredientStatement":"Cashew Butter , Protein Blend ( Pea Protein , Almond Protein ) , Chicory Root Fiber , Almond Butter , Cocoa Butter , Water , Organic Cinnamon , Organic Maca Powder , Organic Vanilla Extract , Sea Salt , MCT Oil ( from Coconut ) , Organic Cordyceps sinensis Mushroom Powder , Organic Rosemary Extract , Monk Fruit Extract .","ingredientBreakdown":"Cashew Butter/Protein Blend ( Pea Protein/Almond Protein )/Chicory Root Fiber/Almond Butter/Cocoa Butter/Water/Organic Cinnamon/Organic Maca Powder/Organic Vanilla Extract/Sea Salt/MCT Oil ( from Coconut )/Organic Cordyceps sinensis Mushroom Powder/Organic Rosemary Extract/Monk Fruit Extract .","liveAndActiveCulturesStatement":"","liveAndActiveCulturesBreakdown":""}]
+2024-07-23 14:00:58 [31merror[39m: marketing
+2024-07-23 14:00:58 [32minfo[39m: [{"haveQrCode":"false","instagram":"true","pinterest":"false","youtube":"false","youtubeType":"","facebook":"true","twitter":"false","socialMediaList":"instagram/facebook","website":"WWW.BTRNATION.COM","socialMediaText":"@ BTR.NATION","enlargedToShow":"false"}]
+2024-07-23 14:00:58 [31merror[39m: instruction
+2024-07-23 14:00:58 [32minfo[39m: [{"storageInstruction":[],"cookingInstruction":[],"usageInstruction":[],"otherInstruction":[]}]
+2024-07-23 14:00:58 [31merror[39m: sugar claim -- sugar
