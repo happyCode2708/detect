@@ -10,7 +10,8 @@ const EditProductForm = ({
   product: any;
   onSuccess: () => void;
 }) => {
-  // const [ixoneID, setIxoneID] = useState('');
+  const [ixoneID, setIxoneID] = useState('');
+  const productId = product?.id;
 
   const { toast } = useToast();
 
