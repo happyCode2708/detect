@@ -52,8 +52,13 @@ export const Result = ({
       >
         <TabsTrigger value='table'>Table</TabsTrigger>
         <TabsTrigger value='json'>Json</TabsTrigger>
-        <TabsTrigger value='jsonTDC'>Json TDC</TabsTrigger>
-        <TabsTrigger value='compare'>Compare</TabsTrigger>
+        <TabsTrigger value='jsonTDC'>TDC data</TabsTrigger>
+
+        <TabsTrigger value='compare'>
+          {process.env.NODE_ENV !== 'production'
+            ? 'Compare'
+            : 'Result In TDC format'}
+        </TabsTrigger>
         {process.env.NODE_ENV !== 'production' && (
           <>
             <TabsTrigger value='nut-md'>nut md</TabsTrigger>
@@ -71,11 +76,7 @@ export const Result = ({
         <JsonRender productInfo={productTdcData} />
       </TabsContent>
       <TabsContent
-        value={
-          process.env.NODE_ENV !== 'production'
-            ? 'compare'
-            : 'Result in TDC format'
-        }
+        value={'compare'}
         forceMount
         hidden={tabActive !== 'compare'}
       >
