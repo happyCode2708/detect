@@ -36,7 +36,7 @@ export const ProductListPagination = ({ pagination }: { pagination: any }) => {
         {pageArray?.map((pageNumber: any) => {
           return (
             <Suspense key={pageNumber}>
-              <PaginationNumber page={pageNumber} />;
+              <PaginationNumber page={pageNumber} />
             </Suspense>
           );
         })}
