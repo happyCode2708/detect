@@ -15,10 +15,6 @@ import { Suspense } from 'react';
 export const ProductListPagination = ({ pagination }: { pagination: any }) => {
   const { currentPage, totalPages, totalProducts } = pagination || {};
 
-  const searchParams = useSearchParams();
-  const pageParam = searchParams.get('page');
-  const searchParam = searchParams.get('search');
-
   const startPage = currentPage ? Math.max(currentPage - 4, 0) : 1;
   const endPage = currentPage ? Math.min(currentPage + 4, totalPages || 1) : 1;
 
@@ -29,38 +25,34 @@ export const ProductListPagination = ({ pagination }: { pagination: any }) => {
   const pageArray = Array.from({ length: range }, (_, i) => startPage + i + 1);
 
   return (
-    <Suspense>
-      <Pagination>
-        <PaginationContent>
-          {currentPage !== 1 && (
-            <PaginationItem>
-              <PaginationPrevious href={`/product?page=${currentPage - 1}}`} />
-            </PaginationItem>
-          )}
-          {/* <PaginationItem>
-          <PaginationLink href='/product?page=1'>1</PaginationLink>
-        </PaginationItem> */}
-          {/* <PaginationNumber page={1} />
-        <PaginationNumber page={2} />
-        <PaginationNumber page={3} /> */}
+    <Pagination>
+      <PaginationContent>
+        {currentPage !== 1 && (
+          <PaginationItem>
+            <PaginationPrevious href={`/product?page=${currentPage - 1}}`} />
+          </PaginationItem>
+        )}
 
-          {pageArray?.map((pageNumber: any) => {
-            return <PaginationNumber page={pageNumber} key={pageNumber} />;
-          })}
+        {pageArray?.map((pageNumber: any) => {
+          return (
+            <Suspense key={pageNumber}>
+              <PaginationNumber page={pageNumber} />;
+            </Suspense>
+          );
+        })}
 
-          {showEllipsis && (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-          )}
-          {currentPage !== totalPages && (
-            <PaginationItem>
-              <PaginationNext href={`/product?page=${currentPage + 1}}`} />
-            </PaginationItem>
-          )}
-        </PaginationContent>
-      </Pagination>
-    </Suspense>
+        {showEllipsis && (
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+        )}
+        {currentPage !== totalPages && (
+          <PaginationItem>
+            <PaginationNext href={`/product?page=${currentPage + 1}}`} />
+          </PaginationItem>
+        )}
+      </PaginationContent>
+    </Pagination>
   );
 };
 

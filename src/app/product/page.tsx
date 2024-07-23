@@ -162,61 +162,67 @@ const ProductListPage = () => {
   if (loadingProductList) return;
 
   return (
-    <Suspense>
-      <FluidContainer>
-        <div className='py-4'>
-          {loadingProductList ? (
-            <SkeletonSection />
-          ) : (
-            <>
-              <div className='mb-4 flex justify-between align-middle'>
-                <Input
-                  type='text'
-                  placeholder='Search by Ixone ID'
-                  value={searchTerm}
-                  onChange={onChangeSearchTerm}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleSearch();
-                    }
-                  }}
-                  className='max-w-[400px]'
-                />
-
-                <div className='flex space-x-1'>
-                  {process.env.NODE_ENV !== 'production' && (
-                    <Button
-                      variant='secondary'
-                      onClick={handleExportCompareResult}
-                    >
-                      Export compare result
-                    </Button>
-                  )}
-                  <DeleteProductDialog
-                    isOpen={isDeleteDialogOpen}
-                    toggleDialog={toggleDeleteProductDialog}
-                    handleDeleteProduct={handleDeleteSelected}
-                    disabled={Array.from(selectedProducts)?.length === 0}
-                  />
-                  <AddProductDialog
-                    isOpen={isDialogOpen}
-                    toggleDialog={toggleDialog}
-                  />
-                </div>
-              </div>
-              <h1 className='text-2xl font-semibold mb-4'>Product List</h1>
-              <ProductTable
-                products={products || []}
-                selectedProducts={selectedProducts}
-                onProductSelect={handleProductSelect}
-                pagination={pagination}
+    <FluidContainer>
+      <div className='py-4'>
+        {loadingProductList ? (
+          <SkeletonSection />
+        ) : (
+          <>
+            <div className='mb-4 flex justify-between align-middle'>
+              <Input
+                type='text'
+                placeholder='Search by Ixone ID'
+                value={searchTerm}
+                onChange={onChangeSearchTerm}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearch();
+                  }
+                }}
+                className='max-w-[400px]'
               />
-            </>
-          )}
-        </div>
-      </FluidContainer>
+
+              <div className='flex space-x-1'>
+                {process.env.NODE_ENV !== 'production' && (
+                  <Button
+                    variant='secondary'
+                    onClick={handleExportCompareResult}
+                  >
+                    Export compare result
+                  </Button>
+                )}
+                <DeleteProductDialog
+                  isOpen={isDeleteDialogOpen}
+                  toggleDialog={toggleDeleteProductDialog}
+                  handleDeleteProduct={handleDeleteSelected}
+                  disabled={Array.from(selectedProducts)?.length === 0}
+                />
+                <AddProductDialog
+                  isOpen={isDialogOpen}
+                  toggleDialog={toggleDialog}
+                />
+              </div>
+            </div>
+            <h1 className='text-2xl font-semibold mb-4'>Product List</h1>
+            <ProductTable
+              products={products || []}
+              selectedProducts={selectedProducts}
+              onProductSelect={handleProductSelect}
+              pagination={pagination}
+            />
+          </>
+        )}
+      </div>
+    </FluidContainer>
+  );
+};
+
+const ProductListPageSuspense = () => {
+  return (
+    <Suspense>
+      <ProductListPage />
     </Suspense>
   );
 };
 
-export default ProductListPage;
+export default ProductListPageSuspense;
