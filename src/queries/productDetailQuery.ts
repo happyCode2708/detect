@@ -7,7 +7,7 @@ export const useQueryProductsFromTdc = (
     ixoneIDs: string[];
   },
   options: any
-) => {
+): any => {
   return useQuery({
     queryKey: ['product', 'tdc', `${ixoneIDs}`],
     queryFn: async () => {
@@ -22,7 +22,9 @@ export const useQueryProductsFromTdc = (
         throw new Error('Network response was not ok');
       }
 
-      return response.json();
+      const res = await response.json();
+
+      return res;
     },
     retry: false,
     ...options,

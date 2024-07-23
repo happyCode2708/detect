@@ -28,6 +28,7 @@ export const TableResultTDC = ({
               {SupplementPanel?.map((panelData: any, idx: number) => {
                 return (
                   <TdcNutPanelRender
+                    key={idx}
                     propertyList={panelData?.Property}
                     title='Supplement Fact'
                     evaluation={evaluation?.SupplementPanel?.[idx]?.Property}
@@ -41,6 +42,7 @@ export const TableResultTDC = ({
               {NutritionPanel?.map((panelData: any, idx: number) => {
                 return (
                   <TdcNutPanelRender
+                    key={idx}
                     propertyList={panelData?.Property}
                     title='Nutrition Fact'
                     evaluation={evaluation?.NutritionPanel?.[idx]?.Property}
@@ -70,7 +72,7 @@ const TdcNutPanelRender = ({
       {propertyList?.map((propertyItem, idx: number) => {
         const { PropertyName, ...restProperty } = propertyItem;
         return (
-          <div>
+          <div key={idx}>
             <div className=''>+{PropertyName}</div>
             <div className='pl-4'>
               <CamelFieldStringRender

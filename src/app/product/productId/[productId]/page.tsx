@@ -155,21 +155,21 @@ const ProductDetailPage = () => {
           messages?.length > 0 &&
           !!messages.find((item: string | null) => item !== null)
         ) {
-          toast({
-            title: 'Info',
-            description: (
-              <div>
-                {messages?.map((messageItem: string | null) => {
-                  if (messageItem) {
-                    return <div className='mb-2'>{messageItem} </div>;
-                  }
-                  return null;
-                })}
-              </div>
-            ),
-            variant: 'destructive',
-            duration: 7000,
-          });
+          // toast({
+          //   title: 'Info',
+          //   description: (
+          //     <div>
+          //       {messages?.map((messageItem: string | null) => {
+          //         if (messageItem) {
+          //           return <div className='mb-2'>{messageItem} </div>;
+          //         }
+          //         return null;
+          //       })}
+          //     </div>
+          //   ),
+          //   variant: 'destructive',
+          //   duration: 7000,
+          // });
         }
         setSessionId(sessionId);
         // queryClient.invalidateQueries({ queryKey: ['history'] });
@@ -484,7 +484,7 @@ const ProductDetailPage = () => {
             {!isEqual(biasForm, {}) && (
               <SectionWrapper title='Bias Configuration'>
                 {Object.entries(biasForm).map(
-                  (biasImage: [key: string, value: any]) => {
+                  (biasImage: [key: string, value: any], idx: number) => {
                     const [key, value] = biasImage;
 
                     const isShow = value?.haveNutFact === true;
@@ -492,7 +492,7 @@ const ProductDetailPage = () => {
                     if (isShow === false) return null;
 
                     return (
-                      <div className='flex flex-row mb-2'>
+                      <div className='flex flex-row mb-2' key={idx}>
                         <div className='w-[100px] h-[100px] border rounded-sm p-2 flex items-center justify-center relative'>
                           <img
                             src={inputImages[key]}

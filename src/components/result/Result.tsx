@@ -17,8 +17,6 @@ export const Result = ({
   productTdcData: any;
   compareResultData: any;
 }) => {
-  if (!productInfo) return null;
-
   const [tabActive, setTabActive] = useState<string>('table');
 
   const onValueChange = (tabActive: string) => {
@@ -36,6 +34,8 @@ export const Result = ({
   //     console.log(e);
   //   }
   // }, [productInfo, productTdcData]);
+
+  if (!productInfo) return null;
 
   return (
     <Tabs
