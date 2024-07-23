@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import ProductTable from '@/components/product/ProductTable';
 import { Button } from '@/components/ui/button';
 import AddProductDialog from '@/components/product/AddProductDialog';
@@ -162,58 +162,60 @@ const ProductListPage = () => {
   if (loadingProductList) return;
 
   return (
-    <FluidContainer>
-      <div className='py-4'>
-        {loadingProductList ? (
-          <SkeletonSection />
-        ) : (
-          <>
-            <div className='mb-4 flex justify-between align-middle'>
-              <Input
-                type='text'
-                placeholder='Search by Ixone ID'
-                value={searchTerm}
-                onChange={onChangeSearchTerm}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleSearch();
-                  }
-                }}
-                className='max-w-[400px]'
-              />
+    <Suspense>
+      <FluidContainer>
+        <div className='py-4'>
+          {loadingProductList ? (
+            <SkeletonSection />
+          ) : (
+            <>
+              <div className='mb-4 flex justify-between align-middle'>
+                <Input
+                  type='text'
+                  placeholder='Search by Ixone ID'
+                  value={searchTerm}
+                  onChange={onChangeSearchTerm}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSearch();
+                    }
+                  }}
+                  className='max-w-[400px]'
+                />
 
-              <div className='flex space-x-1'>
-                {process.env.NODE_ENV !== 'production' && (
-                  <Button
-                    variant='secondary'
-                    onClick={handleExportCompareResult}
-                  >
-                    Export compare result
-                  </Button>
-                )}
-                <DeleteProductDialog
-                  isOpen={isDeleteDialogOpen}
-                  toggleDialog={toggleDeleteProductDialog}
-                  handleDeleteProduct={handleDeleteSelected}
-                  disabled={Array.from(selectedProducts)?.length === 0}
-                />
-                <AddProductDialog
-                  isOpen={isDialogOpen}
-                  toggleDialog={toggleDialog}
-                />
+                <div className='flex space-x-1'>
+                  {process.env.NODE_ENV !== 'production' && (
+                    <Button
+                      variant='secondary'
+                      onClick={handleExportCompareResult}
+                    >
+                      Export compare result
+                    </Button>
+                  )}
+                  <DeleteProductDialog
+                    isOpen={isDeleteDialogOpen}
+                    toggleDialog={toggleDeleteProductDialog}
+                    handleDeleteProduct={handleDeleteSelected}
+                    disabled={Array.from(selectedProducts)?.length === 0}
+                  />
+                  <AddProductDialog
+                    isOpen={isDialogOpen}
+                    toggleDialog={toggleDialog}
+                  />
+                </div>
               </div>
-            </div>
-            <h1 className='text-2xl font-semibold mb-4'>Product List</h1>
-            <ProductTable
-              products={products || []}
-              selectedProducts={selectedProducts}
-              onProductSelect={handleProductSelect}
-              pagination={pagination}
-            />
-          </>
-        )}
-      </div>
-    </FluidContainer>
+              <h1 className='text-2xl font-semibold mb-4'>Product List</h1>
+              <ProductTable
+                products={products || []}
+                selectedProducts={selectedProducts}
+                onProductSelect={handleProductSelect}
+                pagination={pagination}
+              />
+            </>
+          )}
+        </div>
+      </FluidContainer>
+    </Suspense>
   );
 };
 
