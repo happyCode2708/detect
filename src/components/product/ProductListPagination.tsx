@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/pagination';
 // import { useRouter } from 'next/router';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 export const ProductListPagination = ({ pagination }: { pagination: any }) => {
   const { currentPage, totalPages, totalProducts } = pagination || {};
@@ -67,13 +68,15 @@ const PaginationNumber = ({ page }: { page: number }) => {
   const searchParam = searchParams.get('search');
 
   return (
-    <PaginationItem>
-      <PaginationLink
-        href={`/product?search=${searchParam}&page=${page}`}
-        isActive={parseInt(pageParam) === page}
-      >
-        {page}
-      </PaginationLink>
-    </PaginationItem>
+    <Suspense>
+      <PaginationItem>
+        <PaginationLink
+          href={`/product?search=${searchParam}&page=${page}`}
+          isActive={parseInt(pageParam) === page}
+        >
+          {page}
+        </PaginationLink>
+      </PaginationItem>
+    </Suspense>
   );
 };
