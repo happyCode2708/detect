@@ -71,7 +71,8 @@ const ProductDetailPage = () => {
   const { data: compareResultResponse } = mutateGetCompareResultWithTdc;
   const compareResultData = compareResultResponse?.data;
 
-  const { data: productIxoneRes } = useQueryProductDetail({ productId });
+  const { data: productIxoneRes, isLoading: loadingProductDetail } =
+    useQueryProductDetail({ productId });
 
   const productData = productIxoneRes?.data;
 
@@ -319,7 +320,7 @@ const ProductDetailPage = () => {
     };
   }, [sessionId]);
 
-  if (!productIxone) {
+  if (loadingProductDetail) {
     return <div>Loading...</div>;
   }
 

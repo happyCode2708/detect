@@ -155,6 +155,7 @@ export const removeRawFieldData = (rawResponse: object) => {
     'product.attributes.calorieClaims',
     'product.attributes.saltClaims',
     'product.attributes.sugarClaims',
+    'product.attributes.baseCertifierClaims',
     'product.marketing.instagram',
     'product.marketing.pinterest',
     'product.marketing.youtube',
@@ -162,6 +163,10 @@ export const removeRawFieldData = (rawResponse: object) => {
     'product.marketing.twitter',
     'product.nutMark',
     'product.allMark',
+    'product.extraInfo',
+    'product.extraInfo',
+    'product.instructions',
+    'product.labeling',
   ];
 
   fields.forEach((removeField) => {
