@@ -245,7 +245,7 @@ const compareFactPanelByMostMatch = (obj1: any, obj2: any) => {
               ? JSON.stringify(extractValue)
               : extractValue;
 
-            //! remove later
+          //! remove later
           // console.log(
           //   `key -- ${key} -- ${valueString} -- ${extractValueString} `
           // );

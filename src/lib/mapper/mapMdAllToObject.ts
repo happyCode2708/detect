@@ -75,8 +75,8 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
     .split('HEADER_TABLE')?.[1]
     ?.split('END__HEADER__TABLE')?.[0];
 
-  logger.error('header');
-  logger.info(headerSection);
+  // logger.error('header');
+  // logger.info(headerSection);
 
   const ingredientSection = markdown
     .split('INGREDIENT_TABLE')?.[1]
@@ -237,9 +237,10 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
       'allergens on equipments statement': 'containOnEquipmentStatement',
       'allergens on equipments statement break-down list (split by "/")':
         'containOnEquipmentList',
-      'exact text on images that tell allergen things product does not contain':
+      'exact text on images about allergens that product does not contain':
         'notContainStatement',
-      'allergens product does not contain break-down list': 'notContainList',
+      'allergens product does not contain break-down list (split by "/")':
+        'notContainList',
     },
     {
       groupVertical: true,
@@ -464,10 +465,6 @@ const getObjectDataFromHorizontalTable = (
       .filter((item) => item !== '')
       .map((item) => item.trim());
     const [name, ...multiValues] = values;
-
-    console.log('name --', name);
-
-    // const currentPropertyValue
 
     const foundHeaderName = Object.entries(propertyListMap)?.find(
       ([header, key]) => {

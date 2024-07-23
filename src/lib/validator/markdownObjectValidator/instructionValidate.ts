@@ -79,19 +79,57 @@ const checkConsumerStorage = async (
   let validEnumValues = [] as any;
 
   // const [foundEnumValue] =
-  Object.entries(STORAGE_MAPPING)?.forEach(([key, words]) => {
-    const isStatementMatchEnum = words.every((word: string) => {
-      return toLower(statement).includes(word);
-    });
-    if (isStatementMatchEnum) {
-      //* exceptional case
+  // Object.entries(STORAGE_REASON)?.forEach(([key, words]) => {
+  //   const isStatementMatchEnum = words.every((word: string) => {
+  //     return toLower(statement).includes(word);
+  //   });
+  //   if (isStatementMatchEnum) {
+  //     //* exceptional case
+  //     if (key === 'DRY PLACE' && validEnumValues?.includes('COOL DRY PLACE')) {
+  //       //* COOL DRY PLACE matched no need DRY PLACE
+  //     } else {
+  //       validEnumValues.push(key);
+  //     }
+  //   }
+  // });
+
+  // if (
+  Object.entries(STORAGE_REASON)?.forEach(([key, phraseList]) => {
+    let isMatch = false;
+    isMatch = phraseList
+      ?.map((wordList: any) => {
+        return wordList
+          .map((word: any) => {
+            if (toLower(statement)?.includes(word)) {
+              return true;
+            } else {
+              return false;
+            }
+          })
+          .every((result: any) => result === true);
+      })
+      .some((result: any) => result === true);
+
+    if (isMatch) {
       if (key === 'DRY PLACE' && validEnumValues?.includes('COOL DRY PLACE')) {
-        //* COOL DRY PLACE matched no need DRY PLACE
       } else {
         validEnumValues.push(key);
       }
     }
   });
+  // .every((result: any) => result === false)
+  // ) {
+  // return Promise.resolve(false);
+  // } else {
+  //* exceptional cases
+  // if (
+  //   toLower(claim) === 'corn syrup' &&
+  //   toLower(reason)?.includes('high fructose')
+  // ) {
+  //   //? it could be about 'HIGH FRUCTOSE CORN SYRUP' so must return false
+  //   return Promise.resolve(false);
+  // }
+  // }
 
   if (validEnumValues?.length === 0) {
     return Promise.resolve(false);
@@ -187,17 +225,23 @@ const validateAllInstructions = async (
     cookingInstruction;
 };
 
-const STORAGE_MAPPING = {
-  'COOL DARK PLACE': ['cool', 'dark', 'place'],
-  'COOL DRY PLACE': ['cool', 'dry', 'place'],
-  'DRY PLACE': ['dry', 'place'],
-  'DO NOT FREEZE': ['not', 'freeze'],
-  'DO NOT REFRIGERATE': ['not', 'refrigerate'],
-  'KEEP FROZEN': ['keep', 'frozen'],
-  'KEEP REFRIGERATED': ['keep', 'refrigerated'],
-  'REFRIGERATE AFTER OPENING': ['refrigerate', 'after', 'open'],
-  'SEAL FOR FRESHNESS': ['seal', 'freshness'],
-  'STORE AT ROOM TEMPERATURE': ['at', 'room temperature'],
+const STORAGE_REASON = {
+  'COOL DARK PLACE': [['cool', 'dark', 'place']],
+  'COOL DRY PLACE': [['cool', 'dry', 'place']],
+  'DRY PLACE': [['dry', 'place']],
+  'DO NOT FREEZE': [['not', 'freeze']],
+  'DO NOT REFRIGERATE': [['not', 'refrigerate']],
+  'KEEP FROZEN': [
+    ['keep', 'frozen'],
+    ['store', 'in', 'freezer'],
+  ],
+  'KEEP REFRIGERATED': [
+    ['keep', 'refrigerated'],
+    ['store', 'in', 'fridge'],
+  ],
+  'REFRIGERATE AFTER OPENING': [['refrigerate', 'after', 'open']],
+  'SEAL FOR FRESHNESS': [['seal', 'freshness']],
+  'STORE AT ROOM TEMPERATURE': [['at', 'room temperature']],
 };
 
 const USE_OR_FREEZE_BY_MAPPING = {
@@ -206,4 +250,5 @@ const USE_OR_FREEZE_BY_MAPPING = {
     ['use', 'within'],
     ['enjoy', 'within'],
   ],
+  'FOR A TIME': [['take on the go for']],
 };

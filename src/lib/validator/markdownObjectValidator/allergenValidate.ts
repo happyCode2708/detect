@@ -21,29 +21,27 @@ const validateNoContainList = async (modifiedProductDataPoints: any) => {
       let validated_notContainList = [] as any;
       if (notContainList) {
         notContainList?.split(/\/|and/)?.forEach((notContainItem: any) => {
-          ALLERGEN_LIST.some((allergenItem: any) => {
+          ALLERGEN_LIST.forEach((allergenItem: any) => {
             const variants = allergenItem?.variants;
             const name = allergenItem?.name;
             const statement_not_include = allergenItem?.statement_not_include;
             const trimmedNotContainItem = notContainItem?.trim();
 
-            let isValid = variants.find((variantItem: any) =>
-              toLower(trimmedNotContainItem)?.includes(variantItem)
-            );
+            let validVariant = variants.find((variantItem: any) => {
+              return toLower(trimmedNotContainItem)?.includes(variantItem);
+            });
 
             if (statement_not_include) {
-              let statement = notContainStatement;
-
               if (
                 statement_not_include.some((expText: string) => {
-                  return toLower(statement?.includes(expText));
+                  return toLower(trimmedNotContainItem)?.includes(expText);
                 })
               ) {
-                isValid = false;
+                validVariant = false;
               }
             }
 
-            if (isValid) {
+            if (validVariant) {
               validated_notContainList = Array.from(
                 new Set([...validated_notContainList, toUpper(name)])
               );
@@ -115,22 +113,21 @@ const validateContainList = async (modifiedProductDataPoints: any) => {
           const statement_not_include = allergenItem?.statement_not_include;
           const trimmedContainItem = containItem?.trim();
 
-          let isValid = variants.find((variantItem: any) =>
+          let validVariant = variants.find((variantItem: any) =>
             toLower(trimmedContainItem)?.includes(variantItem)
           );
 
           if (statement_not_include) {
-            let statement = containStatement;
             if (
               statement_not_include.some((expText: string) => {
-                return toLower(statement)?.includes(expText);
+                return toLower(trimmedContainItem)?.includes(expText);
               })
             ) {
-              isValid = false;
+              validVariant = false;
             }
           }
 
-          if (isValid) {
+          if (validVariant) {
             validated_containList = Array.from(
               new Set([...validated_containList, toUpper(name)])
             );
@@ -172,22 +169,21 @@ const validateContainOnEquipmentList = async (
           const statement_not_include = allergenItem?.statement_not_include;
           const trimContainItem = containItem?.trim();
 
-          let isValid = variants.find((variantItem: any) =>
+          let validVariant = variants.find((variantItem: any) =>
             toLower(trimContainItem)?.includes(variantItem)
           );
 
           if (statement_not_include) {
-            let statement = containStatement;
             if (
               statement_not_include.some((expText: string) => {
-                return toLower(statement)?.includes(expText);
+                return toLower(trimContainItem)?.includes(expText);
               })
             ) {
-              isValid = false;
+              validVariant = false;
             }
           }
 
-          if (isValid) {
+          if (validVariant) {
             validated_containOnEquipmentList = Array.from(
               new Set([...validated_containOnEquipmentList, toUpper(name)])
             );
@@ -313,24 +309,23 @@ const mapToValidatedAllergenObject = async (modifiedProductDataPoints: any) => {
         const variants = allergenItem?.variants;
         const name = allergenItem?.name;
         const statement_not_include = allergenItem?.statement_not_include;
-        const trimContainItem = notContainItem?.trim();
+        const trimmedNotContainItem = notContainItem?.trim();
 
-        let isValid = variants.find((variantItem: any) =>
-          toLower(trimContainItem)?.includes(variantItem)
-        );
+        let validVariant = variants.find((variantItem: any) => {
+          return toLower(trimmedNotContainItem)?.includes(variantItem);
+        });
 
-        // if (statement_not_include) {
-        //   let statement = containStatement;
-        //   if (
-        //     statement_not_include.some((expText: string) => {
-        //       return toLower(statement)?.includes(expText);
-        //     })
-        //   ) {
-        //     isValid = false;
-        //   }
-        // }
+        if (statement_not_include) {
+          if (
+            statement_not_include.some((expText: string) => {
+              return toLower(trimmedNotContainItem)?.includes(expText);
+            })
+          ) {
+            validVariant = false;
+          }
+        }
 
-        if (isValid) {
+        if (validVariant) {
           const currentValue =
             modifiedProductDataPoints?.['validated_allergens']?.['freeOf'];
 
@@ -475,6 +470,7 @@ const ALLERGEN_LIST = [
       'macadamia nuts',
       'coconut',
     ],
+    statement_not_include: ['peanut'],
   },
   {
     name: 'wheat',

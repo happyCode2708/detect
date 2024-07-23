@@ -173,14 +173,6 @@ Ex 2: "16 FL OZ (472 ML)
 Ex 3: "900 CAPSULES 400 servings"
 Ex 4: "24 K-CUP PODS - 0.55 OZ (5.2)G/EA NET WT 4.44 OZ (38g)"
 
-5) "ingredient" table rules:
-+ is the list of statements about ingredients of product (since product can have many ingredients list)
-+ "ingredient statement" is content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "other ingredients:".
-+ "ingredient break-down list" is the list of ingredients in ingredient statement split by "/"
-Example 1: "Cookies ( Gluten Free Oat Flour , Organic Coconut Sugar , Sustainable Palm Oil),  Creme Filling (milk, onion) , Potato" should be recorded as "Cookies ( Gluten Free Oat Flour , Organic Coconut Sugar , Sustainable Palm Oil)/Creme Filling (milk, onion)/Potato"
-
-+ "product type from nutrition panel" could be detected through nutrition panel text title which are NUTRITION FACTS or SUPPLEMENT FACTS
-
 6) "marketing" table rules:
 + "youtube icon type" have 2 types (answer is type_1/type_2)
 type_1 is youtube icon have two texts "you" and "tube" on it.
@@ -209,7 +201,7 @@ Ex1: "STORE IN A COOL, DRY PLACE AWAY FROM KITCHEN" is valid for "storage instru
 
 8) "supply chain" table rules:
 + "country of origin text" example
-Ex 1: "manufactured in Canada"ingredient
+Ex 1: "manufactured in Canada"
 Ex 2: "made in Brazil"
 
 + "country of origin" example
@@ -429,7 +421,7 @@ IMPORTANT NOTE:
 
 TABLE FORMAT:
 FIRST_EXTRA_CLAIM_TABLE
-| extra item | is item mentioned on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain" )  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer is multiple string if needed) | return exact sentence or phrase on provided image that prove it  |  
+| extra item | is text about item present on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain" )  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer is multiple string if needed) | return exact sentence or phrase on provided image that prove it  |  
 | ------- | -------- | ------- | ------- | ------- | 
 | additives | ...
 | artificial additives | ...
@@ -494,7 +486,7 @@ IMPORTANT NOTE:
 
 TABLE FORMAT:
 SECOND_EXTRA_CLAIM_TABLE
-| extra item | is item mentioned on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | return exact sentence or phrase on provided image that prove it |
+| extra item | is text about item present on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | return exact sentence or phrase on provided image that prove it |
 | ------- | -------- | ------- | ------- | ------- |
 | omega fatty acids | ...
 | pesticides | ...
@@ -537,7 +529,7 @@ IMPORTANT NOTE:
 
 TABLE FORMAT:
 THIRD_EXTRA_CLAIM_TABLE
-| extra item | is item mentioned on provided images? (answer is yes/no/unknown) |  How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | return exact sentence or phrase on provided image that prove it |
+| extra item | is text about item present on provided images? (answer is yes/no/unknown) |  How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain") |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") (answer could be multiple string since the info can appeared in multiple sources) | return exact sentence or phrase on provided image that prove it |
 | ------- | -------- | ------- | ------- | ------- |
 | petro chemical | ...
 | petrolatum | ...
@@ -588,7 +580,7 @@ END__THIRD__EXTRA__CLAIM__TABLE
 IMPORTANT NOTE:
 + tree nuts also includes "coconut"
 
-+ "allergen contain statement" are the exact contexts that you found on provided images about allergen info, usually start with "contains:", "contain", "may contain", "may contain:", "allergen statement:, ... NOT due to sharing manufacturing equipments or in same facility with other products.
++ "allergen contain statement" are the exact contexts that you found on provided images about allergen info, usually start with "contains:", "contain", "may contain", "may contain:", "allergen statement:, ... NOT due to sharing manufacturing equipments and NOT due to manufactured in same facility with other products.
 Example 1: "allergen statement: contains milk"
 Example 2: "may contain: milk, peanut"
 
@@ -633,7 +625,18 @@ END__HEADER__TABLE
 12) Ingredient info with table format below:
 
 IMPORTANT NOTE:
-+ each ingredient in ingredient break-down list must be splitted by "/" character and NOT split by table cell.
++ is the list of statements about ingredients of product (since product can have many ingredients list)
+
++ "ingredient statement" is content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "other ingredients:".
+
++ "ingredient break-down list from ingredient statement" is the list of ingredients in ingredient statement split by "/" (do not split sub-ingredients of an ingredient)
+Example 1: "Cookies ( Gluten Free Oat Flour , Organic Coconut Sugar , Sustainable Palm Oil),  Creme Filling (milk, onion) , Potato" should be recorded as "Cookies ( Gluten Free Oat Flour , Organic Coconut Sugar , Sustainable Palm Oil)/Creme Filling (milk, onion)/Potato"
+Example 2: "Noodle (flour, egg, water), Sauce(Tomato, water)" should be recorded as "Noodle (flour, egg, water)/Sauce(Tomato, water)"
+
++ "product type from nutrition panel" could be detected through nutrition panel text title which are NUTRITION FACTS or SUPPLEMENT FACTS
+
++ each ingredient in ingredient break-down list must be splitted by "/" character and NOT split by table cell
+
 
 TABLE FORMAT:
 INGREDIENT_TABLE

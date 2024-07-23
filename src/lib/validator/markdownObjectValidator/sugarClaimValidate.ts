@@ -136,10 +136,14 @@ const SUGAR_ITEMS_REASON = {
   'sugar free': [['sugar', 'free']],
   'cane sugar': [['cane', 'sugar']],
   'no artificial sweetener': [
+    ['no', 'artificial', 'sweetener'],
     ['not contain', 'artificial', 'sweetener'],
     ['free from', 'artificial', 'sweetener'],
   ],
   unsweetened: [['unsweetened']],
+  'no sugar added': [['sugar added']],
+  'no added sugar': [['added sugar']],
+  'no corn syrup': [['corn', 'syrup']],
 } as any;
 
 const SUGAR_ITEMS = [
@@ -323,7 +327,6 @@ const SUGAR_CLAIMS_MAP = {
     sucralose: 'no splenda/sucralose',
     stevia: 'no stevia',
     // sugar: 'no sugar',
-    sugar: 'sugar free',
     'sugar added': 'no sugar added',
     'sugar alcohol': 'no sugar alcohol',
     tagatose: 'no tagatose',
@@ -384,6 +387,7 @@ const SUGAR_CLAIMS_MAP = {
     xylitol: 'no xylitol',
   },
   'free of': {
+    sugar: false,
     'acesulfame k': 'no acesulfame k',
     'acesulfame potassium': 'no acesulfame k',
     'added sugar': 'no added sugar',
