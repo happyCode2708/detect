@@ -18,7 +18,7 @@ export const processProductImage = async (req: Request, res: Response) => {
   let sessionId;
   try {
     const product = await prisma.product.findUnique({
-      where: { ixoneID: req.body.ixoneId },
+      where: { id: req.body.productId },
       include: { images: true },
     });
 

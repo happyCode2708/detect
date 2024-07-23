@@ -9,6 +9,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMutationExportCompareResult } from '@/queries/home';
 import { FluidContainer } from '@/components/container/FluidContainer';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Input } from '@/components/ui/input';
+import { SkeletonSection } from '@/components/loading/SkeletonLoading';
 
 const ProductListPage = () => {
   const searchParams = useSearchParams();
@@ -25,6 +27,12 @@ const ProductListPage = () => {
 
   const queryClient = useQueryClient();
   const mutateExportCompareResult = useMutationExportCompareResult();
+
+  useEffect(() => {
+    if (searchParam) {
+      setSearchTerm(searchParam);
+    }
+  }, [searchParam]);
 
   useEffect(() => {
     if (pageParam === null && searchParam === null) {
@@ -51,7 +59,7 @@ const ProductListPage = () => {
 
   const {
     data: productData,
-    isLoading,
+    isLoading: loadingProductList,
     isError,
   } = useQuery({
     queryKey: ['product', 'list', searchParam],
@@ -63,15 +71,7 @@ const ProductListPage = () => {
   const products = productData?.data;
   const pagination = productData?.pagination;
 
-  console.log('products', products);
-
-  // useEffect(() => {
-
-  //   fetchProducts();
-  // }, [searchTerm]);
-
   const handleSearch = () => {
-    // setSearchTerm(event.target.value);
     router.push(`/product?search=${searchTerm}&page=1`);
   };
 
@@ -159,48 +159,59 @@ const ProductListPage = () => {
     });
   };
 
+  if (loadingProductList) return;
+
   return (
     <FluidContainer>
       <div className='py-4'>
-        <div className='mb-4 flex justify-between align-middle'>
-          <input
-            type='text'
-            placeholder='Search by Ixone ID'
-            value={searchTerm}
-            onChange={onChangeSearchTerm}
-            className='p-2 border border-gray-300 rounded'
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSearch();
-              }
-            }}
-          />
+        {loadingProductList ? (
+          <SkeletonSection />
+        ) : (
+          <>
+            <div className='mb-4 flex justify-between align-middle'>
+              <Input
+                type='text'
+                placeholder='Search by Ixone ID'
+                value={searchTerm}
+                onChange={onChangeSearchTerm}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearch();
+                  }
+                }}
+                className='max-w-[400px]'
+              />
 
-          <div className='flex space-x-1'>
-            {process.env.NODE_ENV !== 'production' && (
-              <Button variant='secondary' onClick={handleExportCompareResult}>
-                Export compare result
-              </Button>
-            )}
-            <DeleteProductDialog
-              isOpen={isDeleteDialogOpen}
-              toggleDialog={toggleDeleteProductDialog}
-              handleDeleteProduct={handleDeleteSelected}
-              disabled={Array.from(selectedProducts)?.length === 0}
+              <div className='flex space-x-1'>
+                {process.env.NODE_ENV !== 'production' && (
+                  <Button
+                    variant='secondary'
+                    onClick={handleExportCompareResult}
+                  >
+                    Export compare result
+                  </Button>
+                )}
+                <DeleteProductDialog
+                  isOpen={isDeleteDialogOpen}
+                  toggleDialog={toggleDeleteProductDialog}
+                  handleDeleteProduct={handleDeleteSelected}
+                  disabled={Array.from(selectedProducts)?.length === 0}
+                />
+                <AddProductDialog
+                  isOpen={isDialogOpen}
+                  toggleDialog={toggleDialog}
+                />
+              </div>
+            </div>
+            <h1 className='text-2xl font-semibold mb-4'>Product List</h1>
+            <ProductTable
+              products={products || []}
+              selectedProducts={selectedProducts}
+              onProductSelect={handleProductSelect}
+              pagination={pagination}
             />
-            <AddProductDialog
-              isOpen={isDialogOpen}
-              toggleDialog={toggleDialog}
-            />
-          </div>
-        </div>
-        <h1 className='text-2xl font-semibold mb-4'>Product List</h1>
-        <ProductTable
-          products={products || []}
-          selectedProducts={selectedProducts}
-          onProductSelect={handleProductSelect}
-          pagination={pagination}
-        />
+          </>
+        )}
       </div>
     </FluidContainer>
   );

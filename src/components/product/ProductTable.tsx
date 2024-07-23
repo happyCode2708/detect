@@ -69,7 +69,10 @@ const ProductTable = ({
                 <div className='flex space-x-2'>
                   {product?.images?.map((imageItem: any) => {
                     return (
-                      <div className='h-[40px] min-w-[28px] flex justify-center align-middle'>
+                      <div
+                        key={imageItem?.url}
+                        className='h-[40px] min-w-[28px] flex justify-center align-middle'
+                      >
                         <img
                           src={imageItem?.url}
                           alt='thumb'
@@ -91,7 +94,6 @@ const ProductTable = ({
                       buttonVariants({ variant: 'default' }),
                       'pointer-events-none bg-gray-400'
                     )}
-                    // href={'/product/ixone/' + product?.ixoneID}
                     href='#'
                   >
                     Edit

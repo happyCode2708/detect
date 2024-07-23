@@ -79,9 +79,14 @@ const ProductDetailPage = () => {
 
   const { ixoneID: ixoneid, upc12 } = productDetail || {};
 
-  const { data: tdcData } = useQueryProductsFromTdc({
-    ixoneIDs: typeof ixoneid === 'string' ? [ixoneid] : [],
-  });
+  const { data: tdcData } = useQueryProductsFromTdc(
+    {
+      ixoneIDs: typeof ixoneid === 'string' ? [ixoneid] : [],
+    },
+    {
+      enabled: !!ixoneid,
+    }
+  );
 
   const { toast } = useToast();
 
@@ -114,9 +119,9 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     if (pdSessionId || sessionId) {
-      mutateGetCompareResultWithTdc.mutate({ ixoneid });
+      mutateGetCompareResultWithTdc.mutate({ ixoneid, productId });
     }
-  }, [pdSessionId, ixoneid, sessionId]);
+  }, [pdSessionId, ixoneid, sessionId, productId]);
 
   const handleSubmitImageUrl = async () => {
     const formData = new FormData();
@@ -129,7 +134,7 @@ const ProductDetailPage = () => {
     const payload = {
       biasForm: JSON.stringify(biasForm),
       outputConfig: JSON.stringify(outputConfig),
-      ixoneId: ixoneid,
+      productId,
     };
 
     setLoading(true);
@@ -293,7 +298,8 @@ const ProductDetailPage = () => {
               clearInterval(refInterval.current);
             }
 
-            mutateGetCompareResultWithTdc.mutate({ ixoneid });
+            mutateGetCompareResultWithTdc.mutate({ ixoneid, productId });
+
             queryClient.invalidateQueries({ queryKey: ['product', 'id'] });
             setLoading(false);
           }
@@ -316,8 +322,6 @@ const ProductDetailPage = () => {
   if (!productIxone) {
     return <div>Loading...</div>;
   }
-
-  console.log('productInfo', productInfo);
 
   return (
     <FluidContainer>
@@ -343,6 +347,7 @@ const ProductDetailPage = () => {
                         nut: checked,
                       }));
                     }}
+                    disabled
                   />
                 </div>
                 <div className='flex flex-row gap-2'>
@@ -355,6 +360,7 @@ const ProductDetailPage = () => {
                         other: checked,
                       }));
                     }}
+                    disabled
                   />
                 </div>
               </div>
@@ -371,7 +377,8 @@ const ProductDetailPage = () => {
             {productIxone?.images?.map((imageItem: any) => {
               return (
                 <div
-                  className='w-[80px] max-h-[80px] flex justify-center align-middle p-2'
+                  className='w-[80px] max-h-[80px] flex justify-center align-middle p-2 cursor-pointer rounded-sm hover:border'
+                  key={imageItem?.url}
                   onClick={() => setPreviewImage(imageItem?.url)}
                 >
                   <img className='object-fit' src={imageItem?.url}></img>
@@ -433,6 +440,7 @@ const ProductDetailPage = () => {
                 }}
                 // ixoneID={product?.ixoneID}
                 product={{ id: productId }}
+                disable={loading}
               ></ProductImageUploadDialog>
               {loading && (
                 <Button variant='secondary' onClick={onCancel}>

@@ -17,12 +17,14 @@ interface ImageUploadDialogProps {
   isOpen: boolean;
   toggleDialog: (ixoneId: string) => void;
   product: any;
+  disable?: boolean;
 }
 
 const ProductImageUploadDialog: React.FC<ImageUploadDialogProps> = ({
   isOpen,
   toggleDialog,
   product,
+  disable,
 }) => {
   const queryClient = useQueryClient();
 
@@ -40,7 +42,11 @@ const ProductImageUploadDialog: React.FC<ImageUploadDialogProps> = ({
       onOpenChange={(open) => toggleDialog(open ? product?.id : '')}
     >
       <DialogTrigger asChild>
-        <Button onClick={() => toggleDialog(product?.id)} className='mb-4'>
+        <Button
+          onClick={() => toggleDialog(product?.id)}
+          className='mb-4'
+          disabled={disable}
+        >
           Upload
         </Button>
       </DialogTrigger>

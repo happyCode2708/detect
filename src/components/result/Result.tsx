@@ -70,7 +70,15 @@ export const Result = ({
       <TabsContent value='json tdc' forceMount hidden={tabActive !== 'jsonTDC'}>
         <JsonRender productInfo={productTdcData} />
       </TabsContent>
-      <TabsContent value='compare' forceMount hidden={tabActive !== 'compare'}>
+      <TabsContent
+        value={
+          process.env.NODE_ENV !== 'production'
+            ? 'compare'
+            : 'Result in TDC format'
+        }
+        forceMount
+        hidden={tabActive !== 'compare'}
+      >
         <ComparisonTabContent
           productInfo={productInfo?.product}
           productTdcData={productTdcData}

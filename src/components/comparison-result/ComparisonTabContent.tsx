@@ -10,9 +10,8 @@ export const ComparisonTabContent = ({
   productTdcData: any;
   compareResultData: any;
 }) => {
-  console.log('mapped', compareResultData);
+  // console.log('mapped', compareResultData);
 
-  console.log('tdc', productTdcData);
   return (
     <div
       className={
@@ -28,12 +27,16 @@ export const ComparisonTabContent = ({
           key='1'
         />
       )}
-      {compareResultData?.compareResult && (
-        <TableResultTDC
-          productTdcData={productTdcData}
-          evaluation={compareResultData?.compareResult}
-          key='2'
-        />
+      {process.env.NODE_ENV !== 'production' && (
+        <>
+          {compareResultData?.compareResult && (
+            <TableResultTDC
+              productTdcData={productTdcData}
+              evaluation={compareResultData?.compareResult}
+              key='2'
+            />
+          )}
+        </>
       )}
     </div>
   );

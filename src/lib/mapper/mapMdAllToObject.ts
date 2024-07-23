@@ -6,81 +6,81 @@ import _ from 'lodash';
 export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   const lablingInfoSection = markdown
     .split('LABELING_INFO_TABLE')?.[1]
-    ?.split('SUGAR_CLAIM_TABLE')?.[0];
+    ?.split('END_LABELING_INFO_TABLE')?.[0];
 
   const sugarClaimSection = markdown
     .split('SUGAR_CLAIM_TABLE')?.[1]
-    ?.split('FAT_CLAIM_TABLE')?.[0];
+    ?.split('END_SUGAR_CLAIM_TABLE')?.[0];
 
   // logger.error('sugar');
   // logger.info(sugarClaimSection);
 
   const fatClaimSection = markdown
     .split('FAT_CLAIM_TABLE')?.[1]
-    ?.split('PROCESS_CLAIM_TABLE')?.[0];
+    ?.split('END_FAT_CLAIM_TABLE')?.[0];
 
   // logger.error('fat');
   // logger.info(fatClaimSection);
 
   const processClaimSection = markdown
     .split('PROCESS_CLAIM_TABLE')?.[1]
-    ?.split('CALORIE_CLAIM_TABLE')?.[0];
+    ?.split('END_PROCESS_CLAIM_TABLE')?.[0];
 
   // logger.error('other');
   // logger.info(processClaimSection);
 
   const calorieClaimSection = markdown
     .split('CALORIE_CLAIM_TABLE')?.[1]
-    ?.split('SALT_CLAIM_TABLE')?.[0];
+    ?.split('END_CALORIE_CLAIM_TABLE')?.[0];
 
   // logger.error('calorie');
   // logger.info(calorieClaimSection);
 
   const saltClaimSection = markdown
     .split('SALT_CLAIM_TABLE')?.[1]
-    ?.split('FIRST_EXTRA_CLAIM_TABLE')?.[0];
+    ?.split('END_SALT_CLAIM_TABLE')?.[0];
 
   // logger.error('salt');
   // logger.info(saltClaimSection);
 
   const extraClaimSection_1 = markdown
     .split('FIRST_EXTRA_CLAIM_TABLE')?.[1]
-    ?.split('SECOND_EXTRA_CLAIM_TABLE')?.[0];
+    ?.split('END_FIRST_EXTRA_CLAIM_TABLE')?.[0];
 
   // logger.error('extra 1');
   // logger.info(extraClaimSection_1);
 
   const extraClaimSection_2 = markdown
     .split('SECOND_EXTRA_CLAIM_TABLE')?.[1]
-    ?.split('THIRD_EXTRA_CLAIM_TABLE')?.[0];
+    ?.split('END_SECOND_EXTRA_CLAIM_TABLE')?.[0];
 
   // logger.error('extra 2');
   // logger.info(extraClaimSection_2);
 
   const extraClaimSection_3 = markdown
     .split('THIRD_EXTRA_CLAIM_TABLE')?.[1]
-    ?.split('ALLERGEN_TABLE')?.[0];
+    ?.split('END_THIRD_EXTRA_CLAIM_TABLE')?.[0];
 
   // logger.error('extra 3');
   // logger.info(extraClaimSection_3);
 
   const allergenClaimSection = markdown
     .split('ALLERGEN_TABLE')?.[1]
-    ?.split('HEADER_TABLE')?.[0];
+    ?.split('END_ALLERGEN_TABLE')?.[0];
 
   // logger.error('allergen');
   // logger.info(allergenClaimSection);
 
   const headerSection = markdown
     .split('HEADER_TABLE')?.[1]
-    ?.split('INGREDIENT_TABLE')?.[0];
+    ?.split('END_HEADER_TABLE')?.[0];
 
   // logger.error('header');
   // logger.info(headerSection);
 
   const ingredientSection = markdown
     .split('INGREDIENT_TABLE')?.[1]
-    ?.split('MARKETING_TABLE')?.[0];
+    ?.split('END_INGREDIENT_TABLE')?.[0];
 
   // logger.error('ingredient');
   // logger.info(ingredientSection);
@@ -94,42 +94,42 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
 
   const marketingSection = markdown
     .split('MARKETING_TABLE')?.[1]
-    ?.split('INSTRUCTION_TABLE')?.[0];
+    ?.split('END_MARKETING_TABLE')?.[0];
 
   // logger.error('marketing');
   // logger.info(marketingSection);
 
   const instructionSection = markdown
     .split('INSTRUCTION_TABLE')?.[1]
-    ?.split('SUPPLY_CHAIN_TABLE')?.[0];
+    ?.split('END_INSTRUCTION_TABLE')?.[0];
 
   // logger.error('instruction');
   // logger.info(instructionSection);
 
   const supplyChainSection = markdown
     .split('SUPPLY_CHAIN_TABLE')?.[1]
-    ?.split('BASE_CERTIFIER_CLAIM_TABLE')?.[0];
+    ?.split('END_SUPPLY_CHAIN_TABLE')?.[0];
 
   // logger.error('supply chain');
   // logger.info(supplyChainSection);
 
   const baseCertifierClaimSection = markdown
     .split('BASE_CERTIFIER_CLAIM_TABLE')?.[1]
-    ?.split('ATTRIBUTE_TABLE')?.[0];
+    ?.split('END_BASE_CERTIFIER_CLAIM_TABLE')?.[0];
 
   // logger.error('base certifier claim');
   // logger.info(baseCertifierClaimSection);
 
   const attributeClaimSection = markdown
     .split('ATTRIBUTE_TABLE')?.[1]
-    ?.split('MARKETING_TEXT_TABLE')?.[0];
+    ?.split('END_ATTRIBUTE_TABLE')?.[0];
 
   // logger.error('attribute claim');
   // logger.info(attributeClaimSection);
 
   const marketingTextSection = markdown
     ?.split('MARKETING_TEXT_TABLE')?.[1]
-    ?.split('DEBUG_TABLE')?.[0];
+    ?.split('END_MARKETING_TEXT_TABLE')?.[0];
 
   // logger.error('marketingTextSection');
   // logger.info(marketingTextSection);
@@ -232,23 +232,14 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
     allergenClaimSection,
     {
       'allergen contain statement': 'containStatement',
-      'allergen contain break-down list from that statement': 'containList',
-      'allergen contain on equipment statement': 'containOnEquipmentStatement',
-      'allergen contain on equipment break-down list for that statement':
+      'allergens contain statement break-down list (split by "/")':
+        'containList',
+      'allergens on equipments statement': 'containOnEquipmentStatement',
+      'allergens on equipments statement break-down list (split by "/")':
         'containOnEquipmentList',
-      // 'statements or labels that tell allergen things product does not contain':
-      //   'notContainStatement',
-      // 'statements or labels that tell allergen things product does not contain':
-      // 'notContainStatement',
-      'statements that tell allergen things product does not contain':
-        'notContainStatement',
       'exact text on images that tell allergen things product does not contain':
         'notContainStatement',
-      // statements that tell allergen things product does not contain
-      // 'break-down list from statements or label that about allergen things product does not contain':
-      //   'notContainList',
-      'break-down list from the text that about allergen things product does not contain':
-        'notContainList',
+      'allergens product does not contain break-down list': 'notContainList',
     },
     {
       groupVertical: true,
@@ -480,7 +471,7 @@ const getObjectDataFromHorizontalTable = (
 
     const foundHeaderName = Object.entries(propertyListMap)?.find(
       ([header, key]) => {
-        return name?.includes(header);
+        return name === header;
       }
     );
     // (foundHeaderName?.[1] as string) ||
