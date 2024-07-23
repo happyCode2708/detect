@@ -8,7 +8,7 @@ import {
   getOcrTextAllImages,
   findImagesContainNutFact,
   addUniqueString,
-  removeRawFieldData,
+  // removeRawFieldData,
 } from '../../lib/server_utils';
 
 import { onProcessNut, onProcessOther } from '../../lib/google/gemini';

@@ -128,6 +128,8 @@ ATTRIBUTE_TABLE
 without any number like 1) or 2) before table names
 without \`\`\` or \`\`\`markdown closing tag
 
+15) result must include all footer TEX (such as END__THIRD__EXTRA__CLAIM__TABLE,...) at the end of table.
+
 IMPORTANT RULES:
 1) return result rules:
 + just only return table with table header and table row data. do not include any other things in the output.
@@ -249,7 +251,7 @@ TABLE FORMAT:
 LABELING_INFO_TABLE
 | things that labels/logos indicate product free of (multiple things name split by "/")| things that labels/logos indicate product contain (multiple things name split by "/")|
 | ------- | -------- |
-END_LABELING_INFO_TABLE
+END__LABELING__INFO__TABLE
 
 2) SUGAR CLAIM TABLE info recorded in markdown table format below:
 
@@ -296,7 +298,7 @@ SUGAR_CLAIM_TABLE
 | sugar free |
 | unsweetened |
 | xylitol |
-END_SUGAR_CLAIM_TABLE
+END__SUGAR__CLAIM__TABLE
 
 3) FAT_CLAIM_TABLE info of product images recorded in markdown table format below:
 
@@ -315,7 +317,7 @@ FAT_CLAIM_TABLE
 | is trans fat free | 
 | have zero grams trans fat per serving |
 | have zero trans fat |
-END_FAT_CLAIM_TABLE
+END__FAT__CLAIM__TABLE
 
 4) PROCESS_CLAIM_TABLE info recorded in markdown table format below:
 
@@ -386,7 +388,7 @@ PROCESS_CLAIM_TABLE
 | vegetarian or vegan diet/feed | ...
 | wild | ...
 | wild caught | ...
-END_PROCESS_CLAIM_TABLE
+END__PROCESS__CLAIM__TABLE
 
 5) CALORIE CLAIM TABLE info recorded in markdown table format below:
 
@@ -397,7 +399,7 @@ CALORIE_CLAIM_TABLE
 | have low calorie | ...
 | have reduced calorie | ...
 | have zero calorie | ...
-END_CALORIE_CLAIM_TABLE
+END__CALORIE__CLAIM__TABLE
 
 6) SALT CLAIM TABLE info recorded in markdown table format below:
 
@@ -414,7 +416,7 @@ SALT_CLAIM_TABLE
 | sodium free | ...
 | unsalted | ...
 | very low sodium | ...
-END_SALT_CLAIM_TABLE
+END__SALT__CLAIM__TABLE
 
 7) FIRST EXTRA CLAIM TABLE info recorded in markdown table format below:
 
@@ -483,7 +485,7 @@ FIRST_EXTRA_CLAIM_TABLE
 | added nitrites | ...
 | yeast | ...
 | active yeast | ...
-END_FIRST_EXTRA_CLAIM_TABLE
+END__FIRST__EXTRA__CLAIM__TABLE
 
 8) SECOND_EXTRA_CLAIM_TABLE info recorded in markdown table format below:
 
@@ -526,7 +528,7 @@ SECOND_EXTRA_CLAIM_TABLE
 | paba | ...
 | palm oil | ...
 | parabens | ...
-END_SECOND_EXTRA_CLAIM_TABLE
+END__SECOND__EXTRA__CLAIM__TABLE
 
 9) THIRD_EXTRA_CLAIM_TABLE info recorded in markdown table format below: 
 
@@ -579,7 +581,7 @@ THIRD_EXTRA_CLAIM_TABLE
 | casein | ...
 | cbd / cannabidiol | ...
 | chlorine | ...
-END_SECOND_EXTRA_CLAIM_TABLE
+END__THIRD__EXTRA__CLAIM__TABLE
 
 10) Allergen info recorded in markdown table format below:
  
@@ -617,7 +619,7 @@ ALLERGEN_TABLE
 | allergens on equipments statement break-down list (split by "/") |
 | exact text on images about allergens that product does not contain |
 | allergens product does not contain break-down list (split by "/") |
-END_ALLERGEN_TABLE
+END__ALLERGEN__TABLE
 
 11) Header info with table format below:
 (IMPORTANT NOTE: remember header table only have one row item)
@@ -626,15 +628,18 @@ TABLE FORMAT:
 HEADER_TABLE
 | product name | brand name | primary size | secondary size | third size | full size statement | count | count uom |
 | ------- | -------- | -------- | ------- | -------- | -------- | -------- | -------- |
-END_HEADER_TABLE
+END__HEADER__TABLE
 
 12) Ingredient info with table format below:
 
+IMPORTANT NOTE:
++ each ingredient in ingredient break-down list must be splitted by "/" character and NOT split by table cell.
+
 TABLE FORMAT:
 INGREDIENT_TABLE
-| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement | ingredient break-down list from ingredient statement (splitted by "/") | live and active cultures list statement | live and active cultures break-down list (splitted by "/")  | 
+| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement | ingredient break-down list from ingredient statement (each ingredient splitted by "/") | live and active cultures list statement | live and active cultures break-down list (each item splitted by "/")  | 
 | ------- | ------- | -------- | -------- | -------- | -------- |
-END_INGREDIENT_TABLE
+END__INGREDIENT__TABLE
 
 13) Marketing info with table format below:
 
@@ -642,7 +647,7 @@ TABLE FORMAT:
 MARKETING_TABLE
 | have QR code (answer is boolean) | have Instagram icon or info ? | have Pinterest icon or info ? | have Youtube icon or info ? | youtube icon type (if have youtube icon or info )  | have Facebook icon or info ? | have twitter icon or info ? | social media list | website list (multiple split by comma) | social media text list | enlarged to show (answer is boolean) |
 | ------- | -------- | -------- | ------- | ------- | ------- | -------- | -------- | ------- | ------- | ------- |
-END_MARKETING_TABLE
+END__MARKETING__TABLE
 
 14) Instruction info with table format below:
 
@@ -657,7 +662,7 @@ INSTRUCTION_TABLE
 | cooking instructions | 
 | usage instructions | 
 | other instructions |
-END_INSTRUCTION_TABLE
+END__INSTRUCTION__TABLE
 
 15) supply chain info with table format below:
 
@@ -681,7 +686,7 @@ SUPPLY_CHAIN_TABLE
 | manufacture city | 
 | manufacture state 
 | manufacture zipCode |
-END_SUPPLY_CHAIN_TABLE
+END__SUPPLY__CHAIN__TABLE
 
 16) Base certifier claim info with table format below:
 
@@ -729,7 +734,7 @@ BASE_CERTIFIER_CLAIM_TABLE
 | Vegetarian Claim |
 | Viticulture Claim |
 | Whole Grain Claim |
-END_BASE_CERTIFIER_CLAIM_TABLE
+END__BASE__CERTIFIER_CLAIM_TABLE
 
 17) some other attribute info recorded with table format below:
 
@@ -737,7 +742,7 @@ TABLE FORMAT:
 ATTRIBUTE_TABLE
 | grade (answer are 'A'/ 'B') | juice percent (answer is number) |
 | ------- | ------- |
-END_ATTRIBUTE_TABLE
+END__ATTRIBUTE__TABLE
 
 `;
 };
