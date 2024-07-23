@@ -15,7 +15,8 @@ export const ComparisonTabContent = ({
   return (
     <div
       className={
-        compareResultData?.mappedExtractToTdc
+        compareResultData?.mappedExtractToTdc &&
+        process.env.NODE_ENV !== 'production'
           ? 'grid grid-cols-3'
           : 'grid grid-cols-2'
       }
