@@ -69,6 +69,19 @@
 // + "allergen break-down list from that statement" is a string list
 // ex 1: "oats/milk"
 
+///* LABELING
+// IMPORTANT NOTE:
+// + LABELING_INFO_TABLE only have one row data, the multiple values must split by "/"
+// + labeling info could be easily detected by some icons with text on provided images.
+// + remember when product state "something free" it mean product free of that thing (such as soy free, dairy free, ...)
+// Example 1: "gluten free" mean product not contain "gluten"
+// Example 2: "nuts free" mean product not contain "nuts"
+
+// TABLE FORMAT:
+// LABELING_INFO_TABLE
+// | things that labels/logos indicate product free of (multiple things name split by "/") | things that labels/logos indicate product contain (multiple things name split by "/")|
+// | ------- | -------- |
+// END__LABELING__INFO__TABLE
 export const make_markdown_all_prompt = ({
   ocrText,
   imageCount,
@@ -235,14 +248,14 @@ Carefully examine all text infos, all icons, all logos  from provided images and
 IMPORTANT NOTE:
 + LABELING_INFO_TABLE only have one row data, the multiple values must split by "/"
 + labeling info could be easily detected by some icons with text on provided images.
-+ remember when product state "something free" it mean product free of that thing
++ remember when product state "something free" it mean product free of that thing (such as soy free, dairy free, ...)
 Example 1: "gluten free" mean product not contain "gluten"
 Example 2: "nuts free" mean product not contain "nuts"
 
 TABLE FORMAT:
 LABELING_INFO_TABLE
-| things that labels/logos indicate product free of (multiple things name split by "/")| things that labels/logos indicate product contain (multiple things name split by "/")|
-| ------- | -------- |
+| label text/label/logo/icon on product | what label text/label/logo/icon say ? | conclude from label text/label/logo/icon what product say it does not contain (split by "/") | conclude from label text/label/logo/icon what product say it contain ? (split by "/") |
+| ------- | -------- | ------- | -------- |
 END__LABELING__INFO__TABLE
 
 2) SUGAR CLAIM TABLE info recorded in markdown table format below:
@@ -590,6 +603,8 @@ ex 1: "oats/milk"
 + "allergens contain statement break-down list" is the allergen ingredients from "allergen contain statement" and do not collect from product ingredient list.
 
 + "allergens on equipments statement" are the exact contexts that you found on provided images about allergens that said they could present on the product since manufacturing equipments are also used to make other product,or in the same facility ,or shared machinery.
+Example 1: "produced in a facility that uses soy, and peanut"
+Example 2: "Manufactured in facility that also processes peanut, milk"
 
 + "allergens on equipments statement break-down list" is the break-down list of all ingredients that is stated to present in facility or manufacturing equipments. Do not include ingredients that say is not present on facility or manufacturing equipment.
 Example 1: "Manufactured in a egg and milk free facility that also processes peanut, wheat products" should be recorded as "peanut/wheat" since text "in a egg and milk free facility" mean the egg and milk is not present in facility.
@@ -600,6 +615,7 @@ example 2: "does not contain wheat, milk"
 example 3: "free of wheat, milk"
 example 4: "non-dairy" text mean does not contain allergen ingredient of "dairy"
 example 5: "no egg"
+example 6: "soy free" or "dairy-free"
 
 TABLE FORMAT:
 ALLERGEN_TABLE
@@ -637,6 +653,9 @@ Example 2: "Noodle (flour, egg, water), Sauce(Tomato, water)" should be recorded
 
 + each ingredient in ingredient break-down list must be splitted by "/" character and NOT split by table cell
 
++ "live and active cultures list statement" is statement about list of living organisms (such as Lactobacillus bulgaricus and Streptococcus thermophilus—which convert pasteurized milk to yogurt)
+
++ "ingredient list info" could be obscured due to crop image since the photos of product was taken from different angles. Try to merge into one ingredient list statement if they are same ingredient info.  
 
 TABLE FORMAT:
 INGREDIENT_TABLE

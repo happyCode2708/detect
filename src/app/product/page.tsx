@@ -40,7 +40,7 @@ const ProductListPage = () => {
     }
   }, [pageParam, searchParam]);
 
-  const fetchProducts = async (searchParam: string) => {
+  const fetchProducts = async () => {
     const response = await fetch(
       `/api/product/list?search=${searchParam}&page=${pageParam}`,
       {
@@ -62,10 +62,11 @@ const ProductListPage = () => {
     isLoading: loadingProductList,
     isError,
   } = useQuery({
-    queryKey: ['product', 'list', searchParam],
+    queryKey: ['product', 'list', searchParam, pageParam],
     queryFn: async () => {
-      return await fetchProducts(searchParam);
+      return await fetchProducts();
     },
+    enabled: Boolean(!!searchParam || !!pageParam),
   });
 
   const products = productData?.data;

@@ -301,7 +301,7 @@ const mapToValidatedAllergenObject = async (modifiedProductDataPoints: any) => {
 
   //? possible allergen free from labeling
   const labelingFreeList =
-    modifiedProductDataPoints?.['labeling']?.[0]?.['validated_free'];
+    modifiedProductDataPoints?.['validated_labeling']?.['free'];
 
   if (labelingFreeList) {
     labelingFreeList?.forEach((notContainItem: any) => {

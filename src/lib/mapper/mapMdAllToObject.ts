@@ -136,6 +136,8 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
 
   //? LABELING INFO
   const labelingObjList = getObjectDataFromTable(lablingInfoSection, [
+    'label',
+    'labelText',
     'free',
     'contain',
   ]);

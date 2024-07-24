@@ -94,29 +94,42 @@ const checkConsumerStorage = async (
   // });
 
   // if (
-  Object.entries(STORAGE_REASON)?.forEach(([key, phraseList]) => {
-    let isMatch = false;
-    isMatch = phraseList
-      ?.map((wordList: any) => {
-        return wordList
-          .map((word: any) => {
-            if (toLower(statement)?.includes(word)) {
-              return true;
-            } else {
-              return false;
-            }
-          })
-          .every((result: any) => result === true);
-      })
-      .some((result: any) => result === true);
+  Object.entries(STORAGE_REASON)?.forEach(
+    ([key, define]: [key: string, define: any]) => {
+      const { variants: phraseList, excepts } = define;
+      let isMatch = false;
+      isMatch = phraseList
+        ?.map((wordList: any) => {
+          return wordList
+            .map((word: any) => {
+              if (toLower(statement)?.includes(word)) {
+                return true;
+              } else {
+                return false;
+              }
+            })
+            .every((result: any) => result === true);
+        })
+        .some((result: any) => result === true);
 
-    if (isMatch) {
-      if (key === 'DRY PLACE' && validEnumValues?.includes('COOL DRY PLACE')) {
-      } else {
-        validEnumValues.push(key);
+      if (isMatch) {
+        const matchExcept = excepts?.find((exceptText: string) => {
+          return toLower(statement)?.includes(exceptText);
+        });
+
+        if (!matchExcept) {
+          validEnumValues.push(key);
+        }
+        // if (
+        //   key === 'DRY PLACE' &&
+        //   validEnumValues?.includes('COOL DRY PLACE')
+        // ) {
+        // } else {
+        //   validEnumValues.push(key);
+        // }
       }
     }
-  });
+  );
   // .every((result: any) => result === false)
   // ) {
   // return Promise.resolve(false);
@@ -226,23 +239,44 @@ const validateAllInstructions = async (
 };
 
 const STORAGE_REASON = {
-  'COOL DARK PLACE': [['cool', 'dark', 'place']],
-  'COOL DRY PLACE': [['cool', 'dry', 'place']],
-  'DRY PLACE': [['dry', 'place']],
-  'DO NOT FREEZE': [['not', 'freeze']],
-  'DO NOT REFRIGERATE': [['not', 'refrigerate']],
-  'KEEP FROZEN': [
-    ['keep', 'frozen'],
-    ['store', 'in', 'freezer'],
-  ],
-  'KEEP REFRIGERATED': [
-    ['keep', 'refrigerated'],
-    ['store', 'in', 'fridge'],
-  ],
-  'REFRIGERATE AFTER OPENING': [['refrigerate', 'after', 'open']],
-  'SEAL FOR FRESHNESS': [['seal', 'freshness']],
-  'STORE AT ROOM TEMPERATURE': [['at', 'room temperature']],
-};
+  'COOL DARK PLACE': {
+    variants: [['cool', 'dark', 'place']],
+  },
+  'COOL DRY PLACE': {
+    variants: [['cool', 'dry', 'place']],
+  },
+  'DRY PLACE': {
+    variants: [['dry', 'place']],
+    excepts: ['cool'],
+  },
+  'DO NOT FREEZE': {
+    variants: [['not', 'freeze']],
+  },
+  'DO NOT REFRIGERATE': {
+    variants: [['not', 'refrigerate']],
+  },
+  'KEEP FROZEN': {
+    variants: [
+      ['keep', 'frozen'],
+      ['store', 'in', 'freezer'],
+    ],
+  },
+  'REFRIGERATE AFTER OPENING': {
+    variants: [
+      ['refrigerate', 'after', 'open'],
+      ['open', 'keep', 'refrigerate'],
+    ],
+  },
+  'KEEP REFRIGERATED': {
+    variants: [
+      ['keep', 'refrigerated'],
+      ['store', 'in', 'fridge'],
+    ],
+    excepts: ['once opened'],
+  },
+  'SEAL FOR FRESHNESS': { variants: [['seal', 'freshness']] },
+  'STORE AT ROOM TEMPERATURE': { variants: [['at', 'room temperature']] },
+} as any;
 
 const USE_OR_FREEZE_BY_MAPPING = {
   'WITH IN': [
