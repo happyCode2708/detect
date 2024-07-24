@@ -414,33 +414,51 @@ const mapIngredients = (ingredients: any) => {
       validatedIngredientBreakdown,
     } = ingredientItem;
 
-    if (ingredientItem?.['ingredientStatement']) {
-      IngredientsStatement.push(ingredientItem?.['ingredientStatement']);
+    if (ingredientItem?.['validated_ingredients']?.['ingredientStatement']) {
+      IngredientsStatement.push(
+        toUpper(
+          ingredientItem?.['validated_ingredients']?.['ingredientStatement']
+        )
+      );
     }
 
-    if (ingredientItem?.['liveAndActiveCulturesStatement']) {
+    if (
+      ingredientItem?.['validated_ingredients']?.[
+        'liveAndActiveCulturesStatement'
+      ]
+    ) {
       IngredientsStatement.push(
-        ingredientItem?.['liveAndActiveCulturesStatement']
+        toUpper(
+          ingredientItem?.['validated_ingredients']?.[
+            'liveAndActiveCulturesStatement'
+          ]
+        )
       );
     }
 
     if (
       ingredientItem?.['ingredientBreakdown'] &&
-      ingredientItem?.['validated_ingredientBreakdown']
+      ingredientItem?.['validated_ingredients']?.['ingredientBreakdown']
     ) {
       IngredientBreakout = [
         ...IngredientBreakout,
-        ...ingredientItem?.['validated_ingredientBreakdown'],
+        ...ingredientItem?.['validated_ingredients']?.[
+          'ingredientBreakdown'
+        ]?.map((item: string) => toUpper(item)),
       ];
     }
 
     if (
       ingredientItem?.['liveAndActiveCulturesBreakdown'] &&
-      ingredientItem?.['validated_liveAndActiveCulturesBreakdown']
+      ingredientItem?.['validated_ingredients']?.[
+        'liveAndActiveCulturesBreakdown'
+      ]
     ) {
       IngredientBreakout = [
         ...IngredientBreakout,
-        ...ingredientItem?.['validated_liveAndActiveCulturesBreakdown'],
+        ...ingredientItem?.['validated_ingredients']?.[
+          'liveAndActiveCulturesBreakdown'
+        ]?.map((item: string) => toUpper(item)),
       ];
     }
   });

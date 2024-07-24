@@ -45,7 +45,7 @@ const check = async (analysisItem: any): Promise<boolean> => {
     return Promise.resolve(false);
 
   if (
-    source?.includes('ingredient list') ||
+    // source?.includes('ingredient list') ||
     source?.includes('nutrition fact panel')
   ) {
     return Promise.resolve(false);

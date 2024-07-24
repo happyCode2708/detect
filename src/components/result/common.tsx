@@ -179,8 +179,24 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
       </SectionWrapper>
       <SectionWrapper name='ingredients'>
         {ingredients?.map((ingredientsItem: any, idx: number) => {
+          const { validated_ingredients, ...rawIngredientInfo } =
+            ingredientsItem || {};
           return (
-            <CamelFieldStringRender objectValues={ingredientsItem} key={idx} />
+            <div className='rounded-sm p-2 border mb-2'>
+              <CamelFieldStringRender
+                objectValues={rawIngredientInfo}
+                key={idx}
+              />
+              <div className='rounded-sm p-2 border'>
+                <div className='font-bold uppercase p-1 rounded-md bg-green-600 text-white inline-block'>
+                  validated result
+                </div>
+                <CamelFieldStringRender
+                  objectValues={validated_ingredients}
+                  key={idx}
+                />
+              </div>
+            </div>
           );
         })}
       </SectionWrapper>
