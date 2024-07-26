@@ -91,6 +91,7 @@ const states = {
   WV: 'West Virginia',
   WI: 'Wisconsin',
   WY: 'Wyoming',
+  QC: 'Quebec',
 } as any;
 
 const COUNTRY_SHORT_NAMES = {

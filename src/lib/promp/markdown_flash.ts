@@ -95,41 +95,6 @@
 // | ------- | -------- |
 // | do product state soy free ? |
 // END__Q__AND__A__TABLE
-
-// + "cooking instructions" are all statements, paragraphs, or phrases about cooking with product (such as recipes, or all steps to cook product with kitchen devices, ...)
-
-// + "usage instructions" are all instruction sentences about how to use product excluding all "cooking instructions"
-// Example 1: "suggested use: 2 cups at one time."
-// Example 1: "enjoy within 20 days for best taste"
-
-// + "storage instruction" are all instruction sentences about how to storage product.
-// Example 1: "reseal for freshness"
-// Example 2: "keep refrigerated"
-
-// VALIDATION AND FIX BUGS:
-// 1) To avoid any deduction and ensure accuracy.
-
-// 2) Product info could contain multiple languages info. Only return provided info in english.
-
-// 3) There are some tables that i require return row items with specific given condition. Please check it carefully.
-
-// 4) text such as "Contain: ...", "Free of ...", ... are "marketing text on product".
-
-// 5) all table names must be in capital letters.
-
-// 6) result must be in order and include all tables below (note their formats right below TABLE FORMAT: or INFO FORMAT:)
-// COOKING_INSTRUCTION
-// STORAGE_INSTRUCTION
-
-// without any number like 1) or 2) before table names
-// without \`\`\` or \`\`\`markdown closing tag
-
-// 13) result must include all footer TEXT (such as END__COOKING__INSTRUCTION,...) at the end of table.
-
-// "recipe name": str,
-// "ingredients: str[],
-// "introduction of cooking instructions": str[],
-
 export const make_markdown_all_prompt = ({
   ocrText,
   imageCount,
@@ -143,95 +108,291 @@ ${ocrText}
 VALIDATION AND FIX BUGS:
 1) To avoid any deduction and ensure accuracy.
 
-2) Product info could contain multiple languages info. Only return provided info in english.
+2) Only be using the information explicitly provided in the product images and not drawing conclusions based on the ingredient list. I will focus on directly extracting product claims from the text on the packaging and avoid making deductions based on the presence or absence of specific ingredients.
+Ex 1: if product have something in ingredient list. That cannot conclude that product claim to have this thing. Claim must be a statement or texts on the packaging make claim on a thing.
 
-3) result must be in order and include all tables content below (note their formats right below TABLE FORMAT: or INFO FORMAT:)
-COOKING_INSTRUCTION_OBJECT
-STORAGE_INSTRUCTION
-USAGE_INSTRUCTION
-INFORMATION_INSTRUCTION
+3) Product info could contain multiple languages info. Only return provided info in english.
+
+4) text such as "Contain: ...", "Free of ...", ... are "marketing text on product".
+
+5) all table names must be in capital letters.
+
+6) Each table have its own assert item list or claim list. Do not interchange item/claim between tables.
+
+7) inferred info is not accepted for claim:
+Ex: you are not allow to infer "no animal ingredients" from "organic certifier"
+
+8) do not collect phone number to website list data. 
+
+9) do not bold letter with ** and ** tag 
+
+10) result must be in order and include all tables below (note their formats right below TABLE FORMAT:)
+SUGAR_CLAIM_TABLE
+SALT_CLAIM_TABLE
+INGREDIENT_TABLE
+MARKETING_TABLE
+INSTRUCTION_TABLE
+SUPPLY_CHAIN_TABLE
+BASE_CERTIFIER_CLAIM_TABLE
+ATTRIBUTE_TABLE
 
 without any number like 1) or 2) before table names
 without \`\`\` or \`\`\`markdown closing tag
 
-4) do not add examples to return result. Please only return info that visibly seen from provided images.
+11) result must include all footer TEX (such as END__THIRD__EXTRA__CLAIM__TABLE,...) at the end of table.
+
+IMPORTANT RULES:
+1) return result rules:
++ just only return table with table header and table row data. do not include any other things in the output.
+
+2) "SUGAR_CLAIM_TABLE" rules:
++ possible answers of "how product state about it ?" are "free of"/  "free from" / "made without" / "no contain" / "contain" / "lower" / "low" / "0g" / "zero" / "other" / "does not contain" / "not too sweet" / "low sweet" / "sweetened" / "other".
+
+3) "marketing" table rules:
++ "youtube icon type" have 2 types (answer is type_1/type_2)
+type_1 is youtube icon have two texts "you" and "tube" on it.
+type_2 is youtube icon of youtube logo with play button without name youtube
+
++ "social media list" is the list of social media method mentioned on product images (such as "facebook", "google", "instagram", "pinterest", "snapchat", "tiktok", "youtube", "twitter", ...).
++ "website list" are all website links found on product (website link exclude "nongmoproject.org") and be careful the content after website could be phone number.
+Example 1: www.cocacola.com, www.cocacola.com/policy, www.cocacola.com/fanpage, cocacola.com
+Example 2: if text "coca.com . 555/200-3529" it seem that "555/200-3529" is a phone number or other number not belong to website link "coca.com"
+
++ "social media text" is a list of text usually start with "@", or "#" those can be used to search the product on social media. Hint, it is usually next to social media icons.
+Example 1: @cocacola
+
++ "enlarge to show" is true if statement such as "enlarged to show..." seen on product image.
+
+4) "supply chain" table rules:
++ "country of origin text" example
+Ex 1: "manufactured in Canada"
+Ex 2: "made in Brazil"
+
++ "country of origin" example
+Ex 1: "Canada"
+Ex 2: "Brazil"
+
++ "manufacturer" could not be "distributor"
+
++ "distributor name" is detected from the text statement MUST start after text such as "distributed by", "distributed by:", "distributor ...". If you do not see those texts the info of company must be about "manufacture info"
+
++ "manufacture name" is only the name of manufacturer could start after some text such as "manufactured in" without including address.
+Ex 1 : "Coca cola .LLC"
+Ex 2: "MANUFACTURED FOR: BEAUTY FARM, PBC"
+
++ if "manufacturer name" exits so its address info of that "manufacturer" is recorded in manufacture street address , manufacture city , manufacture state , manufacture zipCode.
+
+5) "base certifier claim" rules:
++ carefully check for text or certifier logo that could indicate claim from provided image
+Ex: logo U kosher found mean "kosher claim" = "yes" 
+
 
 RESULT THAT I NEED:
 Carefully examine all text infos, all icons, all logos  from provided images and help me return output with all markdown tables format below remember that all provided images are captured pictured of one product only from different angles.
 
-1) cooking instruction info recorded with format below:
+1) SUGAR CLAIM TABLE info recorded in markdown table format below:
 
 IMPORTANT NOTE:
-+ if no instruction found just left it empty.
-+ "recipe ingredient list" only provide list info if recipe have ingredient list info.
++ only process with provided sugar items below.
++ possible answers of "how product state about it ?" for sugar claim table  are  "free of"/  "free from" / "made without" / "no contain" / "contain" / "lower" / "low" / "0g" / "zero" / "other" / "does not contain" / "not too sweet" / "low sweet" / "sweetened" / "other".
++ sugar item detected from nutrition fact panel is invalid for sugar claim. Only check sugar item from other sources.
 
-INFO FORMAT:
-COOKING_INSTRUCTION_OBJECT
-[
-{
-  "recipes": [{
-    "recipe name": str,
-    "recipe ingredient list": str[] | null,
-    "cooking steps": str[],
-    }],
-  "all other text or paragraph about cooking info": str[], 
-}
-]
-END__COOKING__INSTRUCTION__OBJECT
+TABLE FORMAT:
+SUGAR_CLAIM_TABLE
+| sugar item | is item mentioned on provided images? (answer is yes/no/unknown)? (answer is yes/no/unknown) | How product state about it ?  | do you know it through those sources of info ? (multiple sources allowed and split by "/") (answer are "ingredient list","marketing text on product", "nutrition fact panel", "others")| how do you know ? |
+| ------- | -------- | ------- | ------- | ------- |
+| acesulfame k |
+| acesulfame potassium |
+| agave |
+| allulose |
+| artificial sweetener |
+| aspartame |
+| beet sugar |
+| cane sugar |
+| coconut sugar |
+| coconut palm sugar |
+| fruit juice |
+| corn syrup |
+| high fructose corn syrup |
+| honey |
+| low sugar |
+| lower sugar |
+| monk fruit |
+| natural sweeteners |
+| added sugar |
+| refined sugars |
+| saccharin |
+| splenda/sucralose |
+| splenda |
+| sucralose |
+| stevia |
+| sugar |
+| sugar added |
+| sugar alcohol |
+| tagatose |
+| xylitol |
+| reduced sugar |
+| sugar free |
+| unsweetened |
+| xylitol |
+END__SUGAR__CLAIM__TABLE
 
-2) storage  instruction info recorded with format below:
+2) SALT CLAIM TABLE info recorded in markdown table format below:
 
-IMPORTANT NOTES:
+TABLE FORMAT:
+SALT_CLAIM_TABLE
+| salt claim | does product explicitly claim this claim? (answer are yes/no/unknown) (unknown when not mentioned) | do you know it through which info ? (answer are "ingredient list"/ "nutrition fact panel"/ "marketing text on product"/ "others") (answer could be multiple string from many sources) |
+| ------- | -------- | -------- |
+| lightly salted | ...
+| low sodium | ...
+| no salt | ...
+| no salt added | ...
+| reduced sodium | ...
+| salt free | ...
+| sodium free | ...
+| unsalted | ...
+| very low sodium | ...
+END__SALT__CLAIM__TABLE
+
+
+3) Ingredient info with table format below:
+
+IMPORTANT NOTE:
++ is the list of statements about ingredients of product (since product can have many ingredients list)
+
++ "ingredient statement" is content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "other ingredients:".
+
++ "ingredient break-down list from ingredient statement" is the list of ingredients in ingredient statement split by "/" (do not split sub-ingredients of an ingredient)
+Example 1: "Cookies ( Gluten Free Oat Flour , Organic Coconut Sugar , Sustainable Palm Oil),  Creme Filling (milk, onion) , Potato" should be recorded as "Cookies ( Gluten Free Oat Flour , Organic Coconut Sugar , Sustainable Palm Oil)/Creme Filling (milk, onion)/Potato"
+Example 2: "Noodle (flour, egg, water), Sauce(Tomato, water)" should be recorded as "Noodle (flour, egg, water)/Sauce(Tomato, water)"
+
++ "product type from nutrition panel" could be detected through nutrition panel text title which are NUTRITION FACTS or SUPPLEMENT FACTS
+
++ each ingredient in ingredient break-down list must be splitted by "/" character and NOT split by table cell
+
++ "live and active cultures list statement" is statement about list of living organisms (such as Lactobacillus bulgaricus and Streptococcus thermophilus—which convert pasteurized milk to yogurt)
+
++ "ingredient list info" could be obscured due to crop image since the photos of product was taken from different angles. Try to merge into one ingredient list statement if they are same ingredient info.  
+
+TABLE FORMAT:
+INGREDIENT_TABLE
+| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement | ingredient break-down list from ingredient statement (each ingredient splitted by "/") | live and active cultures list statement | live and active cultures break-down list (each item splitted by "/")  | 
+| ------- | ------- | -------- | -------- | -------- | -------- |
+END__INGREDIENT__TABLE
+
+4) Marketing info with table format below:
+
+TABLE FORMAT:
+MARKETING_TABLE
+| have QR code (answer is boolean) | have Instagram icon or info ? | have Pinterest icon or info ? | have Youtube icon or info ? | youtube icon type (if have youtube icon or info )  | have Facebook icon or info ? | have twitter icon or info ? | social media list | website list (multiple split by comma) | social media text list | enlarged to show (answer is boolean) |
+| ------- | -------- | -------- | ------- | ------- | ------- | -------- | -------- | ------- | ------- | ------- |
+END__MARKETING__TABLE
+
+5) Instruction info with table format below:
+
+IMPORTANT NOTE:
++ "cooking instructions" are all text about cooking with product (such as recipes, or all steps to cook product with kitchen devices, ...)
+
++ "usage instructions" are all instruction text about how to use product exlcuding all "cooking instructions" 
+Ex 1: "suggested use: 2 cups at one time." should be recorded as "usage instructions" = "suggested use: 2 cups at one time."
+
 + "storage instruction" are all instruction texts about how to storage product.
-Example 1: "reseal for freshness", "keep refrigerated",...
+Example: "reseal for freshness", "keep refrigerated",...
 
-STORAGE_INSTRUCTION
-{
-  "storage instructions": str[],
-}
-END__STORAGE__INSTRUCTION
++ each type of instruction could have multiple value
 
-3) usage instruction info recorded with format below:
+TABLE FORMAT:
+INSTRUCTION_TABLE
+| instruction type | value 1  | value 2 | value 3 | ... (more columns if needed)
+| ------- | -------- | -------- | ------- | ...
+| storage instructions | 
+| cooking instructions | 
+| usage instructions | 
+| other instructions |
+END__INSTRUCTION__TABLE
 
-IMPORTANT NOTES:
-+ "usage instructions" are all instruction text about how to use product excluding all "cooking instructions" 
-Example 1: "suggested use: 2 cups at one time."
+6) supply chain info with table format below:
 
-USAGE_INSTRUCTION
-{
-  "usage instruction name": str,
-  "usage instructions": str[],
-}
-END__USAGE__INSTRUCTION
+TABLE FORMAT:
+SUPPLY_CHAIN_TABLE
+| info item | value |
+| ------- | -------- |
+| country of origin text | ...
+| country of origin | ...
+| have text "distributed by" ? (answer is yes/no) | 
+| distributor name | 
+| distributor city | 
+| distributor state |
+| distributor zipCode |
+| distributor phone number |
+| full text about distributor |
+| manufacture name | 
+| manufacture date | 
+| manufacture phone number | 
+| manufacture street address | 
+| manufacture city | 
+| manufacture state 
+| manufacture zipCode |
+END__SUPPLY__CHAIN__TABLE
 
-4) information instruction info recorded with format below:
+7) Base certifier claim info with table format below:
 
-IMPORTANT NOTES:
-+ "information instructions" are some kind of informative instructions for consumer.
-Example 1: "See nutrition info for saturated fat"
+TABLE FORMAT:
+BASE_CERTIFIER_CLAIM_TABLE
+| claim | is product claim that ? (answer is yes/no/unknown) |
+| ------- | ------- |
+| bee friendly claim |
+| bio-based claim |
+| biodynamic claim |
+| bioengineered claim |
+| cbd cannabidiol / help claim |
+| carbon footprint claim |
+| certified b corporation |
+| certified by international packaged ice association |
+| cold pressure verified |
+| cold pressure protected claim |
+| cradle to cradle claim |
+| cruelty free claim |
+| diabetic friendly claim |
+| eco fishery claim |
+| fair trade claim |
+| for life claim |
+| use GMO claim |
+| gmp claim |
+| gluten-free claim |
+| glycemic index claim |
+| glyphosate residue free claim |
+| grass-fed claim |
+| halal claim |
+| hearth healthy claim |
+| Keto/Ketogenic Claim |
+| Kosher Claim |
+| Live and Active Culture Claim |
+| Low Glycemic Claim |
+| New York State Grown & Certified Claim |
+| Non-GMO Claim |
+| Organic Claim |
+| PACA Claim |
+| PASA Claim |
+| Paleo Claim |
+| Plant Based/Derived Claim |
+| Rain Forest Alliance Claim |
+| Vegan Claim |
+| Vegetarian Claim |
+| Viticulture Claim |
+| Whole Grain Claim |
+END__BASE__CERTIFIER_CLAIM_TABLE
 
-INFORMATION_INSTRUCTION
-{
-  "information instructions": str[],
-}
-END__INFORMATION__INSTRUCTION
+8) some other attribute info recorded with table format below:
+
+TABLE FORMAT:
+ATTRIBUTE_TABLE
+| grade (answer are 'A'/ 'B') | juice percent (answer is number) |
+| ------- | ------- |
+END__ATTRIBUTE__TABLE
+
 `;
 };
-
-// + list:contain
-// "corn"
-// "crustacean shellfish"
-// "dairy"
-// "egg"
-// "fish"
-// "milk"
-// "oats"
-// "peanuts / peanut oil"
-// "phenylalanine", "seeds"
-// "sesame"
-// "soy / soybeans"
-// "tree nuts"
-// "wheat".
 
 // and "statements that tell allergen things product does not contain" could be claim from a label text on product images about allergen thing that not contain or free of or free.
 
@@ -332,5 +493,3 @@ END__INFORMATION__INSTRUCTION
 
 //! | extra item |  item explicitly and directly state in a text on product  without implying from other text? (answer is true/false/unknown) | Does the product explicitly state contain it ? (answer is yes/no) |  Does the product explicitly state to not contain it ? (answer is yes/no)  |  do you know it through which info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact"/ "others") (answer could be multiple string since the info can appeared in multiple sources) | how do you know that ? and give me you explain (answer in string) |
 // (ROW RETURN CONDITION: only return row item if "explicitly and directly mentioned in product info without implied from other text" value = "true")
-
-// | full text about distributor |

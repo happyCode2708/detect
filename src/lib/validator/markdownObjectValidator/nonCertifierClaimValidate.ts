@@ -87,8 +87,14 @@ const check = async (analysisItem: any): Promise<boolean> => {
 };
 
 const NON_CERTIFICATE_REASON = {
-  '100% natural ingredients': [['100%', 'natural', 'ingredients']],
-  '100% natural': [['100%', 'natural']],
+  '100% natural ingredients': [
+    ['100%', 'natural', 'ingredient'],
+    ['100', '%', 'natural', 'ingredient'],
+  ],
+  '100% natural': [
+    ['100%', 'natural'],
+    ['100', '%', 'natural'],
+  ],
   '100% pure': [['100%', 'pure']],
   'acid free': [['acid', 'free']],
   'aeroponic grown': [['aeroponic', 'grown']],
@@ -98,7 +104,10 @@ const NON_CERTIFICATE_REASON = {
     ['aquaponic', 'grown'],
     ['aquaculture', 'grown'],
   ],
-  baked: [['baked']],
+  'aquaponic grown': [['aquaponic', 'grown']],
+  aquaponic: [['aquaponic']],
+  'aquaculture grown': [['aquaculture', 'grown']],
+  baked: [['baked'], ['bake']],
   biodegradable: [['biodegradable']],
   'cage free': [['cage', 'free']],
   'cold-pressed': [['cold-pressed']],
@@ -152,6 +161,9 @@ const NON_CERTIFICATE_REASON = {
     ['vegan', 'diet'],
     ['vegan', 'feed'],
   ],
+  vegetarian: [['vegetarian']],
+  'vegan diet': [['vegan', 'diet']],
+  'vegan feed': [['vegan', 'feed']],
   wild: [['wild']],
   'wild caught': [['wild', 'caught']],
 } as any;
@@ -165,7 +177,11 @@ const NON_CERTIFICATE_CLAIMS = [
   'all natural',
   'all natural ingredients',
   'aquaponic/aquaculture grown',
+  'aquaponic',
+  'aquaponic grown',
+  'aquaculture grown',
   'baked',
+  'bake', //? extra
   'biodegradable',
   'cage free',
   'cold-pressed',
@@ -219,6 +235,9 @@ const NON_CERTIFICATE_CLAIMS = [
   'un-pasteurized',
   'unscented',
   'vegetarian or vegan diet/feed',
+  'vegetarian',
+  'vegan diet',
+  'vegan feed',
   'wild',
   'wild caught',
 ];
@@ -232,7 +251,11 @@ export const NON_CERTIFICATE_CLAIMS_MAP = {
   'all natural': 'all natural',
   'all natural ingredients': 'all natural ingredients',
   'aquaponic/aquaculture grown': 'aquaponic/aquaculture grown',
+  aquaponic: 'aquaponic/aquaculture grown',
+  'aquaponic grown': 'aquaponic/aquaculture grown',
+  'aquaculture grown': 'aquaponic/aquaculture grown',
   baked: 'baked',
+  bake: 'baked',
   biodegradable: 'biodegradable',
   'cage free': 'cage free',
   'cold-pressed': 'cold-pressed',
@@ -285,6 +308,9 @@ export const NON_CERTIFICATE_CLAIMS_MAP = {
   'un-pasteurized': 'un-pasteurized',
   unscented: 'unscented',
   'vegetarian or vegan diet/feed': 'vegetarian or vegan diet/feed',
+  vegetarian: 'vegetarian or vegan diet/feed',
+  'vegan diet': 'vegetarian or vegan diet/feed',
+  'vegan feed': 'vegetarian or vegan diet/feed',
   wild: 'wild',
   'wild caught': 'wild caught',
 } as any;

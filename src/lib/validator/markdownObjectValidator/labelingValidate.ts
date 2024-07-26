@@ -6,36 +6,40 @@ export const labelingInfoValidate = async (modifiedProductDataPoints: any) => {
     contain: [],
   };
   await validateFree(modifiedProductDataPoints);
-  await validateContain(modifiedProductDataPoints);
+  // await validateContain(modifiedProductDataPoints);
 };
 
 const validateFree = async (modifiedProductDataPoints: any) => {
-  modifiedProductDataPoints?.['labeling']?.forEach((labelItem: any) => {
-    const { free } = labelItem;
-    if (free) {
-      const currentValue =
-        modifiedProductDataPoints['validated_labeling']['free'];
+  modifiedProductDataPoints?.['labelingAnalysis']?.forEach((labelItem: any) => {
+    const { free, isFreeOf, label } = labelItem;
+    if (free && isFreeOf === 'yes') {
+      free?.split('/')?.forEach((freeItem: string) => {
+        if (toLower(label)?.includes(toLower(freeItem?.trim()))) {
+          const currentValue =
+            modifiedProductDataPoints['validated_labeling']['free'];
 
-      modifiedProductDataPoints['validated_labeling']['free'] = Array.from(
-        new Set([...currentValue, toLower(free)])
-      );
+          modifiedProductDataPoints['validated_labeling']['free'] = Array.from(
+            new Set([...currentValue, toLower(freeItem)])
+          );
+        }
+      });
     }
   });
 };
 
-const validateContain = async (modifiedProductDataPoints: any) => {
-  modifiedProductDataPoints?.['labeling']?.forEach((labelItem: any) => {
-    const { contain } = labelItem;
-    if (contain) {
-      const currentValue =
-        modifiedProductDataPoints['validated_labeling']['contain'];
+// const validateContain = async (modifiedProductDataPoints: any) => {
+//   modifiedProductDataPoints?.['labeling']?.forEach((labelItem: any) => {
+//     const { contain } = labelItem;
+//     if (contain) {
+//       const currentValue =
+//         modifiedProductDataPoints['validated_labeling']['contain'];
 
-      modifiedProductDataPoints['validated_labeling']['contain'] = Array.from(
-        new Set([...currentValue, toLower(contain)])
-      );
-    }
-  });
-};
+//       modifiedProductDataPoints['validated_labeling']['contain'] = Array.from(
+//         new Set([...currentValue, toLower(contain)])
+//       );
+//     }
+//   });
+// };
 
 // const aller
 

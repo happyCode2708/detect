@@ -27,7 +27,10 @@ const validateIngredient = async (modifiedIngredients: any) => {
 
 const validateLiveAndActiveCultures = async (modifiedIngredients: any) => {
   modifiedIngredients?.forEach((ingredientItem: any, idx: number) => {
-    if (ingredientItem?.['liveAndActiveCulturesStatement']) {
+    const liveAndCulturesStatement =
+      ingredientItem?.['liveAndActiveCulturesStatement'];
+
+    if (liveAndCulturesStatement && liveAndCulturesStatement !== 'NA') {
       if (!modifiedIngredients[idx]?.['validated_ingredients']) {
         modifiedIngredients[idx]['validated_ingredients'] = {};
       }
@@ -35,7 +38,11 @@ const validateLiveAndActiveCultures = async (modifiedIngredients: any) => {
         'liveAndActiveCulturesStatement'
       ] = ingredientItem?.['liveAndActiveCulturesStatement'];
     }
-    if (ingredientItem?.['liveAndActiveCulturesStatement']) {
+
+    const liveAndCulturesBreakdown =
+      ingredientItem?.['liveAndActiveCulturesBreakdown'];
+
+    if (liveAndCulturesBreakdown && liveAndCulturesBreakdown !== 'NA') {
       modifiedIngredients[idx]['validated_ingredients'][
         'liveAndActiveCulturesBreakdown'
       ] = ingredientItem?.['liveAndActiveCulturesBreakdown']?.split('/');

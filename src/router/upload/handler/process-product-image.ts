@@ -144,6 +144,7 @@ export const processProductImage = async (req: Request, res: Response) => {
           upc12: foundUpc12,
         },
       },
+      // config: { flash: true },
     });
     // ]);
 

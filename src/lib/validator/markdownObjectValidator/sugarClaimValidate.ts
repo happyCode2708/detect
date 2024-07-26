@@ -91,7 +91,7 @@ const check = async (analysisItem: any): Promise<boolean> => {
   const sugarClaim = SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim];
 
   if (
-    SUGAR_ITEMS_REASON?.[toLower(sugarClaim)]
+    SUGAR_ITEMS_REASON?.[toLower(sugarClaim)]?.['variants']
       ?.map((wordList: any) => {
         return wordList
           .map((word: any) => {
@@ -107,14 +107,23 @@ const check = async (analysisItem: any): Promise<boolean> => {
   ) {
     return Promise.resolve(false);
   } else {
-    //* exceptional cases
     if (
-      toLower(claim) === 'corn syrup' &&
-      toLower(reason)?.includes('high fructose')
+      SUGAR_ITEMS_REASON?.[toLower(sugarClaim)]?.['excepts'] &&
+      !!SUGAR_ITEMS_REASON?.[toLower(sugarClaim)]?.['excepts']?.find(
+        (exceptText: string) => toLower(reason)?.includes(exceptText)
+      )
     ) {
-      //? it could be about 'HIGH FRUCTOSE CORN SYRUP' so must return false
       return Promise.resolve(false);
     }
+
+    // if (
+    //   toLower(claim) === 'corn syrup' &&
+    //   toLower(reason)?.includes('high fructose')
+    // ) {
+    //   //* exceptional cases
+    //   //? it could be about 'HIGH FRUCTOSE CORN SYRUP' so must return false
+    //   return Promise.resolve(false);
+    // }
   }
 
   //! teno hide
@@ -130,21 +139,29 @@ const check = async (analysisItem: any): Promise<boolean> => {
 };
 
 const SUGAR_ITEMS_REASON = {
-  'lower sugar': [['lower', 'sugar']],
-  'low sugar': [['low', 'sugar']],
-  'reduced sugar': [['reduced', 'sugar']],
-  'sugar free': [['sugar', 'free']],
-  'cane sugar': [['cane', 'sugar']],
-  'no artificial sweetener': [
-    ['no', 'artificial', 'sweetener'],
-    ['not contain', 'artificial', 'sweetener'],
-    ['free from', 'artificial', 'sweetener'],
-  ],
-  unsweetened: [['unsweetened']],
-  'no sugar added': [['sugar added']],
-  'no added sugar': [['added sugar']],
-  'no corn syrup': [['corn', 'syrup']],
-  'no sugar': [['no sugar']],
+  'lower sugar': { variants: [['lower', 'sugar']] },
+  'low sugar': { variants: [['low', 'sugar']] },
+  'reduced sugar': { variants: [['reduced', 'sugar']] },
+  'sugar free': { variants: [['sugar', 'free']], excepts: ['sugar added'] },
+  'cane sugar': { variants: [['cane', 'sugar']] },
+  'no artificial sweetener': {
+    variants: [
+      ['no', 'artificial', 'sweetener'],
+      ['not contain', 'artificial', 'sweetener'],
+      ['free from', 'artificial', 'sweetener'],
+    ],
+  },
+  unsweetened: { variants: [['unsweetened']] },
+  'no sugar added': { variants: [['sugar added']] },
+  'no added sugar': { variants: [['added sugar']] },
+  'no corn syrup': {
+    variants: [['corn', 'syrup']],
+    excepts: ['high fructose'],
+  },
+  'high fructose corn syrup': {
+    variants: [['high', 'fructose', 'corn', 'syrup']],
+  },
+  'no sugar': { variants: [['no sugar']], excepts: ['no sugar added'] },
 } as any;
 
 const SUGAR_ITEMS = [

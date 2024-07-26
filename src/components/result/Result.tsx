@@ -93,7 +93,7 @@ export const Result = ({
             forceMount
             hidden={tabActive !== 'nut-md'}
           >
-            <div className='whitespace-pre-line'>
+            <div className='whitespace-pre-line max-h-[500px] overflow-auto'>
               {productInfo?.product?.nutMark}
             </div>
           </TabsContent>
@@ -102,7 +102,7 @@ export const Result = ({
             forceMount
             hidden={tabActive !== 'all-md'}
           >
-            <div className='whitespace-pre-line'>
+            <div className='whitespace-pre-line max-h-[500px] overflow-auto'>
               {productInfo?.product?.allMark}
             </div>
           </TabsContent>

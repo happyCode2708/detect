@@ -204,7 +204,7 @@ const validateContainOnEquipmentList = async (
 const mapToValidatedAllergenObject = async (modifiedProductDataPoints: any) => {
   const validatedAllergenList = modifiedProductDataPoints?.['allergens'];
 
-  if (validatedAllergenList?.length <= 0) return;
+  // if (validatedAllergenList?.length <= 0) return;
 
   modifiedProductDataPoints['validated_allergens'] = {
     allergensAncillary: [],

@@ -1,5 +1,4 @@
 import { toLower } from 'lodash';
-import { NON_CERTIFICATE_CLAIMS_MAP } from './nonCertifierClaimValidate';
 
 export const containAndNotContainClaimValidate = async (
   modifiedProductDataPoints: any,
@@ -381,8 +380,8 @@ const CONTAIN_AND_NOT_CONTAIN_REASON = {
   pits: [['pit']],
   preservatives: [['preservative']],
   probiotics: [['probiotic']],
-  rbgh: [['rbgh']],
-  rbst: [['rbst']],
+  rbgh: [['rbgh'], ['ibgh']],
+  rbst: [['rbst'], ['ibst']],
   rennet: [['rennet']],
   salicylates: [['salicylate']],
   'sea salt': [['sea', 'salt']],

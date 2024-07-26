@@ -110,6 +110,7 @@ const validateNutrientName = (modifiedNutrient: any) => {
     trans: 'TRANS FAT',
     chol: 'CHOLESTEROL',
     'cholest.': 'CHOLESTEROL',
+    cholest: 'CHOLESTEROL',
     sug: 'SUGARS',
     fib: 'FIBER',
     'omega-3': 'OMEGA-3 FATTY ACIDS',

@@ -4,9 +4,13 @@ import { group } from 'console';
 import _ from 'lodash';
 
 export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
-  const lablingInfoSection = markdown
+  const labelingInfoSection = markdown
     .split('LABELING_INFO_TABLE')?.[1]
     ?.split('END__LABELING__INFO__TABLE')?.[0];
+
+  const labelingInfoAnalysisSection = markdown
+    .split('LABELING_INFO_ANALYSIS_TABLE')?.[1]
+    ?.split('END__LABELING__INFO__ANALYSIS_TABLE')?.[0];
 
   const sugarClaimSection = markdown
     .split('SUGAR_CLAIM_TABLE')?.[1]
@@ -135,12 +139,16 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   // logger.info(marketingTextSection);
 
   //? LABELING INFO
-  const labelingObjList = getObjectDataFromTable(lablingInfoSection, [
+  const labelingObjList = getObjectDataFromTable(labelingInfoSection, [
     'label',
     'labelText',
-    'free',
-    'contain',
   ]);
+
+  //? LABELING ANALYSIS
+  const labelingAnalysisObjList = getObjectDataFromTable(
+    labelingInfoAnalysisSection,
+    ['label', 'isFreeOf', 'free']
+  );
 
   //? EXTRA
   const extraClaimsObjList_1 = getObjectDataFromTable(extraClaimSection_1, [
@@ -334,17 +342,18 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
     {
       'country of origin text': 'countryOfOriginText',
       'country of origin': 'countryOfOrigin',
-      'have text "distributed by" ? (answer is yes/no)': 'haveDistributor',
-      'distributor name': 'distributorName',
+      // 'have text "distributed by" ? (answer is yes/no)': 'haveDistributor',
+      // 'distributor name': 'distributorName',
       'distributor city': 'distributorCity',
       'distributor state': 'distributorState',
       'distributor zipCode': 'distributorZipCode',
       'distributor phone Number': 'distributorPhoneNumber',
-      'full text about distributor': 'fullTextDistributor',
+      // 'full text about distributor': 'fullTextDistributor',
+      'distributor info': 'fullTextDistributor',
       'manufacture name': 'manufacturerName',
       'manufacture date': 'manufacturerDate',
       'manufacture phone number': 'manufacturerPhoneNumber',
-      'manufacture street address': 'manufacturerStreetAddress',
+      'manufacture street name': 'manufacturerStreetAddress',
       'manufacture city': 'manufacturerCity',
       'manufacture state': 'manufacturerState',
       'manufacture zipCode': 'manufactureZipCode',
@@ -379,6 +388,7 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
 
   return {
     labeling: labelingObjList,
+    labelingAnalysis: labelingAnalysisObjList,
     header: headerObjList,
     // physical: physicalObjList,
     attributes: {

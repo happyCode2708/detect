@@ -141,7 +141,6 @@ router.post(
       req,
       res,
       invalidatedInput,
-      //* flash version
       ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
       // ocrList: nutImagesOCRresult,
       sessionId,
@@ -157,6 +156,9 @@ router.post(
       sessionId,
       collateImageName,
       outputConfig,
+      config: {
+        flash: true,
+      },
     });
   }
 );
