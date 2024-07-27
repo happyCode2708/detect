@@ -130,7 +130,7 @@
 // "ingredients: str[],
 // "introduction of cooking instructions": str[],
 
-export const make_markdown_all_prompt = ({
+export const make_markdown_attr_1_prompt = ({
   ocrText,
   imageCount,
 }: {
@@ -150,14 +150,21 @@ COOKING_INSTRUCTION_OBJECT
 STORAGE_INSTRUCTION
 USAGE_INSTRUCTION
 INFORMATION_INSTRUCTION
+LABELING_INFO_TABLE
+LABELING_INFO_ANALYSIS_TABLE
+ALLERGEN_TABLE
+HEADER_TABLE
+BASE_CERTIFIER_CLAIM_TABLE
 
 without any number like 1) or 2) before table names
-without \`\`\` or \`\`\`markdown closing tag
+without \`\`\` or \`\`\` closing tag
 
-4) do not add examples to return result. Please only return info that visibly seen from provided images.
+4) result must include all footer TEX (such as END__THIRD__EXTRA__CLAIM__TABLE,...) at the end of table.
+
+5) do not add examples to return result. Please only return info that visibly seen from provided images.
 
 RESULT THAT I NEED:
-Carefully examine all text infos, all icons, all logos  from provided images and help me return output with all markdown tables format below remember that all provided images are captured pictured of one product only from different angles.
+Carefully examine all text infos, all icons, all logos  from provided images and help me return output with all markdown tables format below (INFO FORMAT: or TABLE FORMAT:) remember that all provided images are captured pictured of one product only from different angles.
 
 1) cooking instruction info recorded with format below:
 
@@ -185,6 +192,7 @@ IMPORTANT NOTES:
 + "storage instruction" are all instruction texts about how to storage product.
 Example 1: "reseal for freshness", "keep refrigerated",...
 
+INFO FORMAT:
 STORAGE_INSTRUCTION
 {
   "storage instructions": str[],
@@ -197,9 +205,9 @@ IMPORTANT NOTES:
 + "usage instructions" are all instruction text about how to use product excluding all "cooking instructions" 
 Example 1: "suggested use: 2 cups at one time."
 
+INFO FORMAT:
 USAGE_INSTRUCTION
 {
-  "usage instruction name": str,
   "usage instructions": str[],
 }
 END__USAGE__INSTRUCTION
@@ -210,11 +218,166 @@ IMPORTANT NOTES:
 + "information instructions" are some kind of informative instructions for consumer.
 Example 1: "See nutrition info for saturated fat"
 
+INFO FORMAT:
 INFORMATION_INSTRUCTION
 {
   "information instructions": str[],
 }
 END__INFORMATION__INSTRUCTION
+
+
+5) LABELING INFO TABLE info recorded in markdown TABLE FORMAT below
+
+IMPORTANT NOTE:
++ "label item" could be easily detected by some icons or logos or label text provided images.
+
++ "label item" could be "certification label", or "label text" seen on provided images that indicate some attributes of product.
+Example 1: "SOY FREE" label text
+Example 2: "NUT FREE" label text
+
++ remember when product state "something free" it mean product free of that thing (such as soy free, dairy free, ...)
+Example 1: "gluten free" mean product not contain "gluten"
+Example 2: "nuts free" mean product not contain "nuts"
+
+TABLE FORMAT:
+LABELING_INFO_TABLE
+| label item type on product (answer is "certification label"/ "label text"/ "other") (if type "other" tell me what type you think it belong to) | what label item say ? |
+| ------- | -------- |
+END__LABELING__INFO__TABLE
+
+6) LABELING INFO ANALYSIS TABLE recorded in markdown TABLE FORMAT below
+
+IMPORTANT NOTE:
++ "label info analysis table" is the analyzing table for all label item in the table of LABELING_INFO_TABLE.
+
+TABLE FORMAT:
+LABELING_INFO_ANALYSIS_TABLE
+| label item | do label indicate product does not contain something? (answer is yes/no) | what are exactly things that product say not contain from the label item (split things by "/" for multiple if needed) |
+| ------- | -------- | -------- |
+END__LABELING__INFO__ANALYSIS__TABLE
+
+7) Allergen info recorded in markdown table format below:
+ 
+IMPORTANT NOTE:
++ tree nuts also includes "coconut"
+
++ "allergen contain statement" are the exact contexts that you found on provided images about allergen info, usually start with "contains:", "contain", "may contain", "may contain:", "allergen statement:, ... NOT due to sharing manufacturing equipments and NOT due to manufactured in same facility with other products.
+Example 1: "allergen statement: contains milk"
+Example 2: "may contain: milk, peanut"
+Example 3: "contain: milk, peanut"
+
++ "allergens contain statement break-down list" is a string list
+ex 1: "oats/milk"
+
++ "allergens contain statement break-down list" is the allergen ingredients from "allergen contain statement" and do not collect from product ingredient list.
+
++ "allergens on equipments statement" are the exact contexts that you found on provided images about allergens that said they could present on the product since manufacturing equipments are also used to make other product,or in the same facility ,or shared machinery.
+Example 1: "produced in a facility that uses soy, and peanut"
+Example 2: "Manufactured in facility that also processes peanut, milk"
+Example 3: "Made on equipment that process peanut"
+
++ "allergens on equipments statement break-down list" is the break-down list of all ingredients that is stated to present in facility or manufacturing equipments. Do not include ingredients that say is not present on facility or manufacturing equipment.
+Example 1: "Manufactured in a egg and milk free facility that also processes peanut, wheat products" should be recorded as "peanut/wheat" since text "in a egg and milk free facility" mean the egg and milk is not present in facility.
+
++ "exact text on images about allergens that product does not contain" are the exact contexts that you found on provided images about allergen info, that product claim to not contain or free of or free.
+example 1: "contain no wheat, milk"
+example 2: "does not contain wheat, milk"
+example 3: "free of wheat, milk"
+example 4: "non-dairy" text mean does not contain allergen ingredient of "dairy"
+example 5: "no egg"
+example 6: "soy free", "dairy-free"
+
+TABLE FORMAT:
+ALLERGEN_TABLE
+| allergen info | value 1 | value 2 | value 3 | ... (more columns if needed)
+| ------- | -------- | -------- | -------- | ...
+| allergen contain statement | 
+| allergens contain statement break-down list (split by "/") |
+| allergens on equipments statement |
+| allergens on equipments statement break-down list (split by "/") |
+| exact text on images about allergens that product does not contain |
+| allergens product does not contain break-down list (split by "/") |
+END__ALLERGEN__TABLE
+
+8) Header info with table format below:
+IMPORTANT NOTE:
++ header table only have 1 row item so you must carefully examine the images.
++ "primary size" and "secondary size" and "third size" are a quantity measurement of product in there different unit of measurement. They are not info from "serving size" in nutrition fact panel.
+Ex 1: "primary size" = "100 gram"
+Ex 3: "WT 2.68 OZ (40g) should recorded as "primary size" = "2.68 OZ" and "secondary size" = "40g"
+Ex 2: "32 fl oz ( 2 pt ) 946 mL" should recorded as "primary size" = "32 fl oz" and "secondary size" = "2 pt" and "third size" = "946 mL"
+Ex 4: "100 capsules"  should recorded as "primary size" = "100 capsules"
+
++ just collect size in order. If production mention three type of uom it will have third size
+
++ "primary size" must content quantity value number and its oum (same for primary size, and third size)
+
++ "count" is the count number of smaller unit inside a package, or a display shipper, or a case, or a box.
+
++ "full size statement" is the whole size statement text found on product images that might includes all texts about primary size, secondary size,  third size and serving amounts if exits  but not info from nutrition panel
+Ex 1: "Net WT 9.28oz(260g) 10 cups"
+Ex 2: "16 FL OZ (472 ML)
+Ex 3: "900 CAPSULES 400 servings"
+Ex 4: "24 K-CUP PODS - 0.55 OZ (5.2)G/EA NET WT 4.44 OZ (38g)"
+
+TABLE FORMAT:
+HEADER_TABLE
+| product name | brand name | primary size | secondary size | third size | full size statement | count | count uom |
+| ------- | -------- | -------- | ------- | -------- | -------- | -------- | -------- |
+END__HEADER__TABLE
+
+
+9) Base certifier claim info with table format below:
+
+IMPORTANT_NOTES:
++ carefully check for text or certifier logo that could indicate "base certifier claim" from provided image
+Ex: logo U kosher found mean "kosher claim" = "yes" 
+
+TABLE FORMAT:
+BASE_CERTIFIER_CLAIM_TABLE
+| claim | is product claim that ? (answer is yes/no/unknown) |
+| ------- | ------- |
+| bee friendly claim |
+| bio-based claim |
+| biodynamic claim |
+| bioengineered claim |
+| cbd cannabidiol / help claim |
+| carbon footprint claim |
+| certified b corporation |
+| certified by international packaged ice association |
+| cold pressure verified |
+| cold pressure protected claim |
+| cradle to cradle claim |
+| cruelty free claim |
+| diabetic friendly claim |
+| eco fishery claim |
+| fair trade claim |
+| for life claim |
+| use GMO claim |
+| gmp claim |
+| gluten-free claim |
+| glycemic index claim |
+| glyphosate residue free claim |
+| grass-fed claim |
+| halal claim |
+| hearth healthy claim |
+| Keto/Ketogenic Claim |
+| Kosher Claim |
+| Live and Active Culture Claim |
+| Low Glycemic Claim |
+| New York State Grown & Certified Claim |
+| Non-GMO Claim |
+| Organic Claim |
+| PACA Claim |
+| PASA Claim |
+| Paleo Claim |
+| Plant Based/Derived Claim |
+| Rain Forest Alliance Claim |
+| Vegan Claim |
+| Vegetarian Claim |
+| Viticulture Claim |
+| Whole Grain Claim |
+END__BASE__CERTIFIER_CLAIM_TABLE
 `;
 };
 

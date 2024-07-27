@@ -37,18 +37,16 @@ IMPORTANT REQUIREMENTS:
 13) be careful the last "nutrient row" could be misread to be a part of "footnote". Remember "footnote" content usually about "Daily value" or "percent daily value" note.
 14) 2 nutrition fact tables in provided image could be the same one, just from different angles of product. So you must read it as only one nutrition fact tables only.
 15) example for result table must be in the order:
-NUTRITION_FACT_TABLE[1]
-HEADER_TABLE[1] 
-FOOTNOTE_TABLE[1]
-NUTRITION_FACT_TABLE[2]
-HEADER_TABLE[2]
-FOOTNOTE_TABLE[2]
+NUTRITION_FACT_TABLE [1]
+HEADER_TABLE [1] 
+FOOTNOTE_TABLE [1]
+NUTRITION_FACT_TABLE [2]
+HEADER_TABLE [2]
+FOOTNOTE_TABLE [2]
 ....
 DEBUG_TABLE
 
 remember they are put in orders from low index [1] to higher index like [2] and [3]
-
-and result must include all footer TABLE FOOTER (such as END__HEADER__TABLE[1],...) at the end of table.
 
 16) "Serving Size" example 10 tablespoons (20g) => serving size is 10 tablespoons and equivalent = 20g
 17) some "Amount Per Serving name" such as "per serving", "per container", "for children > 18 years", "for adult",...
@@ -63,7 +61,7 @@ and result must include all footer TABLE FOOTER (such as END__HEADER__TABLE[1],.
 
 27) do not add ingredients from ingredient list to nutrient list. Ingredient list usually start with "ingredient:" or "other ingredients:" 
 
-SPECIFIC RULES:
+specific rules:
 1) "nutrient name descriptor" rules:
 + "nutrient name descriptor" is descriptor of nutrient name ( with text look like "as something", "naturally occurring from something", or other equivalent name of nutrient, ...)
 + "nutrient name descriptor" is usually text inside parentheses at the end of nutrient name.
@@ -99,37 +97,34 @@ IMPORTANT NOTES:
 RESULT THAT I NEED:
 Carefully examine provided images above. They are captured images of one product, and return info from provided images that meet all listed requirements and rules above with markdown tables format below
 
-1) Nutrition fact info recorded in markdown table format below 
 
-TABLE FORMAT:
-NUTRITION_FACT_TABLE[index]
+1) Nutrition fact info recorded in table
++ TABLE_NAME = "NUTRITION_FACT_TABLE [index number] " (example: NUTRITION_FACT_TABLE [1])
++ Table format:
+TABLE_NAME
 | Nutrient Name | nutrient name descriptor | Amount per Serving | parenthetical statement about amount per serving | % Daily Value and footnote symbol if avail | blend ingredients (if nutrient is a blend/mix) (nullable) | 
 | ------- | -------- | -------- | -------- | -------- | -------- | 
-END__NUTRITION__FACT__TABLE[index]
 
 2) Header info of each nutrition fact recorded in a sub-table
-
-TABLE_FORMAT:
-HEADER_TABLE[index]
++ TABLE_NAME = "HEADER_TABLE [index number]" (example: HEADER [1])
++ Table format:
+TABLE_NAME
 Serving Per Container | Serving Size | Equivalent Serving Size | Amount Per Serving name | Calories
 | ------- | -------- | -------- | -------- | -------- |
-END__HEADER__TABLE[index]
 
 3) Footnote of each nutrition fact recorded in a sub-table
-
-TABLE_FORMAT:
-FOOTNOTE_TABLE[index]
++ TABLE_NAME = "FOOTNOTE_TABLE [index number]" (example: FOOTNOTE_TABLE [1] )
++ table format:
+TABLE_NAME
 | footnote content at bottom of nutrition fact | footnote content in english only (include footnote symbol if avail) |
 | ------- | -------- |
-END__FOOTNOTE__TABLE[index]
 
 4) Debug table is gemini answer recorded in table
-
-TABLE_FORMAT:
-DEBUG_TABLE
++ TABLE_NAME = "DEBUG_TABLE"
++ Table format:
+TABLE_NAME
 | question (question from debug list below) | gemini answer |
 | ------- | -------- |
-END__DEBUG__TABLE
 
 debug list:
 1) gemini answer me how many nutrition fact tables from provided images? are they the same one ?

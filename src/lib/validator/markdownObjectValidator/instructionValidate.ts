@@ -13,27 +13,74 @@ export const instructionValidate = async (modifiedProductDataPoints: any) => {
     useOrFreezeBy: [],
   };
 
-  const instructionsData =
-    modifiedProductDataPoints?.['instructions']?.[0] || {};
+  const instructionsData = modifiedProductDataPoints?.['instructions'] || {};
 
   const {
+    cookingInstruction,
     storageInstruction,
     usageInstruction,
-    cookingInstruction,
-    otherInstruction,
+    informationInstruction,
   } = instructionsData;
 
-  const allInstructions = [
-    ...(storageInstruction || []),
-    ...(usageInstruction || []),
-    ...(cookingInstruction || []),
-  ];
+  // const allInstructions = [
+  //   ...(storageInstruction || []),
+  //   ...(usageInstruction || []),
+  //   ...(cookingInstruction || []),
+  // ];
+
+  let mappedCookingInstruction = [] as any;
+  let mappedUsageInstruction = [] as any;
+  let mappedStorageInstruction = [] as any;
+  let mappedInformationInstruction = [] as any;
+
+  cookingInstruction?.forEach((cookingInstructionItem: any) => {
+    const {
+      'all other text or paragraph about cooking info': otherInfo,
+      recipes,
+    } = cookingInstructionItem;
+
+    if (otherInfo && otherInfo?.length > 0) {
+      mappedCookingInstruction = [...(otherInfo || [])];
+    }
+
+    recipes?.forEach((recipeItem: any) => {
+      const {
+        'recipe name': recipeName,
+        'recipe ingredient list': recipeIngredients,
+        'cooking steps': cookingSteps,
+      } = recipeItem;
+
+      if (recipeName) {
+        mappedCookingInstruction?.push(recipeName);
+      }
+      if (recipeIngredients) {
+        mappedCookingInstruction?.push(...recipeIngredients);
+      }
+      if (cookingSteps) {
+        mappedCookingInstruction?.push(...cookingSteps);
+      }
+    });
+  });
+
+  mappedStorageInstruction = storageInstruction?.['storage instructions'];
+  mappedUsageInstruction = usageInstruction?.['usage instructions'];
+  mappedInformationInstruction =
+    informationInstruction?.['information instructions'];
+
+  console.log('haha ---', JSON.stringify(mappedCookingInstruction));
+
+  const allMappedInstruction = {
+    mappedCookingInstruction,
+    mappedStorageInstruction,
+    mappedUsageInstruction,
+    mappedInformationInstruction,
+  };
 
   await validateConsumerStorage(
     [
       ...(storageInstruction || []),
       ...(usageInstruction || []),
-      ...(otherInstruction || []),
+      ...(informationInstruction || []),
     ],
     modifiedProductDataPoints,
     'storageInstruction'
@@ -43,13 +90,16 @@ export const instructionValidate = async (modifiedProductDataPoints: any) => {
     [
       ...(storageInstruction || []),
       ...(usageInstruction || []),
-      ...(otherInstruction || []),
+      ...(informationInstruction || []),
     ],
     modifiedProductDataPoints,
     'useOrFreezeBy'
   );
 
-  await validateAllInstructions(modifiedProductDataPoints, allInstructions);
+  await validateAllInstructions(
+    modifiedProductDataPoints,
+    allMappedInstruction
+  );
 
   console.log('finish validate storage instruction');
 };
@@ -204,38 +254,40 @@ const checkUserOfFreezeBy = async (statement: string) => {
 
 const validateAllInstructions = async (
   modifiedProductDataPoints: any,
-  allInstructions: any
+  allMappedInstruction: any
 ) => {
-  const instructionsData =
-    modifiedProductDataPoints?.['instructions']?.[0] || {};
+  // const instructionsData =
+  //   modifiedProductDataPoints?.['instructions']?.[0] || {};
   const validatedInstructionData =
     modifiedProductDataPoints?.['validated_instructions'];
 
-  const { storageInstruction, usageInstruction, cookingInstruction } =
-    instructionsData;
+  const { mappedCookingInstruction } = allMappedInstruction;
 
-  const { usageInstruction: validated_usageInstruction, useOrFreezeBy } =
-    validatedInstructionData;
+  // const { storageInstruction, usageInstruction, cookingInstruction } =
+  //   instructionsData;
 
-  if (usageInstruction) {
-    let validUsageInstructions = [] as any;
-    usageInstruction?.forEach((instructionItem: any) => {
-      if (
-        !useOrFreezeBy?.find((useBy: string) => {
-          toLower(useBy) === instructionItem;
-        })
-      ) {
-        validUsageInstructions.push(instructionItem);
-      }
-    });
+  // const { usageInstruction: validated_usageInstruction, useOrFreezeBy } =
+  //   validatedInstructionData;
 
-    modifiedProductDataPoints['validated_instructions']['usageInstructions'] =
-      validUsageInstructions;
-  }
+  // if (usageInstruction) {
+  //   let validUsageInstructions = [] as any;
+  //   usageInstruction?.forEach((instructionItem: any) => {
+  //     if (
+  //       !useOrFreezeBy?.find((useBy: string) => {
+  //         toLower(useBy) === instructionItem;
+  //       })
+  //     ) {
+  //       validUsageInstructions.push(instructionItem);
+  //     }
+  //   });
+
+  //   modifiedProductDataPoints['validated_instructions']['usageInstructions'] =
+  //     validUsageInstructions;
+  // }
 
   //* temp cooking instruction validate
   modifiedProductDataPoints['validated_instructions']['cookingInstruction'] =
-    cookingInstruction;
+    mappedCookingInstruction;
 };
 
 const STORAGE_REASON = {

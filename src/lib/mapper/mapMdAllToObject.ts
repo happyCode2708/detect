@@ -103,9 +103,25 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   // logger.error('marketing');
   // logger.info(marketingSection);
 
-  const instructionSection = markdown
-    .split('INSTRUCTION_TABLE')?.[1]
-    ?.split('END__INSTRUCTION__TABLE')?.[0];
+  // const instructionSection = markdown
+  //   .split('INSTRUCTION_TABLE')?.[1]
+  //   ?.split('END__INSTRUCTION__TABLE')?.[0];
+
+  const cookingInstructionSection = markdown
+    .split('COOKING_INSTRUCTION_OBJECT')?.[1]
+    ?.split('END__COOKING__INSTRUCTION__OBJECT')?.[0];
+
+  const storageInstructionSection = markdown
+    .split('STORAGE_INSTRUCTION')?.[1]
+    ?.split('END__STORAGE__INSTRUCTION')?.[0];
+
+  const usageInstructionSection = markdown
+    .split('USAGE_INSTRUCTION')?.[1]
+    ?.split('END__USAGE__INSTRUCTION')?.[0];
+
+  const informationInstructionSection = markdown
+    .split('INFORMATION_INSTRUCTION')?.[1]
+    ?.split('END__INFORMATION__INSTRUCTION')?.[0];
 
   // logger.error('instruction');
   // logger.info(instructionSection);
@@ -312,15 +328,24 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   logger.info(JSON.stringify(marketingObjList));
 
   //? INSTRUCTION
-  const instructionObjList = getObjectDataFromHorizontalTable(
-    instructionSection,
-    {
-      'storage instructions': 'storageInstruction',
-      'cooking instructions': 'cookingInstruction',
-      'usage instructions': 'usageInstruction',
-      'other instructions': 'otherInstruction',
-    }
-  );
+  // const instructionObjList = getObjectDataFromHorizontalTable(
+  //   instructionSection,
+  //   {
+  //     'storage instructions': 'storageInstruction',
+  //     'cooking instructions': 'cookingInstruction',
+  //     'usage instructions': 'usageInstruction',
+  //     'other instructions': 'otherInstruction',
+  //   }
+  // );
+
+  console.log('cooking ---- ', cookingInstructionSection);
+
+  const instructionObjList = {
+    cookingInstruction: parseJson(cookingInstructionSection),
+    storageInstruction: parseJson(storageInstructionSection),
+    usageInstruction: parseJson(usageInstructionSection),
+    informationInstruction: parseJson(informationInstructionSection),
+  };
   logger.error('instruction');
   logger.info(JSON.stringify(instructionObjList));
 
@@ -516,4 +541,23 @@ const areAllFieldsEmpty = (obj: any) => {
     }
   }
   return true;
+};
+
+const cleanJSON = (jsonString: string) => {
+  // Remove trailing commas before closing braces/brackets
+  return jsonString
+    .replace(/,\s*([}\]])/g, '$1') // Handle trailing commas in objects and arrays
+    .replace(/,\s*$/, ''); // Handle trailing comma at the end of the string
+};
+
+const parseJson = (jsonString: string) => {
+  jsonString = cleanJSON(jsonString);
+
+  try {
+    const jsonObject = JSON.parse(jsonString);
+    return jsonObject;
+  } catch (error) {
+    console.error('Invalid JSON string:', error);
+    return {};
+  }
 };

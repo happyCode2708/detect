@@ -38,77 +38,83 @@ export const Result = ({
   if (!productInfo) return null;
 
   return (
-    <Tabs
-      defaultValue='table'
-      className='w-full overflow-hidden'
-      onValueChange={onValueChange}
-    >
-      <TabsList
-        className={
-          process.env.NODE_ENV !== 'production'
-            ? 'grid w-full grid-cols-6'
-            : 'grid w-full grid-cols-4'
-        }
+    <div>
+      <Tabs
+        defaultValue='table'
+        className='w-full overflow-hidden'
+        onValueChange={onValueChange}
       >
-        <TabsTrigger value='table'>Table</TabsTrigger>
-        <TabsTrigger value='json'>Json</TabsTrigger>
-        <TabsTrigger value='jsonTDC'>TDC data</TabsTrigger>
+        <TabsList
+          className={
+            process.env.NODE_ENV !== 'production'
+              ? 'grid w-full grid-cols-6'
+              : 'grid w-full grid-cols-4'
+          }
+        >
+          <TabsTrigger value='table'>Table</TabsTrigger>
+          <TabsTrigger value='json'>Json</TabsTrigger>
+          <TabsTrigger value='jsonTDC'>TDC data</TabsTrigger>
 
-        <TabsTrigger value='compare'>
-          {process.env.NODE_ENV !== 'production'
-            ? 'Compare'
-            : 'Result In TDC format'}
-        </TabsTrigger>
+          <TabsTrigger value='compare'>
+            {process.env.NODE_ENV !== 'production'
+              ? 'Compare'
+              : 'Result In TDC format'}
+          </TabsTrigger>
+          {process.env.NODE_ENV !== 'production' && (
+            <>
+              <TabsTrigger value='nut-md'>nut md</TabsTrigger>
+              <TabsTrigger value='all-md'>all md</TabsTrigger>
+            </>
+          )}
+        </TabsList>
+        <TabsContent value='json' forceMount hidden={tabActive !== 'json'}>
+          <JsonRender productInfo={productInfo} />
+        </TabsContent>
+        <TabsContent value='table' forceMount hidden={tabActive !== 'table'}>
+          <TableResult productInfo={productInfo?.product} />
+        </TabsContent>
+        <TabsContent
+          value='json tdc'
+          forceMount
+          hidden={tabActive !== 'jsonTDC'}
+        >
+          <JsonRender productInfo={productTdcData} />
+        </TabsContent>
+        <TabsContent
+          value={'compare'}
+          forceMount
+          hidden={tabActive !== 'compare'}
+        >
+          <ComparisonTabContent
+            productInfo={productInfo?.product}
+            productTdcData={productTdcData}
+            compareResultData={compareResultData}
+          />
+        </TabsContent>
         {process.env.NODE_ENV !== 'production' && (
           <>
-            <TabsTrigger value='nut-md'>nut md</TabsTrigger>
-            <TabsTrigger value='all-md'>all md</TabsTrigger>
+            <TabsContent
+              value='nut-md'
+              forceMount
+              hidden={tabActive !== 'nut-md'}
+            >
+              <div className='whitespace-pre-line max-h-[500px] overflow-auto'>
+                {productInfo?.product?.nutMark}
+              </div>
+            </TabsContent>
+            <TabsContent
+              value='all-md'
+              forceMount
+              hidden={tabActive !== 'all-md'}
+            >
+              <div className='whitespace-pre-line max-h-[500px] overflow-auto'>
+                {productInfo?.product?.allMark}
+              </div>
+            </TabsContent>
           </>
         )}
-      </TabsList>
-      <TabsContent value='json' forceMount hidden={tabActive !== 'json'}>
-        <JsonRender productInfo={productInfo} />
-      </TabsContent>
-      <TabsContent value='table' forceMount hidden={tabActive !== 'table'}>
-        <TableResult productInfo={productInfo?.product} />
-      </TabsContent>
-      <TabsContent value='json tdc' forceMount hidden={tabActive !== 'jsonTDC'}>
-        <JsonRender productInfo={productTdcData} />
-      </TabsContent>
-      <TabsContent
-        value={'compare'}
-        forceMount
-        hidden={tabActive !== 'compare'}
-      >
-        <ComparisonTabContent
-          productInfo={productInfo?.product}
-          productTdcData={productTdcData}
-          compareResultData={compareResultData}
-        />
-      </TabsContent>
-      {process.env.NODE_ENV !== 'production' && (
-        <>
-          <TabsContent
-            value='nut-md'
-            forceMount
-            hidden={tabActive !== 'nut-md'}
-          >
-            <div className='whitespace-pre-line max-h-[500px] overflow-auto'>
-              {productInfo?.product?.nutMark}
-            </div>
-          </TabsContent>
-          <TabsContent
-            value='all-md'
-            forceMount
-            hidden={tabActive !== 'all-md'}
-          >
-            <div className='whitespace-pre-line max-h-[500px] overflow-auto'>
-              {productInfo?.product?.allMark}
-            </div>
-          </TabsContent>
-        </>
-      )}
-    </Tabs>
+      </Tabs>
+    </div>
   );
 };
 

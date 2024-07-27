@@ -105,5 +105,6 @@ export const useQueryProductDetail = ({ productId }: { productId: string }) => {
 
       return response.json();
     },
+    retry: false,
   });
 };

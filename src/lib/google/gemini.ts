@@ -1,8 +1,8 @@
 import { writeJsonToFile } from '../json';
 import { encodeImageToBase64 } from '../image';
 import { mapOcrToPredictDataPoint } from '../validator/mapOcrToPredictDataPoint';
-import { makePrompt } from '../promp/all_utils';
-import { make_nut_prompt } from '../promp/nut_utils';
+// import { makePrompt } from '../promp/all_utils';
+// import { make_nut_prompt } from '../promp/nut_utils';
 
 import path, { resolve } from 'path';
 import fs from 'fs';
@@ -12,10 +12,10 @@ import sharp from 'sharp';
 import { ImageAnnotatorClient } from '@google-cloud/vision';
 import { make_markdown_nut_prompt } from '../promp/markdown_nut_utils';
 import { mapMarkdownNutToObject } from '../mapper/mapMarkdonwDataToObject';
-import { make_markdown_all_prompt } from '../promp/markdown_all_utils';
+import { make_markdown_attr_1_prompt } from '../promp/markdown_attr_1_utils';
 import { mapMarkdownAllToObject } from '../mapper/mapMdAllToObject';
-import { make_markdown_all_prompt_test } from '../promp/markdown_all_utils_test';
-import { make_markdown_all_prompt_test_2 } from '../promp/markdown_all_utils_test_2';
+// import { make_markdown_all_prompt_test } from '../promp/markdown_all_utils_test';
+// import { make_markdown_all_prompt_test_2 } from '../promp/markdown_all_utils_test_2';
 import { make_gpt4_o_prompt } from '../promp/gpt4-o-mini';
 import { ChatCompletionContentPartImage } from 'openai/resources';
 
@@ -159,19 +159,6 @@ export const onProcessImage = async ({
   extraInfo?: any;
   config?: { flash: boolean };
 }) => {
-  // const images = collatedOuputPath.map((path) => {
-  //   const base64Image = encodeImageToBase64(path);
-  //   return {
-  //     inlineData: {
-  //       mimeType: 'image/png',
-  //       data: base64Image,
-  //     },
-  //   };
-  // });
-
-  // const text1 = {
-  //   text: prompt,
-  // };
   const imagesPath = collatedOuputPath;
 
   const resultFileName = (prefix ? `${prefix}` : '') + '.json';
@@ -211,11 +198,12 @@ export const onProcessImage = async ({
       ['chunk-' + resultFileName]: JSON.stringify(chunkResponse),
     };
 
-    const procResult = gemini_result?.includes('```json')
-      ? gemini_result?.split('```json\n')[1].split('```')[0]
-      : gemini_result?.includes('```markdown')
-      ? gemini_result?.split('```markdown\n')[1].split('```')[0]
-      : gemini_result;
+    // const procResult = gemini_result?.includes('```json')
+    //   ? gemini_result?.split('```json\n')[1].split('```')[0]
+    //   : gemini_result?.includes('```markdown')
+    //   ? gemini_result?.split('```markdown\n')[1].split('```')[0]
+    //   : gemini_result;
+    const procResult = gemini_result;
 
     if (!isMarkdown) {
       const result = JSON.parse(procResult);
@@ -268,7 +256,7 @@ export const onProcessImage = async ({
       JSON.stringify({ isSuccess: false })
     );
 
-    const updatedSession = await prisma.extractSession.update({
+    await prisma.extractSession.update({
       where: { sessionId },
       data: {
         status: 'fail',
@@ -283,7 +271,7 @@ export const onProcessImage = async ({
   }
 };
 
-export const onProcessOther = async ({
+export const onProcessAttribute = async ({
   req,
   res,
   invalidatedInput,
@@ -293,6 +281,8 @@ export const onProcessOther = async ({
   outputConfig,
   extraInfo,
   config,
+  prefix,
+  promptMakerFn,
 }: {
   req: any;
   res: any;
@@ -303,23 +293,24 @@ export const onProcessOther = async ({
   outputConfig: any;
   extraInfo?: any;
   config?: { flash: boolean };
+  prefix: string;
+  promptMakerFn: Function;
 }) => {
+  const ocrName = `${prefix}_orc.json`; //? example attr_1_ocr.json
+  const resultFieldName = `result_${prefix}`; //? example result_attr_1
+  const resultFileName = (prefix ? `${prefix}` : '') + '.json';
+
   if (!outputConfig.other) {
-    const resultFileName = 'all.json';
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
       resultFileName,
       JSON.stringify({ isSuccess: true, data: { product: {} } })
     );
 
-    writeJsonToFile(
-      resultsDir + `/${sessionId}`,
-      'all-orc.json',
-      JSON.stringify({})
-    );
+    writeJsonToFile(resultsDir + `/${sessionId}`, ocrName, JSON.stringify({}));
 
     let sessionPayload = {
-      ['all.json']: JSON.stringify({
+      [resultFileName]: JSON.stringify({
         isSuccess: true,
         data: {
           jsonData: { isSuccess: true, data: { product: {} } },
@@ -332,10 +323,6 @@ export const onProcessOther = async ({
   }
 
   try {
-    const prefix = 'all';
-
-    const resultFileName = (prefix ? `${prefix}` : '') + '.json';
-
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
       resultFileName,
@@ -361,12 +348,12 @@ export const onProcessOther = async ({
 
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
-      'all-orc.json',
+      ocrName,
       JSON.stringify(new_allText)
     );
 
     let sessionPayload = {
-      'all-ocr': JSON.stringify(new_allText),
+      [ocrName]: JSON.stringify(new_allText),
     };
 
     const finalSessionPayload = await onProcessImage({
@@ -381,7 +368,7 @@ export const onProcessOther = async ({
         ...invalidatedInput.nutExcluded,
       ],
 
-      prompt: make_markdown_all_prompt({
+      prompt: promptMakerFn({
         ocrText: JSON.stringify(new_allText),
         imageCount: [
           ...invalidatedInput.nutIncluded,
@@ -389,20 +376,16 @@ export const onProcessOther = async ({
         ]?.length,
       }),
       isMarkdown: true,
-      // mapMdToObjectFunct: mapMarkdownAllToObject,
       sessionPayload,
       extraInfo,
       config,
     });
 
-    console.log('update status to unknown');
-
     await prisma.extractSession.update({
       where: { sessionId },
       data: {
         status: 'unknown',
-        result_all: JSON.stringify(finalSessionPayload),
-        // result_nut: JSON.stringify(finalSessionPayload),
+        [resultFieldName]: JSON.stringify(finalSessionPayload),
       },
     });
   } catch (e) {

@@ -11,7 +11,7 @@ import {
   // removeRawFieldData,
 } from '../../lib/server_utils';
 
-import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
+// import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
 
 import { uploadsDir, resultsDir, baseDir } from '../../server';
 import { writeJsonToFile } from '../../lib/json';
@@ -61,107 +61,107 @@ const Storage = multer.diskStorage({
 
 const upload = multer({ storage: Storage });
 
-router.post(
-  '/process-image',
-  async (req, res, next) => {
-    const sessionId = uuidv4();
+// router.post(
+//   '/process-image',
+//   async (req, res, next) => {
+//     const sessionId = uuidv4();
 
-    // @ts-ignore
-    req.customData = { sessionId };
-    next();
-  },
-  upload.array('file'),
-  async (req, res) => {
-    // @ts-ignore
-    const sessionId = req?.customData?.sessionId;
+//     // @ts-ignore
+//     req.customData = { sessionId };
+//     next();
+//   },
+//   upload.array('file'),
+//   async (req, res) => {
+//     // @ts-ignore
+//     const sessionId = req?.customData?.sessionId;
 
-    const files = req.files as Express.Multer.File[];
+//     const files = req.files as Express.Multer.File[];
 
-    const filePaths = files?.map((file: any) => file.path);
+//     const filePaths = files?.map((file: any) => file.path);
 
-    const fileLists = files?.map((file: any) => {
-      return {
-        name: file?.filename,
-        path: file?.path,
-      };
-    });
+//     const fileLists = files?.map((file: any) => {
+//       return {
+//         name: file?.filename,
+//         path: file?.path,
+//       };
+//     });
 
-    writeJsonToFile(
-      resultsDir + `/${sessionId}`,
-      'images-list.json',
-      JSON.stringify(fileLists)
-    );
+//     writeJsonToFile(
+//       resultsDir + `/${sessionId}`,
+//       'images-list.json',
+//       JSON.stringify(fileLists)
+//     );
 
-    const collateImageName = `${sessionId}.jpeg`;
-    // const collatedOuputPath = path.join(uploadsDir, collateImageName);
-    // const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
+//     const collateImageName = `${sessionId}.jpeg`;
+//     // const collatedOuputPath = path.join(uploadsDir, collateImageName);
+//     // const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
 
-    console.log('run on model ', (global as any).generativeModelName);
+//     console.log('run on model ', (global as any).generativeModelName);
 
-    console.log('filePath', JSON.stringify(filePaths));
+//     console.log('filePath', JSON.stringify(filePaths));
 
-    const biasForm = JSON.parse(req.body?.biasForm);
-    const outputConfig = JSON.parse(req.body?.outputConfig);
+//     const biasForm = JSON.parse(req.body?.biasForm);
+//     const outputConfig = JSON.parse(req.body?.outputConfig);
 
-    let invalidatedInput = await findImagesContainNutFact(filePaths);
+//     let invalidatedInput = await findImagesContainNutFact(filePaths);
 
-    Object.entries(biasForm).forEach(([key, value]: any) => {
-      if (value?.haveNutFact === true) {
-        let newNutIncluded = addUniqueString(
-          invalidatedInput.nutIncluded,
-          filePaths[key]
-        );
+//     Object.entries(biasForm).forEach(([key, value]: any) => {
+//       if (value?.haveNutFact === true) {
+//         let newNutIncluded = addUniqueString(
+//           invalidatedInput.nutIncluded,
+//           filePaths[key]
+//         );
 
-        invalidatedInput.nutIncluded = newNutIncluded;
-      }
-    });
+//         invalidatedInput.nutIncluded = newNutIncluded;
+//       }
+//     });
 
-    console.log('result', JSON.stringify(invalidatedInput));
+//     console.log('result', JSON.stringify(invalidatedInput));
 
-    const nutImagesOCRresult = await getOcrTextAllImages(
-      invalidatedInput.nutIncluded
-    );
+//     const nutImagesOCRresult = await getOcrTextAllImages(
+//       invalidatedInput.nutIncluded
+//     );
 
-    const nutExcludedImagesOCRresult = await getOcrTextAllImages(
-      invalidatedInput.nutExcluded
-    );
+//     const nutExcludedImagesOCRresult = await getOcrTextAllImages(
+//       invalidatedInput.nutExcluded
+//     );
 
-    res.json({
-      sessionId,
-      images: [],
-      nutIncludedIdx: invalidatedInput?.nutIncludedIdx,
-      messages: [
-        invalidatedInput.nutIncluded?.length === 0
-          ? 'There is no nut/supp facts panel detected by nut/supp fact panel detector module. If nut/supp fact panels are on provided image. Please set up bias of nut/supp for image to extract info. (Nutrition and Supplement Panel detector is on development state)'
-          : null,
-      ],
-    });
+//     res.json({
+//       sessionId,
+//       images: [],
+//       nutIncludedIdx: invalidatedInput?.nutIncludedIdx,
+//       messages: [
+//         invalidatedInput.nutIncluded?.length === 0
+//           ? 'There is no nut/supp facts panel detected by nut/supp fact panel detector module. If nut/supp fact panels are on provided image. Please set up bias of nut/supp for image to extract info. (Nutrition and Supplement Panel detector is on development state)'
+//           : null,
+//       ],
+//     });
 
-    onProcessNut({
-      req,
-      res,
-      invalidatedInput,
-      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-      // ocrList: nutImagesOCRresult,
-      sessionId,
-      collateImageName,
-      outputConfig,
-    });
+//     onProcessNut({
+//       req,
+//       res,
+//       invalidatedInput,
+//       ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+//       // ocrList: nutImagesOCRresult,
+//       sessionId,
+//       collateImageName,
+//       outputConfig,
+//     });
 
-    onProcessOther({
-      req,
-      res,
-      invalidatedInput,
-      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-      sessionId,
-      collateImageName,
-      outputConfig,
-      config: {
-        flash: true,
-      },
-    });
-  }
-);
+//     onProcessOther({
+//       req,
+//       res,
+//       invalidatedInput,
+//       ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+//       sessionId,
+//       collateImageName,
+//       outputConfig,
+//       config: {
+//         flash: true,
+//       },
+//     });
+//   }
+// );
 
 const getFilename = (filePath: any) => {
   const match = filePath.match(/[^\\\/]+$/);

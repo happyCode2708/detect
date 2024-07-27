@@ -39,6 +39,8 @@ model ExtractSession {
   status     String
   result_nut String?
   result_all String?
+  result_attr_1 String?
+  result_attr_2 String?
   result     String?
 }
 

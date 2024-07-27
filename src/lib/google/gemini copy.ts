@@ -1,8 +1,8 @@
 import { writeJsonToFile } from '../json';
 import { encodeImageToBase64 } from '../image';
 import { mapOcrToPredictDataPoint } from '../validator/mapOcrToPredictDataPoint';
-import { makePrompt } from '../promp/all_utils';
-import { make_nut_prompt } from '../promp/nut_utils';
+// import { makePrompt } from '../promp/all_utils';
+// import { make_nut_prompt } from '../promp/nut_utils';
 
 import path, { resolve } from 'path';
 import fs from 'fs';
@@ -12,10 +12,10 @@ import sharp from 'sharp';
 import { ImageAnnotatorClient } from '@google-cloud/vision';
 import { make_markdown_nut_prompt } from '../promp/markdown_nut_utils';
 import { mapMarkdownNutToObject } from '../mapper/mapMarkdonwDataToObject';
-import { make_markdown_all_prompt } from '../promp/markdown_all_utils';
+import { make_markdown_attr_1_prompt } from '../promp/markdown_attr_1_utils';
 import { mapMarkdownAllToObject } from '../mapper/mapMdAllToObject';
-import { make_markdown_all_prompt_test } from '../promp/markdown_all_utils_test';
-import { make_markdown_all_prompt_test_2 } from '../promp/markdown_all_utils_test_2';
+// import { make_markdown_all_prompt_test } from '../promp/markdown_all_utils_test';
+// import { make_markdown_all_prompt_test_2 } from '../promp/markdown_all_utils_test_2';
 
 export const generateContent = async (
   images: any[],
@@ -23,6 +23,9 @@ export const generateContent = async (
   config?: { flash: boolean; region?: number },
   modelName?: string
 ) => {
+  if (modelName === 'gemini') {
+  }
+
   console.log('FLASH ----', config?.flash);
   const model =
     config?.flash === true
@@ -356,7 +359,7 @@ export const onProcessOther = async ({
         ...invalidatedInput.nutExcluded,
       ],
 
-      prompt: make_markdown_all_prompt({
+      prompt: make_markdown_attr_1_prompt({
         ocrText: JSON.stringify(new_allText),
         imageCount: [
           ...invalidatedInput.nutIncluded,

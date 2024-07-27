@@ -7,6 +7,7 @@ import { responseValidator } from '../../lib/validator/main';
 import { removeRawFieldData } from '../../lib/server_utils';
 import { mapMarkdownAllToObject } from '../../lib/mapper/mapMdAllToObject';
 import { mapMarkdownNutToObject } from '../../lib/mapper/mapMarkdonwDataToObject';
+import { attr } from 'cheerio/lib/api/attributes';
 
 const router = express.Router();
 
@@ -144,10 +145,20 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
     if (!session) {
       res.status(404).json({ error: 'Session not found' });
     }
-    const { result_nut: result_nut_raw, result_all: result_all_raw } =
-      session as any;
+    const {
+      result_nut: result_nut_raw,
+      // result_all: result_all_raw,
+      result_attr_1: result_attr_1_raw,
+      result_attr_2: result_attr_2_raw,
+    } = session as any;
 
-    if (session?.status === 'unknown' && (!result_nut_raw || !result_all_raw)) {
+    if (
+      session?.status === 'unknown' &&
+      (!result_nut_raw ||
+        // !result_all_raw ||
+        !result_attr_1_raw ||
+        !result_attr_2_raw)
+    ) {
       return res.status(200).send({
         isSuccess: 'unknown',
         status: 'processing',
@@ -164,18 +175,31 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
     }
 
     const result_nut = JSON.parse(result_nut_raw);
-    const result_all = JSON.parse(result_all_raw);
+    // const result_all = JSON.parse(result_all_raw);
+    const result_attr_1 = JSON.parse(result_attr_1_raw);
+    const result_attr_2 = JSON.parse(result_attr_2_raw);
 
     const nutRes = JSON.parse(result_nut?.['nut.json']);
-    const allRes = JSON.parse(result_all?.['all.json']);
+    // const allRes = JSON.parse(result_all?.['all.json']);
+    const attr1Res = JSON.parse(result_attr_1?.['attr_1.json']);
+    const attr2Res = JSON.parse(result_attr_2?.['attr_2.json']);
 
-    console.log(typeof nutRes);
+    // const {
+    //   isSuccess: allSuccess,
+    //   status: allStatus,
+    //   data: allResData,
+    // } = allRes || {};
+    const {
+      isSuccess: attr1Success,
+      status: attr1Status,
+      data: attr1ResData,
+    } = attr1Res || {};
 
     const {
-      isSuccess: allSuccess,
-      status: allStatus,
-      data: allResData,
-    } = allRes || {};
+      isSuccess: attr2Success,
+      status: attr2Status,
+      data: attr2ResData,
+    } = attr2Res || {};
 
     const {
       isSuccess: nutSuccess,
@@ -183,7 +207,12 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       data: nutResData,
     } = nutRes || {};
 
-    if (nutSuccess === false || allSuccess === false) {
+    if (
+      nutSuccess === false ||
+      // allSuccess === false ||
+      attr1Success === false ||
+      attr2Success === false
+    ) {
       session = await prisma.extractSession.update({
         where: { sessionId },
         data: {
@@ -197,9 +226,13 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       });
     }
 
+    const combinedMarkdownContent = `${attr1ResData?.markdownContent} \n ${attr2ResData?.markdownContent}`;
+
     const allJsonData = mapMarkdownAllToObject(
-      allResData?.markdownContent,
-      allResData?.extraInfo
+      // allResData?.markdownContent,
+      // allResData?.extraInfo
+      combinedMarkdownContent,
+      attr1ResData?.extraInfo
     );
     const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
 
@@ -210,7 +243,8 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
         // factPanels: nutRes?.data?.jsonData, //* markdown converted
         factPanels: nutJsonData,
         nutMark: nutRes?.data?.markdownContent,
-        allMark: allRes?.data?.markdownContent,
+        // allMark: allRes?.data?.markdownContent,
+        allMark: combinedMarkdownContent,
       },
     };
 
@@ -224,7 +258,7 @@ router.get('/pooling-result/:sessionId', async (req, res) => {
       },
     });
 
-    const extraInfo = allResData?.extraInfo;
+    const extraInfo = attr1ResData?.extraInfo;
     const upc12 = extraInfo?.physical?.upc12;
 
     if (upc12) {

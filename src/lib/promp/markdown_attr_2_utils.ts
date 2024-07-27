@@ -105,7 +105,7 @@
 // + "storage instruction" are all instruction sentences about how to storage product.
 // Example 1: "reseal for freshness"
 // Example 2: "keep refrigerated"
-export const make_markdown_all_prompt = ({
+export const make_markdown_attr_2_prompt = ({
   ocrText,
   imageCount,
 }: {
@@ -139,8 +139,6 @@ Ex: you are not allow to infer "no animal ingredients" from "organic certifier"
 11) do not bold letter with ** and ** tag 
 
 12) result must be in order and include all tables below (note their formats right below TABLE FORMAT:)
-LABELING_INFO_TABLE
-LABELING_INFO_ANALYSIS_TABLE
 SUGAR_CLAIM_TABLE
 FAT_CLAIM_TABLE
 PROCESS_CLAIM_TABLE
@@ -149,14 +147,9 @@ SALT_CLAIM_TABLE
 FIRST_EXTRA_CLAIM_TABLE
 SECOND_EXTRA_CLAIM_TABLE
 THIRD_EXTRA_CLAIM_TABLE
-ALLERGEN_TABLE
-HEADER_TABLE
 INGREDIENT_TABLE
 MARKETING_TABLE
-COOKING_INSTRUCTION
-STORAGE_INSTRUCTION
 SUPPLY_CHAIN_TABLE
-BASE_CERTIFIER_CLAIM_TABLE
 ATTRIBUTE_TABLE
 
 without any number like 1) or 2) before table names
@@ -168,69 +161,23 @@ IMPORTANT RULES:
 1) return result rules:
 + just only return table with table header and table row data. do not include any other things in the output.
 
-3) "SUGAR_CLAIM_TABLE" rules:
-+ possible answers of "how product state about it ?" are "free of"/  "free from" / "made without" / "no contain" / "contain" / "lower" / "low" / "0g" / "zero" / "other" / "does not contain" / "not too sweet" / "low sweet" / "sweetened" / "other".
-
-
-6) "marketing" table rules:
-+ "youtube icon type" have 2 types (answer is type_1/type_2)
-type_1 is youtube icon have two texts "you" and "tube" on it.
-type_2 is youtube icon of youtube logo with play button without name youtube
-
-+ "social media list" is the list of social media method mentioned on product images (such as "facebook", "google", "instagram", "pinterest", "snapchat", "tiktok", "youtube", "twitter", ...).
-+ "website list" are all website links found on product (website link exclude "nongmoproject.org") and be careful the content after website could be phone number.
-Example 1: www.cocacola.com, www.cocacola.com/policy, www.cocacola.com/fanpage, cocacola.com
-Example 2: if text "coca.com . 555/200-3529" it seem that "555/200-3529" is a phone number or other number not belong to website link "coca.com"
-
-+ "social media text" is a list of text usually start with "@", or "#" those can be used to search the product on social media. Hint, it is usually next to social media icons.
-Example 1: @cocacola
-
-+ "enlarge to show" is true if statement such as "enlarged to show..." seen on product image.
-
-
-10) Three "extra claim table" rules:
+2) Three "extra claim table" rules:
 + text "make without: ..." is in type "marketing text on product".
 + "how product state about it ?" the possible answers of question are  "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use".
 
 RESULT THAT I NEED:
 Carefully examine all text infos, all icons, all logos  from provided images and help me return output with all markdown tables format below remember that all provided images are captured pictured of one product only from different angles.
 
-1) LABELING INFO TABLE info recorded in markdown TABLE FORMAT below
-
-IMPORTANT NOTE:
-+ "label item" could be easily detected by some icons or logos or label text provided images.
-
-+ "label item" could be "certification label", or "label text" seen on provided images that indicate some attributes of product.
-Example 1: "SOY FREE" label text
-Example 2: "NUT FREE" label text
-
-+ remember when product state "something free" it mean product free of that thing (such as soy free, dairy free, ...)
-Example 1: "gluten free" mean product not contain "gluten"
-Example 2: "nuts free" mean product not contain "nuts"
-
-TABLE FORMAT:
-LABELING_INFO_TABLE
-| label item type on product (answer is "certification label"/ "label text"/ "other") (if type "other" tell me what type you think it belong to) | what label item say ? |
-| ------- | -------- |
-END__LABELING__INFO__TABLE
-
-2) LABELING INFO ANALYSIS TABLE recorded in markdown TABLE FORMAT below
-
-IMPORTANT NOTE:
-+ "label info analysis table" is the analyzing table for all label item in the table of LABELING_INFO_TABLE.
-
-TABLE FORMAT:
-LABELING_INFO_ANALYSIS_TABLE
-| label item | do label indicate product does not contain something? (answer is yes/no) | what are exactly things that product say not contain from the label item (split things by "/" for multiple if needed) |
-| ------- | -------- | -------- |
-END__LABELING__INFO__ANALYSIS__TABLE
-
-2) SUGAR CLAIM TABLE info recorded in markdown table format below:
+1) SUGAR CLAIM TABLE info recorded in markdown table format below:
 
 IMPORTANT NOTE:
 + only process with provided sugar items below.
+
 + possible answers of "how product state about it ?" for sugar claim table  are  "free of"/  "free from" / "made without" / "no contain" / "contain" / "lower" / "low" / "0g" / "zero" / "other" / "does not contain" / "not too sweet" / "low sweet" / "sweetened" / "other".
+
 + sugar item detected from nutrition fact panel is invalid for sugar claim. Only check sugar item from other sources.
+
++ possible answers of "how product state about it ?" are "free of"/  "free from" / "made without" / "no contain" / "contain" / "lower" / "low" / "0g" / "zero" / "other" / "does not contain" / "not too sweet" / "low sweet" / "sweetened" / "other".
 
 TABLE FORMAT:
 SUGAR_CLAIM_TABLE
@@ -272,7 +219,7 @@ SUGAR_CLAIM_TABLE
 | xylitol |
 END__SUGAR__CLAIM__TABLE
 
-3) FAT_CLAIM_TABLE info of product images recorded in markdown table format below:
+2) FAT_CLAIM_TABLE info of product images recorded in markdown table format below:
 
 TABLE FORMAT:
 FAT_CLAIM_TABLE
@@ -291,7 +238,7 @@ FAT_CLAIM_TABLE
 | have zero trans fat |
 END__FAT__CLAIM__TABLE
 
-4) PROCESS_CLAIM_TABLE info recorded in markdown table format below:
+3) PROCESS_CLAIM_TABLE info recorded in markdown table format below:
 
 IMPORTANT NOTE:in
 + "live food" is living animals used as food for pet.
@@ -368,7 +315,7 @@ PROCESS_CLAIM_TABLE
 | wild caught | ...
 END__PROCESS__CLAIM__TABLE
 
-5) CALORIE CLAIM TABLE info recorded in markdown table format below:
+4) CALORIE CLAIM TABLE info recorded in markdown table format below:
 
 TABLE FORMAT:
 CALORIE_CLAIM_TABLE
@@ -379,7 +326,7 @@ CALORIE_CLAIM_TABLE
 | have zero calorie | ...
 END__CALORIE__CLAIM__TABLE
 
-6) SALT CLAIM TABLE info recorded in markdown table format below:
+5) SALT CLAIM TABLE info recorded in markdown table format below:
 
 TABLE FORMAT:
 SALT_CLAIM_TABLE
@@ -396,7 +343,7 @@ SALT_CLAIM_TABLE
 | very low sodium | ...
 END__SALT__CLAIM__TABLE
 
-7) FIRST EXTRA CLAIM TABLE info recorded in markdown table format below:
+6) FIRST EXTRA CLAIM TABLE info recorded in markdown table format below:
 
 IMPORTANT NOTE:
 + text like "contain ..." or "contain no ..." is "marketing text on product" and NOT "ingredient list"
@@ -463,7 +410,7 @@ FIRST_EXTRA_CLAIM_TABLE
 | active yeast | ...
 END__FIRST__EXTRA__CLAIM__TABLE
 
-8) SECOND_EXTRA_CLAIM_TABLE info recorded in markdown table format below:
+7) SECOND_EXTRA_CLAIM_TABLE info recorded in markdown table format below:
 
 IMPORTANT NOTE:
 + no note
@@ -506,7 +453,7 @@ SECOND_EXTRA_CLAIM_TABLE
 | parabens | ...
 END__SECOND__EXTRA__CLAIM__TABLE
 
-9) THIRD_EXTRA_CLAIM_TABLE info recorded in markdown table format below: 
+8) THIRD_EXTRA_CLAIM_TABLE info recorded in markdown table format below: 
 
 IMPORTANT NOTE:
 + "vegan" not mean "vegan ingredients"
@@ -559,80 +506,7 @@ THIRD_EXTRA_CLAIM_TABLE
 | chlorine | ...
 END__THIRD__EXTRA__CLAIM__TABLE
 
-10) Allergen info recorded in markdown table format below:
- 
-IMPORTANT NOTE:
-+ tree nuts also includes "coconut"
-
-+ "allergen contain statement" are the exact contexts that you found on provided images about allergen info, usually start with "contains:", "contain", "may contain", "may contain:", "allergen statement:, ... NOT due to sharing manufacturing equipments and NOT due to manufactured in same facility with other products.
-Example 1: "allergen statement: contains milk"
-Example 2: "may contain: milk, peanut"
-Example 3: "contain: milk, peanut"
-
-+ "allergens contain statement break-down list" is a string list
-ex 1: "oats/milk"
-
-+ "allergens contain statement break-down list" is the allergen ingredients from "allergen contain statement" and do not collect from product ingredient list.
-
-+ "allergens on equipments statement" are the exact contexts that you found on provided images about allergens could present on the product through manufacturing equipments.
-Example 1: "produced in a facility that uses soy, and peanut"
-Example 2: "Manufactured in facility that also processes peanut, milk"
-Example 3: "Made on equipment that process peanut"
-Example 4: "In facility that process peanut"
-
-+ "allergens on equipments statement break-down list" is the break-down list of all ingredients that is stated to present in facility or manufacturing equipments.(excluding all allergen that statement claim not present in facility)
-Example 1: "Manufactured in a egg and milk free facility that also processes peanut, wheat products" should be recorded as "peanut/wheat" since text "in a egg and milk free facility" mean the egg and milk is not present in facility.
-Example 2: "Made in a facility containing no peanuts , no tree nuts" so "allergens on equipments statement break-down list" value is empty. 
-
-+ "exact text on images about allergens that product does not contain" are the exact contexts that you found on provided images about allergen info, that product claim to not contain or free of or free.
-example 1: "contain no wheat, milk"
-example 2: "does not contain wheat, milk"
-example 3: "free of wheat, milk"
-example 4: "non-dairy" text mean does not contain allergen ingredient of "dairy"
-example 5: "no egg"
-example 6: "soy free", "dairy-free"
-
-TABLE FORMAT:
-ALLERGEN_TABLE
-| allergen info | value 1 | value 2 | value 3 | ... (more columns if needed)
-| ------- | -------- | -------- | -------- | ...
-| allergen contain statement | 
-| allergens contain statement break-down list (split by "/") |
-| allergens on equipments statement |
-| allergens on equipments statement break-down list (split by "/") |
-| exact text on images about allergens that product does not contain |
-| allergens product does not contain break-down list (split by "/") |
-END__ALLERGEN__TABLE
-
-11) Header info with table format below:
-IMPORTANT NOTE:
-+ header table only have 1 row item so you must carefully examine the images.
-+ "primary size" and "secondary size" and "third size" are a quantity measurement of product in there different unit of measurement. They are not info from "serving size" in nutrition fact panel.
-Ex 1: "primary size" = "100 gram"
-Ex 3: "WT 2.68 OZ (40g) should recorded as "primary size" = "2.68 OZ" and "secondary size" = "40g"
-Ex 2: "32 fl oz ( 2 pt ) 946 mL" should recorded as "primary size" = "32 fl oz" and "secondary size" = "2 pt" and "third size" = "946 mL"
-Ex 4: "100 capsules"  should recorded as "primary size" = "100 capsules"
-
-+ just collect size in order. If production mention three type of uom it will have third size
-
-+ "primary size" must content quantity value number and its oum (same for primary size, and third size)
-
-+ "count" is the count number of smaller unit inside a package, or a display shipper, or a case, or a box.
-
-+ "full size statement" is the whole size statement text found on product images that might includes all texts about primary size, secondary size,  third size and serving amounts if exits  but not info from nutrition panel
-Ex 1: "Net WT 9.28oz(260g) 10 cups"
-Ex 2: "16 FL OZ (472 ML)
-Ex 3: "900 CAPSULES 400 servings"
-Ex 4: "24 K-CUP PODS - 0.55 OZ (5.2)G/EA NET WT 4.44 OZ (38g)"
-
-
-TABLE FORMAT:
-HEADER_TABLE
-| product name | brand name | primary size | secondary size | third size | full size statement | count | count uom |
-| ------- | -------- | -------- | ------- | -------- | -------- | -------- | -------- |
-END__HEADER__TABLE
-
-12) Ingredient info with table format below:
+9) Ingredient info with table format below:
 
 IMPORTANT NOTE:
 + is the list of statements about ingredients of product (since product can have many ingredients list)
@@ -657,7 +531,23 @@ INGREDIENT_TABLE
 | ------- | ------- | -------- | -------- | -------- | -------- |
 END__INGREDIENT__TABLE
 
-13) Marketing info with table format below:
+10) Marketing info with table format below:
+
+IMPORTANT NOTES:
++ "youtube icon type" have 2 types (answer is type_1/type_2)
+type_1 is youtube icon have two texts "you" and "tube" on it.
+type_2 is youtube icon of youtube logo with play button without name youtube
+
++ "social media list" is the list of social media method mentioned on product images (such as "facebook", "google", "instagram", "pinterest", "snapchat", "tiktok", "youtube", "twitter", ...).
+
++ "website list" are all website links found on product (website link exclude "nongmoproject.org") and be careful the content after website could be phone number.
+Example 1: www.cocacola.com, www.cocacola.com/policy, www.cocacola.com/fanpage, cocacola.com
+Example 2: if text "coca.com . 555/200-3529" it seem that "555/200-3529" is a phone number or other number not belong to website link "coca.com"
+
++ "social media text" is a list of text usually start with "@", or "#" those can be used to search the product on social media. Hint, it is usually next to social media icons.
+Example 1: @cocacola
+
++ "enlarge to show" is true if statement such as "enlarged to show..." seen on product image.
 
 TABLE FORMAT:
 MARKETING_TABLE
@@ -665,17 +555,7 @@ MARKETING_TABLE
 | ------- | -------- | -------- | ------- | ------- | ------- | -------- | -------- | ------- | ------- | ------- |
 END__MARKETING__TABLE
 
-14) Instruction info record with format below:
-
-COOKING_INSTRUCTION
-give me all cooking instruction here
-END__COOKING__INSTRUCTION
-
-STORAGE_INSTRUCTION
-give me all storage instruction here
-STORAGE_INSTRUCTION
-
-15) supply chain info with table format below:
+11) supply chain info with table format below:
 
 IMPORTANT NOTES:
 + "country of origin text" example
@@ -720,59 +600,7 @@ SUPPLY_CHAIN_TABLE
 | manufacture zipCode |
 END__SUPPLY__CHAIN__TABLE
 
-16) Base certifier claim info with table format below:
-
-IMPORTANT_NOTES:
-+ carefully check for text or certifier logo that could indicate "base certifier claim" from provided image
-Ex: logo U kosher found mean "kosher claim" = "yes" 
-
-TABLE FORMAT:
-BASE_CERTIFIER_CLAIM_TABLE
-| claim | is product claim that ? (answer is yes/no/unknown) |
-| ------- | ------- |
-| bee friendly claim |
-| bio-based claim |
-| biodynamic claim |
-| bioengineered claim |
-| cbd cannabidiol / help claim |
-| carbon footprint claim |
-| certified b corporation |
-| certified by international packaged ice association |
-| cold pressure verified |
-| cold pressure protected claim |
-| cradle to cradle claim |
-| cruelty free claim |
-| diabetic friendly claim |
-| eco fishery claim |
-| fair trade claim |
-| for life claim |
-| use GMO claim |
-| gmp claim |
-| gluten-free claim |
-| glycemic index claim |
-| glyphosate residue free claim |
-| grass-fed claim |
-| halal claim |
-| hearth healthy claim |
-| Keto/Ketogenic Claim |
-| Kosher Claim |
-| Live and Active Culture Claim |
-| Low Glycemic Claim |
-| New York State Grown & Certified Claim |
-| Non-GMO Claim |
-| Organic Claim |
-| PACA Claim |
-| PASA Claim |
-| Paleo Claim |
-| Plant Based/Derived Claim |
-| Rain Forest Alliance Claim |
-| Vegan Claim |
-| Vegetarian Claim |
-| Viticulture Claim |
-| Whole Grain Claim |
-END__BASE__CERTIFIER_CLAIM_TABLE
-
-17) some other attribute info recorded with table format below:
+12) some other attribute info recorded with table format below:
 
 TABLE FORMAT:
 ATTRIBUTE_TABLE
