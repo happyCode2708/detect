@@ -32,6 +32,7 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     validated_instructions,
     marketing,
     supplyChain,
+    validated_supplyChain,
   } = productInfo;
 
   const {
@@ -176,13 +177,21 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
       </SectionWrapper>
       <SectionWrapper name='supplyChain'>
         <CamelFieldStringRender objectValues={supplyChain?.[0]} />
+        {validated_supplyChain && (
+          <div className='border rounded-md mb-2 p-1'>
+            <div className='font-bold uppercase p-1 rounded-md bg-green-600 text-white inline-block'>
+              validated result
+            </div>
+            <CamelFieldStringRender objectValues={validated_supplyChain} />
+          </div>
+        )}
       </SectionWrapper>
       <SectionWrapper name='ingredients'>
         {ingredients?.map((ingredientsItem: any, idx: number) => {
           const { validated_ingredients, ...rawIngredientInfo } =
             ingredientsItem || {};
           return (
-            <div className='rounded-sm p-2 border mb-2'>
+            <div className='rounded-sm p-2 border mb-2' key={idx}>
               <CamelFieldStringRender
                 objectValues={rawIngredientInfo}
                 key={idx}
@@ -191,10 +200,7 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
                 <div className='font-bold uppercase p-1 rounded-md bg-green-600 text-white inline-block'>
                   validated result
                 </div>
-                <CamelFieldStringRender
-                  objectValues={validated_ingredients}
-                  key={idx}
-                />
+                <CamelFieldStringRender objectValues={validated_ingredients} />
               </div>
             </div>
           );

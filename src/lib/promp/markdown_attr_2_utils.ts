@@ -559,13 +559,13 @@ END__MARKETING__TABLE
 
 IMPORTANT NOTES:
 + "country of origin text" example
-Ex 1: "manufactured in Canada"
-Ex 2: "made in Brazil"
-EX 3: "produced in Brazil"
+Example 1: "manufactured in Canada"
+Example 2: "made in Brazil"
+EXample 3: "produced in Brazil"
 
-+ "country of origin" example
-Ex 1: "Canada"
-Ex 2: "Brazil"
++ "country of origin" is exact text (found on product images) of the origin country found on product images where the product was made in.
+Example 1: "Canada"
+Example 2: "Brazil"
 
 + "manufacturer" is The company that makes the product.
 + "distributor" is The company that sells the product, but does not make it.

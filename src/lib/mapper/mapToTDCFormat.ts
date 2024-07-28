@@ -11,6 +11,7 @@ export const mapToTDCformat = (extractData: any) => {
     ingredients,
     marketing,
     supplyChain,
+    validated_supplyChain,
     instructions,
     validated_instructions,
     factPanels,
@@ -50,24 +51,24 @@ export const mapToTDCformat = (extractData: any) => {
         : null,
 
     //* supply chain
-    ManufacturerNamePackaging: toUpper(supplyChain?.[0]?.manufacturerName?.[0]),
-    ManufacturerCityPackaging: toUpper(supplyChain?.[0]?.manufacturerCity?.[0]),
+    ManufacturerNamePackaging: toUpper(validated_supplyChain?.manufacturerName),
+    ManufacturerCityPackaging: toUpper(validated_supplyChain?.manufacturerCity),
     ManufacturerPhoneNumberPackaging: toUpper(
-      supplyChain?.[0]?.manufacturerPhoneNumber?.[0]
+      validated_supplyChain?.manufacturerPhoneNumber
     ),
     ManufacturerStatePackaging: toUpper(
-      supplyChain?.[0]?.validated_manufacturerState?.[0]
+      validated_supplyChain?.validated_manufacturerState
     ),
     ManufacturerStreetPackaging: toUpper(
-      supplyChain?.[0]?.manufacturerStreetAddress?.[0]
+      validated_supplyChain?.manufacturerStreetAddress
     ),
     ManufacturerZipCodePackaging: toUpper(
-      supplyChain?.[0]?.manufactureZipCode?.[0]
+      validated_supplyChain.manufactureZipCode
     ),
     // ...mapDistributedBy(supplyChain),
-    DistributedBy: toUpper(supplyChain?.[0]?.fullTextDistributor?.[0]),
-    CountryOfOriginText: toUpper(supplyChain?.[0]?.countryOfOriginText),
-    CountryOfOriginName: toUpper(supplyChain?.[0]?.validated_countryOfOrigin),
+    DistributedBy: toUpper(validated_supplyChain?.distributedByText),
+    CountryOfOriginText: toUpper(validated_supplyChain?.countryOfOriginText),
+    CountryOfOriginName: toUpper(validated_supplyChain?.countryOfOrigin),
 
     //* instructions
     // UsageInstructions: instructions?.[0]?.usageInstruction,

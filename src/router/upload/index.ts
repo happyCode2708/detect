@@ -356,18 +356,35 @@ router.post('/revalidate-product-data', async (req, res) => {
 
     const latestExtractSession = product.extractSessions?.[0];
     const {
-      result_all: result_all_raw,
+      // result_all: result_all_raw,
       result_nut: result_nut_raw,
+      result_attr_1: result_attr_1_raw,
+      result_attr_2: result_attr_2_raw,
       sessionId,
     } = latestExtractSession;
 
-    if (!result_all_raw || !result_nut_raw) {
+    if (
+      !result_nut_raw ||
+      // !result_all_raw ||
+      !result_attr_1_raw ||
+      !result_attr_2_raw
+    ) {
       return res.status(404).json({ error: 'Product not valid to revalidate' });
     }
-    const finalAll = JSON.parse(result_all_raw);
-    const finalNut = JSON.parse(result_nut_raw);
+    const result_nut = JSON.parse(result_nut_raw);
+    // const finalAll = JSON.parse(result_all_raw);
+    const result_attr_1 = JSON.parse(result_attr_1_raw);
+    const result_attr_2 = JSON.parse(result_attr_2_raw);
 
-    await createFinalResult({ finalAll, finalNut, sessionId, res });
+    await createFinalResult({
+      result_attr: {
+        result_attr_1,
+        result_attr_2,
+      },
+      result_nut,
+      sessionId,
+      res,
+    });
 
     res.status(200).json({
       isSuccess: true,
@@ -385,40 +402,69 @@ router.post('/revalidate-product-data', async (req, res) => {
 });
 
 const createFinalResult = async ({
-  finalNut,
-  finalAll,
+  // finalNut,
+  result_nut,
+  // finalAll,
+  result_attr,
   sessionId,
   res,
 }: {
-  finalNut: any;
-  finalAll: any;
+  // finalNut: any;
+  // finalAll: any;
+  result_nut: any;
+  result_attr: any;
   sessionId: string;
   res: any;
 }) => {
   try {
-    const allRes = JSON.parse(finalAll?.['all.json']);
-    const nutRes = JSON.parse(finalNut?.['nut.json']);
+    const { result_attr_1, result_attr_2 } = result_attr;
+    // const allRes = JSON.parse(finalAll?.['all.json']);
+    const attr1Res = JSON.parse(result_attr_1?.['attr_1.json']);
+    const attr2Res = JSON.parse(result_attr_2?.['attr_2.json']);
+    const nutRes = JSON.parse(result_nut?.['nut.json']);
     // const ocrClaims = JSON.parse(ocrClaimData);
 
+    // const {
+    //   isSuccess: allSuccess,
+    //   status: allStatus,
+    //   data: allResData,
+    // } = allRes || {};
+
     const {
-      isSuccess: allSuccess,
-      status: allStatus,
-      data: allResData,
-    } = allRes || {};
+      isSuccess: attr1Success,
+      status: attr1Status,
+      data: attr1ResData,
+    } = attr1Res || {};
+
+    const {
+      isSuccess: attr2Success,
+      status: attr2Status,
+      data: attr2ResData,
+    } = attr2Res || {};
+
     const {
       isSuccess: nutSuccess,
       status: nutStatus,
       data: nutResData,
     } = nutRes || {};
 
-    if (nutSuccess === false || allSuccess === false) {
+    if (
+      nutSuccess === false ||
+      // allSuccess === false ||
+      attr1Success === false ||
+      attr2Success === false
+    ) {
       return;
     }
 
+    const combinedMarkdownContent = `${attr1ResData?.markdownContent} \n ${attr2ResData?.markdownContent}`;
+
     //* if both process success
     const allJsonData = mapMarkdownAllToObject(
-      allResData?.markdownContent,
-      allResData?.extraInfo
+      // allResData?.markdownContent,
+      // allResData?.extraInfo
+      combinedMarkdownContent,
+      attr1ResData?.extraInfo
     );
     const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
 
@@ -429,7 +475,8 @@ const createFinalResult = async ({
         // factPanels: nutRes?.data?.jsonData, //* markdown converted
         factPanels: nutJsonData,
         nutMark: nutRes?.data?.markdownContent,
-        allMark: allRes?.data?.markdownContent,
+        // allMark: allRes?.data?.markdownContent,
+        allMark: combinedMarkdownContent,
       },
     };
 
@@ -439,8 +486,10 @@ const createFinalResult = async ({
       where: { sessionId },
       data: {
         status: 'success',
-        result_all: JSON.stringify(finalAll),
-        result_nut: JSON.stringify(finalNut),
+        // result_all: JSON.stringify(finalAll)
+        result_attr_1: JSON.stringify(result_attr?.result_attr_1),
+        result_attr_2: JSON.stringify(result_attr?.result_attr_2),
+        result_nut: JSON.stringify(result_nut),
         result: JSON.stringify(validatedResponse),
       },
     });

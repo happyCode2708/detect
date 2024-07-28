@@ -1,43 +1,89 @@
+import { isValueEmpty } from '../../../lib/mapper/checkValueEmpty';
+import { trimPeriodsAndCommas } from '../../../lib/utils/string';
 import { toLower, toUpper } from 'lodash';
 
 export const supplyChainValidate = async (modifiedProductDataPoints: any) => {
+  modifiedProductDataPoints['validated_supplyChain'] = {};
+
   await validateManufacturerState(modifiedProductDataPoints);
   await validateCountryOfOrigin(modifiedProductDataPoints);
+  await validateOtherFields(modifiedProductDataPoints);
 };
 
 const validateManufacturerState = async (modifiedProductDataPoints: any) => {
   const manufacturerState =
     modifiedProductDataPoints?.supplyChain?.[0]?.manufacturerState?.[0];
 
-  if (!manufacturerState) return;
+  if (isValueEmpty(manufacturerState)) return;
 
   const upperAbbreviation = manufacturerState?.trim().toUpperCase();
   if (states[upperAbbreviation]) {
-    modifiedProductDataPoints['supplyChain'][0]['validated_manufacturerState'] =
-      [states[upperAbbreviation]];
+    // modifiedProductDataPoints['supplyChain'][0]['validated_manufacturerState'] =
+    //   [states[upperAbbreviation]];
+    modifiedProductDataPoints['validated_supplyChain']['manufacturerState'] =
+      states[upperAbbreviation];
   } else {
-    modifiedProductDataPoints['supplyChain'][0]['validated_manufacturerState'] =
-      [toUpper(manufacturerState)];
+    // modifiedProductDataPoints['supplyChain'][0]['validated_manufacturerState'] =
+    //   [toUpper(manufacturerState)];
+    modifiedProductDataPoints['validated_supplyChain']['manufacturerState'] =
+      toUpper(manufacturerState);
   }
 };
 
 const validateCountryOfOrigin = async (modifiedProductDataPoints: any) => {
-  const countryOfOrigin =
-    modifiedProductDataPoints?.supplyChain?.[0]?.countryOfOrigin?.[0];
+  const countryOfOrigin = trimPeriodsAndCommas(
+    modifiedProductDataPoints?.supplyChain?.[0]?.countryOfOrigin?.[0]?.trim()
+  );
 
-  if (!countryOfOrigin) return;
+  if (isValueEmpty(countryOfOrigin)) return;
 
-  const upperName = countryOfOrigin?.trim().toUpperCase();
+  const upperName = countryOfOrigin?.toUpperCase() as string;
 
   if (COUNTRY_SHORT_NAMES?.[upperName]) {
-    modifiedProductDataPoints['supplyChain'][0]['validated_countryOfOrigin'] = [
-      toUpper(COUNTRY_SHORT_NAMES[upperName]),
-    ];
+    // modifiedProductDataPoints['supplyChain'][0]['validated_countryOfOrigin'] = [
+    //   toUpper(COUNTRY_SHORT_NAMES[upperName]),
+    // ];
+
+    modifiedProductDataPoints['validated_supplyChain']['countryOfOrigin'] =
+      toUpper(COUNTRY_SHORT_NAMES[upperName]);
   } else {
-    modifiedProductDataPoints['supplyChain'][0]['validated_countryOfOrigin'] = [
-      upperName,
-    ];
+    // modifiedProductDataPoints['supplyChain'][0]['validated_countryOfOrigin'] = [
+    //   upperName,
+    // ];
+    modifiedProductDataPoints['validated_supplyChain']['countryOfOrigin'] =
+      upperName;
   }
+};
+
+const validateOtherFields = async (modifiedProductDataPoints: any) => {
+  const supplyChainData = modifiedProductDataPoints?.['supplyChain']?.[0];
+
+  const {
+    distributedByText,
+    manufacturerName,
+    manufacturerPhoneNumber,
+    manufacturerStreetAddress,
+    manufacturerCity,
+    manufacturerState,
+    manufactureZipCode,
+  } = supplyChainData;
+
+  const otherFields = {
+    distributedByText,
+    manufacturerName,
+    manufacturerPhoneNumber,
+    manufacturerStreetAddress,
+    manufacturerCity,
+    manufacturerState,
+    manufactureZipCode,
+  };
+
+  Object.entries(otherFields)?.forEach(([fieldName, value]) => {
+    if (isValueEmpty(value?.[0])) {
+      return;
+    }
+    modifiedProductDataPoints['validated_supplyChain'][fieldName] = value?.[0];
+  });
 };
 
 const states = {
@@ -282,6 +328,7 @@ const COUNTRY_SHORT_NAMES = {
   GB: 'United Kingdom',
   US: 'United States',
   USA: 'United States',
+  'U.S.A': 'United States',
   UY: 'Uruguay',
   UZ: 'Uzbekistan',
   VU: 'Vanuatu',

@@ -67,8 +67,6 @@ export const instructionValidate = async (modifiedProductDataPoints: any) => {
   mappedInformationInstruction =
     informationInstruction?.['information instructions'];
 
-  console.log('haha ---', JSON.stringify(mappedCookingInstruction));
-
   const allMappedInstruction = {
     mappedCookingInstruction,
     mappedStorageInstruction,

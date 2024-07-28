@@ -338,7 +338,7 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   //   }
   // );
 
-  console.log('cooking ---- ', cookingInstructionSection);
+  // console.log('cooking ---- ', cookingInstructionSection);
 
   const instructionObjList = {
     cookingInstruction: parseJson(cookingInstructionSection),
@@ -374,7 +374,8 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
       'distributor zipCode': 'distributorZipCode',
       'distributor phone Number': 'distributorPhoneNumber',
       // 'full text about distributor': 'fullTextDistributor',
-      'distributor info': 'fullTextDistributor',
+      'distributor info': 'distributedByText',
+      'manufacturer info': 'manufacturedByText',
       'manufacture name': 'manufacturerName',
       'manufacture date': 'manufacturerDate',
       'manufacture phone number': 'manufacturerPhoneNumber',
