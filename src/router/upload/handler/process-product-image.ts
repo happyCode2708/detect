@@ -165,7 +165,7 @@ export const processProductImage = async (req: Request, res: Response) => {
       },
       prefix: 'attr_2',
       promptMakerFn: make_markdown_attr_2_prompt,
-      config: { flash: true },
+      // config: { flash: true },
     });
     // ]);
 

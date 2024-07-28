@@ -96,9 +96,9 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   // logger.error('physical');
   // logger.info(physicalSection);
 
-  const marketingSection = markdown
-    .split('MARKETING_TABLE')?.[1]
-    ?.split('END__MARKETING__TABLE')?.[0];
+  // const marketingSection = markdown
+  //   .split('MARKETING_TABLE')?.[1]
+  //   ?.split('END__MARKETING__TABLE')?.[0];
 
   // logger.error('marketing');
   // logger.info(marketingSection);
@@ -106,6 +106,10 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   // const instructionSection = markdown
   //   .split('INSTRUCTION_TABLE')?.[1]
   //   ?.split('END__INSTRUCTION__TABLE')?.[0];
+
+  const marketingSection = markdown
+    .split('MARKETING_OBJECT')?.[1]
+    ?.split('END__MARKETING__OBJECT')?.[0];
 
   const cookingInstructionSection = markdown
     .split('COOKING_INSTRUCTION_OBJECT')?.[1]
@@ -298,8 +302,8 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
     'liveAndActiveCulturesStatement',
     'liveAndActiveCulturesBreakdown',
   ]);
-  logger.error('ingredient list');
-  logger.info(JSON.stringify(ingredientObjList));
+  // logger.error('ingredient list');
+  // logger.info(JSON.stringify(ingredientObjList));
 
   // //? PHYSICAL
   // const physicalObjList = getObjectDataFromTable(physicalSection, [
@@ -311,21 +315,26 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   // logger.info(JSON.stringify(physicalObjList));
 
   //? MARKETING
-  const marketingObjList = getObjectDataFromTable(marketingSection, [
-    'haveQrCode',
-    'instagram',
-    'pinterest',
-    'youtube',
-    'youtubeType',
-    'facebook',
-    'twitter',
-    'socialMediaList',
-    'website',
-    'socialMediaText',
-    'enlargedToShow',
-  ]);
-  logger.error('marketing');
-  logger.info(JSON.stringify(marketingObjList));
+  // const marketingObjList = getObjectDataFromTable(marketingSection, [
+  //   'haveQrCode',
+  //   'instagram',
+  //   'pinterest',
+  //   'youtube',
+  //   'youtubeType',
+  //   'facebook',
+  //   'twitter',
+  //   'socialMediaList',
+  //   'website',
+  //   'socialMediaText',
+  //   'enlargedToShow',
+  // ]);
+  // logger.error('marketing');
+  // logger.info(JSON.stringify(marketingObjList));
+  const marketingObjList = {
+    websites: parseJson(marketingSection)?.websites?.map(
+      (item: any) => item?.['website link']
+    ),
+  };
 
   //? INSTRUCTION
   // const instructionObjList = getObjectDataFromHorizontalTable(
@@ -338,16 +347,14 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   //   }
   // );
 
-  // console.log('cooking ---- ', cookingInstructionSection);
-
   const instructionObjList = {
     cookingInstruction: parseJson(cookingInstructionSection),
     storageInstruction: parseJson(storageInstructionSection),
     usageInstruction: parseJson(usageInstructionSection),
     informationInstruction: parseJson(informationInstructionSection),
   };
-  logger.error('instruction');
-  logger.info(JSON.stringify(instructionObjList));
+  // logger.error('instruction');
+  // logger.info(JSON.stringify(instructionObjList));
 
   //? SUPPLY CHAIN
   // const supplyChainObjList = getObjectDataFromTable(supplyChainSection, [
@@ -434,14 +441,15 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
     ingredients: ingredientObjList,
     allergens: allergenObjList,
     instructions: instructionObjList,
-    marketing: [
-      {
-        ...marketingObjList?.[0],
-        marketingClaims: marketingTextObjList?.map(
-          (item) => item?.marketingContent
-        ),
-      },
-    ],
+    // marketing: [
+    //   {
+    //     ...marketingObjList?.[0],
+    //     marketingClaims: marketingTextObjList?.map(
+    //       (item) => item?.marketingContent
+    //     ),
+    //   },
+    // ],
+    marketing: marketingObjList,
     supplyChain: supplyChainObjList,
     extraInfo,
     physical: {

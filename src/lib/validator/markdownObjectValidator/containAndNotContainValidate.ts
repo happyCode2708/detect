@@ -385,7 +385,7 @@ const CONTAIN_AND_NOT_CONTAIN_REASON = {
   rennet: [['rennet']],
   salicylates: [['salicylate']],
   'sea salt': [['sea', 'salt']],
-  'shells/ shell pieces': [['shell', 'shell piece']],
+  'shells/ shell pieces': [['shell', 'shell piece'], ['nut shell']],
   silicone: [['silicone']],
   'sles (sodium laureth sulfate)': [['sles']],
   'sls (sodium lauryl sulfate)': [['sls']],

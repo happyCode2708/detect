@@ -173,7 +173,7 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         )}
       </SectionWrapper>
       <SectionWrapper name='marketing'>
-        <CamelFieldStringRender objectValues={marketing?.[0]} />
+        <CamelFieldStringRender objectValues={marketing} />
       </SectionWrapper>
       <SectionWrapper name='supplyChain'>
         <CamelFieldStringRender objectValues={supplyChain?.[0]} />

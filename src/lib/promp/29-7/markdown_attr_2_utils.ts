@@ -353,7 +353,7 @@ IMPORTANT NOTE:
 
 TABLE FORMAT:
 FIRST_EXTRA_CLAIM_TABLE
-| extra item | is text about item present on provided images ? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain" )  |  do you know it through those sources info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") | how do you know that? |  
+| extra item | is text about item seen on provided images? (answer is yes/no/unknown) | How product state about it ? (answer are "free from" / "made without" / "no contain" / "contain" / "free of" / "no" / "free" / "flavor with" / "other" / "do not use" / "may contain" )  |  do you know it through those sources info ? (answer are  "ingredient list"/ "marketing text on product"/ "nutrition fact panel"/ "NA") | how do you know that? |  
 | ------- | -------- | ------- | ------- | ------- | 
 | additives | ...
 | artificial additives | ...
@@ -506,6 +506,102 @@ THIRD_EXTRA_CLAIM_TABLE
 | cbd / cannabidiol | ...
 | chlorine | ...
 END__THIRD__EXTRA__CLAIM__TABLE
+
+9) Ingredient info with table format below:
+
+IMPORTANT NOTE:
++ is the list of statements about ingredients of product (since product can have many ingredients list)
+
++ "ingredient statement" is content start right after a prefix text such as "ingredients:" or "Ingredients:" or "INGREDIENTS:" or "other ingredients:".
+
++ "ingredient break-down list from ingredient statement" is the list of ingredients in ingredient statement split by "/" (do not split sub-ingredients of an ingredient)
+Example 1: "Cookies ( Gluten Free Oat Flour , Organic Coconut Sugar , Sustainable Palm Oil),  Creme Filling (milk, onion) , Potato" should be recorded as "Cookies ( Gluten Free Oat Flour , Organic Coconut Sugar , Sustainable Palm Oil)/Creme Filling (milk, onion)/Potato"
+Example 2: "Noodle (flour, egg, water), Sauce(Tomato, water)" should be recorded as "Noodle (flour, egg, water)/Sauce(Tomato, water)"
+
++ "product type from nutrition panel" could be detected through nutrition panel text title which are NUTRITION FACTS or SUPPLEMENT FACTS
+
++ each ingredient in ingredient break-down list must be splitted by "/" character and NOT split by table cell
+
++ "live and active cultures list statement" is statement about list of living organisms (such as Lactobacillus bulgaricus and Streptococcus thermophilus—which convert pasteurized milk to yogurt)
+
++ "ingredient list info" could be obscured due to crop image since the photos of product was taken from different angles. Try to merge into one ingredient list statement if they are same ingredient info.  
+
+TABLE FORMAT:
+INGREDIENT_TABLE
+| product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement | ingredient break-down list from ingredient statement (each ingredient splitted by "/") | live and active cultures list statement | live and active cultures break-down list (each item splitted by "/")  | 
+| ------- | ------- | -------- | -------- | -------- | -------- |
+END__INGREDIENT__TABLE
+
+10) Marketing info with format below:
+
+IMPORTANT NOTES:
++ "website link" is website url link text visibly seen on product image.
+
++ "social media methods on product images" can only be detected through "social media method name" or "social media icon/logo".
+
+INFO FORMAT:
+MARKETING_OBJECT
+{
+  websites:[
+    {
+      "website link": str,
+    }
+  ],
+}
+END__MARKETING__OBJECT
+
+11) supply chain info with table format below:
+
+IMPORTANT NOTES:
++ "country of origin text" example
+Example 1: "manufactured in Canada"
+Example 2: "made in Brazil"
+EXample 3: "produced in Brazil"
+
++ "country of origin" is exact text (found on product images) of the origin country found on product images where the product was made in.
+Example 1: "Canada"
+Example 2: "Brazil"
+
++ "manufacturer" is The company that makes the product.
++ "distributor" is The company that sells the product, but does not make it.
+
++ "distributor info" rules
+Example 1: "distributed by Krogger 53 Cowsansview Road, ON N1R7L2, Canada"
+Example 2: "distributor: Krogger 53 Cowsansview Road, ON N1R7L2, Canada"
+
++ "manufacturer info" rules
+Example 1: "manufactured by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+Example 2: "produced by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+
+TABLE FORMAT:
+SUPPLY_CHAIN_TABLE
+| info item | value |
+| ------- | -------- |
+| country of origin text | ...
+| country of origin | ...
+| distributor info |
+| manufacturer info |
+| distributor name | 
+| distributor city | 
+| distributor state |
+| distributor zipCode |
+| distributor phone number |
+| manufacture name | 
+| manufacture date | 
+| manufacture phone number | 
+| manufacture street name | 
+| manufacture city | 
+| manufacture state 
+| manufacture zipCode |
+END__SUPPLY__CHAIN__TABLE
+
+12) some other attribute info recorded with table format below:
+
+TABLE FORMAT:
+ATTRIBUTE_TABLE
+| grade (answer are 'A'/ 'B') | juice percent (answer is number) |
+| ------- | ------- |
+END__ATTRIBUTE__TABLE
 
 `;
 };

@@ -147,9 +147,8 @@ export const mapToTDCformat = (extractData: any) => {
     UPC12: physical?.upc12,
 
     //* marketing
-    Website: marketing?.[0]?.website
-      ?.split(', ')
-      .filter((item: string) => item !== '')
+    Website: marketing?.websites
+      ?.filter((item: string) => item !== '')
       .filter((item: string) => {
         if (
           toLower(item)?.includes('facebook') ||
@@ -185,29 +184,29 @@ export const mapToTDCformat = (extractData: any) => {
     // MarketingClaims: marketing?.[0]?.marketingClaims?.map((item: string) =>
     //   toUpper(item)
     // ),
-    SocialMediaAddresses: [
-      ...(marketing?.[0]?.website
-        ?.split(', ')
-        .filter((item: string) => item !== '')
-        .filter((item: string) => {
-          if (
-            toLower(item)?.includes('facebook') ||
-            toLower(item)?.includes('youtube') ||
-            toLower(item)?.includes('twitter') ||
-            toLower(item)?.includes('youtube') ||
-            toLower(item)?.includes('pinterest')
-          ) {
-            return true;
-          } else {
-            return false;
-          }
-        })
-        .map((item: string) => toUpper(item?.trim())) || []),
-      ...(marketing?.[0]?.socialMediaText
-        ?.split(', ')
-        .map((item: string) => toUpper(item?.trim()))
-        .filter((item: string) => item !== '') || []),
-    ],
+    // SocialMediaAddresses: [
+    //   ...(marketing?.[0]?.website
+    //     ?.split(', ')
+    //     .filter((item: string) => item !== '')
+    //     .filter((item: string) => {
+    //       if (
+    //         toLower(item)?.includes('facebook') ||
+    //         toLower(item)?.includes('youtube') ||
+    //         toLower(item)?.includes('twitter') ||
+    //         toLower(item)?.includes('youtube') ||
+    //         toLower(item)?.includes('pinterest')
+    //       ) {
+    //         return true;
+    //       } else {
+    //         return false;
+    //       }
+    //     })
+    //     .map((item: string) => toUpper(item?.trim())) || []),
+    //   ...(marketing?.[0]?.socialMediaText
+    //     ?.split(', ')
+    //     .map((item: string) => toUpper(item?.trim()))
+    //     .filter((item: string) => item !== '') || []),
+    // ],
 
     // //* attribute
     SugarSweetener:

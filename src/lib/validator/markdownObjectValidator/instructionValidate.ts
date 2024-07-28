@@ -76,9 +76,9 @@ export const instructionValidate = async (modifiedProductDataPoints: any) => {
 
   await validateConsumerStorage(
     [
-      ...(storageInstruction || []),
-      ...(usageInstruction || []),
-      ...(informationInstruction || []),
+      ...(mappedStorageInstruction || []),
+      ...(mappedUsageInstruction || []),
+      ...(mappedInformationInstruction || []),
     ],
     modifiedProductDataPoints,
     'storageInstruction'
@@ -86,9 +86,9 @@ export const instructionValidate = async (modifiedProductDataPoints: any) => {
 
   await validateUseOrFreezeBy(
     [
-      ...(storageInstruction || []),
-      ...(usageInstruction || []),
-      ...(informationInstruction || []),
+      ...(mappedStorageInstruction || []),
+      ...(mappedUsageInstruction || []),
+      ...(mappedInformationInstruction || []),
     ],
     modifiedProductDataPoints,
     'useOrFreezeBy'

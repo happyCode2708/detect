@@ -501,6 +501,7 @@ const SUGAR_CLAIMS_MAP = {
     'sugar alcohol': 'sugar alcohol',
     'sugar free': 'sugar free',
     'sugars added': 'sugars added',
+    'sugar added': 'sugar added',
     tagatose: 'tagatose',
     unsweetened: 'unsweetened',
     xylitol: 'xylitol',

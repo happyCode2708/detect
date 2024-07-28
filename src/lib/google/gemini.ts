@@ -390,6 +390,14 @@ export const onProcessAttribute = async ({
     });
   } catch (e) {
     console.log('process other error', e);
+    await prisma.extractSession.update({
+      where: { sessionId },
+      data: {
+        status: 'fail',
+        // result_all: JSON.stringify({}),
+        // result_nut: JSON.stringify(finalSessionPayload),
+      },
+    });
   }
 };
 
@@ -512,5 +520,13 @@ export const onProcessNut = async ({
     });
   } catch (e) {
     console.log('process nut error', e);
+    await prisma.extractSession.update({
+      where: { sessionId },
+      data: {
+        status: 'fail',
+        // result_all: JSON.stringify({}),
+        // result_nut: JSON.stringify(finalSessionPayload),
+      },
+    });
   }
 };
