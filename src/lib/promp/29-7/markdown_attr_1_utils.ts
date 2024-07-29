@@ -157,13 +157,13 @@ HEADER_TABLE
 BASE_CERTIFIER_CLAIM_TABLE
 INGREDIENT_TABLE
 MARKETING_OBJECT
-SUPPLY_CHAIN_OBJECT
+SUPPLY_CHAIN_TABLE
 ATTRIBUTE_TABLE
 
 without any number like 1) or 2) before table names
 without \`\`\` or \`\`\` closing tag
 
-4) result must include all footer TEXT (such as END__SUPPLY__CHAIN__OBJECT,...) at the end of each table. Remember all words in footer text are separated by double underline "__"
+4) result must include all footer TEXT (such as END__THIRD__EXTRA__CLAIM__TABLE,...) at the end of table. Remember all words in footer text are separated by double underline "__"
 
 5) do not add examples to return result. Please only return info that visibly seen from provided images.
 
@@ -326,7 +326,7 @@ Ex 4: "24 K-CUP PODS - 0.55 OZ (5.2)G/EA NET WT 4.44 OZ (38g)"
 
 TABLE FORMAT:
 HEADER_TABLE
-| product name | company name | brand name | primary size | secondary size | third size | full size statement | count | count uom |
+| product name | brand name | primary size | secondary size | third size | full size statement | count | count uom |
 | ------- | -------- | -------- | ------- | -------- | -------- | -------- | -------- |
 END__HEADER__TABLE
 
@@ -427,7 +427,7 @@ MARKETING_OBJECT
 }
 END__MARKETING__OBJECT
 
-11) supply chain info with format below:
+11) supply chain info with table format below:
 
 IMPORTANT NOTES:
 + "country of origin text" example
@@ -439,31 +439,46 @@ EXample 3: "produced in Brazil"
 Example 1: "Canada"
 Example 2: "Brazil"
 
-+ "full address statement" rules:
++ "manufacturer" is The company that makes the product.
++ "distributor" is The company that sells the product, but does not make it.
+
++ "distributor info"
+Example 1: "distributed by Krogger 53 Cowsansview Road, ON N1R7L2, Canada"
+Example 2: "distributor: Krogger 53 Cowsansview Road, ON N1R7L2, Canada"
+
++ "manufacturer info" rules
+Example 1: "manufactured by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+Example 2: "produced by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+
++ the address info of a company present without "prefix text" (such as "distributed by", or "manufactured by",...) is the info of manufacturer
 Example 1: "Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
 Example 2: "Heneiken Inc 999 SE HILL COURT, Milwaukie, ON N1R7L2 Canada"
-Example 3: "manufactured by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
-Example 4: "produced by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
 
-INFO FORMAT:
-SUPPLY_CHAIN_OBJECT
-{
-  "country info": [{
-    "country of origin text": str,
-    "country of origin": str
-  }],
-  "address info": [
-    "full address statement": str,
-    "company name": str,
-    "street number": str,
-    "street name": str,
-    "city": str,
-    "state": str,
-    "zipCode": str,
-    "phone number": str
-  ] 
-}
-END__SUPPLY__CHAIN__OBJECT
++ the company address text info without having texts (such as "distributed by", "distributor:",...) is "manufacturer info".
+
+
+TABLE FORMAT:
+SUPPLY_CHAIN_TABLE
+| info item | value |
+| ------- | -------- |
+| country of origin text | ...
+| country of origin | ...
+| distributor info |
+| manufacturer info |
+| distributor name |
+| distributor street name | 
+| distributor city | 
+| distributor state |
+| distributor zipCode |
+| distributor phone number |
+| manufacture name | 
+| manufacture date | 
+| manufacture phone number | 
+| manufacture street name | 
+| manufacture city | 
+| manufacture state 
+| manufacture zipCode |
+END__SUPPLY__CHAIN__TABLE
 
 12) some other attribute info recorded with table format below:
 

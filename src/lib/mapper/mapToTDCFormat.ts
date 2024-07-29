@@ -57,13 +57,13 @@ export const mapToTDCformat = (extractData: any) => {
       validated_supplyChain?.manufacturerPhoneNumber
     ),
     ManufacturerStatePackaging: toUpper(
-      validated_supplyChain?.validated_manufacturerState
+      validated_supplyChain?.manufacturerState
     ),
     ManufacturerStreetPackaging: toUpper(
       validated_supplyChain?.manufacturerStreetAddress
     ),
     ManufacturerZipCodePackaging: toUpper(
-      validated_supplyChain.manufactureZipCode
+      validated_supplyChain?.manufactureZipCode
     ),
     // ...mapDistributedBy(supplyChain),
     DistributedBy: toUpper(validated_supplyChain?.distributedByText),
@@ -164,23 +164,23 @@ export const mapToTDCformat = (extractData: any) => {
       })
       .map((item: string) => toUpper(item?.trim())),
     QRCode: marketing?.[0]?.haveQrCode,
-    SocialMedia: marketing?.[0]?.socialMediaList
-      ?.split(', ')
-      .filter((item: string) => item !== '')
-      .map((item: string) => {
-        if (
-          toLower(item)?.includes('youtube') &&
-          marketing?.[0]?.youtubeType === 'type_2'
-        ) {
-          return 'YOUTUBE2 or YOUTUBE3';
-        }
+    // SocialMedia: marketing?.[0]?.socialMediaList
+    //   ?.split(', ')
+    //   .filter((item: string) => item !== '')
+    //   .map((item: string) => {
+    //     if (
+    //       toLower(item)?.includes('youtube') &&
+    //       marketing?.[0]?.youtubeType === 'type_2'
+    //     ) {
+    //       return 'YOUTUBE2 or YOUTUBE3';
+    //     }
 
-        if (toLower(item)?.includes('twitter')) {
-          return 'X FORMERLY TWITTER';
-        }
+    //     if (toLower(item)?.includes('twitter')) {
+    //       return 'X FORMERLY TWITTER';
+    //     }
 
-        return toUpper(item?.trim());
-      }),
+    //     return toUpper(item?.trim());
+    //   }),
     // MarketingClaims: marketing?.[0]?.marketingClaims?.map((item: string) =>
     //   toUpper(item)
     // ),

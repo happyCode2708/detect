@@ -337,3 +337,24 @@
 2024-07-24 16:54:51 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"false","twitter":"false","socialMediaList":"","website":"chobani.com","socialMediaText":"","enlargedToShow":"false"}]
 2024-07-24 16:54:51 [31merror[39m: instruction
 2024-07-24 16:54:51 [32minfo[39m: [{"storageInstruction":["KEEP REFRIGERATED"],"cookingInstruction":[],"usageInstruction":[],"otherInstruction":[]}]
+2024-07-24 17:09:52 [31merror[39m: ingredient list
+2024-07-24 17:09:52 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"ORGANIC PITTED DATES","ingredientBreakdown":"ORGANIC PITTED DATES","liveAndActiveCulturesStatement":"","liveAndActiveCulturesBreakdown":""}]
+2024-07-24 17:09:52 [31merror[39m: marketing
+2024-07-24 17:09:52 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"true","twitter":"false","socialMediaList":"facebook","website":"www.sunnyfruit.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-24 17:09:52 [31merror[39m: instruction
+2024-07-24 17:09:52 [32minfo[39m: [{"storageInstruction":[],"cookingInstruction":[],"usageInstruction":[],"otherInstruction":[]}]
+2024-07-24 17:09:52 [31merror[39m: sugar claim -- sugar free
+2024-07-24 17:09:52 [31merror[39m: ingredient list
+2024-07-24 17:09:52 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"ORGANIC PITTED DATES","ingredientBreakdown":"ORGANIC PITTED DATES","liveAndActiveCulturesStatement":"","liveAndActiveCulturesBreakdown":""}]
+2024-07-24 17:09:52 [31merror[39m: marketing
+2024-07-24 17:09:52 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"true","twitter":"false","socialMediaList":"facebook","website":"www.sunnyfruit.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-24 17:09:52 [31merror[39m: instruction
+2024-07-24 17:09:52 [32minfo[39m: [{"storageInstruction":[],"cookingInstruction":[],"usageInstruction":[],"otherInstruction":[]}]
+2024-07-24 17:09:52 [31merror[39m: sugar claim -- sugar free
+2024-07-24 17:20:21 [31merror[39m: ingredient list
+2024-07-24 17:20:21 [32minfo[39m: [{"productType":"nutrition facts","ingredientPrefix":"INGREDIENTS:","ingredientStatement":"ORGANIC PITTED DATES","ingredientBreakdown":"ORGANIC PITTED DATES","liveAndActiveCulturesStatement":"","liveAndActiveCulturesBreakdown":""}]
+2024-07-24 17:20:21 [31merror[39m: marketing
+2024-07-24 17:20:21 [32minfo[39m: [{"haveQrCode":"false","instagram":"false","pinterest":"false","youtube":"false","youtubeType":"","facebook":"true","twitter":"false","socialMediaList":"facebook","website":"www.sunnyfruit.com","socialMediaText":"","enlargedToShow":"false"}]
+2024-07-24 17:20:21 [31merror[39m: instruction
+2024-07-24 17:20:21 [32minfo[39m: [{"storageInstruction":[],"cookingInstruction":[],"usageInstruction":[],"otherInstruction":[]}]
+2024-07-24 17:20:21 [31merror[39m: sugar claim -- sugar

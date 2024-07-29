@@ -340,13 +340,8 @@ const mapToValidatedAllergenObject = async (modifiedProductDataPoints: any) => {
 const ALLERGEN_LIST = [
   {
     name: 'corn',
-    variants: [
-      'corn',
-      'maize',
-      'cornmeal',
-      'cornstarch',
-      'high fructose corn syrup',
-    ],
+    variants: ['corn', 'maize', 'cornmeal', 'cornstarch'],
+    statement_not_include: ['corn syrup'],
   },
   {
     name: 'crustacean shellfish',

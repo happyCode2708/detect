@@ -20,7 +20,7 @@ import { mapMarkdownAllToObject } from '../mapper/mapMdAllToObject';
 export const generateContent = async (
   images: any[],
   text: any,
-  config?: { flash: boolean; region?: number },
+  config?: { flash?: boolean; region?: number },
   modelName?: string
 ) => {
   if (modelName === 'gemini') {
@@ -136,7 +136,7 @@ export const onProcessGemini = async ({
   isMarkdown?: boolean;
   sessionPayload: any;
   extraInfo?: any;
-  config?: { flash: boolean };
+  config?: { flash?: boolean; region?: number };
 }) => {
   const images = collatedOuputPath.map((path) => {
     const base64Image = encodeImageToBase64(path);
@@ -280,7 +280,7 @@ export const onProcessOther = async ({
   collateImageName: string;
   outputConfig: any;
   extraInfo?: any;
-  config?: { flash: boolean };
+  config?: { flash?: boolean; region?: number };
 }) => {
   if (!outputConfig.other) {
     const resultFileName = 'all.json';

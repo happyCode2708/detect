@@ -3,36 +3,106 @@ import { trimPeriodsAndCommas } from '../../../lib/utils/string';
 import { toLower, toUpper } from 'lodash';
 
 export const supplyChainValidate = async (modifiedProductDataPoints: any) => {
+  if (!modifiedProductDataPoints?.['supplyChain']) return;
+
   modifiedProductDataPoints['validated_supplyChain'] = {};
 
-  await validateManufacturerState(modifiedProductDataPoints);
+  // await validateManufacturerState(modifiedProductDataPoints);
+  await validateAddress(modifiedProductDataPoints);
   await validateCountryOfOrigin(modifiedProductDataPoints);
   await validateOtherFields(modifiedProductDataPoints);
 };
 
-const validateManufacturerState = async (modifiedProductDataPoints: any) => {
-  const manufacturerState =
-    modifiedProductDataPoints?.supplyChain?.[0]?.manufacturerState?.[0];
+const validateAddress = async (modifiedProductDataPoints: any) => {
+  const addresses =
+    modifiedProductDataPoints?.['supplyChain']?.['address info'];
+
+  addresses?.forEach((addressItem: any) => {
+    const fullAddressStatement = addressItem?.['full address statement'];
+    const companyName = addressItem?.['company name'];
+    const streetNumber = addressItem?.['street number'];
+    const streetName = addressItem?.['street name'];
+    const city = addressItem?.['city'];
+    const state = addressItem?.['state'];
+    const zipCode = addressItem?.['zipCode'];
+    const phoneNumber = addressItem?.['phone number'];
+
+    const isDistributor = DISTRIBUTED_BY_PHRASE?.find((phrase: any) =>
+      toLower(fullAddressStatement)?.includes(phrase)
+    );
+
+    const isManufacturer = MANUFACTURED_BY_PHRASE?.find((phrase: any) =>
+      toLower(fullAddressStatement)?.includes(phrase)
+    );
+
+    if (isManufacturer || !isDistributor) {
+      if (state) {
+        validateManufacturerState(modifiedProductDataPoints, state);
+      }
+
+      modifiedProductDataPoints['validated_supplyChain'] = {
+        ...modifiedProductDataPoints['validated_supplyChain'],
+        manufacturerName: companyName,
+        manufacturerPhoneNumber: phoneNumber,
+        manufacturerStreetNumber: streetNumber,
+        manufacturerStreetAddress: streetName,
+        manufacturerCity: city,
+        manufactureZipCode: zipCode,
+      };
+    }
+
+    if (isDistributor) {
+      modifiedProductDataPoints['validated_supplyChain']['distributedByText'] =
+        fullAddressStatement;
+    }
+  });
+};
+
+const validateManufacturerState = async (
+  modifiedProductDataPoints: any,
+  stateValue: string
+) => {
+  const manufacturerState = stateValue;
+  // modifiedProductDataPoints?.['supplyChain']?.['manufacturer address info']?.[
+  //   'manufacture state'
+  // ];
 
   if (isValueEmpty(manufacturerState)) return;
 
-  const upperAbbreviation = manufacturerState?.trim().toUpperCase();
+  const upperAbbreviation = toUpper(manufacturerState?.trim());
+
   if (states[upperAbbreviation]) {
-    // modifiedProductDataPoints['supplyChain'][0]['validated_manufacturerState'] =
-    //   [states[upperAbbreviation]];
     modifiedProductDataPoints['validated_supplyChain']['manufacturerState'] =
       states[upperAbbreviation];
   } else {
-    // modifiedProductDataPoints['supplyChain'][0]['validated_manufacturerState'] =
-    //   [toUpper(manufacturerState)];
     modifiedProductDataPoints['validated_supplyChain']['manufacturerState'] =
       toUpper(manufacturerState);
   }
 };
 
+// const validateManufacturerState = async (modifiedProductDataPoints: any) => {
+//   const manufacturerState =
+//     modifiedProductDataPoints?.['supplyChain']?.['manufacturer address info']?.[
+//       'manufacture state'
+//     ];
+
+//   if (isValueEmpty(manufacturerState)) return;
+
+//   const upperAbbreviation = toUpper(manufacturerState?.trim());
+
+//   if (states[upperAbbreviation]) {
+//     modifiedProductDataPoints['validated_supplyChain']['manufacturerState'] =
+//       states[upperAbbreviation];
+//   } else {
+//     modifiedProductDataPoints['validated_supplyChain']['manufacturerState'] =
+//       toUpper(manufacturerState);
+//   }
+// };
+
 const validateCountryOfOrigin = async (modifiedProductDataPoints: any) => {
+  // const countryOfOrigin = trimPeriodsAndCommas(countryValue);
   const countryOfOrigin = trimPeriodsAndCommas(
-    modifiedProductDataPoints?.supplyChain?.[0]?.countryOfOrigin?.[0]?.trim()
+    modifiedProductDataPoints?.['supplyChain']?.['country of origin']?.trim()
   );
 
   if (isValueEmpty(countryOfOrigin)) return;
@@ -56,35 +126,56 @@ const validateCountryOfOrigin = async (modifiedProductDataPoints: any) => {
 };
 
 const validateOtherFields = async (modifiedProductDataPoints: any) => {
-  const supplyChainData = modifiedProductDataPoints?.['supplyChain']?.[0];
+  const supplyChainData = modifiedProductDataPoints?.['supplyChain'];
 
-  const {
-    distributedByText,
-    manufacturerName,
-    manufacturerPhoneNumber,
-    manufacturerStreetAddress,
-    manufacturerCity,
-    manufacturerState,
-    manufactureZipCode,
-  } = supplyChainData;
+  // const { 'manufacturer info': manufacturerInfo } = supplyChainData || {};
+
+  // const {
+  //   'manufacture name': manufacturerName,
+  //   'manufacture phone number': manufacturerPhoneNumber,
+  //   'manufacture street name': manufacturerStreetAddress,
+  //   'manufacture city': manufacturerCity,
+  //   'manufacture zipCode': manufactureZipCode,
+  // } = supplyChainData?.['manufacturer address info'] || {};
+
+  // const { 'distributor full info address': distributedByText } =
+  //   supplyChainData?.['distributor address info'] || {};
+
+  // const { 'country of origin text': countryOfOriginText } = supplyChainData;
+
+  // const otherFields = {
+  //   countryOfOriginText,
+  //   distributedByText,
+  //   manufacturerName,
+  //   manufacturerPhoneNumber,
+  //   manufacturerStreetAddress,
+  //   manufacturerCity,
+  //   manufactureZipCode,
+  // };
 
   const otherFields = {
-    distributedByText,
-    manufacturerName,
-    manufacturerPhoneNumber,
-    manufacturerStreetAddress,
-    manufacturerCity,
-    manufacturerState,
-    manufactureZipCode,
+    countryOfOriginText:
+      supplyChainData?.['country info']?.[0]?.['country of origin text'],
   };
 
   Object.entries(otherFields)?.forEach(([fieldName, value]) => {
-    if (isValueEmpty(value?.[0])) {
+    if (isValueEmpty(value)) {
       return;
     }
-    modifiedProductDataPoints['validated_supplyChain'][fieldName] = value?.[0];
+    modifiedProductDataPoints['validated_supplyChain'][fieldName] = value;
   });
 };
+
+const DISTRIBUTED_BY_PHRASE = [
+  'distributed by',
+  'distributor',
+  'manufacture for',
+];
+const MANUFACTURED_BY_PHRASE = [
+  'manufactured by',
+  'manufacturer',
+  'manufacturing by',
+];
 
 const states = {
   AL: 'Alabama',

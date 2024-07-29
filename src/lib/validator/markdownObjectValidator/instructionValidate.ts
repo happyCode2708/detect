@@ -310,6 +310,7 @@ const STORAGE_REASON = {
       ['keep', 'frozen'],
       ['store', 'in', 'freezer'],
     ],
+    excepts: ['once opened', 'after opening'],
   },
   'REFRIGERATE AFTER OPENING': {
     variants: [
@@ -322,7 +323,7 @@ const STORAGE_REASON = {
       ['keep', 'refrigerated'],
       ['store', 'in', 'fridge'],
     ],
-    excepts: ['once opened'],
+    excepts: ['once opened', 'after opening'],
   },
   'SEAL FOR FRESHNESS': { variants: [['seal', 'freshness']] },
   'STORE AT ROOM TEMPERATURE': { variants: [['at', 'room temperature']] },

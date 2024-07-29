@@ -58,41 +58,24 @@ export const getGenerative = () => {
     },
   });
 
-  const generativeModel = vertex_ai_region_1.preview.getGenerativeModel({
+  const generativeProModel_1 = vertex_ai_region_1.preview.getGenerativeModel({
     model,
-    generationConfig: {
-      maxOutputTokens: 8192,
-      temperature: 0.5,
-      topP: 0.95,
-    },
-    // safetySettings: [
-    //   {
-    //     category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-    //     threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
-    //   },
-    // ],
-    safetySettings: [
-      {
-        category: 'HARM_CATEGORY_HATE_SPEECH',
-        threshold: 'BLOCK_ONLY_HIGH',
-      },
-      {
-        category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
-        threshold: 'BLOCK_ONLY_HIGH',
-      },
-      {
-        category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-        threshold: 'BLOCK_ONLY_HIGH',
-      },
-      {
-        category: 'HARM_CATEGORY_HARASSMENT',
-        threshold: 'BLOCK_ONLY_HIGH',
-      },
-    ] as any,
+    ...GENERAL_CONFIG,
   });
 
-  (global as any).generativeModel = generativeModel;
-  (global as any).generativeModelName = model;
+  const generativeProModel_3 = vertex_ai_region_3.preview.getGenerativeModel({
+    model,
+    ...GENERAL_CONFIG,
+  });
+
+  // (global as any).generativeModel = generativeModel;
+  // (global as any).generativeModelName = model;
+
+  (global as any).generativeModel = {
+    region_1: generativeProModel_1,
+    region_3: generativeProModel_3,
+  };
+  (global as any).generativeProModelName = model;
 
   const generativeFlashModel_1 = vertex_ai_region_1.preview.getGenerativeModel({
     model: flash_model,
@@ -103,6 +86,11 @@ export const getGenerative = () => {
     model: flash_model,
     ...GENERAL_CONFIG,
   });
+
+  // const generativeFlashModel_3 = vertex_ai_region_3.preview.getGenerativeModel({
+  //   model: flash_model,
+  //   ...GENERAL_CONFIG,
+  // });
 
   (global as any).generativeFlashModel = {
     region_1: generativeFlashModel_1,

@@ -22,7 +22,7 @@ import { ChatCompletionContentPartImage } from 'openai/resources';
 export const generateContent = async (
   imagesPath: any[],
   text: any,
-  config?: { flash: boolean; region?: number },
+  config?: { flash?: boolean; region?: number },
   modelName?: string
 ) => {
   let chunkResponse = [] as any;
@@ -44,13 +44,12 @@ export const generateContent = async (
       text,
     };
 
-    console.log('FLASH ----', config?.flash);
     const model =
       config?.flash === true
         ? (global as any)?.generativeFlashModel?.[
             `region_${config?.region || 1}`
           ]
-        : (global as any)?.generativeModel;
+        : (global as any)?.generativeModel?.[`region_${config?.region || 1}`];
 
     if (!model) return;
 
@@ -74,7 +73,7 @@ export const generateContent = async (
         ? (global as any)?.generativeFlashModel?.[
             `region_${config?.region || 1}`
           ]
-        : (global as any)?.generativeModel;
+        : (global as any)?.generativeModel?.[`region_${config?.region || 1}`];
 
     if (!model) return;
 
@@ -157,7 +156,7 @@ export const onProcessImage = async ({
   isMarkdown?: boolean;
   sessionPayload: any;
   extraInfo?: any;
-  config?: { flash: boolean };
+  config?: { flash?: boolean; region?: number };
 }) => {
   const imagesPath = collatedOuputPath;
 
@@ -292,7 +291,7 @@ export const onProcessAttribute = async ({
   collateImageName: string;
   outputConfig: any;
   extraInfo?: any;
-  config?: { flash: boolean };
+  config?: { flash?: boolean; region?: number };
   prefix: string;
   promptMakerFn: Function;
 }) => {
@@ -409,6 +408,7 @@ export const onProcessNut = async ({
   sessionId,
   collateImageName,
   outputConfig,
+  config,
 }: {
   req: any;
   res: any;
@@ -417,6 +417,7 @@ export const onProcessNut = async ({
   sessionId: string;
   collateImageName: string;
   outputConfig: any;
+  config?: { flash?: boolean; region?: number };
 }) => {
   // if (invalidatedInput?.nutIncluded?.length === 0 || !outputConfig.nut) {
   if (!outputConfig.nut) {
@@ -506,6 +507,7 @@ export const onProcessNut = async ({
       isMarkdown: true,
       // mapMdToObjectFunct: mapMarkdownNutToObject,
       sessionPayload,
+      config,
     });
 
     console.log('update status to unknown');

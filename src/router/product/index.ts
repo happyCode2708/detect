@@ -517,6 +517,7 @@ router.get('/:productId', async (req, res) => {
 
       const combinedMarkdownContent = `${attr1ResData?.markdownContent} \n ${attr2ResData?.markdownContent}`;
 
+      console.log('JSON ===', combinedMarkdownContent);
       //* if both process success
       const allJsonData = mapMarkdownAllToObject(
         // allResData?.markdownContent,

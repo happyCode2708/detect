@@ -10,7 +10,7 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
 
   const labelingInfoAnalysisSection = markdown
     .split('LABELING_INFO_ANALYSIS_TABLE')?.[1]
-    ?.split('END__LABELING__INFO__ANALYSIS_TABLE')?.[0];
+    ?.split('END__LABELING__INFO__ANALYSIS__TABLE')?.[0];
 
   const sugarClaimSection = markdown
     .split('SUGAR_CLAIM_TABLE')?.[1]
@@ -131,8 +131,8 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   // logger.info(instructionSection);
 
   const supplyChainSection = markdown
-    .split('SUPPLY_CHAIN_TABLE')?.[1]
-    ?.split('END__SUPPLY__CHAIN__TABLE')?.[0];
+    .split('SUPPLY_CHAIN_OBJECT')?.[1]
+    ?.split('END__SUPPLY__CHAIN__OBJECT')?.[0];
 
   // logger.error('supply chain');
   // logger.info(supplyChainSection);
@@ -282,6 +282,7 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   //? HEADER
   const headerObjList = getObjectDataFromTable(headerSection, [
     'productName',
+    'companyName',
     'brandName',
     'primarySize',
     'secondarySize',
@@ -330,6 +331,12 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   // ]);
   // logger.error('marketing');
   // logger.info(JSON.stringify(marketingObjList));
+
+  console.log(
+    'marketing test ===',
+    JSON.stringify(parseJson(marketingSection))
+  );
+
   const marketingObjList = {
     websites: parseJson(marketingSection)?.websites?.map(
       (item: any) => item?.['website link']
@@ -357,6 +364,7 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   // logger.info(JSON.stringify(instructionObjList));
 
   //? SUPPLY CHAIN
+
   // const supplyChainObjList = getObjectDataFromTable(supplyChainSection, [
   //   'countryOfOriginText',
   //   'countryOfOrigin',
@@ -369,29 +377,46 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   //   'manufacturerState',
   //   'manufactureZipCode',
   // ]);
-  const supplyChainObjList = getObjectDataFromHorizontalTable(
-    supplyChainSection,
-    {
-      'country of origin text': 'countryOfOriginText',
-      'country of origin': 'countryOfOrigin',
-      // 'have text "distributed by" ? (answer is yes/no)': 'haveDistributor',
-      // 'distributor name': 'distributorName',
-      'distributor city': 'distributorCity',
-      'distributor state': 'distributorState',
-      'distributor zipCode': 'distributorZipCode',
-      'distributor phone Number': 'distributorPhoneNumber',
-      // 'full text about distributor': 'fullTextDistributor',
-      'distributor info': 'distributedByText',
-      'manufacturer info': 'manufacturedByText',
-      'manufacture name': 'manufacturerName',
-      'manufacture date': 'manufacturerDate',
-      'manufacture phone number': 'manufacturerPhoneNumber',
-      'manufacture street name': 'manufacturerStreetAddress',
-      'manufacture city': 'manufacturerCity',
-      'manufacture state': 'manufacturerState',
-      'manufacture zipCode': 'manufactureZipCode',
-    }
-  );
+
+  const supplyChainObjList = parseJson(supplyChainSection);
+
+  // const supplyChainObjList = getObjectDataFromTable(supplyChainSection, [
+  //   'countryOfOriginText',
+  //   'countryOfOrigin',
+  //   'distributedBy',
+  //   'manufacturerName',
+  //   'manufacturerDate',
+  //   'manufacturerPhoneNumber',
+  //   'manufacturerStreetAddress',
+  //   'manufacturerCity',
+  //   'manufacturerState',
+  //   'manufactureZipCode',
+  // ]);
+  //! test
+  // const supplyChainObjList = getObjectDataFromHorizontalTable(
+  //   supplyChainSection,
+  //   {
+  //     'country of origin text': 'countryOfOriginText',
+  //     'country of origin': 'countryOfOrigin',
+  //     // 'have text "distributed by" ? (answer is yes/no)': 'haveDistributor',
+  //     // 'distributor name': 'distributorName',
+  //     'distributor city': 'distributorCity',
+  //     'distributor state': 'distributorState',
+  //     'distributor zipCode': 'distributorZipCode',
+  //     'distributor phone Number': 'distributorPhoneNumber',
+  //     'distributor street name': 'distributorStreetAddress',
+  //     // 'full text about distributor': 'fullTextDistributor',
+  //     'distributor info': 'distributedByText',
+  //     'manufacturer info': 'manufacturedByText',
+  //     'manufacture name': 'manufacturerName',
+  //     'manufacture date': 'manufacturerDate',
+  //     'manufacture phone number': 'manufacturerPhoneNumber',
+  //     'manufacture street name': 'manufacturerStreetAddress',
+  //     'manufacture city': 'manufacturerCity',
+  //     'manufacture state': 'manufacturerState',
+  //     'manufacture zipCode': 'manufactureZipCode',
+  //   }
+  // );
   // logger.error('supplyChain');
   // logger.info(JSON.stringify(supplyChainObjList));
 

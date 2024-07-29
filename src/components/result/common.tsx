@@ -58,10 +58,38 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
 
   const missMatchContainList = findIntersectionArrayString(containList, freeOf);
 
+  const recipes = instructions?.cookingInstruction?.[0]?.recipes;
+  const extraCookings =
+    instructions?.cookingInstruction?.[0]?.[
+      'all other text or paragraph about cooking info'
+    ];
+  const storageInstruction = instructions?.storageInstruction;
+  const usageInstruction = instructions?.usageInstruction;
+
+  const informationInstruction = instructions?.informationInstruction;
+
+  const headerInfo = header?.[0];
+
   return (
     <div>
       <SectionWrapper name='Header'>
-        <CamelFieldStringRender objectValues={header?.[0]} />
+        <CamelFieldStringRender
+          objectValues={{
+            possibleBrandName: headerInfo?.['brandName'],
+            possibleProductName: headerInfo?.['productName'],
+            ...headerInfo,
+            brandName: null,
+            productName: null,
+          }}
+          styleConfig={{
+            possibleBrandName: {
+              keyName: { className: 'bg-red-400' },
+            },
+            possibleProductName: {
+              keyName: { className: 'bg-red-400' },
+            },
+          }}
+        />
       </SectionWrapper>
       <SectionWrapper name='Physical'>
         <CamelFieldStringRender objectValues={physical} />
@@ -162,7 +190,25 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         )}
       </SectionWrapper>
       <SectionWrapper name='instructions'>
-        <CamelFieldStringRender objectValues={instructions?.[0]} />
+        {recipes?.map((recipe: any, idx: number) => {
+          return (
+            <div className='border rounded-md p-2'>
+              <div className='font-bold underline pb-2'>RECIPE [{idx + 1}]</div>
+              <CamelFieldStringRender objectValues={recipe} />
+            </div>
+          );
+        })}
+
+        <CamelFieldStringRender
+          objectValues={{ extraCookingInstruct: extraCookings }}
+        />
+
+        <CamelFieldStringRender objectValues={storageInstruction} />
+
+        <CamelFieldStringRender objectValues={usageInstruction} />
+
+        <CamelFieldStringRender objectValues={informationInstruction} />
+
         {validated_instructions && (
           <div className='border rounded-md mb-2 p-1'>
             <div className='font-bold uppercase p-1 rounded-md bg-green-600 text-white inline-block'>
