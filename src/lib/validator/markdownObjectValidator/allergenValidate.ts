@@ -2,111 +2,136 @@ import { contains } from 'cheerio/lib/static';
 import { toLower, toUpper } from 'lodash';
 
 export const allergenValidate = async (modifiedProductDataPoints: any) => {
-  await validateNoContainList(modifiedProductDataPoints);
-  await validateContainList(modifiedProductDataPoints);
-  await validateContainOnEquipmentList(modifiedProductDataPoints);
-  await mapToValidatedAllergenObject(modifiedProductDataPoints);
+  if (!modifiedProductDataPoints?.['allergens']) return;
+
+  modifiedProductDataPoints['validated_allergens'] = {};
+  modifiedProductDataPoints['validated_allergens'] = {
+    notContainList: [],
+    containList: [],
+    containOnEquipmentList: [],
+  };
+
+  await validateNoContain(modifiedProductDataPoints);
+  await validateContain(modifiedProductDataPoints);
+  await validateContainOnEquipment(modifiedProductDataPoints);
+  // await mapToValidatedAllergenObject(modifiedProductDataPoints);
 };
 
-const validateNoContainList = async (modifiedProductDataPoints: any) => {
-  modifiedProductDataPoints?.['allergens']?.forEach(
-    (allergenItem: any, idx: number) => {
-      const notContainList =
-        modifiedProductDataPoints?.['allergens']?.[idx]?.['notContainList'];
-      const notContainStatement =
-        modifiedProductDataPoints?.['allergens']?.[idx]?.[
-          'notContainStatement'
-        ];
+const validateNoContain = async (modifiedProductDataPoints: any) => {
+  modifiedProductDataPoints?.['allergens']?.[
+    'allergens product info state not contain'
+  ]?.forEach((allergenItem: any, idx: number) => {
+    const notContainList =
+      modifiedProductDataPoints?.['allergens']?.[
+        'allergens product info state not contain'
+      ]?.[idx]?.['allergens product does not contain break-down list'];
+    const notContainStatement =
+      modifiedProductDataPoints?.['allergens']?.[
+        'allergens product info state not contain'
+      ]?.[idx]?.[
+        'exact text on images about allergens that product does not contain'
+      ];
 
-      let validated_notContainList = [] as any;
-      if (notContainList) {
-        notContainList?.split(/\/|and/)?.forEach((notContainItem: any) => {
-          ALLERGEN_LIST.forEach((allergenItem: any) => {
-            const variants = allergenItem?.variants;
-            const name = allergenItem?.name;
-            const statement_not_include = allergenItem?.statement_not_include;
-            const trimmedNotContainItem = notContainItem?.trim();
+    let validated_notContainList = [] as any;
+    if (notContainList) {
+      notContainList?.forEach((notContainItem: any) => {
+        ALLERGEN_LIST.forEach((allergenItem: any) => {
+          const variants = allergenItem?.variants;
+          const name = allergenItem?.name;
+          const statement_not_include = allergenItem?.statement_not_include;
+          const trimmedNotContainItem = notContainItem?.trim();
 
-            let validVariant = variants.find((variantItem: any) => {
-              return toLower(trimmedNotContainItem)?.includes(variantItem);
-            });
-
-            if (statement_not_include) {
-              if (
-                statement_not_include.some((expText: string) => {
-                  return toLower(trimmedNotContainItem)?.includes(expText);
-                })
-              ) {
-                validVariant = false;
-              }
-            }
-
-            if (validVariant) {
-              validated_notContainList = Array.from(
-                new Set([...validated_notContainList, toUpper(name)])
-              );
-              return true;
-            }
-
-            return false;
+          let validVariant = variants.find((variantItem: any) => {
+            return toLower(trimmedNotContainItem)?.includes(variantItem);
           });
+
+          if (statement_not_include) {
+            if (
+              statement_not_include.some((expText: string) => {
+                return toLower(trimmedNotContainItem)?.includes(expText);
+              })
+            ) {
+              validVariant = false;
+            }
+          }
+
+          if (validVariant) {
+            validated_notContainList = Array.from(
+              new Set([...validated_notContainList, toUpper(name)])
+            );
+            return true;
+          }
+
+          return false;
+        });
+      });
+
+      const currentValue =
+        modifiedProductDataPoints?.['validated_allergens']?.[
+          'notContainList'
+        ] || [];
+
+      modifiedProductDataPoints['validated_allergens']['notContainList'] =
+        Array.from(new Set([...currentValue, ...validated_notContainList]));
+    } else {
+      //* notContainList empty but must check notContainStatement
+      if (notContainStatement) {
+        ALLERGEN_LIST.some((allergenItem: any) => {
+          const variants = allergenItem?.variants;
+          const name = allergenItem?.name;
+          const statement_not_include = allergenItem?.statement_not_include;
+          // const trimContainItem = notContainItem?.trim();
+
+          let isValid = variants.find((variantItem: any) =>
+            toLower(notContainStatement)?.split(' ')?.includes(variantItem)
+          );
+
+          // if (statement_not_include) {
+          //   let statement = containStatement;
+          //   if (
+          //     statement_not_include.some((expText: string) => {
+          //       return toLower(statement)?.includes(expText);
+          //     })
+          //   ) {
+          //     isValid = false;
+          //   }
+          // }
+
+          if (isValid) {
+            validated_notContainList = Array.from(
+              new Set([...validated_notContainList, toUpper(name)])
+            );
+          }
         });
 
-        modifiedProductDataPoints['allergens'][idx][
-          'validated_notContainList'
-        ] = validated_notContainList;
-      } else {
-        //* notContainList empty but must check notContainStatemet
-        if (notContainStatement) {
-          ALLERGEN_LIST.some((allergenItem: any) => {
-            const variants = allergenItem?.variants;
-            const name = allergenItem?.name;
-            const statement_not_include = allergenItem?.statement_not_include;
-            // const trimContainItem = notContainItem?.trim();
+        const currentValue =
+          modifiedProductDataPoints?.['validated_allergens']?.[
+            'notContainList'
+          ] || [];
 
-            let isValid = variants.find((variantItem: any) =>
-              toLower(notContainStatement)?.split(' ')?.includes(variantItem)
-            );
-
-            // if (statement_not_include) {
-            //   let statement = containStatement;
-            //   if (
-            //     statement_not_include.some((expText: string) => {
-            //       return toLower(statement)?.includes(expText);
-            //     })
-            //   ) {
-            //     isValid = false;
-            //   }
-            // }
-
-            if (isValid) {
-              validated_notContainList = Array.from(
-                new Set([...validated_notContainList, toUpper(name)])
-              );
-            }
-          });
-
-          modifiedProductDataPoints['allergens'][idx][
-            'validated_notContainList'
-          ] = validated_notContainList;
-        }
+        modifiedProductDataPoints['validated_allergens']['notContainList'] =
+          Array.from(new Set([...currentValue, ...validated_notContainList]));
       }
     }
-  );
+  });
 };
 
-const validateContainList = async (modifiedProductDataPoints: any) => {
-  modifiedProductDataPoints?.['allergens']?.forEach(
+const validateContain = async (modifiedProductDataPoints: any) => {
+  modifiedProductDataPoints?.['allergens']?.['allergens contain']?.forEach(
     (allergenItem: any, idx: number) => {
       const containList =
-        modifiedProductDataPoints?.['allergens']?.[idx]?.['containList'];
+        modifiedProductDataPoints?.['allergens']?.['allergens contain']?.[
+          idx
+        ]?.['allergens contain statement break-down list'];
       const containStatement =
-        modifiedProductDataPoints?.['allergens']?.[idx]?.['containStatement'];
+        modifiedProductDataPoints?.['allergens']?.['allergens contain']?.[
+          idx
+        ]?.['allergen contain statement'];
 
       if (!containList) return null;
       let validated_containList = [] as any;
 
-      containList?.split(/\/|and/)?.forEach((containItem: any) => {
+      containList?.forEach((containItem: any) => {
         ALLERGEN_LIST.some((allergenItem: any) => {
           const variants = allergenItem?.variants;
           const name = allergenItem?.name;
@@ -138,67 +163,183 @@ const validateContainList = async (modifiedProductDataPoints: any) => {
         });
       });
 
-      modifiedProductDataPoints['allergens'][idx]['validated_containList'] =
-        validated_containList;
+      const currentValueList =
+        modifiedProductDataPoints?.['validated_allergens']?.['containList'] ||
+        [];
+
+      modifiedProductDataPoints['validated_allergens']['containList'] =
+        Array.from(new Set([...currentValueList, ...validated_containList]));
+
+      const currentValueStatement =
+        modifiedProductDataPoints?.['validated_allergens']?.[
+          'containStatement'
+        ] || [];
+
+      modifiedProductDataPoints['validated_allergens']['containStatement'] =
+        Array.from(new Set([...currentValueStatement, containStatement]));
+
+      // modifiedProductDataPoints['allergens'][idx]['validated_containList'] =
+      //   validated_containList;
     }
   );
 };
 
-const validateContainOnEquipmentList = async (
-  modifiedProductDataPoints: any
-) => {
-  modifiedProductDataPoints?.['allergens']?.forEach(
-    (allergenItem: any, idx: number) => {
-      const containOnEquipmentList =
-        modifiedProductDataPoints?.['allergens']?.[idx]?.[
-          'containOnEquipmentList'
-        ];
+const validateContainOnEquipment = async (modifiedProductDataPoints: any) => {
+  modifiedProductDataPoints?.['allergens']?.[
+    'allergens on equipments or in facility'
+  ]?.forEach((allergenItem: any, idx: number) => {
+    const containOnEquipmentList =
+      modifiedProductDataPoints?.['allergens']?.[
+        'allergens on equipments or in facility'
+      ]?.[idx]?.[
+        'allergens list from manufacturing equipments or from facility'
+      ];
 
-      const containStatement =
-        modifiedProductDataPoints?.['allergens']?.[idx]?.[
-          'containOnEquipmentStatement'
-        ];
+    const containOnEquipmentStatement =
+      modifiedProductDataPoints?.['allergens']?.[idx]?.[
+        'statement about allergens on manufacturing equipments or from facility'
+      ];
 
-      if (!containOnEquipmentList) return null;
-      let validated_containOnEquipmentList = [] as any;
+    // if (!containOnEquipmentList) return null;
 
-      containOnEquipmentList?.split(/\/|and/)?.forEach((containItem: any) => {
-        ALLERGEN_LIST.some((allergenItem: any) => {
-          const variants = allergenItem?.variants;
-          const name = allergenItem?.name;
-          const statement_not_include = allergenItem?.statement_not_include;
-          const trimContainItem = containItem?.trim();
+    let validated_containOnEquipmentList = [] as any;
 
-          let validVariant = variants.find((variantItem: any) =>
-            toLower(trimContainItem)?.includes(variantItem)
-          );
+    containOnEquipmentList?.forEach((containItem: any) => {
+      ALLERGEN_LIST.some((allergenItem: any) => {
+        const variants = allergenItem?.variants;
+        const name = allergenItem?.name;
+        const statement_not_include = allergenItem?.statement_not_include;
+        const trimContainItem = containItem?.trim();
 
-          if (statement_not_include) {
-            if (
-              statement_not_include.some((expText: string) => {
-                return toLower(trimContainItem)?.includes(expText);
-              })
-            ) {
-              validVariant = false;
-            }
+        let validVariant = variants.find((variantItem: any) =>
+          toLower(trimContainItem)?.includes(variantItem)
+        );
+
+        if (statement_not_include) {
+          if (
+            statement_not_include.some((expText: string) => {
+              return toLower(trimContainItem)?.includes(expText);
+            })
+          ) {
+            validVariant = false;
           }
+        }
 
-          if (validVariant) {
-            validated_containOnEquipmentList = Array.from(
-              new Set([...validated_containOnEquipmentList, toUpper(name)])
-            );
+        if (validVariant) {
+          validated_containOnEquipmentList = Array.from(
+            new Set([...validated_containOnEquipmentList, toUpper(name)])
+          );
+          return true;
+        }
+
+        return false;
+      });
+    });
+
+    // processedManufacturedInFacilityStatement: [],
+    // inFacilityOnEquipmentStatement: [],
+
+    //? validate the statement of allergen on equipments
+    if (containOnEquipmentStatement) {
+      const isValidForAllergenEquipment = ALLERGEN_ON_EQUIPMENT_PHRASE?.find(
+        (words: any) => {
+          if (
+            words?.every((word: string) => {
+              return toLower(containOnEquipmentStatement)?.includes(
+                toLower(word)
+              );
+            })
+          ) {
             return true;
           }
 
           return false;
-        });
-      });
+        }
+      );
 
-      modifiedProductDataPoints['allergens'][idx][
-        'validated_containOnEquipmentList'
-      ] = validated_containOnEquipmentList;
+      const isValidForAllergenContain = ALLERGEN_CONTAIN_PHRASE?.find(
+        (words: any) => {
+          if (
+            words?.every((word: string) => {
+              return toLower(containOnEquipmentStatement)?.includes(
+                toLower(word)
+              );
+            })
+          ) {
+            return true;
+          }
+
+          return false;
+        }
+      );
+
+      if (isValidForAllergenEquipment) {
+        const currentValueStatement =
+          modifiedProductDataPoints?.['validated_allergens']?.[
+            'processedManufacturedInFacilityStatement'
+          ] || [];
+
+        modifiedProductDataPoints['validated_allergens'][
+          'processedManufacturedInFacilityStatement'
+        ] = Array.from(
+          new Set([...currentValueStatement, containOnEquipmentStatement])
+        );
+
+        modifiedProductDataPoints['validated_allergens'][
+          'processedManufacturedInFacilityStatement'
+        ] = Array.from(
+          new Set([...currentValueStatement, containOnEquipmentStatement])
+        );
+
+        //? allergen on equipment list
+        const currentValue =
+          modifiedProductDataPoints?.['validated_allergens']?.[
+            'processedOnEquipment'
+          ] || [];
+
+        modifiedProductDataPoints['validated_allergens'][
+          'processedOnEquipment'
+        ] = Array.from(
+          new Set([...currentValue, ...validated_containOnEquipmentList])
+        );
+
+        modifiedProductDataPoints['validated_allergens'][
+          'inFacilityOnEquipmentIncluding'
+        ] = Array.from(
+          new Set([...currentValue, ...validated_containOnEquipmentList])
+        );
+      } else if (isValidForAllergenContain) {
+        const currentValueStatement =
+          modifiedProductDataPoints?.['validated_allergens']?.[
+            'containStatement'
+          ] || [];
+
+        modifiedProductDataPoints['validated_allergens']['containStatement'] =
+          Array.from(
+            new Set([...currentValueStatement, containOnEquipmentStatement])
+          );
+
+        modifiedProductDataPoints['validated_allergens']['containStatement'] =
+          Array.from(
+            new Set([...currentValueStatement, containOnEquipmentStatement])
+          );
+
+        //? allergen contain
+        const currentValue =
+          modifiedProductDataPoints?.['validated_allergens']?.['containList'] ||
+          [];
+
+        modifiedProductDataPoints['validated_allergens']['containList'] =
+          Array.from(
+            new Set([...currentValue, ...validated_containOnEquipmentList])
+          );
+      }
     }
-  );
+
+    // modifiedProductDataPoints['allergens'][idx][
+    //   'validated_containOnEquipmentList'
+    // ] = validated_containOnEquipmentList;
+  });
 };
 
 const mapToValidatedAllergenObject = async (modifiedProductDataPoints: any) => {
@@ -336,6 +477,10 @@ const mapToValidatedAllergenObject = async (modifiedProductDataPoints: any) => {
     });
   }
 };
+
+const ALLERGEN_ON_EQUIPMENT_PHRASE = [['equipments'], ['facility']];
+
+const ALLERGEN_CONTAIN_PHRASE = [['contain'], ['may contain']];
 
 const ALLERGEN_LIST = [
   {

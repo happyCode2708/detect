@@ -69,15 +69,15 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   // logger.info(extraClaimSection_3);
 
   const allergenClaimSection = markdown
-    .split('ALLERGEN_TABLE')?.[1]
-    ?.split('END__ALLERGEN__TABLE')?.[0];
+    .split('ALLERGEN_OBJECT')?.[1]
+    ?.split('END__ALLERGEN__OBJECT')?.[0];
 
   // logger.error('allergen');
   // logger.info(allergenClaimSection);
 
   const headerSection = markdown
-    .split('HEADER_TABLE')?.[1]
-    ?.split('END__HEADER__TABLE')?.[0];
+    .split('HEADER_OBJECT')?.[1]
+    ?.split('END__HEADER__OBJECT')?.[0];
 
   // logger.error('header');
   // logger.info(headerSection);
@@ -257,40 +257,42 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   //   'notContainStatement',
   //   'notContainList',
   // ]);
+  const allergenObjList = parseJson(allergenClaimSection);
 
-  const allergenObjList = getObjectDataFromHorizontalTable(
-    allergenClaimSection,
-    {
-      'allergen contain statement': 'containStatement',
-      'allergens contain statement break-down list (split by "/")':
-        'containList',
-      'allergens on equipments statement': 'containOnEquipmentStatement',
-      'allergens on equipments statement break-down list (split by "/")':
-        'containOnEquipmentList',
-      'exact text on images about allergens that product does not contain':
-        'notContainStatement',
-      'allergens product does not contain break-down list (split by "/")':
-        'notContainList',
-    },
-    {
-      groupVertical: true,
-    }
-  );
+  // const allergenObjList = getObjectDataFromHorizontalTable(
+  //   allergenClaimSection,
+  //   {
+  //     'allergen contain statement': 'containStatement',
+  //     'allergens contain statement break-down list (split by "/")':
+  //       'containList',
+  //     'allergens on equipments statement': 'containOnEquipmentStatement',
+  //     'allergens on equipments statement break-down list (split by "/")':
+  //       'containOnEquipmentList',
+  //     'exact text on images about allergens that product does not contain':
+  //       'notContainStatement',
+  //     'allergens product does not contain break-down list (split by "/")':
+  //       'notContainList',
+  //   },
+  //   {
+  //     groupVertical: true,
+  //   }
+  // );
   // logger.error('allergen list');
   // logger.info(JSON.stringify(allergenObjList));
 
   //? HEADER
-  const headerObjList = getObjectDataFromTable(headerSection, [
-    'productName',
-    'companyName',
-    'brandName',
-    'primarySize',
-    'secondarySize',
-    'thirdSize',
-    'fullSizeStatement',
-    'count',
-    'countUom',
-  ]);
+  // const headerObjList = getObjectDataFromTable(headerSection, [
+  //   'productName',
+  //   'companyName',
+  //   'brandName',
+  //   'primarySize',
+  //   'secondarySize',
+  //   'thirdSize',
+  //   'fullSizeStatement',
+  //   'count',
+  //   'countUom',
+  // ]);
+  const headerObjList = parseJson(headerSection);
   // logger.error('header list');
   // logger.info(JSON.stringify(headerObjList));
 

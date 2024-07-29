@@ -23,6 +23,7 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
   const {
     factPanels,
     header,
+    validated_header,
     physical,
     attributes,
     ingredients,
@@ -68,16 +69,16 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
 
   const informationInstruction = instructions?.informationInstruction;
 
-  const headerInfo = header?.[0];
+  // const headerInfo = header?.[0];
 
   return (
     <div>
       <SectionWrapper name='Header'>
         <CamelFieldStringRender
           objectValues={{
-            possibleBrandName: headerInfo?.['brandName'],
-            possibleProductName: headerInfo?.['productName'],
-            ...headerInfo,
+            possibleBrandName: validated_header?.['brandName'],
+            possibleProductName: validated_header?.['productName'],
+            ...validated_header,
             brandName: null,
             productName: null,
           }}
@@ -157,14 +158,14 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         />
       </SectionWrapper>
       <SectionWrapper name='allergens'>
-        {allergens?.map((allergenItem: any, idx: number) => {
+        {/* {allergens?.map((allergenItem: any, idx: number) => {
           return (
             <div className='border rounded-md mb-2 p-1' key={idx}>
               <CamelFieldStringRender objectValues={allergenItem} />
             </div>
           );
-        })}
-        {validated_allergens && (
+        })} */}
+        {/* {validated_allergens && (
           <div className='border rounded-md mb-2 p-1'>
             <div className='font-bold uppercase p-1 rounded-md bg-green-600 text-white inline-block'>
               validated result
@@ -187,7 +188,7 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
               }}
             />
           </div>
-        )}
+        )} */}
       </SectionWrapper>
       <SectionWrapper name='instructions'>
         {recipes?.map((recipe: any, idx: number) => {

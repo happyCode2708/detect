@@ -16,6 +16,7 @@ export const mapToTDCformat = (extractData: any) => {
     validated_instructions,
     factPanels,
     header,
+    validated_header,
     allergens,
     validated_allergens,
     attributes,
@@ -26,19 +27,19 @@ export const mapToTDCformat = (extractData: any) => {
 
   const mappedResult = {
     //* header
-    ProductDescription: toUpper(header?.[0]?.productName),
-    BrandName: toUpper(header?.[0]?.brandName),
+    ProductDescription: toUpper(validated_header?.productName),
+    BrandName: toUpper(validated_header?.brandName),
     // PrimarySize: toUpper(header?.[0]?.primarySizeValue),
     // PrimarySizeUOM: toUpper(header?.[0]?.primarySizeUOM),
     // ...mapPrimarySizeAndPrimarySizeUom(header),
-    PrimarySize: toUpper(header?.[0]?.primarySizeValue),
-    PrimarySizeUOM: toUpper(header?.[0]?.primarySizeUOM),
-    PrimarySizeText: toUpper(header?.[0]?.fullSizeStatement),
-    SecondarySize: toUpper(header?.[0]?.secondarySizeValue),
-    SecondarySizeUOM: toUpper(header?.[0]?.secondarySizeUOM),
-    TertiarySize: toUpper(header?.[0]?.thirdSizeValue),
-    TertiarySizeUOM: toUpper(header?.[0]?.thirdSizeUOM),
-    UnitCount: header?.[0]?.count,
+    PrimarySize: toUpper(validated_header?.primarySizeValue),
+    PrimarySizeUOM: toUpper(validated_header?.primarySizeUOM),
+    PrimarySizeText: toUpper(validated_header?.fullSizeStatement),
+    SecondarySize: toUpper(validated_header?.secondarySizeValue),
+    SecondarySizeUOM: toUpper(validated_header?.secondarySizeUOM),
+    TertiarySize: toUpper(validated_header?.thirdSizeValue),
+    TertiarySizeUOM: toUpper(validated_header?.thirdSizeUOM),
+    UnitCount: validated_header?.count,
 
     //* panel
     NutritionPanel:

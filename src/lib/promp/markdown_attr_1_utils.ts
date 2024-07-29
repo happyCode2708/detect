@@ -152,7 +152,7 @@ USAGE_INSTRUCTION
 INFORMATION_INSTRUCTION
 LABELING_INFO_TABLE
 LABELING_INFO_ANALYSIS_TABLE
-ALLERGEN_TABLE
+ALLERGEN_OBJECT
 HEADER_TABLE
 BASE_CERTIFIER_CLAIM_TABLE
 INGREDIENT_TABLE
@@ -260,7 +260,7 @@ LABELING_INFO_ANALYSIS_TABLE
 | ------- | -------- | -------- |
 END__LABELING__INFO__ANALYSIS__TABLE
 
-7) Allergen info recorded in markdown table format below:
+7) Allergen info recorded in the format below:
  
 IMPORTANT NOTE:
 + tree nuts also includes "coconut"
@@ -273,14 +273,15 @@ Example 3: "contain: milk, peanut"
 + "allergens contain statement break-down list" is a string list
 ex 1: "oats/milk"
 
-+ "allergens contain statement break-down list" is the allergen ingredients from "allergen contain statement" and do not collect from product ingredient list.
++ "allergens contain statement break-down list" is the allergen ingredients list from "allergen contain statement" and do not collect from product ingredient list.
 
-+ "allergens on equipments statement" are the exact contexts that you found on provided images about allergens that said they could present on the product since manufacturing equipments are also used to make other product,or in the same facility ,or shared machinery.
++ "statement about allergens on manufacturing equipments or from facility" are the exact contexts that you found on provided images about allergens that said they present on the product since manufacturing equipments are also used to make other product, or in the same facility ,or shared machinery.
+"statement about allergens on manufacturing equipments or from facility" could be easily detected with statements with some texts such as "produced in a facility ...", "Manufactured in facility that ... ", "Made on equipment that process ... "
 Example 1: "produced in a facility that uses soy, and peanut"
 Example 2: "Manufactured in facility that also processes peanut, milk"
 Example 3: "Made on equipment that process peanut"
 
-+ "allergens on equipments statement break-down list" is the break-down list of all ingredients that is stated to present in facility or manufacturing equipments. Do not include ingredients that say is not present on facility or manufacturing equipment.
++ "allergens list from manufacturing equipments or from facility" is the break-down list of all ingredients that is claim to present in facility or manufacturing equipments. Do not include ingredients that say is not present on facility or manufacturing equipment.
 Example 1: "Manufactured in a egg and milk free facility that also processes peanut, wheat products" should be recorded as "peanut/wheat" since text "in a egg and milk free facility" mean the egg and milk is not present in facility.
 
 + "exact text on images about allergens that product does not contain" are the exact contexts that you found on provided images about allergen info, that product claim to not contain or free of or free.
@@ -291,26 +292,50 @@ example 4: "non-dairy" text mean does not contain allergen ingredient of "dairy"
 example 5: "no egg"
 example 6: "soy free", "dairy-free"
 
-TABLE FORMAT:
-ALLERGEN_TABLE
-| allergen info | value 1 | value 2 | value 3 | ... (more columns if needed)
-| ------- | -------- | -------- | -------- | ...
-| allergen contain statement | 
-| allergens contain statement break-down list (split by "/") |
-| allergens on equipments statement |
-| allergens on equipments statement break-down list (split by "/") |
-| exact text on images about allergens that product does not contain |
-| allergens product does not contain break-down list (split by "/") |
-END__ALLERGEN__TABLE
+INFO FORMAT:
+ALLERGEN_OBJECT
+{
+  "allergens on equipments or in facility": [
+    {
+      "statement about allergens on manufacturing equipments or from facility": str,
+      "allergens list from manufacturing equipments or from facility": str[]
+      "allergens list not present in facility": str[],
+    }
+  ],
+  "allergens contain": [
+    {
+      "allergen contain statement": str,
+      "allergens contain statement break-down list": str[]
+    }
+  ],
+  "allergens product info state not contain": [ 
+    {
+      "exact text on images about allergens that product does not contain": str,
+      "allergens product does not contain break-down list": str[]
+    }
+  ]
+}
+END__ALLERGEN__OBJECT
 
 8) Header info with table format below:
 IMPORTANT NOTE:
 + header table only have 1 row item so you must carefully examine the images.
 + "primary size" and "secondary size" and "third size" are a quantity measurement of product in there different unit of measurement. They are not info from "serving size" in nutrition fact panel.
-Ex 1: "primary size" = "100 gram"
-Ex 3: "WT 2.68 OZ (40g) should recorded as "primary size" = "2.68 OZ" and "secondary size" = "40g"
-Ex 2: "32 fl oz ( 2 pt ) 946 mL" should recorded as "primary size" = "32 fl oz" and "secondary size" = "2 pt" and "third size" = "946 mL"
-Ex 4: "100 capsules"  should recorded as "primary size" = "100 capsules"
+Example 1: for "WT 2.68 OZ (40g)" should be recorded as
+{
+  "primary size": "2.68 OZ",
+  "secondary size": "40g"
+}
+Example 2: for "32 fl oz ( 2 pt ) 946 mL" should recorded as
+{
+  "primary size": "32 fl oz",
+  "secondary size" = "2 pt",
+  "third size" = "946 mL",
+}
+Example 3: for "100 capsules"  should recorded as
+{
+  "primary size" = "100 capsules"
+}
 
 + just collect size in order. If production mention three type of uom it will have third size
 
@@ -318,17 +343,30 @@ Ex 4: "100 capsules"  should recorded as "primary size" = "100 capsules"
 
 + "count" is the count number of smaller unit inside a package, or a display shipper, or a case, or a box.
 
-+ "full size statement" is the whole size statement text found on product images that might includes all texts about primary size, secondary size,  third size and serving amounts if exits  but not info from nutrition panel
++ "full statement about product size" is the whole size statement text found on product images that might includes all texts about primary size, secondary size,  third size and serving amounts if exits  but not info from nutrition panel
 Ex 1: "Net WT 9.28oz(260g) 10 cups"
 Ex 2: "16 FL OZ (472 ML)
 Ex 3: "900 CAPSULES 400 servings"
 Ex 4: "24 K-CUP PODS - 0.55 OZ (5.2)G/EA NET WT 4.44 OZ (38g)"
 
-TABLE FORMAT:
-HEADER_TABLE
-| product name | company name | brand name | primary size | secondary size | third size | full size statement | count | count uom |
-| ------- | -------- | -------- | ------- | -------- | -------- | -------- | -------- |
-END__HEADER__TABLE
+INFO FORMAT:
+HEADER_OBJECT
+{
+  "product info": {
+    "product name": str,
+    "company name": str,
+    "brand name": str
+  },
+  "product size": {
+    "full statement about product size": str,
+    "primary size": str,
+    "secondary size": str,
+    "third size": str,
+    "count": str,
+    "count uom": str
+  }
+}
+END__HEADER__OBJECT
 
 
 9) Base certifier claim info with table format below:
