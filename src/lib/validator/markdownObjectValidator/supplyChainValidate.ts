@@ -102,7 +102,9 @@ const validateManufacturerState = async (
 const validateCountryOfOrigin = async (modifiedProductDataPoints: any) => {
   // const countryOfOrigin = trimPeriodsAndCommas(countryValue);
   const countryOfOrigin = trimPeriodsAndCommas(
-    modifiedProductDataPoints?.['supplyChain']?.['country of origin']?.trim()
+    modifiedProductDataPoints?.['supplyChain']?.['country info']?.[0]?.[
+      'country of origin'
+    ]?.trim()
   );
 
   if (isValueEmpty(countryOfOrigin)) return;
