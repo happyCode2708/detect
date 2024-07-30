@@ -76,7 +76,7 @@ export const mapToTDCformat = (extractData: any) => {
     // ConsumerStorage: instructions?.[0]?.validated_storageInstruction,
     // CookingInstructions: instructions?.[0]?.cookingInstruction,
     // UseOrFreezeBy: instructions?.[0]?.validated_useOrFreezeBy,
-    UsageInstructions: validated_instructions?.usageInstruction,
+    // UsageInstructions: validated_instructions?.usageInstruction,
     ConsumerStorage: validated_instructions?.storageInstruction,
     CookingInstructions: validated_instructions?.cookingInstruction,
     UseOrFreezeBy: validated_instructions?.useOrFreezeBy,
@@ -219,6 +219,7 @@ export const mapToTDCformat = (extractData: any) => {
       ? [attributes?.otherAttribute?.[0]?.grade]
       : undefined,
     JuicePercent: attributes?.otherAttribute?.[0]?.juicePercent,
+    FatContent: attributes?.validated_fatClaims,
 
     //* other attributes
     ...(attributes?.['validated_baseCertifierClaims']

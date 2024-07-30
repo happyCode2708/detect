@@ -314,6 +314,7 @@ const STORAGE_REASON = {
   },
   'REFRIGERATE AFTER OPENING': {
     variants: [
+      ['refrigerate', 'once', 'open'],
       ['refrigerate', 'after', 'open'],
       ['open', 'keep', 'refrigerate'],
     ],

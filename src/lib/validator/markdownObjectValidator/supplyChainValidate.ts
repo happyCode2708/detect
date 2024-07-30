@@ -103,7 +103,7 @@ const validateCountryOfOrigin = async (modifiedProductDataPoints: any) => {
   // const countryOfOrigin = trimPeriodsAndCommas(countryValue);
   const countryOfOrigin = trimPeriodsAndCommas(
     modifiedProductDataPoints?.['supplyChain']?.['country info']?.[0]?.[
-      'country of origin'
+      'country of origin from made in statement'
     ]?.trim()
   );
 
@@ -130,34 +130,9 @@ const validateCountryOfOrigin = async (modifiedProductDataPoints: any) => {
 const validateOtherFields = async (modifiedProductDataPoints: any) => {
   const supplyChainData = modifiedProductDataPoints?.['supplyChain'];
 
-  // const { 'manufacturer info': manufacturerInfo } = supplyChainData || {};
-
-  // const {
-  //   'manufacture name': manufacturerName,
-  //   'manufacture phone number': manufacturerPhoneNumber,
-  //   'manufacture street name': manufacturerStreetAddress,
-  //   'manufacture city': manufacturerCity,
-  //   'manufacture zipCode': manufactureZipCode,
-  // } = supplyChainData?.['manufacturer address info'] || {};
-
-  // const { 'distributor full info address': distributedByText } =
-  //   supplyChainData?.['distributor address info'] || {};
-
-  // const { 'country of origin text': countryOfOriginText } = supplyChainData;
-
-  // const otherFields = {
-  //   countryOfOriginText,
-  //   distributedByText,
-  //   manufacturerName,
-  //   manufacturerPhoneNumber,
-  //   manufacturerStreetAddress,
-  //   manufacturerCity,
-  //   manufactureZipCode,
-  // };
-
   const otherFields = {
     countryOfOriginText:
-      supplyChainData?.['country info']?.[0]?.['country of origin text'],
+      supplyChainData?.['country info']?.[0]?.['made in statement'],
   };
 
   Object.entries(otherFields)?.forEach(([fieldName, value]) => {
@@ -172,6 +147,8 @@ const DISTRIBUTED_BY_PHRASE = [
   'distributed by',
   'distributor',
   'manufacture for',
+  'dist. by',
+  'dist . by',
 ];
 const MANUFACTURED_BY_PHRASE = [
   'manufactured by',

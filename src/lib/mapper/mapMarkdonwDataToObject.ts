@@ -160,14 +160,3 @@ export const mapMarkdownNutToObject = (markdown: string) => {
     return result;
   });
 };
-
-// const replaceSpecialCharacters = (text: string) => {
-//   if (!text) {
-//     return text;
-//   }
-//   let newString = text;
-
-//   newString = text.replace(/<br>/g, '\n');
-
-//   return newString;
-// };

@@ -149,6 +149,7 @@ const SUGAR_ITEMS_REASON = {
       ['no', 'artificial', 'sweetener'],
       ['not contain', 'artificial', 'sweetener'],
       ['free from', 'artificial', 'sweetener'],
+      ['0', 'artificial', 'sweetener'],
     ],
   },
   unsweetened: { variants: [['unsweetened']] },
@@ -277,6 +278,12 @@ const SUGAR_CLAIMS_MAP = {
   zero: {
     sugar: 'no sugar',
     'added sugar': 'no added sugar',
+  },
+  'no sugar added': {
+    'sugar added': 'no sugar added',
+  },
+  'flavor with': {
+    honey: 'honey',
   },
   no: {
     'natural sweeteners': false,

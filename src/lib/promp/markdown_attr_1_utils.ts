@@ -153,7 +153,7 @@ INFORMATION_INSTRUCTION
 LABELING_INFO_TABLE
 LABELING_INFO_ANALYSIS_TABLE
 ALLERGEN_OBJECT
-HEADER_TABLE
+HEADER_OBJECT
 BASE_CERTIFIER_CLAIM_TABLE
 INGREDIENT_TABLE
 MARKETING_OBJECT
@@ -163,7 +163,7 @@ ATTRIBUTE_TABLE
 without any number like 1) or 2) before table names
 without \`\`\` or \`\`\` closing tag
 
-4) result must include all footer TEXT (such as END__SUPPLY__CHAIN__OBJECT,...) at the end of each table. Remember all words in footer text are separated by double underline "__"
+4) result must include all footer TEXT (such as END_SUPPLY_CHAIN_OBJECT,...) at the end of each table. 
 
 5) do not add examples to return result. Please only return info that visibly seen from provided images.
 
@@ -188,7 +188,7 @@ COOKING_INSTRUCTION_OBJECT
   "all other text or paragraph about cooking info": str[]
 }
 ]
-END__COOKING__INSTRUCTION__OBJECT
+END_COOKING_INSTRUCTION_OBJECT
 
 2) storage  instruction info recorded with format below:
 
@@ -201,7 +201,7 @@ STORAGE_INSTRUCTION
 {
   "storage instructions": str[]
 }
-END__STORAGE__INSTRUCTION
+END_STORAGE_INSTRUCTION
 
 3) usage instruction info recorded with format below:
 
@@ -214,7 +214,7 @@ USAGE_INSTRUCTION
 {
   "usage instructions": str[]
 }
-END__USAGE__INSTRUCTION
+END_USAGE_INSTRUCTION
 
 4) information instruction info recorded with format below:
 
@@ -227,7 +227,7 @@ INFORMATION_INSTRUCTION
 {
   "information instructions": str[]
 }
-END__INFORMATION__INSTRUCTION
+END_INFORMATION_INSTRUCTION
 
 
 5) LABELING INFO TABLE info recorded in markdown TABLE FORMAT below
@@ -247,7 +247,7 @@ TABLE FORMAT:
 LABELING_INFO_TABLE
 | label item type on product (answer is "certification label"/ "label text"/ "other") (if type "other" tell me what type you think it belong to) | what label item say ? |
 | ------- | -------- |
-END__LABELING__INFO__TABLE
+END_LABELING_INFO_TABLE
 
 6) LABELING INFO ANALYSIS TABLE recorded in markdown TABLE FORMAT below
 
@@ -258,22 +258,24 @@ TABLE FORMAT:
 LABELING_INFO_ANALYSIS_TABLE
 | label item | do label indicate product does not contain something? (answer is yes/no) | what are exactly things that product say not contain from the label item (split things by "/" for multiple if needed) |
 | ------- | -------- | -------- |
-END__LABELING__INFO__ANALYSIS__TABLE
+END_LABELING_INFO_ANALYSIS_TABLE
 
 7) Allergen info recorded in the format below:
  
 IMPORTANT NOTE:
 + tree nuts also includes "coconut"
 
-+ "allergen contain statement" are the exact contexts that you found on provided images about allergen info, usually start with "contains:", "contain", "may contain", "may contain:", "allergen statement:, ... NOT due to sharing manufacturing equipments and NOT due to manufactured in same facility with other products.
++ "all statements about allergens product contain" are the all contexts that you found on provided images about allergen info, usually start with "contains:", "contain", "may contain", "may contain:", "allergen statement:, ... NOT due to sharing manufacturing equipments and NOT due to manufactured in same facility with other products.
+"all statements about allergens product contain" is not from ingredient list or recipe
 Example 1: "allergen statement: contains milk"
 Example 2: "may contain: milk, peanut"
 Example 3: "contain: milk, peanut"
 
-+ "allergens contain statement break-down list" is a string list
-ex 1: "oats/milk"
++ "allergens contain statement break-down list" is the allergen ingredients list from "all statements about allergens product contain" and do not collect from product ingredient list.
++ "allergens contain statement break-down list" is a string list array (str[])
+Example 1: ["oats", "milk"]
+Example 2: ["peanut", "dairy", "tree nuts"]
 
-+ "allergens contain statement break-down list" is the allergen ingredients list from "allergen contain statement" and do not collect from product ingredient list.
 
 + "statement about allergens on manufacturing equipments or from facility" are the exact contexts that you found on provided images about allergens that said they present on the product since manufacturing equipments are also used to make other product, or in the same facility ,or shared machinery.
 "statement about allergens on manufacturing equipments or from facility" could be easily detected with statements with some texts such as "produced in a facility ...", "Manufactured in facility that ... ", "Made on equipment that process ... "
@@ -295,27 +297,24 @@ example 6: "soy free", "dairy-free"
 INFO FORMAT:
 ALLERGEN_OBJECT
 {
-  "allergens on equipments or in facility": [
-    {
-      "statement about allergens on manufacturing equipments or from facility": str,
-      "allergens list from manufacturing equipments or from facility": str[]
-      "allergens list not present in facility": str[],
-    }
-  ],
-  "allergens contain": [
-    {
-      "allergen contain statement": str,
-      "allergens contain statement break-down list": str[]
-    }
-  ],
-  "allergens product info state not contain": [ 
-    {
-      "exact text on images about allergens that product does not contain": str,
-      "allergens product does not contain break-down list": str[]
-    }
-  ]
+  "allergens contain": 
+  {
+    "all statements about allergens product contain": str[],
+    "allergens contain statement break-down list": str[]
+  },
+  "allergens on equipments or in facility":
+  {
+    "all statements about allergens on manufacturing equipments or from facility": str[],
+    "allergens list from manufacturing equipments or from facility": str[],
+    "allergens list not present in facility": str[],
+  },
+  "allergens product info state not contain": 
+  {
+    "exact all texts or statements on images about allergens that product does not contain": str[],
+    "allergens product does not contain break-down list": str[]
+  }
 }
-END__ALLERGEN__OBJECT
+END_ALLERGEN_OBJECT
 
 8) Header info with table format below:
 IMPORTANT NOTE:
@@ -330,18 +329,24 @@ Example 2: for "32 fl oz ( 2 pt ) 946 mL" should recorded as
 {
   "primary size": "32 fl oz",
   "secondary size" = "2 pt",
-  "third size" = "946 mL",
+  "third size" = "946 mL"
 }
-Example 3: for "100 capsules"  should recorded as
+Example 3: for "100 capsules" should recorded as
 {
   "primary size" = "100 capsules"
 }
+Example 4: for "20-4 OZ ( 60G ) TUBES / NET WT . 3 LB ( 853G )" should recorded as
+{
+  "primary size": "3 LB",
+  "secondary size" = "853G"
+}
+Example 5: for "NET WT 1LB 2.7OZ (0.53KG)" should recorded as
 
 + just collect size in order. If production mention three type of uom it will have third size
 
 + "primary size" must content quantity value number and its oum (same for primary size, and third size)
 
-+ "count" is the count number of smaller unit inside a package, or a display shipper, or a case, or a box.
++ "count" is the count number of smaller unit inside a package, or a display shipper, or a case, or a box (such as count of servings, count of capsules, count of pills, ...).
 
 + "full statement about product size" is the whole size statement text found on product images that might includes all texts about primary size, secondary size,  third size and serving amounts if exits  but not info from nutrition panel
 Ex 1: "Net WT 9.28oz(260g) 10 cups"
@@ -366,7 +371,7 @@ HEADER_OBJECT
     "count uom": str
   }
 }
-END__HEADER__OBJECT
+END_HEADER_OBJECT
 
 
 9) Base certifier claim info with table format below:
@@ -419,7 +424,7 @@ BASE_CERTIFIER_CLAIM_TABLE
 | Vegetarian Claim |
 | Viticulture Claim |
 | Whole Grain Claim |
-END__BASE__CERTIFIER_CLAIM_TABLE
+END_BASE_CERTIFIER_CLAIM_TABLE
 
 
 9) Ingredient info with table format below:
@@ -445,7 +450,7 @@ TABLE FORMAT:
 INGREDIENT_TABLE
 | product type from nutrition panel ? (answer is "nutrition facts" / "supplement facts" / "unknown") | prefix text of ingredient list (answer are "other ingredients:" / "ingredients:") | ingredient statement | ingredient break-down list from ingredient statement (each ingredient splitted by "/") | live and active cultures list statement | live and active cultures break-down list (each item splitted by "/")  | 
 | ------- | ------- | -------- | -------- | -------- | -------- |
-END__INGREDIENT__TABLE
+END_INGREDIENT_TABLE
 
 10) Marketing info with format below:
 
@@ -463,45 +468,53 @@ MARKETING_OBJECT
     }
   ]
 }
-END__MARKETING__OBJECT
+END_MARKETING_OBJECT
 
 11) supply chain info with format below:
 
 IMPORTANT NOTES:
-+ "country of origin text" example
++ "made in statement" is text about the country where a product was manufactured, produced, or grown.
 Example 1: "manufactured in Canada"
 Example 2: "made in Brazil"
 EXample 3: "produced in Brazil"
 
-+ "country of origin" is exact text (found on product images) of the origin country found on product images where the product was made in.
++ "country of origin from made in statement" is exact country name (found on product images) found on product images where the product was manufactured, produced, or grown.
 Example 1: "Canada"
 Example 2: "Brazil"
+Example 2: "UK"
 
 + "full address statement" rules:
 Example 1: "Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
 Example 2: "Heneiken Inc 999 SE HILL COURT, Milwaukie, ON N1R7L2 Canada"
 Example 3: "manufactured by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
 Example 4: "produced by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+Example 5: "distributed by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+Example 6: "dist. by: Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+
 
 INFO FORMAT:
 SUPPLY_CHAIN_OBJECT
 {
-  "country info": [{
-    "country of origin text": str,
-    "country of origin": str
-  }],
+  "country info": [
+    {
+      "made in statement": str,
+      "country of origin from made in statement": str
+    }
+  ],
   "address info": [
-    "full address statement": str,
-    "company name": str,
-    "street number": str,
-    "street name": str,
-    "city": str,
-    "state": str,
-    "zipCode": str,
-    "phone number": str
+    {
+      "full address statement": str,
+      "company name": str,
+      "street number": str,
+      "street name": str,
+      "city": str,
+      "state": str,
+      "zipCode": str,
+      "phone number": str
+    }
   ] 
 }
-END__SUPPLY__CHAIN__OBJECT
+END_SUPPLY_CHAIN_OBJECT
 
 12) some other attribute info recorded with table format below:
 
@@ -509,7 +522,7 @@ TABLE FORMAT:
 ATTRIBUTE_TABLE
 | grade (answer are 'A'/ 'B') | juice percent (answer is number) |
 | ------- | ------- |
-END__ATTRIBUTE__TABLE
+END_ATTRIBUTE_TABLE
 `;
 };
 
@@ -629,3 +642,4 @@ END__ATTRIBUTE__TABLE
 // (ROW RETURN CONDITION: only return row item if "explicitly and directly mentioned in product info without implied from other text" value = "true")
 
 // | full text about distributor |
+//"all statements about allergens product contain" is not from ingredient list or recipe

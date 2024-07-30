@@ -69,7 +69,11 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
 
   const informationInstruction = instructions?.informationInstruction;
 
-  // const headerInfo = header?.[0];
+  const allergenContain = allergens?.['allergens contain'] || {};
+  const allergenNotContain =
+    allergens?.['allergens product info state not contain'] || {};
+  const allergenOnEquipment =
+    allergens?.['allergens on equipments or in facility'];
 
   return (
     <div>
@@ -165,7 +169,55 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
             </div>
           );
         })} */}
-        {/* {validated_allergens && (
+        <CamelFieldStringRender
+          objectValues={{
+            ...allergenContain,
+            containStatement:
+              allergenContain?.[
+                'all statements about allergens product contain'
+              ],
+            containList:
+              allergenContain?.['allergens contain statement break-down list'],
+            'all statements about allergens product contain': null,
+            'allergens contain statement break-down list': null,
+          }}
+        />
+        <CamelFieldStringRender
+          objectValues={{
+            ...allergenNotContain,
+            notContainStatement:
+              allergenNotContain?.[
+                'exact all texts or statements on images about allergens that product does not contain'
+              ],
+            notContainList:
+              allergenNotContain?.[
+                'allergens product does not contain break-down list'
+              ],
+            'exact all texts or statements on images about allergens that product does not contain':
+              null,
+            'allergens product does not contain break-down list': null,
+          }}
+        />
+
+        <CamelFieldStringRender
+          objectValues={{
+            ...allergenOnEquipment,
+            containOnEquipmentStatement:
+              allergenOnEquipment?.[
+                'all statements about allergens on manufacturing equipments or from facility'
+              ],
+            ContainOnEquipmentList:
+              allergenOnEquipment?.[
+                'allergens list from manufacturing equipments or from facility'
+              ],
+            'all statements about allergens on manufacturing equipments or from facility':
+              null,
+            'allergens list from manufacturing equipments or from facility':
+              null,
+          }}
+        />
+
+        {validated_allergens && (
           <div className='border rounded-md mb-2 p-1'>
             <div className='font-bold uppercase p-1 rounded-md bg-green-600 text-white inline-block'>
               validated result
@@ -188,7 +240,7 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
               }}
             />
           </div>
-        )} */}
+        )}
       </SectionWrapper>
       <SectionWrapper name='instructions'>
         {recipes?.map((recipe: any, idx: number) => {

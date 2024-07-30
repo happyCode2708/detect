@@ -6,85 +6,85 @@ import _ from 'lodash';
 export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   const labelingInfoSection = markdown
     .split('LABELING_INFO_TABLE')?.[1]
-    ?.split('END__LABELING__INFO__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   const labelingInfoAnalysisSection = markdown
     .split('LABELING_INFO_ANALYSIS_TABLE')?.[1]
-    ?.split('END__LABELING__INFO__ANALYSIS__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   const sugarClaimSection = markdown
     .split('SUGAR_CLAIM_TABLE')?.[1]
-    ?.split('END__SUGAR__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('sugar');
   // logger.info(sugarClaimSection);
 
   const fatClaimSection = markdown
     .split('FAT_CLAIM_TABLE')?.[1]
-    ?.split('END__FAT__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('fat');
   // logger.info(fatClaimSection);
 
   const processClaimSection = markdown
     .split('PROCESS_CLAIM_TABLE')?.[1]
-    ?.split('END__PROCESS__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('other');
   // logger.info(processClaimSection);
 
   const calorieClaimSection = markdown
     .split('CALORIE_CLAIM_TABLE')?.[1]
-    ?.split('END__CALORIE__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('calorie');
   // logger.info(calorieClaimSection);
 
   const saltClaimSection = markdown
     .split('SALT_CLAIM_TABLE')?.[1]
-    ?.split('END__SALT__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('salt');
   // logger.info(saltClaimSection);
 
   const extraClaimSection_1 = markdown
     .split('FIRST_EXTRA_CLAIM_TABLE')?.[1]
-    ?.split('END__FIRST__EXTRA__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('extra 1');
   // logger.info(extraClaimSection_1);
 
   const extraClaimSection_2 = markdown
     .split('SECOND_EXTRA_CLAIM_TABLE')?.[1]
-    ?.split('END__SECOND__EXTRA__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('extra 2');
   // logger.info(extraClaimSection_2);
 
   const extraClaimSection_3 = markdown
     .split('THIRD_EXTRA_CLAIM_TABLE')?.[1]
-    ?.split('END__THIRD__EXTRA__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('extra 3');
   // logger.info(extraClaimSection_3);
 
   const allergenClaimSection = markdown
     .split('ALLERGEN_OBJECT')?.[1]
-    ?.split('END__ALLERGEN__OBJECT')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('allergen');
   // logger.info(allergenClaimSection);
 
   const headerSection = markdown
     .split('HEADER_OBJECT')?.[1]
-    ?.split('END__HEADER__OBJECT')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('header');
   // logger.info(headerSection);
 
   const ingredientSection = markdown
     .split('INGREDIENT_TABLE')?.[1]
-    ?.split('END__INGREDIENT__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('ingredient');
   // logger.info(ingredientSection);
@@ -109,51 +109,51 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
 
   const marketingSection = markdown
     .split('MARKETING_OBJECT')?.[1]
-    ?.split('END__MARKETING__OBJECT')?.[0];
+    ?.split('END_')?.[0];
 
   const cookingInstructionSection = markdown
     .split('COOKING_INSTRUCTION_OBJECT')?.[1]
-    ?.split('END__COOKING__INSTRUCTION__OBJECT')?.[0];
+    ?.split('END_')?.[0];
 
   const storageInstructionSection = markdown
     .split('STORAGE_INSTRUCTION')?.[1]
-    ?.split('END__STORAGE__INSTRUCTION')?.[0];
+    ?.split('END_')?.[0];
 
   const usageInstructionSection = markdown
     .split('USAGE_INSTRUCTION')?.[1]
-    ?.split('END__USAGE__INSTRUCTION')?.[0];
+    ?.split('END_')?.[0];
 
   const informationInstructionSection = markdown
     .split('INFORMATION_INSTRUCTION')?.[1]
-    ?.split('END__INFORMATION__INSTRUCTION')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('instruction');
   // logger.info(instructionSection);
 
   const supplyChainSection = markdown
     .split('SUPPLY_CHAIN_OBJECT')?.[1]
-    ?.split('END__SUPPLY__CHAIN__OBJECT')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('supply chain');
   // logger.info(supplyChainSection);
 
   const baseCertifierClaimSection = markdown
     .split('BASE_CERTIFIER_CLAIM_TABLE')?.[1]
-    ?.split('END__BASE__CERTIFIER__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('base certifier claim');
   // logger.info(baseCertifierClaimSection);
 
   const attributeClaimSection = markdown
     .split('ATTRIBUTE_TABLE')?.[1]
-    ?.split('END__ATTRIBUTE__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('attribute claim');
   // logger.info(attributeClaimSection);
 
   const marketingTextSection = markdown
     ?.split('MARKETING_TEXT_TABLE')?.[1]
-    ?.split('END__MARKETING__TEXT__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('marketingTextSection');
   // logger.info(marketingTextSection);
@@ -257,6 +257,9 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   //   'notContainStatement',
   //   'notContainList',
   // ]);
+
+  // console.log('allergen test ===', allergenClaimSection);
+  // JSON.stringify(parseJson(allergenClaimSection))
   const allergenObjList = parseJson(allergenClaimSection);
 
   // const allergenObjList = getObjectDataFromHorizontalTable(
@@ -334,11 +337,6 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   // logger.error('marketing');
   // logger.info(JSON.stringify(marketingObjList));
 
-  console.log(
-    'marketing test ===',
-    JSON.stringify(parseJson(marketingSection))
-  );
-
   const marketingObjList = {
     websites: parseJson(marketingSection)?.websites?.map(
       (item: any) => item?.['website link']
@@ -367,18 +365,7 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
 
   //? SUPPLY CHAIN
 
-  // const supplyChainObjList = getObjectDataFromTable(supplyChainSection, [
-  //   'countryOfOriginText',
-  //   'countryOfOrigin',
-  //   'distributedBy',
-  //   'manufacturerName',
-  //   'manufacturerDate',
-  //   'manufacturerPhoneNumber',
-  //   'manufacturerStreetAddress',
-  //   'manufacturerCity',
-  //   'manufacturerState',
-  //   'manufactureZipCode',
-  // ]);
+  console.log('supply chain ==== ', supplyChainSection);
 
   const supplyChainObjList = parseJson(supplyChainSection);
 

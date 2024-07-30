@@ -151,7 +151,7 @@ THIRD_EXTRA_CLAIM_TABLE
 without any number like 1) or 2) before table names
 without \`\`\` or \`\`\`markdown closing tag
 
-13) result must include all footer TEX (such as END__THIRD__EXTRA__CLAIM__TABLE,...) at the end of table.
+13) result must include all footer TEX (such as END_THIRD_EXTRA_CLAIM_TABLE,...) at the end of table.
 
 IMPORTANT RULES:
 1) return result rules:
@@ -177,7 +177,7 @@ IMPORTANT NOTE:
 
 TABLE FORMAT:
 SUGAR_CLAIM_TABLE
-| sugar item | is item mentioned on provided images? (answer is yes/no/unknown)? (answer is yes/no/unknown) | How product state about it ?  | do you know it through those sources of info ? (multiple sources allowed and split by "/") (answer are "ingredient list","marketing text on product", "nutrition fact panel", "others")| how do you know ? |
+| sugar item | is item mentioned on provided images? (answer is yes/no/unknown)? (answer is yes/no/unknown) | How product state about it ?  | do you know it through those sources of info ? (multiple sources allowed and split by "/") (answer are "ingredient list","marketing text on product", "nutrition fact panel", "others")| return exact sentence or phrase on provided image that prove it  |
 | ------- | -------- | ------- | ------- | ------- |
 | acesulfame k |
 | acesulfame potassium |
@@ -214,7 +214,7 @@ SUGAR_CLAIM_TABLE
 | sugar free |
 | unsweetened |
 | xylitol |
-END__SUGAR__CLAIM__TABLE
+END_SUGAR_CLAIM_TABLE
 
 2) FAT_CLAIM_TABLE info of product images recorded in markdown table format below:
 
@@ -233,7 +233,7 @@ FAT_CLAIM_TABLE
 | is trans fat free | 
 | have zero grams trans fat per serving |
 | have zero trans fat |
-END__FAT__CLAIM__TABLE
+END_FAT_CLAIM_TABLE
 
 3) PROCESS_CLAIM_TABLE info recorded in markdown table format below:
 
@@ -310,7 +310,7 @@ PROCESS_CLAIM_TABLE
 | vegan feed | ...
 | wild | ...
 | wild caught | ...
-END__PROCESS__CLAIM__TABLE
+END_PROCESS_CLAIM_TABLE
 
 4) CALORIE CLAIM TABLE info recorded in markdown table format below:
 
@@ -321,7 +321,7 @@ CALORIE_CLAIM_TABLE
 | have low calorie | ...
 | have reduced calorie | ...
 | have zero calorie | ...
-END__CALORIE__CLAIM__TABLE
+END_CALORIE_CLAIM_TABLE
 
 5) SALT CLAIM TABLE info recorded in markdown table format below:
 
@@ -338,7 +338,7 @@ SALT_CLAIM_TABLE
 | sodium free | ...
 | unsalted | ...
 | very low sodium | ...
-END__SALT__CLAIM__TABLE
+END_SALT_CLAIM_TABLE
 
 6) FIRST EXTRA CLAIM TABLE info recorded in markdown table format below:
 
@@ -405,7 +405,7 @@ FIRST_EXTRA_CLAIM_TABLE
 | added nitrites | ...
 | yeast | ...
 | active yeast | ...
-END__FIRST__EXTRA__CLAIM__TABLE
+END_FIRST_EXTRA_CLAIM_TABLE
 
 7) SECOND_EXTRA_CLAIM_TABLE info recorded in markdown table format below:
 
@@ -448,7 +448,7 @@ SECOND_EXTRA_CLAIM_TABLE
 | paba | ...
 | palm oil | ...
 | parabens | ...
-END__SECOND__EXTRA__CLAIM__TABLE
+END_SECOND_EXTRA_CLAIM_TABLE
 
 8) THIRD_EXTRA_CLAIM_TABLE info recorded in markdown table format below: 
 
@@ -501,7 +501,7 @@ THIRD_EXTRA_CLAIM_TABLE
 | casein | ...
 | cbd / cannabidiol | ...
 | chlorine | ...
-END__THIRD__EXTRA__CLAIM__TABLE
+END_THIRD_EXTRA_CLAIM_TABLE
 
 `;
 };
