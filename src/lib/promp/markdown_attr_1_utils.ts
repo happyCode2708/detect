@@ -245,8 +245,8 @@ Example 2: "nuts free" mean product not contain "nuts"
 
 TABLE FORMAT:
 LABELING_INFO_TABLE
-| label item type on product (answer is "certification label"/ "label text"/ "other") (if type "other" tell me what type you think it belong to) | what label item say ? |
-| ------- | -------- |
+| label item | label item type on product (answer is "certification label"/ "label text"/ "other") (if type "other" tell me what type you think it belong to) | what label item say ? |
+| -------- | ------- | -------- |
 END_LABELING_INFO_TABLE
 
 6) LABELING INFO ANALYSIS TABLE recorded in markdown TABLE FORMAT below
@@ -341,6 +341,20 @@ Example 4: for "20-4 OZ ( 60G ) TUBES / NET WT . 3 LB ( 853G )" should recorded 
   "secondary size" = "853G"
 }
 Example 5: for "NET WT 1LB 2.7OZ (0.53KG)" should recorded as
+{
+  "primary size": "0.53KG",
+  "secondary size": null
+}
+because "1LB 2.7OZ" = "0.53KG" and "1LB 2.7OZ" have two different size uom so it is invalid to record as size value
+
+Example 6: for "NET WT 26 OZ (1 LB 10 OZ) 737G" should recorded as
+{
+  "primary size": "26 OZ",
+  "secondary size": "737G"
+}
+because "1 LB 10 OZ" = "26 OZ" and "1 LB 10 OZ" have two different size uom so it is invalid to record as size value
+
+
 
 + just collect size in order. If production mention three type of uom it will have third size
 
@@ -443,6 +457,8 @@ Example 2: "Noodle (flour, egg, water), Sauce(Tomato, water)" should be recorded
 + each ingredient in ingredient break-down list must be splitted by "/" character and NOT split by table cell
 
 + "live and active cultures list statement" is statement about list of living organisms (such as Lactobacillus bulgaricus and Streptococcus thermophilus—which convert pasteurized milk to yogurt)
+Example 1: "CONTAINS 5 LIVE AND ACTIVE CULTURES S. THERMOPHILUSB, L. RHAMNOSUS, LACTOBACILLUS LACTIS, L. BULGARICUS"
+Example 2: "CONTAINS 6 LIVE AND ACTIVE CULTURES S. THERMOPHILUSB, L. CASEI, L. BULGARICUS, L. RHAMNOSUS, LACTOBACILLUS LACTIS"
 
 + "ingredient list info" could be obscured due to crop image since the photos of product was taken from different angles. Try to merge into one ingredient list statement if they are same ingredient info.  
 
@@ -473,10 +489,11 @@ END_MARKETING_OBJECT
 11) supply chain info with format below:
 
 IMPORTANT NOTES:
-+ "made in statement" is text about the country where a product was manufactured, produced, or grown.
++ "statement indicate from which nation product was made in" is text about the nation where a product was manufactured, produced, or grown.
 Example 1: "manufactured in Canada"
 Example 2: "made in Brazil"
-EXample 3: "produced in Brazil"
+Example 3: "produced in Brazil"
+Example 4: "product of France"
 
 + "country of origin from made in statement" is exact country name (found on product images) found on product images where the product was manufactured, produced, or grown.
 Example 1: "Canada"
@@ -484,25 +501,32 @@ Example 2: "Brazil"
 Example 2: "UK"
 
 + "full address statement" rules:
-Example 1: "Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
-Example 2: "Heneiken Inc 999 SE HILL COURT, Milwaukie, ON N1R7L2 Canada"
-Example 3: "manufactured by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
-Example 4: "produced by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
-Example 5: "distributed by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
-Example 6: "dist. by: Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+Example 1: "distributed by: Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+Example 2: "Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+Example 3: "Heneiken Inc 999 SE HILL COURT, Milwaukie, ON N1R7L2 Canada"
+Example 4: "manufactured by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+Example 5: "produced by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+Example 6: "distributed by Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+Example 7: "dist. by: Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+Example 8: "MANUFACTURED FOR DISTRIBUTION BY: Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
+Example 9: 
+"DISTRIBUTED BY: 
+Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
 
++ "prefix address" is a prefix text prior of address
+Example 1: "MANUFACTURED FOR DISTRIBUTION BY:"
+Example 2: "DISTRIBUTED BY:"
+Example 3: "manufactured by"
+Example 4: "DISTRIBUTED BY:"
+Example 5: "manufacture for"
 
 INFO FORMAT:
 SUPPLY_CHAIN_OBJECT
 {
-  "country info": [
-    {
-      "made in statement": str,
-      "country of origin from made in statement": str
-    }
-  ],
   "address info": [
     {
+      "address type": "distributor" | "other",
+      "prefix address": str,
       "full address statement": str,
       "company name": str,
       "street number": str,
@@ -512,7 +536,13 @@ SUPPLY_CHAIN_OBJECT
       "zipCode": str,
       "phone number": str
     }
-  ] 
+  ],
+  "country info": [
+    {
+      "statement indicate from which nation product was made in": str,
+      "country of origin from made in statement": str
+    }
+  ],
 }
 END_SUPPLY_CHAIN_OBJECT
 

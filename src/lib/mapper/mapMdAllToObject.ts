@@ -160,6 +160,7 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
 
   //? LABELING INFO
   const labelingObjList = getObjectDataFromTable(labelingInfoSection, [
+    'label item',
     'label',
     'labelText',
   ]);
@@ -259,8 +260,10 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   // ]);
 
   // console.log('allergen test ===', allergenClaimSection);
-  // JSON.stringify(parseJson(allergenClaimSection))
+  // JSON.stringify(parseJson(allergenClaimSection))'
+  console.log('allergen === ', allergenClaimSection);
   const allergenObjList = parseJson(allergenClaimSection);
+  console.log('parsed allergen === ', JSON.stringify(allergenObjList));
 
   // const allergenObjList = getObjectDataFromHorizontalTable(
   //   allergenClaimSection,

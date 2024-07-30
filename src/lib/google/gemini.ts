@@ -22,7 +22,7 @@ import { ChatCompletionContentPartImage } from 'openai/resources';
 export const generateContent = async (
   imagesPath: any[],
   text: any,
-  config?: { flash?: boolean; region?: number },
+  config: any,
   modelName?: string
 ) => {
   let chunkResponse = [] as any;
@@ -57,13 +57,34 @@ export const generateContent = async (
       contents: [{ role: 'user', parts: [...images, geminiText] }],
     };
 
-    const streamingResp = await model.generateContent(req);
+    if (config?.stream) {
+      const streamingResp = await model.generateContentStream(req);
 
-    chunkResponse = streamingResp;
-    finalResponse =
-      streamingResp?.response?.candidates[0]?.content?.parts?.[0]?.text || '';
+      for await (const item of streamingResp.stream) {
+        // process.stdout.write('stream chunk: ' + JSON.stringify(item) + '\n');
+        const text = item?.candidates[0]?.content?.parts?.[0]?.text || '';
+        console.log(text);
+        finalResponse = finalResponse + text;
+        chunkResponse = [...chunkResponse, item];
 
-    return { chunkResponse, finalResponse };
+        const isForceFinish =
+          item?.candidates[0]?.finishReason === 'RECITATION';
+
+        if (isForceFinish) {
+          throw new Error('force to stop');
+          return;
+        }
+      }
+
+      return { chunkResponse, finalResponse };
+    } else {
+      const streamingResp = await model.generateContent(req);
+
+      chunkResponse = streamingResp;
+      finalResponse =
+        streamingResp?.response?.candidates[0]?.content?.parts?.[0]?.text || '';
+      return { chunkResponse, finalResponse };
+    }
   }
 
   //* gpt
@@ -156,7 +177,7 @@ export const onProcessImage = async ({
   isMarkdown?: boolean;
   sessionPayload: any;
   extraInfo?: any;
-  config?: { flash?: boolean; region?: number };
+  config?: any;
 }) => {
   const imagesPath = collatedOuputPath;
 
@@ -291,7 +312,7 @@ export const onProcessAttribute = async ({
   collateImageName: string;
   outputConfig: any;
   extraInfo?: any;
-  config?: { flash?: boolean; region?: number };
+  config?: any;
   prefix: string;
   promptMakerFn: Function;
 }) => {
@@ -417,7 +438,7 @@ export const onProcessNut = async ({
   sessionId: string;
   collateImageName: string;
   outputConfig: any;
-  config?: { flash?: boolean; region?: number };
+  config?: any;
 }) => {
   // if (invalidatedInput?.nutIncluded?.length === 0 || !outputConfig.nut) {
   if (!outputConfig.nut) {

@@ -151,7 +151,7 @@ export const processProductImage = async (req: Request, res: Response) => {
       },
       prefix: 'attr_1',
       promptMakerFn: make_markdown_attr_1_prompt,
-      config: { flash: true },
+      config: { flash: true, stream: true },
     });
     onProcessAttribute({
       req,

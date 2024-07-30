@@ -132,7 +132,9 @@ const validateOtherFields = async (modifiedProductDataPoints: any) => {
 
   const otherFields = {
     countryOfOriginText:
-      supplyChainData?.['country info']?.[0]?.['made in statement'],
+      supplyChainData?.['country info']?.[0]?.[
+        'statement indicate from which nation product was made in'
+      ],
   };
 
   Object.entries(otherFields)?.forEach(([fieldName, value]) => {
