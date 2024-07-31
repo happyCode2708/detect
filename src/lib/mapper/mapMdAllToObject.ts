@@ -1,6 +1,3 @@
-import { Group } from 'lucide-react';
-import logger from '../logger/index';
-import { group } from 'console';
 import _ from 'lodash';
 
 export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
