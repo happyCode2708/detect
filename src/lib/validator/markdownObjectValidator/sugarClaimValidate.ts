@@ -162,7 +162,10 @@ const SUGAR_ITEMS_REASON = {
   'high fructose corn syrup': {
     variants: [['high', 'fructose', 'corn', 'syrup']],
   },
-  'no sugar': { variants: [['no sugar']], excepts: ['no sugar added'] },
+  'no sugar': {
+    variants: [['no sugar'], ['0g', 'sugar'], ['og', 'sugar']],
+    excepts: ['no sugar added'],
+  },
 } as any;
 
 const SUGAR_ITEMS = [

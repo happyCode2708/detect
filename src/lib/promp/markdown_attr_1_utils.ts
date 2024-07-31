@@ -525,7 +525,7 @@ SUPPLY_CHAIN_OBJECT
 {
   "address info": [
     {
-      "address type": "distributor" | "other",
+      "address type": "distributor" | "manufacturer" | "other",
       "prefix address": str,
       "full address statement": str,
       "company name": str,

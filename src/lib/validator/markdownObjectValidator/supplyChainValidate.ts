@@ -26,6 +26,8 @@ const validateAddress = async (modifiedProductDataPoints: any) => {
     const state = addressItem?.['state'];
     const zipCode = addressItem?.['zipCode'];
     const phoneNumber = addressItem?.['phone number'];
+    const addressType = addressItem?.['address type'];
+    const prefixAddress = addressItem?.['prefix address'];
 
     const isDistributor = DISTRIBUTED_BY_PHRASE?.find((phrase: any) =>
       toLower(fullAddressStatement)?.includes(phrase)
@@ -35,7 +37,7 @@ const validateAddress = async (modifiedProductDataPoints: any) => {
       toLower(fullAddressStatement)?.includes(phrase)
     );
 
-    if (isManufacturer || !isDistributor) {
+    if ((addressType === 'manufacturer' || isManufacturer) && !isDistributor) {
       if (state) {
         validateManufacturerState(modifiedProductDataPoints, state);
       }
@@ -51,9 +53,15 @@ const validateAddress = async (modifiedProductDataPoints: any) => {
       };
     }
 
-    if (isDistributor) {
+    if ((addressType === 'distributor' || isDistributor) && !isManufacturer) {
+      const isFullAddressStatementContainPrefix = toLower(
+        fullAddressStatement
+      )?.includes(toLower(prefixAddress));
+
       modifiedProductDataPoints['validated_supplyChain']['distributedByText'] =
-        fullAddressStatement;
+        isFullAddressStatementContainPrefix
+          ? fullAddressStatement
+          : `${prefixAddress} ${fullAddressStatement}`;
     }
   });
 };

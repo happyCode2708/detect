@@ -471,6 +471,10 @@ const ALLERGEN_LIST = [
     variants: ['phenylalanine', 'aspartame', 'NutraSweet'],
   },
   {
+    name: 'sesame',
+    variants: ['sesame', 'sesame seeds', 'sesame oil', 'tahini'],
+  },
+  {
     name: 'seeds',
     variants: [
       'seeds',
@@ -481,10 +485,6 @@ const ALLERGEN_LIST = [
       'chia seeds',
     ],
     statement_not_include: ['seed oil', 'seed oil', 'seed oils'],
-  },
-  {
-    name: 'sesame',
-    variants: ['sesame', 'sesame seeds', 'sesame oil', 'tahini'],
   },
   {
     name: 'soy / soybeans',

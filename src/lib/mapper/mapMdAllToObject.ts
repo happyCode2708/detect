@@ -259,48 +259,9 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   //   'notContainList',
   // ]);
 
-  // console.log('allergen test ===', allergenClaimSection);
-  // JSON.stringify(parseJson(allergenClaimSection))'
-  console.log('allergen === ', allergenClaimSection);
   const allergenObjList = parseJson(allergenClaimSection);
-  console.log('parsed allergen === ', JSON.stringify(allergenObjList));
 
-  // const allergenObjList = getObjectDataFromHorizontalTable(
-  //   allergenClaimSection,
-  //   {
-  //     'allergen contain statement': 'containStatement',
-  //     'allergens contain statement break-down list (split by "/")':
-  //       'containList',
-  //     'allergens on equipments statement': 'containOnEquipmentStatement',
-  //     'allergens on equipments statement break-down list (split by "/")':
-  //       'containOnEquipmentList',
-  //     'exact text on images about allergens that product does not contain':
-  //       'notContainStatement',
-  //     'allergens product does not contain break-down list (split by "/")':
-  //       'notContainList',
-  //   },
-  //   {
-  //     groupVertical: true,
-  //   }
-  // );
-  // logger.error('allergen list');
-  // logger.info(JSON.stringify(allergenObjList));
-
-  //? HEADER
-  // const headerObjList = getObjectDataFromTable(headerSection, [
-  //   'productName',
-  //   'companyName',
-  //   'brandName',
-  //   'primarySize',
-  //   'secondarySize',
-  //   'thirdSize',
-  //   'fullSizeStatement',
-  //   'count',
-  //   'countUom',
-  // ]);
   const headerObjList = parseJson(headerSection);
-  // logger.error('header list');
-  // logger.info(JSON.stringify(headerObjList));
 
   //? INGREDIENT TABLE
   const ingredientObjList = getObjectDataFromTable(ingredientSection, [
@@ -347,15 +308,6 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   };
 
   //? INSTRUCTION
-  // const instructionObjList = getObjectDataFromHorizontalTable(
-  //   instructionSection,
-  //   {
-  //     'storage instructions': 'storageInstruction',
-  //     'cooking instructions': 'cookingInstruction',
-  //     'usage instructions': 'usageInstruction',
-  //     'other instructions': 'otherInstruction',
-  //   }
-  // );
 
   const instructionObjList = {
     cookingInstruction: parseJson(cookingInstructionSection),
@@ -363,54 +315,10 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
     usageInstruction: parseJson(usageInstructionSection),
     informationInstruction: parseJson(informationInstructionSection),
   };
-  // logger.error('instruction');
-  // logger.info(JSON.stringify(instructionObjList));
 
   //? SUPPLY CHAIN
 
-  console.log('supply chain ==== ', supplyChainSection);
-
   const supplyChainObjList = parseJson(supplyChainSection);
-
-  // const supplyChainObjList = getObjectDataFromTable(supplyChainSection, [
-  //   'countryOfOriginText',
-  //   'countryOfOrigin',
-  //   'distributedBy',
-  //   'manufacturerName',
-  //   'manufacturerDate',
-  //   'manufacturerPhoneNumber',
-  //   'manufacturerStreetAddress',
-  //   'manufacturerCity',
-  //   'manufacturerState',
-  //   'manufactureZipCode',
-  // ]);
-  //! test
-  // const supplyChainObjList = getObjectDataFromHorizontalTable(
-  //   supplyChainSection,
-  //   {
-  //     'country of origin text': 'countryOfOriginText',
-  //     'country of origin': 'countryOfOrigin',
-  //     // 'have text "distributed by" ? (answer is yes/no)': 'haveDistributor',
-  //     // 'distributor name': 'distributorName',
-  //     'distributor city': 'distributorCity',
-  //     'distributor state': 'distributorState',
-  //     'distributor zipCode': 'distributorZipCode',
-  //     'distributor phone Number': 'distributorPhoneNumber',
-  //     'distributor street name': 'distributorStreetAddress',
-  //     // 'full text about distributor': 'fullTextDistributor',
-  //     'distributor info': 'distributedByText',
-  //     'manufacturer info': 'manufacturedByText',
-  //     'manufacture name': 'manufacturerName',
-  //     'manufacture date': 'manufacturerDate',
-  //     'manufacture phone number': 'manufacturerPhoneNumber',
-  //     'manufacture street name': 'manufacturerStreetAddress',
-  //     'manufacture city': 'manufacturerCity',
-  //     'manufacture state': 'manufacturerState',
-  //     'manufacture zipCode': 'manufactureZipCode',
-  //   }
-  // );
-  // logger.error('supplyChain');
-  // logger.info(JSON.stringify(supplyChainObjList));
 
   //? BASE CERTIFIER CLAIM
   const baseCertifierClaimObjList = getObjectDataFromTable(

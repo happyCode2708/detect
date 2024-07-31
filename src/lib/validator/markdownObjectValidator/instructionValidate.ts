@@ -309,6 +309,7 @@ const STORAGE_REASON = {
     variants: [
       ['keep', 'frozen'],
       ['store', 'in', 'freezer'],
+      ['freeze', 'for', 'freshness'],
     ],
     excepts: ['once opened', 'after opening'],
   },
