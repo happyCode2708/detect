@@ -245,7 +245,7 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
       <SectionWrapper name='instructions'>
         {recipes?.map((recipe: any, idx: number) => {
           return (
-            <div className='border rounded-md p-2'>
+            <div className='border rounded-md p-2' key={idx}>
               <div className='font-bold underline pb-2'>RECIPE [{idx + 1}]</div>
               <CamelFieldStringRender objectValues={recipe} />
             </div>
