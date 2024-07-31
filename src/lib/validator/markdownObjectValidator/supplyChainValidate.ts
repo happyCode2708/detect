@@ -37,7 +37,12 @@ const validateAddress = async (modifiedProductDataPoints: any) => {
       toLower(fullAddressStatement)?.includes(phrase)
     );
 
-    if ((addressType === 'manufacturer' || isManufacturer) && !isDistributor) {
+    if (
+      (addressType === 'manufacturer' ||
+        addressType === 'other' ||
+        isManufacturer) &&
+      !isDistributor
+    ) {
       if (state) {
         validateManufacturerState(modifiedProductDataPoints, state);
       }
