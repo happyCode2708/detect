@@ -11,10 +11,12 @@ export const mapToTDCformat = (extractData: any) => {
     ingredients,
     marketing,
     supplyChain,
+    validated_supplyChain,
     instructions,
     validated_instructions,
     factPanels,
     header,
+    validated_header,
     allergens,
     validated_allergens,
     attributes,
@@ -25,19 +27,19 @@ export const mapToTDCformat = (extractData: any) => {
 
   const mappedResult = {
     //* header
-    ProductDescription: toUpper(header?.[0]?.productName),
-    BrandName: toUpper(header?.[0]?.brandName),
+    ProductDescription: toUpper(validated_header?.productName),
+    BrandName: toUpper(validated_header?.brandName),
     // PrimarySize: toUpper(header?.[0]?.primarySizeValue),
     // PrimarySizeUOM: toUpper(header?.[0]?.primarySizeUOM),
     // ...mapPrimarySizeAndPrimarySizeUom(header),
-    PrimarySize: toUpper(header?.[0]?.primarySizeValue),
-    PrimarySizeUOM: toUpper(header?.[0]?.primarySizeUOM),
-    PrimarySizeText: toUpper(header?.[0]?.fullSizeStatement),
-    SecondarySize: toUpper(header?.[0]?.secondarySizeValue),
-    SecondarySizeUOM: toUpper(header?.[0]?.secondarySizeUOM),
-    TertiarySize: toUpper(header?.[0]?.thirdSizeValue),
-    TertiarySizeUOM: toUpper(header?.[0]?.thirdSizeUOM),
-    UnitCount: header?.[0]?.count,
+    PrimarySize: toUpper(validated_header?.primarySizeValue),
+    PrimarySizeUOM: toUpper(validated_header?.primarySizeUOM),
+    PrimarySizeText: toUpper(validated_header?.fullSizeStatement),
+    SecondarySize: toUpper(validated_header?.secondarySizeValue),
+    SecondarySizeUOM: toUpper(validated_header?.secondarySizeUOM),
+    TertiarySize: toUpper(validated_header?.thirdSizeValue),
+    TertiarySizeUOM: toUpper(validated_header?.thirdSizeUOM),
+    UnitCount: validated_header?.count,
 
     //* panel
     NutritionPanel:
@@ -50,31 +52,31 @@ export const mapToTDCformat = (extractData: any) => {
         : null,
 
     //* supply chain
-    ManufacturerNamePackaging: toUpper(supplyChain?.[0]?.manufacturerName?.[0]),
-    ManufacturerCityPackaging: toUpper(supplyChain?.[0]?.manufacturerCity?.[0]),
+    ManufacturerNamePackaging: toUpper(validated_supplyChain?.manufacturerName),
+    ManufacturerCityPackaging: toUpper(validated_supplyChain?.manufacturerCity),
     ManufacturerPhoneNumberPackaging: toUpper(
-      supplyChain?.[0]?.manufacturerPhoneNumber?.[0]
+      validated_supplyChain?.manufacturerPhoneNumber
     ),
     ManufacturerStatePackaging: toUpper(
-      supplyChain?.[0]?.validated_manufacturerState?.[0]
+      validated_supplyChain?.manufacturerState
     ),
     ManufacturerStreetPackaging: toUpper(
-      supplyChain?.[0]?.manufacturerStreetAddress?.[0]
+      validated_supplyChain?.manufacturerStreetAddress
     ),
     ManufacturerZipCodePackaging: toUpper(
-      supplyChain?.[0]?.manufactureZipCode?.[0]
+      validated_supplyChain?.manufactureZipCode
     ),
     // ...mapDistributedBy(supplyChain),
-    DistributedBy: toUpper(supplyChain?.[0]?.fullTextDistributor?.[0]),
-    CountryOfOriginText: toUpper(supplyChain?.[0]?.countryOfOriginText),
-    CountryOfOriginName: toUpper(supplyChain?.[0]?.validated_countryOfOrigin),
+    DistributedBy: toUpper(validated_supplyChain?.distributedByText),
+    CountryOfOriginText: toUpper(validated_supplyChain?.countryOfOriginText),
+    CountryOfOriginName: toUpper(validated_supplyChain?.countryOfOrigin),
 
     //* instructions
     // UsageInstructions: instructions?.[0]?.usageInstruction,
     // ConsumerStorage: instructions?.[0]?.validated_storageInstruction,
     // CookingInstructions: instructions?.[0]?.cookingInstruction,
     // UseOrFreezeBy: instructions?.[0]?.validated_useOrFreezeBy,
-    UsageInstructions: validated_instructions?.usageInstruction,
+    // UsageInstructions: validated_instructions?.usageInstruction,
     ConsumerStorage: validated_instructions?.storageInstruction,
     CookingInstructions: validated_instructions?.cookingInstruction,
     UseOrFreezeBy: validated_instructions?.useOrFreezeBy,
@@ -146,9 +148,8 @@ export const mapToTDCformat = (extractData: any) => {
     UPC12: physical?.upc12,
 
     //* marketing
-    Website: marketing?.[0]?.website
-      ?.split(', ')
-      .filter((item: string) => item !== '')
+    Website: marketing?.websites
+      ?.filter((item: string) => item !== '')
       .filter((item: string) => {
         if (
           toLower(item)?.includes('facebook') ||
@@ -164,49 +165,49 @@ export const mapToTDCformat = (extractData: any) => {
       })
       .map((item: string) => toUpper(item?.trim())),
     QRCode: marketing?.[0]?.haveQrCode,
-    SocialMedia: marketing?.[0]?.socialMediaList
-      ?.split(', ')
-      .filter((item: string) => item !== '')
-      .map((item: string) => {
-        if (
-          toLower(item)?.includes('youtube') &&
-          marketing?.[0]?.youtubeType === 'type_2'
-        ) {
-          return 'YOUTUBE2 or YOUTUBE3';
-        }
+    // SocialMedia: marketing?.[0]?.socialMediaList
+    //   ?.split(', ')
+    //   .filter((item: string) => item !== '')
+    //   .map((item: string) => {
+    //     if (
+    //       toLower(item)?.includes('youtube') &&
+    //       marketing?.[0]?.youtubeType === 'type_2'
+    //     ) {
+    //       return 'YOUTUBE2 or YOUTUBE3';
+    //     }
 
-        if (toLower(item)?.includes('twitter')) {
-          return 'X FORMERLY TWITTER';
-        }
+    //     if (toLower(item)?.includes('twitter')) {
+    //       return 'X FORMERLY TWITTER';
+    //     }
 
-        return toUpper(item?.trim());
-      }),
+    //     return toUpper(item?.trim());
+    //   }),
     // MarketingClaims: marketing?.[0]?.marketingClaims?.map((item: string) =>
     //   toUpper(item)
     // ),
-    SocialMediaAddresses: [
-      ...(marketing?.[0]?.website
-        ?.split(', ')
-        .filter((item: string) => item !== '')
-        .filter((item: string) => {
-          if (
-            toLower(item)?.includes('facebook') ||
-            toLower(item)?.includes('youtube') ||
-            toLower(item)?.includes('twitter') ||
-            toLower(item)?.includes('youtube') ||
-            toLower(item)?.includes('pinterest')
-          ) {
-            return true;
-          } else {
-            return false;
-          }
-        })
-        .map((item: string) => toUpper(item?.trim())) || []),
-      ...(marketing?.[0]?.socialMediaText
-        ?.split(', ')
-        .map((item: string) => toUpper(item?.trim()))
-        .filter((item: string) => item !== '') || []),
-    ],
+    // SocialMediaAddresses: [
+    //   ...(marketing?.[0]?.website
+    //     ?.split(', ')
+    //     .filter((item: string) => item !== '')
+    //     .filter((item: string) => {
+    //       if (
+    //         toLower(item)?.includes('facebook') ||
+    //         toLower(item)?.includes('youtube') ||
+    //         toLower(item)?.includes('twitter') ||
+    //         toLower(item)?.includes('youtube') ||
+    //         toLower(item)?.includes('pinterest')
+    //       ) {
+    //         return true;
+    //       } else {
+    //         return false;
+    //       }
+    //     })
+    //     .map((item: string) => toUpper(item?.trim())) || []),
+    //   ...(marketing?.[0]?.socialMediaText
+    //     ?.split(', ')
+    //     .map((item: string) => toUpper(item?.trim()))
+    //     .filter((item: string) => item !== '') || []),
+    // ],
 
     // //* attribute
     SugarSweetener:
@@ -218,6 +219,7 @@ export const mapToTDCformat = (extractData: any) => {
       ? [attributes?.otherAttribute?.[0]?.grade]
       : undefined,
     JuicePercent: attributes?.otherAttribute?.[0]?.juicePercent,
+    FatContent: attributes?.validated_fatClaims,
 
     //* other attributes
     ...(attributes?.['validated_baseCertifierClaims']
@@ -414,33 +416,51 @@ const mapIngredients = (ingredients: any) => {
       validatedIngredientBreakdown,
     } = ingredientItem;
 
-    if (ingredientItem?.['ingredientStatement']) {
-      IngredientsStatement.push(ingredientItem?.['ingredientStatement']);
+    if (ingredientItem?.['validated_ingredients']?.['ingredientStatement']) {
+      IngredientsStatement.push(
+        toUpper(
+          ingredientItem?.['validated_ingredients']?.['ingredientStatement']
+        )
+      );
     }
 
-    if (ingredientItem?.['liveAndActiveCulturesStatement']) {
+    if (
+      ingredientItem?.['validated_ingredients']?.[
+        'liveAndActiveCulturesStatement'
+      ]
+    ) {
       IngredientsStatement.push(
-        ingredientItem?.['liveAndActiveCulturesStatement']
+        toUpper(
+          ingredientItem?.['validated_ingredients']?.[
+            'liveAndActiveCulturesStatement'
+          ]
+        )
       );
     }
 
     if (
       ingredientItem?.['ingredientBreakdown'] &&
-      ingredientItem?.['validated_ingredientBreakdown']
+      ingredientItem?.['validated_ingredients']?.['ingredientBreakdown']
     ) {
       IngredientBreakout = [
         ...IngredientBreakout,
-        ...ingredientItem?.['validated_ingredientBreakdown'],
+        ...ingredientItem?.['validated_ingredients']?.[
+          'ingredientBreakdown'
+        ]?.map((item: string) => toUpper(item)),
       ];
     }
 
     if (
       ingredientItem?.['liveAndActiveCulturesBreakdown'] &&
-      ingredientItem?.['validated_liveAndActiveCulturesBreakdown']
+      ingredientItem?.['validated_ingredients']?.[
+        'liveAndActiveCulturesBreakdown'
+      ]
     ) {
       IngredientBreakout = [
         ...IngredientBreakout,
-        ...ingredientItem?.['validated_liveAndActiveCulturesBreakdown'],
+        ...ingredientItem?.['validated_ingredients']?.[
+          'liveAndActiveCulturesBreakdown'
+        ]?.map((item: string) => toUpper(item)),
       ];
     }
   });

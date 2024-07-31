@@ -23,6 +23,7 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
   const {
     factPanels,
     header,
+    validated_header,
     physical,
     attributes,
     ingredients,
@@ -32,6 +33,7 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
     validated_instructions,
     marketing,
     supplyChain,
+    validated_supplyChain,
   } = productInfo;
 
   const {
@@ -57,10 +59,42 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
 
   const missMatchContainList = findIntersectionArrayString(containList, freeOf);
 
+  const recipes = instructions?.cookingInstruction?.[0]?.recipes;
+  const extraCookings =
+    instructions?.cookingInstruction?.[0]?.[
+      'all other text or paragraph about cooking info'
+    ];
+  const storageInstruction = instructions?.storageInstruction;
+  const usageInstruction = instructions?.usageInstruction;
+
+  const informationInstruction = instructions?.informationInstruction;
+
+  const allergenContain = allergens?.['allergens contain'] || {};
+  const allergenNotContain =
+    allergens?.['allergens product info state not contain'] || {};
+  const allergenOnEquipment =
+    allergens?.['allergens on equipments or in facility'];
+
   return (
     <div>
       <SectionWrapper name='Header'>
-        <CamelFieldStringRender objectValues={header?.[0]} />
+        <CamelFieldStringRender
+          objectValues={{
+            possibleBrandName: validated_header?.['brandName'],
+            possibleProductName: validated_header?.['productName'],
+            ...validated_header,
+            brandName: null,
+            productName: null,
+          }}
+          styleConfig={{
+            possibleBrandName: {
+              keyName: { className: 'bg-red-400' },
+            },
+            possibleProductName: {
+              keyName: { className: 'bg-red-400' },
+            },
+          }}
+        />
       </SectionWrapper>
       <SectionWrapper name='Physical'>
         <CamelFieldStringRender objectValues={physical} />
@@ -128,13 +162,61 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         />
       </SectionWrapper>
       <SectionWrapper name='allergens'>
-        {allergens?.map((allergenItem: any, idx: number) => {
+        {/* {allergens?.map((allergenItem: any, idx: number) => {
           return (
             <div className='border rounded-md mb-2 p-1' key={idx}>
               <CamelFieldStringRender objectValues={allergenItem} />
             </div>
           );
-        })}
+        })} */}
+        <CamelFieldStringRender
+          objectValues={{
+            ...allergenContain,
+            containStatement:
+              allergenContain?.[
+                'all statements about allergens product contain'
+              ],
+            containList:
+              allergenContain?.['allergens contain statement break-down list'],
+            'all statements about allergens product contain': null,
+            'allergens contain statement break-down list': null,
+          }}
+        />
+        <CamelFieldStringRender
+          objectValues={{
+            ...allergenNotContain,
+            notContainStatement:
+              allergenNotContain?.[
+                'exact all texts or statements on images about allergens that product does not contain'
+              ],
+            notContainList:
+              allergenNotContain?.[
+                'allergens product does not contain break-down list'
+              ],
+            'exact all texts or statements on images about allergens that product does not contain':
+              null,
+            'allergens product does not contain break-down list': null,
+          }}
+        />
+
+        <CamelFieldStringRender
+          objectValues={{
+            ...allergenOnEquipment,
+            containOnEquipmentStatement:
+              allergenOnEquipment?.[
+                'all statements about allergens on manufacturing equipments or from facility'
+              ],
+            ContainOnEquipmentList:
+              allergenOnEquipment?.[
+                'allergens list from manufacturing equipments or from facility'
+              ],
+            'all statements about allergens on manufacturing equipments or from facility':
+              null,
+            'allergens list from manufacturing equipments or from facility':
+              null,
+          }}
+        />
+
         {validated_allergens && (
           <div className='border rounded-md mb-2 p-1'>
             <div className='font-bold uppercase p-1 rounded-md bg-green-600 text-white inline-block'>
@@ -161,7 +243,25 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         )}
       </SectionWrapper>
       <SectionWrapper name='instructions'>
-        <CamelFieldStringRender objectValues={instructions?.[0]} />
+        {recipes?.map((recipe: any, idx: number) => {
+          return (
+            <div className='border rounded-md p-2'>
+              <div className='font-bold underline pb-2'>RECIPE [{idx + 1}]</div>
+              <CamelFieldStringRender objectValues={recipe} />
+            </div>
+          );
+        })}
+
+        <CamelFieldStringRender
+          objectValues={{ extraCookingInstruct: extraCookings }}
+        />
+
+        <CamelFieldStringRender objectValues={storageInstruction} />
+
+        <CamelFieldStringRender objectValues={usageInstruction} />
+
+        <CamelFieldStringRender objectValues={informationInstruction} />
+
         {validated_instructions && (
           <div className='border rounded-md mb-2 p-1'>
             <div className='font-bold uppercase p-1 rounded-md bg-green-600 text-white inline-block'>
@@ -172,15 +272,36 @@ export const MetaInfo = ({ productInfo }: { productInfo: any }) => {
         )}
       </SectionWrapper>
       <SectionWrapper name='marketing'>
-        <CamelFieldStringRender objectValues={marketing?.[0]} />
+        <CamelFieldStringRender objectValues={marketing} />
       </SectionWrapper>
       <SectionWrapper name='supplyChain'>
         <CamelFieldStringRender objectValues={supplyChain?.[0]} />
+        {validated_supplyChain && (
+          <div className='border rounded-md mb-2 p-1'>
+            <div className='font-bold uppercase p-1 rounded-md bg-green-600 text-white inline-block'>
+              validated result
+            </div>
+            <CamelFieldStringRender objectValues={validated_supplyChain} />
+          </div>
+        )}
       </SectionWrapper>
       <SectionWrapper name='ingredients'>
         {ingredients?.map((ingredientsItem: any, idx: number) => {
+          const { validated_ingredients, ...rawIngredientInfo } =
+            ingredientsItem || {};
           return (
-            <CamelFieldStringRender objectValues={ingredientsItem} key={idx} />
+            <div className='rounded-sm p-2 border mb-2' key={idx}>
+              <CamelFieldStringRender
+                objectValues={rawIngredientInfo}
+                key={idx}
+              />
+              <div className='rounded-sm p-2 border'>
+                <div className='font-bold uppercase p-1 rounded-md bg-green-600 text-white inline-block'>
+                  validated result
+                </div>
+                <CamelFieldStringRender objectValues={validated_ingredients} />
+              </div>
+            </div>
           );
         })}
       </SectionWrapper>

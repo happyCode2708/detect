@@ -16,8 +16,6 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 
-import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
-
 import { uploadsDir } from '../../server';
 
 import { makePostPayloadProductTDC } from './utils';
@@ -438,10 +436,17 @@ router.get('/:productId', async (req, res) => {
       //* if result is not ready
       const {
         result_nut: result_nut_raw,
-        result_all: result_all_raw,
+        // result_all: result_all_raw,
+        result_attr_1: result_attr_1_raw,
+        result_attr_2: result_attr_2_raw,
         sessionId,
       } = latestExtractSession as any;
-      if (!result_nut_raw || !result_all_raw) {
+      if (
+        !result_nut_raw ||
+        // !result_all_raw ||
+        !result_attr_1_raw ||
+        !result_attr_2_raw
+      ) {
         return res.status(200).json({
           isSuccess: true,
           data: {
@@ -451,9 +456,16 @@ router.get('/:productId', async (req, res) => {
         });
       }
       const result_nut = JSON.parse(result_nut_raw);
-      const result_all = JSON.parse(result_all_raw);
+      // const result_all = JSON.parse(result_all_raw);
+      const result_attr_1 = JSON.parse(result_attr_1_raw);
+      const result_attr_2 = JSON.parse(result_attr_2_raw);
 
-      if (isEmpty(result_nut) || isEmpty(result_all)) {
+      if (
+        isEmpty(result_nut) ||
+        // isEmpty(result_all) ||
+        isEmpty(result_attr_1) ||
+        isEmpty(result_attr_2)
+      ) {
         return res.status(200).json({
           isSuccess: true,
           data: {
@@ -464,14 +476,30 @@ router.get('/:productId', async (req, res) => {
       }
       console.log('sessionId', sessionId);
       const nutRes = JSON.parse(result_nut?.['nut.json']);
-      const allRes = JSON.parse(result_all?.['all.json']);
-      const { isSuccess: allSuccess, data: allResData } = allRes || {};
+      // const allRes = JSON.parse(result_all?.['all.json']);
+      const attr1Res = JSON.parse(result_attr_1?.['attr_1.json']);
+      const attr2Res = JSON.parse(result_attr_2?.['attr_2.json']);
+      // const { isSuccess: allSuccess, data: allResData } = allRes || {};
+      const {
+        isSuccess: attr1Success,
+        status: attr1Status,
+        data: attr1ResData,
+      } = attr1Res || {};
+
+      const {
+        isSuccess: attr2Success,
+        status: attr2Status,
+        data: attr2ResData,
+      } = attr2Res || {};
       const { isSuccess: nutSuccess, data: nutResData } = nutRes || {};
 
-      console.log('type of', typeof allResData);
-
       //* if one of process fail
-      if (allSuccess === false || nutSuccess === false) {
+      if (
+        nutSuccess === false ||
+        // allSuccess === false ||
+        attr1Success === false ||
+        attr2Success === false
+      ) {
         await prisma.extractSession.update({
           where: { sessionId },
           data: {
@@ -486,10 +514,16 @@ router.get('/:productId', async (req, res) => {
           },
         });
       }
+
+      const combinedMarkdownContent = `${attr1ResData?.markdownContent} \n ${attr2ResData?.markdownContent}`;
+
+      // console.log('JSON ===', combinedMarkdownContent);
       //* if both process success
       const allJsonData = mapMarkdownAllToObject(
-        allResData?.markdownContent,
-        allResData?.extraInfo
+        // allResData?.markdownContent,
+        // allResData?.extraInfo
+        combinedMarkdownContent,
+        attr1ResData?.extraInfo
       );
       const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
 
@@ -500,7 +534,8 @@ router.get('/:productId', async (req, res) => {
           // factPanels: nutRes?.data?.jsonData, //* markdown converted
           factPanels: nutJsonData,
           nutMark: nutRes?.data?.markdownContent,
-          allMark: allRes?.data?.markdownContent,
+          // allMark: allRes?.data?.markdownContent,
+          allMark: combinedMarkdownContent,
         },
       };
       let validatedResponse = await responseValidator(finalResult, '');

@@ -16,145 +16,104 @@ import { make_markdown_attr_1_prompt } from '../promp/markdown_attr_1_utils';
 import { mapMarkdownAllToObject } from '../mapper/mapMdAllToObject';
 // import { make_markdown_all_prompt_test } from '../promp/markdown_all_utils_test';
 // import { make_markdown_all_prompt_test_2 } from '../promp/markdown_all_utils_test_2';
-import { make_gpt4_o_prompt } from '../promp/gpt4-o-mini';
-import { ChatCompletionContentPartImage } from 'openai/resources';
 
 export const generateContent = async (
-  imagesPath: any[],
+  images: any[],
   text: any,
-  config: any,
+  config?: any,
   modelName?: string
 ) => {
+  if (modelName === 'gemini') {
+  }
+
+  console.log('FLASH ----', config?.flash);
+  const model =
+    config?.flash === true
+      ? (global as any)?.generativeFlashModel?.[`region_${config?.region || 1}`]
+      : (global as any)?.generativeModel;
+
+  if (!model) return;
+
+  const req = {
+    contents: [{ role: 'user', parts: [...images, text] }],
+  };
+
+  // try {
+  // const streamingResp = await (
+  //   global as any
+  // ).generativeModel.generateContentStream(req);
+
+  // let chunkResponse = [];
+
+  // let finalResponse = '';
+
+  // for await (const item of streamingResp.stream) {
+  //   chunkResponse.push(item);
+  //   if (!item?.candidates) return;
+  //   finalResponse =
+  //     finalResponse + item?.candidates[0]?.content?.parts?.[0]?.text;
+  //   if (!item?.candidates[0]?.content?.parts?.[0]?.text) {
+  //     console.log(
+  //       'chunk error  ...' + item?.candidates[0]?.content?.parts?.[0]?.text
+  //     );
+  //   }
+  // }
+
+  // return { chunkResponse, finalResponse };
+
+  const streamingResp = await model.generateContent(req);
   let chunkResponse = [] as any;
   let finalResponse = '';
 
-  //* gemini
-  if (modelName === 'gemini') {
-    const images = imagesPath.map((path) => {
-      const base64Image = encodeImageToBase64(path);
-      return {
-        inlineData: {
-          mimeType: 'image/png',
-          data: base64Image,
-        },
-      };
-    });
+  // Set a timeout for the streaming process
+  // const timeoutPromise = new Promise(
+  //   (_, reject) =>
+  //     setTimeout(() => reject(new Error('Streaming timeout')), 220000) // 30 seconds timeout
+  // );
 
-    const geminiText = {
-      text,
-    };
+  // // Process the stream with error handling and timeout
+  // await Promise.race([
+  //   (async () => {
+  //     // for await (const item of streamingResp.stream) {
+  //     //   if (!item?.candidates) return;
+  //     //   chunkResponse.push(item);
+  //     //   const textPart = item?.candidates[0]?.content?.parts?.[0]?.text;
+  //     //   if (!textPart) {
+  //     //     console.log('chunk error  ...' + textPart);
+  //     //     continue;
+  //     //   }
+  //     //   finalResponse += textPart;
+  //     // }
+  //     for await (const item of streamingResp.stream) {
+  //       chunkResponse.push(item);
+  //       if (!item?.candidates) return;
+  //       const value = item?.candidates[0]?.content?.parts?.[0]?.text;
+  //       finalResponse = finalResponse + value;
+  //       //! test chunk error
 
-    const model =
-      config?.flash === true
-        ? (global as any)?.generativeFlashModel?.[
-            `region_${config?.region || 1}`
-          ]
-        : (global as any)?.generativeModel?.[`region_${config?.region || 1}`];
+  //       if (item?.candidates[0]?.content?.parts?.[0]?.text === undefined) {
+  //         console.log(
+  //           'chunk error  ...' + item?.candidates[0]?.content?.parts?.[0]?.text
+  //         );
+  //         return Promise.reject('chunk empty answer');
+  //       } else {
+  //         console.log('generating...');
+  //       }
+  //     }
+  //   })(),
+  //   timeoutPromise,
+  // ]);
 
-    if (!model) return;
+  chunkResponse = streamingResp;
+  finalResponse =
+    streamingResp?.response?.candidates[0]?.content?.parts?.[0]?.text || '';
 
-    const req = {
-      contents: [{ role: 'user', parts: [...images, geminiText] }],
-    };
+  // console.log('result response ====', JSON.stringify(streamingResp));
 
-    if (config?.stream) {
-      const streamingResp = await model.generateContentStream(req);
-
-      for await (const item of streamingResp.stream) {
-        // process.stdout.write('stream chunk: ' + JSON.stringify(item) + '\n');
-        const text = item?.candidates[0]?.content?.parts?.[0]?.text || '';
-        console.log(text);
-        finalResponse = finalResponse + text;
-        chunkResponse = [...chunkResponse, item];
-
-        const isForceFinish =
-          item?.candidates[0]?.finishReason === 'RECITATION';
-
-        if (isForceFinish) {
-          throw new Error('force to stop');
-          return;
-        }
-      }
-
-      return { chunkResponse, finalResponse };
-    } else {
-      const streamingResp = await model.generateContent(req);
-
-      chunkResponse = streamingResp;
-      finalResponse =
-        streamingResp?.response?.candidates[0]?.content?.parts?.[0]?.text || '';
-      return { chunkResponse, finalResponse };
-    }
-  }
-
-  //* gpt
-  if (modelName === 'gpt') {
-    const model =
-      config?.flash === true
-        ? (global as any)?.generativeFlashModel?.[
-            `region_${config?.region || 1}`
-          ]
-        : (global as any)?.generativeModel?.[`region_${config?.region || 1}`];
-
-    if (!model) return;
-
-    // const req = {
-    //   contents: [{ role: 'user', parts: [...images, text] }],
-    // };
-
-    const images: ChatCompletionContentPartImage[] = imagesPath.map((path) => {
-      const base64Image = encodeImageToBase64(path);
-      // return {
-      //   inlineData: {
-      //     mimeType: 'image/png',
-      //     data: base64Image,
-      //   },
-      // };
-      const imagePath = `data:image/jpeg;base64,${base64Image}`;
-
-      return {
-        type: 'image_url',
-        image_url: { url: imagePath },
-      };
-    });
-
-    const maxTokens = 8300;
-
-    const req = {
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'text',
-              text: make_gpt4_o_prompt(),
-            },
-            ...images,
-          ],
-        },
-      ],
-      temperature: 1,
-      max_tokens: maxTokens,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-    };
-
-    const streamingResp = await (global as any)?.openai.chat.completions.create(
-      req
-    );
-
-    console.log('result', JSON.stringify(streamingResp));
-
-    chunkResponse = streamingResp;
-    finalResponse = streamingResp.choices[0]?.message?.content || '';
-
-    return { chunkResponse, finalResponse };
-  }
+  return { chunkResponse, finalResponse };
 };
 
-export const onProcessImage = async ({
+export const onProcessGemini = async ({
   req,
   res,
   sessionId,
@@ -179,24 +138,36 @@ export const onProcessImage = async ({
   extraInfo?: any;
   config?: any;
 }) => {
-  const imagesPath = collatedOuputPath;
+  const images = collatedOuputPath.map((path) => {
+    const base64Image = encodeImageToBase64(path);
+    return {
+      inlineData: {
+        mimeType: 'image/png',
+        data: base64Image,
+      },
+    };
+  });
+
+  const text1 = {
+    text: prompt,
+  };
 
   const resultFileName = (prefix ? `${prefix}` : '') + '.json';
 
   writeJsonToFile(
     resultsDir + `/${sessionId}`,
     'prompt-' + resultFileName,
-    prompt
+    text1.text
   );
 
   sessionPayload = {
     ...sessionPayload,
-    ['prompt-' + resultFileName]: prompt,
+    ['prompt-' + resultFileName]: text1.text,
   };
 
   try {
     const { chunkResponse, finalResponse: gemini_result } =
-      (await generateContent(imagesPath, prompt, config, 'gemini')) || {};
+      (await generateContent(images, text1, config)) || {};
 
     if (!gemini_result) return;
     //! try to parse
@@ -218,12 +189,11 @@ export const onProcessImage = async ({
       ['chunk-' + resultFileName]: JSON.stringify(chunkResponse),
     };
 
-    // const procResult = gemini_result?.includes('```json')
-    //   ? gemini_result?.split('```json\n')[1].split('```')[0]
-    //   : gemini_result?.includes('```markdown')
-    //   ? gemini_result?.split('```markdown\n')[1].split('```')[0]
-    //   : gemini_result;
-    const procResult = gemini_result;
+    const procResult = gemini_result?.includes('```json')
+      ? gemini_result?.split('```json\n')[1].split('```')[0]
+      : gemini_result?.includes('```markdown')
+      ? gemini_result?.split('```markdown\n')[1].split('```')[0]
+      : gemini_result;
 
     if (!isMarkdown) {
       const result = JSON.parse(procResult);
@@ -276,7 +246,7 @@ export const onProcessImage = async ({
       JSON.stringify({ isSuccess: false })
     );
 
-    await prisma.extractSession.update({
+    const updatedSession = await prisma.extractSession.update({
       where: { sessionId },
       data: {
         status: 'fail',
@@ -291,7 +261,7 @@ export const onProcessImage = async ({
   }
 };
 
-export const onProcessAttribute = async ({
+export const onProcessOther = async ({
   req,
   res,
   invalidatedInput,
@@ -301,8 +271,6 @@ export const onProcessAttribute = async ({
   outputConfig,
   extraInfo,
   config,
-  prefix,
-  promptMakerFn,
 }: {
   req: any;
   res: any;
@@ -313,24 +281,23 @@ export const onProcessAttribute = async ({
   outputConfig: any;
   extraInfo?: any;
   config?: any;
-  prefix: string;
-  promptMakerFn: Function;
 }) => {
-  const ocrName = `${prefix}_orc.json`; //? example attr_1_ocr.json
-  const resultFieldName = `result_${prefix}`; //? example result_attr_1
-  const resultFileName = (prefix ? `${prefix}` : '') + '.json';
-
   if (!outputConfig.other) {
+    const resultFileName = 'all.json';
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
       resultFileName,
       JSON.stringify({ isSuccess: true, data: { product: {} } })
     );
 
-    writeJsonToFile(resultsDir + `/${sessionId}`, ocrName, JSON.stringify({}));
+    writeJsonToFile(
+      resultsDir + `/${sessionId}`,
+      'all-orc.json',
+      JSON.stringify({})
+    );
 
     let sessionPayload = {
-      [resultFileName]: JSON.stringify({
+      ['all.json']: JSON.stringify({
         isSuccess: true,
         data: {
           jsonData: { isSuccess: true, data: { product: {} } },
@@ -343,6 +310,10 @@ export const onProcessAttribute = async ({
   }
 
   try {
+    const prefix = 'all';
+
+    const resultFileName = (prefix ? `${prefix}` : '') + '.json';
+
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
       resultFileName,
@@ -368,15 +339,15 @@ export const onProcessAttribute = async ({
 
     writeJsonToFile(
       resultsDir + `/${sessionId}`,
-      ocrName,
+      'all-orc.json',
       JSON.stringify(new_allText)
     );
 
     let sessionPayload = {
-      [ocrName]: JSON.stringify(new_allText),
+      'all-ocr': JSON.stringify(new_allText),
     };
 
-    const finalSessionPayload = await onProcessImage({
+    const finalSessionPayload = await onProcessGemini({
       req,
       res,
       sessionId,
@@ -388,7 +359,7 @@ export const onProcessAttribute = async ({
         ...invalidatedInput.nutExcluded,
       ],
 
-      prompt: promptMakerFn({
+      prompt: make_markdown_attr_1_prompt({
         ocrText: JSON.stringify(new_allText),
         imageCount: [
           ...invalidatedInput.nutIncluded,
@@ -396,28 +367,24 @@ export const onProcessAttribute = async ({
         ]?.length,
       }),
       isMarkdown: true,
+      // mapMdToObjectFunct: mapMarkdownAllToObject,
       sessionPayload,
       extraInfo,
       config,
     });
 
+    console.log('update status to unknown');
+
     await prisma.extractSession.update({
       where: { sessionId },
       data: {
         status: 'unknown',
-        [resultFieldName]: JSON.stringify(finalSessionPayload),
+        result_all: JSON.stringify(finalSessionPayload),
+        // result_nut: JSON.stringify(finalSessionPayload),
       },
     });
   } catch (e) {
     console.log('process other error', e);
-    await prisma.extractSession.update({
-      where: { sessionId },
-      data: {
-        status: 'fail',
-        // result_all: JSON.stringify({}),
-        // result_nut: JSON.stringify(finalSessionPayload),
-      },
-    });
   }
 };
 
@@ -429,7 +396,6 @@ export const onProcessNut = async ({
   sessionId,
   collateImageName,
   outputConfig,
-  config,
 }: {
   req: any;
   res: any;
@@ -438,7 +404,6 @@ export const onProcessNut = async ({
   sessionId: string;
   collateImageName: string;
   outputConfig: any;
-  config?: any;
 }) => {
   // if (invalidatedInput?.nutIncluded?.length === 0 || !outputConfig.nut) {
   if (!outputConfig.nut) {
@@ -506,7 +471,7 @@ export const onProcessNut = async ({
       'nut-ocr': JSON.stringify(new_nutText),
     };
 
-    const finalSessionPayload = await onProcessImage({
+    const finalSessionPayload = await onProcessGemini({
       req,
       res,
       sessionId,
@@ -528,7 +493,6 @@ export const onProcessNut = async ({
       isMarkdown: true,
       // mapMdToObjectFunct: mapMarkdownNutToObject,
       sessionPayload,
-      config,
     });
 
     console.log('update status to unknown');
@@ -543,13 +507,5 @@ export const onProcessNut = async ({
     });
   } catch (e) {
     console.log('process nut error', e);
-    await prisma.extractSession.update({
-      where: { sessionId },
-      data: {
-        status: 'fail',
-        // result_all: JSON.stringify({}),
-        // result_nut: JSON.stringify(finalSessionPayload),
-      },
-    });
   }
 };

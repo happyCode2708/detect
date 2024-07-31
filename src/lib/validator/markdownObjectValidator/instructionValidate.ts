@@ -13,27 +13,72 @@ export const instructionValidate = async (modifiedProductDataPoints: any) => {
     useOrFreezeBy: [],
   };
 
-  const instructionsData =
-    modifiedProductDataPoints?.['instructions']?.[0] || {};
+  const instructionsData = modifiedProductDataPoints?.['instructions'] || {};
 
   const {
+    cookingInstruction,
     storageInstruction,
     usageInstruction,
-    cookingInstruction,
-    otherInstruction,
+    informationInstruction,
   } = instructionsData;
 
-  const allInstructions = [
-    ...(storageInstruction || []),
-    ...(usageInstruction || []),
-    ...(cookingInstruction || []),
-  ];
+  // const allInstructions = [
+  //   ...(storageInstruction || []),
+  //   ...(usageInstruction || []),
+  //   ...(cookingInstruction || []),
+  // ];
+
+  let mappedCookingInstruction = [] as any;
+  let mappedUsageInstruction = [] as any;
+  let mappedStorageInstruction = [] as any;
+  let mappedInformationInstruction = [] as any;
+
+  cookingInstruction?.forEach((cookingInstructionItem: any) => {
+    const {
+      'all other text or paragraph about cooking info': otherInfo,
+      recipes,
+    } = cookingInstructionItem;
+
+    if (otherInfo && otherInfo?.length > 0) {
+      mappedCookingInstruction = [...(otherInfo || [])];
+    }
+
+    recipes?.forEach((recipeItem: any) => {
+      const {
+        'recipe name': recipeName,
+        'recipe ingredient list': recipeIngredients,
+        'cooking steps': cookingSteps,
+      } = recipeItem;
+
+      if (recipeName) {
+        mappedCookingInstruction?.push(recipeName);
+      }
+      if (recipeIngredients) {
+        mappedCookingInstruction?.push(...recipeIngredients);
+      }
+      if (cookingSteps) {
+        mappedCookingInstruction?.push(...cookingSteps);
+      }
+    });
+  });
+
+  mappedStorageInstruction = storageInstruction?.['storage instructions'];
+  mappedUsageInstruction = usageInstruction?.['usage instructions'];
+  mappedInformationInstruction =
+    informationInstruction?.['information instructions'];
+
+  const allMappedInstruction = {
+    mappedCookingInstruction,
+    mappedStorageInstruction,
+    mappedUsageInstruction,
+    mappedInformationInstruction,
+  };
 
   await validateConsumerStorage(
     [
-      ...(storageInstruction || []),
-      ...(usageInstruction || []),
-      ...(otherInstruction || []),
+      ...(mappedStorageInstruction || []),
+      ...(mappedUsageInstruction || []),
+      ...(mappedInformationInstruction || []),
     ],
     modifiedProductDataPoints,
     'storageInstruction'
@@ -41,15 +86,18 @@ export const instructionValidate = async (modifiedProductDataPoints: any) => {
 
   await validateUseOrFreezeBy(
     [
-      ...(storageInstruction || []),
-      ...(usageInstruction || []),
-      ...(otherInstruction || []),
+      ...(mappedStorageInstruction || []),
+      ...(mappedUsageInstruction || []),
+      ...(mappedInformationInstruction || []),
     ],
     modifiedProductDataPoints,
     'useOrFreezeBy'
   );
 
-  await validateAllInstructions(modifiedProductDataPoints, allInstructions);
+  await validateAllInstructions(
+    modifiedProductDataPoints,
+    allMappedInstruction
+  );
 
   console.log('finish validate storage instruction');
 };
@@ -79,19 +127,70 @@ const checkConsumerStorage = async (
   let validEnumValues = [] as any;
 
   // const [foundEnumValue] =
-  Object.entries(STORAGE_MAPPING)?.forEach(([key, words]) => {
-    const isStatementMatchEnum = words.every((word: string) => {
-      return toLower(statement).includes(word);
-    });
-    if (isStatementMatchEnum) {
-      //* exceptional case
-      if (key === 'DRY PLACE' && validEnumValues?.includes('COOL DRY PLACE')) {
-        //* COOL DRY PLACE matched no need DRY PLACE
-      } else {
-        validEnumValues.push(key);
+  // Object.entries(STORAGE_REASON)?.forEach(([key, words]) => {
+  //   const isStatementMatchEnum = words.every((word: string) => {
+  //     return toLower(statement).includes(word);
+  //   });
+  //   if (isStatementMatchEnum) {
+  //     //* exceptional case
+  //     if (key === 'DRY PLACE' && validEnumValues?.includes('COOL DRY PLACE')) {
+  //       //* COOL DRY PLACE matched no need DRY PLACE
+  //     } else {
+  //       validEnumValues.push(key);
+  //     }
+  //   }
+  // });
+
+  // if (
+  Object.entries(STORAGE_REASON)?.forEach(
+    ([key, define]: [key: string, define: any]) => {
+      const { variants: phraseList, excepts } = define;
+      let isMatch = false;
+      isMatch = phraseList
+        ?.map((wordList: any) => {
+          return wordList
+            .map((word: any) => {
+              if (toLower(statement)?.includes(word)) {
+                return true;
+              } else {
+                return false;
+              }
+            })
+            .every((result: any) => result === true);
+        })
+        .some((result: any) => result === true);
+
+      if (isMatch) {
+        const matchExcept = excepts?.find((exceptText: string) => {
+          return toLower(statement)?.includes(exceptText);
+        });
+
+        if (!matchExcept) {
+          validEnumValues.push(key);
+        }
+        // if (
+        //   key === 'DRY PLACE' &&
+        //   validEnumValues?.includes('COOL DRY PLACE')
+        // ) {
+        // } else {
+        //   validEnumValues.push(key);
+        // }
       }
     }
-  });
+  );
+  // .every((result: any) => result === false)
+  // ) {
+  // return Promise.resolve(false);
+  // } else {
+  //* exceptional cases
+  // if (
+  //   toLower(claim) === 'corn syrup' &&
+  //   toLower(reason)?.includes('high fructose')
+  // ) {
+  //   //? it could be about 'HIGH FRUCTOSE CORN SYRUP' so must return false
+  //   return Promise.resolve(false);
+  // }
+  // }
 
   if (validEnumValues?.length === 0) {
     return Promise.resolve(false);
@@ -153,52 +252,84 @@ const checkUserOfFreezeBy = async (statement: string) => {
 
 const validateAllInstructions = async (
   modifiedProductDataPoints: any,
-  allInstructions: any
+  allMappedInstruction: any
 ) => {
-  const instructionsData =
-    modifiedProductDataPoints?.['instructions']?.[0] || {};
+  // const instructionsData =
+  //   modifiedProductDataPoints?.['instructions']?.[0] || {};
   const validatedInstructionData =
     modifiedProductDataPoints?.['validated_instructions'];
 
-  const { storageInstruction, usageInstruction, cookingInstruction } =
-    instructionsData;
+  const { mappedCookingInstruction } = allMappedInstruction;
 
-  const { usageInstruction: validated_usageInstruction, useOrFreezeBy } =
-    validatedInstructionData;
+  // const { storageInstruction, usageInstruction, cookingInstruction } =
+  //   instructionsData;
 
-  if (usageInstruction) {
-    let validUsageInstructions = [] as any;
-    usageInstruction?.forEach((instructionItem: any) => {
-      if (
-        !useOrFreezeBy?.find((useBy: string) => {
-          toLower(useBy) === instructionItem;
-        })
-      ) {
-        validUsageInstructions.push(instructionItem);
-      }
-    });
+  // const { usageInstruction: validated_usageInstruction, useOrFreezeBy } =
+  //   validatedInstructionData;
 
-    modifiedProductDataPoints['validated_instructions']['usageInstructions'] =
-      validUsageInstructions;
-  }
+  // if (usageInstruction) {
+  //   let validUsageInstructions = [] as any;
+  //   usageInstruction?.forEach((instructionItem: any) => {
+  //     if (
+  //       !useOrFreezeBy?.find((useBy: string) => {
+  //         toLower(useBy) === instructionItem;
+  //       })
+  //     ) {
+  //       validUsageInstructions.push(instructionItem);
+  //     }
+  //   });
+
+  //   modifiedProductDataPoints['validated_instructions']['usageInstructions'] =
+  //     validUsageInstructions;
+  // }
 
   //* temp cooking instruction validate
   modifiedProductDataPoints['validated_instructions']['cookingInstruction'] =
-    cookingInstruction;
+    mappedCookingInstruction;
 };
 
-const STORAGE_MAPPING = {
-  'COOL DARK PLACE': ['cool', 'dark', 'place'],
-  'COOL DRY PLACE': ['cool', 'dry', 'place'],
-  'DRY PLACE': ['dry', 'place'],
-  'DO NOT FREEZE': ['not', 'freeze'],
-  'DO NOT REFRIGERATE': ['not', 'refrigerate'],
-  'KEEP FROZEN': ['keep', 'frozen'],
-  'KEEP REFRIGERATED': ['keep', 'refrigerated'],
-  'REFRIGERATE AFTER OPENING': ['refrigerate', 'after', 'open'],
-  'SEAL FOR FRESHNESS': ['seal', 'freshness'],
-  'STORE AT ROOM TEMPERATURE': ['at', 'room temperature'],
-};
+const STORAGE_REASON = {
+  'COOL DARK PLACE': {
+    variants: [['cool', 'dark', 'place']],
+  },
+  'COOL DRY PLACE': {
+    variants: [['cool', 'dry', 'place']],
+  },
+  'DRY PLACE': {
+    variants: [['dry', 'place']],
+    excepts: ['cool'],
+  },
+  'DO NOT FREEZE': {
+    variants: [['not', 'freeze']],
+  },
+  'DO NOT REFRIGERATE': {
+    variants: [['not', 'refrigerate']],
+  },
+  'KEEP FROZEN': {
+    variants: [
+      ['keep', 'frozen'],
+      ['store', 'in', 'freezer'],
+      ['freeze', 'for', 'freshness'],
+    ],
+    excepts: ['once opened', 'after opening'],
+  },
+  'REFRIGERATE AFTER OPENING': {
+    variants: [
+      ['refrigerate', 'once', 'open'],
+      ['refrigerate', 'after', 'open'],
+      ['open', 'keep', 'refrigerate'],
+    ],
+  },
+  'KEEP REFRIGERATED': {
+    variants: [
+      ['keep', 'refrigerated'],
+      ['store', 'in', 'fridge'],
+    ],
+    excepts: ['once opened', 'after opening'],
+  },
+  'SEAL FOR FRESHNESS': { variants: [['seal', 'freshness']] },
+  'STORE AT ROOM TEMPERATURE': { variants: [['at', 'room temperature']] },
+} as any;
 
 const USE_OR_FREEZE_BY_MAPPING = {
   'WITH IN': [
@@ -206,4 +337,5 @@ const USE_OR_FREEZE_BY_MAPPING = {
     ['use', 'within'],
     ['enjoy', 'within'],
   ],
+  'FOR A TIME': [['take on the go for']],
 };

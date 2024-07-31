@@ -56,7 +56,7 @@ const check = async (analysisItem: any): Promise<boolean> => {
   }
 
   if (
-    FAT_CLAIMS_REASON?.[toLower(claim)]
+    FAT_CLAIMS_REASON?.[FAT_CLAIMS_MAP?.[claim]]
       ?.map((wordList: any) => {
         return wordList
           .map((word: any) => {

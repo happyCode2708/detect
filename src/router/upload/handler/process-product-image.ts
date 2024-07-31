@@ -6,7 +6,9 @@ import {
   addUniqueString,
 } from '../../../lib/server_utils';
 
-import { onProcessNut, onProcessOther } from '../../../lib/google/gemini';
+import { onProcessNut, onProcessAttribute } from '../../../lib/google/gemini';
+import { make_markdown_attr_1_prompt } from '../../../lib/promp/markdown_attr_1_utils';
+import { make_markdown_attr_2_prompt } from '../../../lib/promp/markdown_attr_2_utils';
 
 import { prisma } from '../../../server';
 import { checkFilesExist, getFilename } from '../../../lib/utils/checkFile';
@@ -130,8 +132,11 @@ export const processProductImage = async (req: Request, res: Response) => {
       sessionId,
       collateImageName,
       outputConfig,
+      config: {
+        region: 1,
+      },
     });
-    onProcessOther({
+    onProcessAttribute({
       req,
       res,
       invalidatedInput,
@@ -143,6 +148,29 @@ export const processProductImage = async (req: Request, res: Response) => {
         physical: {
           upc12: foundUpc12,
         },
+      },
+      prefix: 'attr_1',
+      promptMakerFn: make_markdown_attr_1_prompt,
+      config: { flash: true, stream: true },
+    });
+    onProcessAttribute({
+      req,
+      res,
+      invalidatedInput,
+      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+      sessionId,
+      collateImageName,
+      outputConfig,
+      extraInfo: {
+        physical: {
+          upc12: foundUpc12,
+        },
+      },
+      prefix: 'attr_2',
+      promptMakerFn: make_markdown_attr_2_prompt,
+      config: {
+        // flash: true,
+        region: 1,
       },
     });
     // ]);

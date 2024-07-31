@@ -1,5 +1,4 @@
 import { toLower } from 'lodash';
-import { NON_CERTIFICATE_CLAIMS_MAP } from './nonCertifierClaimValidate';
 
 export const containAndNotContainClaimValidate = async (
   modifiedProductDataPoints: any,
@@ -9,8 +8,50 @@ export const containAndNotContainClaimValidate = async (
     modifiedProductDataPoints?.['attributes']?.['containAndNotContain'] || [];
 
   await validate(claim_list, modifiedProductDataPoints);
+  await validateNotContainFromLabel(modifiedProductDataPoints);
 
   console.log('finish validate contain and does not contain');
+};
+
+const validateNotContainFromLabel = async (modifiedProductDataPoints: any) => {
+  //? possible does not contain attribute value from free from labeling
+  const labelingFreeList =
+    modifiedProductDataPoints?.['validated_labeling']?.['free'];
+
+  if (labelingFreeList) {
+    labelingFreeList?.forEach((notContainItem: any) => {
+      CONTAIN_AND_NOT_CONTAIN_MAP_FOR_LABEL.some((containItem: any) => {
+        const variants = containItem?.variants;
+        const name = containItem?.name;
+        const statement_not_include = containItem?.statement_not_include;
+        const trimmedNotContainItem = notContainItem?.trim();
+
+        let validVariant = variants.find((variantItem: any) => {
+          return toLower(trimmedNotContainItem)?.includes(variantItem);
+        });
+
+        if (statement_not_include) {
+          if (
+            statement_not_include.some((expText: string) => {
+              return toLower(trimmedNotContainItem)?.includes(expText);
+            })
+          ) {
+            validVariant = false;
+          }
+        }
+
+        if (validVariant) {
+          const currentValue =
+            modifiedProductDataPoints?.['attributes']?.[
+              'validated_notContain'
+            ] || [];
+
+          modifiedProductDataPoints['attributes']['validated_notContain'] =
+            Array.from(new Set([...currentValue, name]));
+        }
+      });
+    });
+  }
 };
 
 const validate = async (
@@ -79,13 +120,13 @@ const validate = async (
       const currentValues =
         modifiedProductDataPoints?.['attributes']?.[dataPointKey] || [];
 
-      console.log('claim value', claimValue);
-      console.log('statement', statement);
-      console.log('datapointKey', dataPointKey);
-      console.log(
-        'search in map',
-        CONTAIN_AND_NOT_CONTAIN_MAP?.[toLower(claimValue)]
-      );
+      // console.log('claim value', claimValue);
+      // console.log('statement', statement);
+      // console.log('datapointKey', dataPointKey);
+      // console.log(
+      //   'search in map',
+      //   CONTAIN_AND_NOT_CONTAIN_MAP?.[toLower(claimValue)]
+      // );
 
       modifiedProductDataPoints['attributes'][dataPointKey] = Array.from(
         new Set([
@@ -381,12 +422,12 @@ const CONTAIN_AND_NOT_CONTAIN_REASON = {
   pits: [['pit']],
   preservatives: [['preservative']],
   probiotics: [['probiotic']],
-  rbgh: [['rbgh']],
-  rbst: [['rbst']],
+  rbgh: [['rbgh'], ['ibgh']],
+  rbst: [['rbst'], ['ibst']],
   rennet: [['rennet']],
   salicylates: [['salicylate']],
   'sea salt': [['sea', 'salt']],
-  'shells/ shell pieces': [['shell', 'shell piece']],
+  'shells/ shell pieces': [['shell', 'shell piece'], ['nut shell']],
   silicone: [['silicone']],
   'sles (sodium laureth sulfate)': [['sles']],
   'sls (sodium lauryl sulfate)': [['sls']],
@@ -697,13 +738,485 @@ const CONTAIN_AND_NOT_CONTAIN_MAP = {
   yolks: 'yolks',
 } as any;
 
-const EXTRA_FROM_NON_CERTIFIED_CLAIM = [
-  'low carbohydrate or low-carb',
-  'low - carb',
-  'low-carb',
-];
-
-const EXTRA_FROM_SUGAR_CLAIM = [
-  'artificial sweeteners',
-  'artificial sweetener',
+const CONTAIN_AND_NOT_CONTAIN_MAP_FOR_LABEL = [
+  {
+    name: '1,4-dioxane',
+    variants: ['1,4-dioxane'],
+  },
+  {
+    name: 'active yeast',
+    variants: ['active yeast'],
+  },
+  {
+    name: 'added antibiotics',
+    variants: ['added antibiotics'],
+  },
+  {
+    name: 'added colors',
+    variants: ['added colors'],
+  },
+  {
+    name: 'added dyes',
+    variants: ['added dyes'],
+  },
+  {
+    name: 'added flavors',
+    variants: ['added flavors'],
+  },
+  {
+    name: 'added fragrances',
+    variants: ['added fragrances'],
+  },
+  {
+    name: 'added hormones',
+    variants: ['added hormones'],
+  },
+  {
+    name: 'added nitrates',
+    variants: ['added nitrates'],
+  },
+  {
+    name: 'added nitrites',
+    variants: ['added nitrites'],
+  },
+  {
+    name: 'added preservatives',
+    variants: ['added preservatives'],
+  },
+  {
+    name: 'additives',
+    variants: ['additives'],
+  },
+  {
+    name: 'alcohol',
+    variants: ['alcohol'],
+  },
+  {
+    name: 'allergen',
+    variants: ['allergen'],
+  },
+  {
+    name: 'aluminum',
+    variants: ['aluminum'],
+  },
+  {
+    name: 'amino acids',
+    variants: ['amino acids'],
+  },
+  {
+    name: 'ammonia',
+    variants: ['ammonia'],
+  },
+  {
+    name: 'animal by-products',
+    variants: ['animal by-products'],
+  },
+  {
+    name: 'animal derivatives',
+    variants: ['animal derivatives'],
+  },
+  {
+    name: 'animal ingredients',
+    variants: ['animal ingredients'],
+  },
+  {
+    name: 'animal products',
+    variants: ['animal products'],
+  },
+  {
+    name: 'animal rennet',
+    variants: ['animal rennet'],
+  },
+  {
+    name: 'antibiotics',
+    variants: ['antibiotics'],
+  },
+  {
+    name: 'artificial additives',
+    variants: ['artificial additives'],
+  },
+  {
+    name: 'artificial colors',
+    variants: ['artificial colors'],
+  },
+  {
+    name: 'artificial dyes',
+    variants: ['artificial dyes'],
+  },
+  {
+    name: 'artificial flavors',
+    variants: ['artificial flavors'],
+  },
+  {
+    name: 'artificial fragrance',
+    variants: ['artificial fragrance'],
+  },
+  {
+    name: 'artificial ingredients',
+    variants: ['artificial ingredients'],
+  },
+  {
+    name: 'artificial preservatives',
+    variants: ['artificial preservatives'],
+  },
+  {
+    name: 'binders and/or fillers',
+    variants: ['binders', 'fillers'],
+  },
+  {
+    name: 'bleach',
+    variants: ['bleach'],
+  },
+  {
+    name: 'bpa (bisphenol-a)',
+    variants: ['bpa', 'bisphenol-a'],
+  },
+  {
+    name: 'butylene glycol',
+    variants: ['butylene glycol'],
+  },
+  {
+    name: 'by-products',
+    variants: ['by-products'],
+  },
+  {
+    name: 'caffeine',
+    variants: ['caffeine'],
+  },
+  {
+    name: 'carrageenan',
+    variants: ['carrageenan'],
+  },
+  {
+    name: 'casein',
+    variants: ['casein'],
+  },
+  {
+    name: 'cbd / cannabidiol',
+    variants: ['cbd', 'cannabidiol'],
+  },
+  {
+    name: 'cbd',
+    variants: ['cbd', 'cannabidiol'],
+  },
+  {
+    name: 'chemical additives',
+    variants: ['chemical additives'],
+  },
+  {
+    name: 'chemical colors',
+    variants: ['chemical colors'],
+  },
+  {
+    name: 'chemical dyes',
+    variants: ['chemical dyes'],
+  },
+  {
+    name: 'chemical flavors',
+    variants: ['chemical flavors'],
+  },
+  {
+    name: 'chemical fragrances',
+    variants: ['chemical fragrances'],
+  },
+  {
+    name: 'chemical ingredients',
+    variants: ['chemical ingredients'],
+  },
+  {
+    name: 'chemical preservatives',
+    variants: ['chemical preservatives'],
+  },
+  {
+    name: 'chemical sunscreens',
+    variants: ['chemical sunscreens'],
+  },
+  {
+    name: 'chemicals',
+    variants: ['chemicals'],
+  },
+  {
+    name: 'chlorine',
+    variants: ['chlorine'],
+  },
+  {
+    name: 'cholesterol',
+    variants: ['cholesterol'],
+  },
+  {
+    name: 'coatings',
+    variants: ['coatings'],
+  },
+  {
+    name: 'corn fillers',
+    variants: ['corn fillers'],
+  },
+  {
+    name: 'cottonseed oil',
+    variants: ['cottonseed oil'],
+  },
+  {
+    name: 'dyes',
+    variants: ['dyes'],
+  },
+  {
+    name: 'edta',
+    variants: ['edta'],
+  },
+  {
+    name: 'emulsifiers',
+    variants: ['emulsifiers'],
+  },
+  {
+    name: 'erythorbates',
+    variants: ['erythorbates'],
+  },
+  {
+    name: 'expeller-pressed oils',
+    variants: ['expeller-pressed oils'],
+  },
+  {
+    name: 'fillers',
+    variants: ['fillers'],
+  },
+  {
+    name: 'fluoride',
+    variants: ['fluoride'],
+  },
+  {
+    name: 'formaldehyde',
+    variants: ['formaldehyde'],
+  },
+  {
+    name: 'fragrances',
+    variants: ['fragrances'],
+  },
+  {
+    name: 'grain',
+    variants: ['grain'],
+  },
+  {
+    name: 'hexane',
+    variants: ['hexane'],
+  },
+  {
+    name: 'hormones',
+    variants: ['hormones'],
+  },
+  {
+    name: 'hydrogenated oils',
+    variants: ['hydrogenated oils'],
+  },
+  {
+    name: 'kitniyos / kitniyot (legumes)',
+    variants: ['kitniyos', 'kitniyot', 'legumes'],
+  },
+  {
+    name: 'lactose',
+    variants: ['lactose'],
+  },
+  {
+    name: 'latex',
+    variants: ['latex'],
+  },
+  {
+    name: 'msg',
+    variants: ['msg'],
+  },
+  {
+    name: 'natural additives',
+    variants: ['natural additives'],
+  },
+  {
+    name: 'natural colors',
+    variants: ['natural colors'],
+  },
+  {
+    name: 'natural dyes',
+    variants: ['natural dyes'],
+  },
+  {
+    name: 'natural flavors',
+    variants: ['natural flavors', 'naturally flavored'],
+  },
+  {
+    name: 'natural ingredients',
+    variants: ['natural ingredients'],
+  },
+  {
+    name: 'natural preservatives',
+    variants: ['natural preservatives'],
+  },
+  {
+    name: 'nitrates/nitrites',
+    variants: ['nitrates', 'nitrites'],
+  },
+  {
+    name: 'omega fatty acids',
+    variants: ['omega fatty acids'],
+  },
+  {
+    name: 'paba',
+    variants: ['paba'],
+  },
+  {
+    name: 'palm oil',
+    variants: ['palm oil'],
+  },
+  {
+    name: 'parabens',
+    variants: ['parabens'],
+  },
+  {
+    name: 'pesticides',
+    variants: ['pesticides'],
+  },
+  {
+    name: 'petro chemical',
+    variants: ['petro chemical'],
+  },
+  {
+    name: 'petrolatum',
+    variants: ['petrolatum'],
+  },
+  {
+    name: 'petroleum byproducts',
+    variants: ['petroleum byproducts'],
+  },
+  {
+    name: 'phosphates',
+    variants: ['phosphates'],
+  },
+  {
+    name: 'phosphorus',
+    variants: ['phosphorus'],
+  },
+  {
+    name: 'phthalates',
+    variants: ['phthalates'],
+  },
+  {
+    name: 'pits',
+    variants: ['pits'],
+  },
+  {
+    name: 'preservatives',
+    variants: ['preservatives'],
+  },
+  {
+    name: 'probiotics',
+    variants: ['probiotics'],
+  },
+  {
+    name: 'rbgh/bst',
+    variants: ['rbgh', 'rbst', 'ibst', 'ibgh', 'tbst', 'tbgh'],
+  },
+  {
+    name: 'rennet',
+    variants: ['rennet'],
+  },
+  {
+    name: 'salicylates',
+    variants: ['salicylates'],
+  },
+  {
+    name: 'sea salt',
+    variants: ['sea salt'],
+  },
+  {
+    name: 'shells/ shell pieces',
+    variants: ['shells pieces', 'shell pieces'],
+  },
+  {
+    name: 'silicone',
+    variants: ['silicone'],
+  },
+  {
+    name: 'sles (sodium laureth sulfate)',
+    variants: ['sles', 'sodium laureth sulfate'],
+  },
+  {
+    name: 'stabilizers',
+    variants: ['stabilizers'],
+  },
+  {
+    name: 'starch',
+    variants: ['starch'],
+  },
+  {
+    name: 'sulfates',
+    variants: ['sulfates'],
+  },
+  {
+    name: 'sulfides',
+    variants: ['sulfides'],
+  },
+  {
+    name: 'sulfites / sulphites',
+    variants: ['sulfites', 'sulphites'],
+  },
+  {
+    name: 'sulfur dioxide',
+    variants: ['sulfur dioxide'],
+  },
+  {
+    name: 'synthetic additives',
+    variants: ['synthetic additives'],
+  },
+  {
+    name: 'synthetic colors',
+    variants: ['synthetic colors'],
+  },
+  {
+    name: 'synthetic dyes',
+    variants: ['synthetic dyes'],
+  },
+  {
+    name: 'synthetic flavors',
+    variants: ['synthetic flavors'],
+  },
+  {
+    name: 'synthetic fragrance',
+    variants: ['synthetic fragrance'],
+  },
+  {
+    name: 'synthetic ingredients',
+    variants: ['synthetic ingredients'],
+  },
+  {
+    name: 'synthetic preservatives',
+    variants: ['synthetic preservatives'],
+  },
+  {
+    name: 'synthetics',
+    variants: ['synthetics'],
+  },
+  {
+    name: 'thc / tetrahydrocannabinol',
+    variants: ['thc', 'tetrahydrocannabinol'],
+  },
+  {
+    name: 'toxic pesticides',
+    variants: ['toxic pesticides'],
+  },
+  {
+    name: 'triclosan',
+    variants: ['triclosan'],
+  },
+  {
+    name: 'vegan ingredients',
+    variants: ['vegan ingredients'],
+  },
+  {
+    name: 'vegetarian ingredients',
+    variants: ['vegetarian ingredients'],
+  },
+  {
+    name: 'yeast',
+    variants: ['yeast'],
+  },
+  {
+    name: 'yolks',
+    variants: ['yolks'],
+  },
 ];

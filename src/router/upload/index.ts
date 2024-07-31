@@ -11,7 +11,7 @@ import {
   // removeRawFieldData,
 } from '../../lib/server_utils';
 
-import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
+// import { onProcessNut, onProcessOther } from '../../lib/google/gemini';
 
 import { uploadsDir, resultsDir, baseDir } from '../../server';
 import { writeJsonToFile } from '../../lib/json';
@@ -61,105 +61,107 @@ const Storage = multer.diskStorage({
 
 const upload = multer({ storage: Storage });
 
-router.post(
-  '/process-image',
-  async (req, res, next) => {
-    const sessionId = uuidv4();
+// router.post(
+//   '/process-image',
+//   async (req, res, next) => {
+//     const sessionId = uuidv4();
 
-    // @ts-ignore
-    req.customData = { sessionId };
-    next();
-  },
-  upload.array('file'),
-  async (req, res) => {
-    // @ts-ignore
-    const sessionId = req?.customData?.sessionId;
+//     // @ts-ignore
+//     req.customData = { sessionId };
+//     next();
+//   },
+//   upload.array('file'),
+//   async (req, res) => {
+//     // @ts-ignore
+//     const sessionId = req?.customData?.sessionId;
 
-    const files = req.files as Express.Multer.File[];
+//     const files = req.files as Express.Multer.File[];
 
-    const filePaths = files?.map((file: any) => file.path);
+//     const filePaths = files?.map((file: any) => file.path);
 
-    const fileLists = files?.map((file: any) => {
-      return {
-        name: file?.filename,
-        path: file?.path,
-      };
-    });
+//     const fileLists = files?.map((file: any) => {
+//       return {
+//         name: file?.filename,
+//         path: file?.path,
+//       };
+//     });
 
-    writeJsonToFile(
-      resultsDir + `/${sessionId}`,
-      'images-list.json',
-      JSON.stringify(fileLists)
-    );
+//     writeJsonToFile(
+//       resultsDir + `/${sessionId}`,
+//       'images-list.json',
+//       JSON.stringify(fileLists)
+//     );
 
-    const collateImageName = `${sessionId}.jpeg`;
-    // const collatedOuputPath = path.join(uploadsDir, collateImageName);
-    // const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
+//     const collateImageName = `${sessionId}.jpeg`;
+//     // const collatedOuputPath = path.join(uploadsDir, collateImageName);
+//     // const mergeImageFilePath = path.join(pythonPath, 'merge_image.py');
 
-    console.log('run on model ', (global as any).generativeModelName);
+//     console.log('run on model ', (global as any).generativeModelName);
 
-    console.log('filePath', JSON.stringify(filePaths));
+//     console.log('filePath', JSON.stringify(filePaths));
 
-    const biasForm = JSON.parse(req.body?.biasForm);
-    const outputConfig = JSON.parse(req.body?.outputConfig);
+//     const biasForm = JSON.parse(req.body?.biasForm);
+//     const outputConfig = JSON.parse(req.body?.outputConfig);
 
-    let invalidatedInput = await findImagesContainNutFact(filePaths);
+//     let invalidatedInput = await findImagesContainNutFact(filePaths);
 
-    Object.entries(biasForm).forEach(([key, value]: any) => {
-      if (value?.haveNutFact === true) {
-        let newNutIncluded = addUniqueString(
-          invalidatedInput.nutIncluded,
-          filePaths[key]
-        );
+//     Object.entries(biasForm).forEach(([key, value]: any) => {
+//       if (value?.haveNutFact === true) {
+//         let newNutIncluded = addUniqueString(
+//           invalidatedInput.nutIncluded,
+//           filePaths[key]
+//         );
 
-        invalidatedInput.nutIncluded = newNutIncluded;
-      }
-    });
+//         invalidatedInput.nutIncluded = newNutIncluded;
+//       }
+//     });
 
-    console.log('result', JSON.stringify(invalidatedInput));
+//     console.log('result', JSON.stringify(invalidatedInput));
 
-    const nutImagesOCRresult = await getOcrTextAllImages(
-      invalidatedInput.nutIncluded
-    );
+//     const nutImagesOCRresult = await getOcrTextAllImages(
+//       invalidatedInput.nutIncluded
+//     );
 
-    const nutExcludedImagesOCRresult = await getOcrTextAllImages(
-      invalidatedInput.nutExcluded
-    );
+//     const nutExcludedImagesOCRresult = await getOcrTextAllImages(
+//       invalidatedInput.nutExcluded
+//     );
 
-    res.json({
-      sessionId,
-      images: [],
-      nutIncludedIdx: invalidatedInput?.nutIncludedIdx,
-      messages: [
-        invalidatedInput.nutIncluded?.length === 0
-          ? 'There is no nut/supp facts panel detected by nut/supp fact panel detector module. If nut/supp fact panels are on provided image. Please set up bias of nut/supp for image to extract info. (Nutrition and Supplement Panel detector is on development state)'
-          : null,
-      ],
-    });
+//     res.json({
+//       sessionId,
+//       images: [],
+//       nutIncludedIdx: invalidatedInput?.nutIncludedIdx,
+//       messages: [
+//         invalidatedInput.nutIncluded?.length === 0
+//           ? 'There is no nut/supp facts panel detected by nut/supp fact panel detector module. If nut/supp fact panels are on provided image. Please set up bias of nut/supp for image to extract info. (Nutrition and Supplement Panel detector is on development state)'
+//           : null,
+//       ],
+//     });
 
-    onProcessNut({
-      req,
-      res,
-      invalidatedInput,
-      //* flash version
-      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-      // ocrList: nutImagesOCRresult,
-      sessionId,
-      collateImageName,
-      outputConfig,
-    });
+//     onProcessNut({
+//       req,
+//       res,
+//       invalidatedInput,
+//       ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+//       // ocrList: nutImagesOCRresult,
+//       sessionId,
+//       collateImageName,
+//       outputConfig,
+//     });
 
-    onProcessOther({
-      req,
-      res,
-      invalidatedInput,
-      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-      sessionId,
-      collateImageName,
-      outputConfig,
-    });
-  }
-);
+//     onProcessOther({
+//       req,
+//       res,
+//       invalidatedInput,
+//       ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+//       sessionId,
+//       collateImageName,
+//       outputConfig,
+//       config: {
+//         flash: true,
+//       },
+//     });
+//   }
+// );
 
 const getFilename = (filePath: any) => {
   const match = filePath.match(/[^\\\/]+$/);
@@ -354,18 +356,35 @@ router.post('/revalidate-product-data', async (req, res) => {
 
     const latestExtractSession = product.extractSessions?.[0];
     const {
-      result_all: result_all_raw,
+      // result_all: result_all_raw,
       result_nut: result_nut_raw,
+      result_attr_1: result_attr_1_raw,
+      result_attr_2: result_attr_2_raw,
       sessionId,
     } = latestExtractSession;
 
-    if (!result_all_raw || !result_nut_raw) {
+    if (
+      !result_nut_raw ||
+      // !result_all_raw ||
+      !result_attr_1_raw ||
+      !result_attr_2_raw
+    ) {
       return res.status(404).json({ error: 'Product not valid to revalidate' });
     }
-    const finalAll = JSON.parse(result_all_raw);
-    const finalNut = JSON.parse(result_nut_raw);
+    const result_nut = JSON.parse(result_nut_raw);
+    // const finalAll = JSON.parse(result_all_raw);
+    const result_attr_1 = JSON.parse(result_attr_1_raw);
+    const result_attr_2 = JSON.parse(result_attr_2_raw);
 
-    await createFinalResult({ finalAll, finalNut, sessionId, res });
+    await createFinalResult({
+      result_attr: {
+        result_attr_1,
+        result_attr_2,
+      },
+      result_nut,
+      sessionId,
+      res,
+    });
 
     res.status(200).json({
       isSuccess: true,
@@ -383,40 +402,69 @@ router.post('/revalidate-product-data', async (req, res) => {
 });
 
 const createFinalResult = async ({
-  finalNut,
-  finalAll,
+  // finalNut,
+  result_nut,
+  // finalAll,
+  result_attr,
   sessionId,
   res,
 }: {
-  finalNut: any;
-  finalAll: any;
+  // finalNut: any;
+  // finalAll: any;
+  result_nut: any;
+  result_attr: any;
   sessionId: string;
   res: any;
 }) => {
   try {
-    const allRes = JSON.parse(finalAll?.['all.json']);
-    const nutRes = JSON.parse(finalNut?.['nut.json']);
+    const { result_attr_1, result_attr_2 } = result_attr;
+    // const allRes = JSON.parse(finalAll?.['all.json']);
+    const attr1Res = JSON.parse(result_attr_1?.['attr_1.json']);
+    const attr2Res = JSON.parse(result_attr_2?.['attr_2.json']);
+    const nutRes = JSON.parse(result_nut?.['nut.json']);
     // const ocrClaims = JSON.parse(ocrClaimData);
 
+    // const {
+    //   isSuccess: allSuccess,
+    //   status: allStatus,
+    //   data: allResData,
+    // } = allRes || {};
+
     const {
-      isSuccess: allSuccess,
-      status: allStatus,
-      data: allResData,
-    } = allRes || {};
+      isSuccess: attr1Success,
+      status: attr1Status,
+      data: attr1ResData,
+    } = attr1Res || {};
+
+    const {
+      isSuccess: attr2Success,
+      status: attr2Status,
+      data: attr2ResData,
+    } = attr2Res || {};
+
     const {
       isSuccess: nutSuccess,
       status: nutStatus,
       data: nutResData,
     } = nutRes || {};
 
-    if (nutSuccess === false || allSuccess === false) {
+    if (
+      nutSuccess === false ||
+      // allSuccess === false ||
+      attr1Success === false ||
+      attr2Success === false
+    ) {
       return;
     }
 
+    const combinedMarkdownContent = `${attr1ResData?.markdownContent} \n ${attr2ResData?.markdownContent}`;
+
     //* if both process success
     const allJsonData = mapMarkdownAllToObject(
-      allResData?.markdownContent,
-      allResData?.extraInfo
+      // allResData?.markdownContent,
+      // allResData?.extraInfo
+      combinedMarkdownContent,
+      attr1ResData?.extraInfo
     );
     const nutJsonData = mapMarkdownNutToObject(nutResData?.markdownContent);
 
@@ -427,7 +475,8 @@ const createFinalResult = async ({
         // factPanels: nutRes?.data?.jsonData, //* markdown converted
         factPanels: nutJsonData,
         nutMark: nutRes?.data?.markdownContent,
-        allMark: allRes?.data?.markdownContent,
+        // allMark: allRes?.data?.markdownContent,
+        allMark: combinedMarkdownContent,
       },
     };
 
@@ -437,8 +486,10 @@ const createFinalResult = async ({
       where: { sessionId },
       data: {
         status: 'success',
-        result_all: JSON.stringify(finalAll),
-        result_nut: JSON.stringify(finalNut),
+        // result_all: JSON.stringify(finalAll)
+        result_attr_1: JSON.stringify(result_attr?.result_attr_1),
+        result_attr_2: JSON.stringify(result_attr?.result_attr_2),
+        result_nut: JSON.stringify(result_nut),
         result: JSON.stringify(validatedResponse),
       },
     });

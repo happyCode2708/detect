@@ -91,7 +91,7 @@ const check = async (analysisItem: any): Promise<boolean> => {
   const sugarClaim = SUGAR_CLAIMS_MAP?.[toLower(statement)]?.[claim];
 
   if (
-    SUGAR_ITEMS_REASON?.[toLower(sugarClaim)]
+    SUGAR_ITEMS_REASON?.[toLower(sugarClaim)]?.['variants']
       ?.map((wordList: any) => {
         return wordList
           .map((word: any) => {
@@ -107,14 +107,23 @@ const check = async (analysisItem: any): Promise<boolean> => {
   ) {
     return Promise.resolve(false);
   } else {
-    //* exceptional cases
     if (
-      toLower(claim) === 'corn syrup' &&
-      toLower(reason)?.includes('high fructose')
+      SUGAR_ITEMS_REASON?.[toLower(sugarClaim)]?.['excepts'] &&
+      !!SUGAR_ITEMS_REASON?.[toLower(sugarClaim)]?.['excepts']?.find(
+        (exceptText: string) => toLower(reason)?.includes(exceptText)
+      )
     ) {
-      //? it could be about 'HIGH FRUCTOSE CORN SYRUP' so must return false
       return Promise.resolve(false);
     }
+
+    // if (
+    //   toLower(claim) === 'corn syrup' &&
+    //   toLower(reason)?.includes('high fructose')
+    // ) {
+    //   //* exceptional cases
+    //   //? it could be about 'HIGH FRUCTOSE CORN SYRUP' so must return false
+    //   return Promise.resolve(false);
+    // }
   }
 
   //! teno hide
@@ -130,16 +139,33 @@ const check = async (analysisItem: any): Promise<boolean> => {
 };
 
 const SUGAR_ITEMS_REASON = {
-  'lower sugar': [['lower', 'sugar']],
-  'low sugar': [['low', 'sugar']],
-  'reduced sugar': [['reduced', 'sugar']],
-  'sugar free': [['sugar', 'free']],
-  'cane sugar': [['cane', 'sugar']],
-  'no artificial sweetener': [
-    ['not contain', 'artificial', 'sweetener'],
-    ['free from', 'artificial', 'sweetener'],
-  ],
-  unsweetened: [['unsweetened']],
+  'lower sugar': { variants: [['lower', 'sugar']] },
+  'low sugar': { variants: [['low', 'sugar']] },
+  'reduced sugar': { variants: [['reduced', 'sugar']] },
+  'sugar free': { variants: [['sugar', 'free']], excepts: ['sugar added'] },
+  'cane sugar': { variants: [['cane', 'sugar']] },
+  'no artificial sweetener': {
+    variants: [
+      ['no', 'artificial', 'sweetener'],
+      ['not contain', 'artificial', 'sweetener'],
+      ['free from', 'artificial', 'sweetener'],
+      ['0', 'artificial', 'sweetener'],
+    ],
+  },
+  unsweetened: { variants: [['unsweetened']] },
+  'no sugar added': { variants: [['sugar added']] },
+  'no added sugar': { variants: [['added sugar']] },
+  'no corn syrup': {
+    variants: [['corn', 'syrup']],
+    excepts: ['high fructose'],
+  },
+  'high fructose corn syrup': {
+    variants: [['high', 'fructose', 'corn', 'syrup']],
+  },
+  'no sugar': {
+    variants: [['no sugar'], ['0g', 'sugar'], ['og', 'sugar']],
+    excepts: ['no sugar added'],
+  },
 } as any;
 
 const SUGAR_ITEMS = [
@@ -240,6 +266,8 @@ const SUGAR_CLAIMS_MAP = {
   },
   unsweetened: {
     unsweetened: 'unsweetened',
+    //? special cases
+    sugar: 'no sugar',
   },
   sweetened: {
     xylitol: 'xylitol',
@@ -250,7 +278,18 @@ const SUGAR_CLAIMS_MAP = {
   'sugar free': {
     'sugar free': 'sugar free',
   },
+  zero: {
+    sugar: 'no sugar',
+    'added sugar': 'no added sugar',
+  },
+  'no sugar added': {
+    'sugar added': 'no sugar added',
+  },
+  'flavor with': {
+    honey: 'honey',
+  },
   no: {
+    'natural sweeteners': false,
     'acesulfame k': 'no acesulfame k',
     'acesulfame potassium': 'no acesulfame k',
     'added sugar': 'no added sugar',
@@ -322,8 +361,7 @@ const SUGAR_CLAIMS_MAP = {
     slpenda: 'no splenda/sucralose',
     sucralose: 'no splenda/sucralose',
     stevia: 'no stevia',
-    // sugar: 'no sugar',
-    sugar: 'sugar free',
+    sugar: 'no sugar',
     'sugar added': 'no sugar added',
     'sugar alcohol': 'no sugar alcohol',
     tagatose: 'no tagatose',
@@ -384,6 +422,7 @@ const SUGAR_CLAIMS_MAP = {
     xylitol: 'no xylitol',
   },
   'free of': {
+    sugar: 'no sugar',
     'acesulfame k': 'no acesulfame k',
     'acesulfame potassium': 'no acesulfame k',
     'added sugar': 'no added sugar',
@@ -463,6 +502,7 @@ const SUGAR_CLAIMS_MAP = {
   },
   contain: {
     sugar: false,
+    'added sugar': false,
     'reduced sugar': 'reduced sugar',
     'refined sugar': 'refined sugar',
     saccharin: 'saccharin',
@@ -471,6 +511,7 @@ const SUGAR_CLAIMS_MAP = {
     'sugar alcohol': 'sugar alcohol',
     'sugar free': 'sugar free',
     'sugars added': 'sugars added',
+    'sugar added': 'sugar added',
     tagatose: 'tagatose',
     unsweetened: 'unsweetened',
     xylitol: 'xylitol',

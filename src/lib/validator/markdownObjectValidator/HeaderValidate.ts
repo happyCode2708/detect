@@ -1,13 +1,15 @@
 export const headerValidate = async (modifiedProductDataPoints: any) => {
-  let modifiedHeader = modifiedProductDataPoints?.['header']?.[0];
+  let modifiedHeader = modifiedProductDataPoints?.['header'];
 
   if (!modifiedHeader) return;
 
-  validatePrimarySize(modifiedHeader);
-  validateSecondarySize(modifiedHeader);
-  validateThirdSize(modifiedHeader);
+  modifiedProductDataPoints['validated_header'] = {};
 
-  modifiedProductDataPoints['header'][0] = modifiedHeader;
+  validatePrimarySize(modifiedProductDataPoints);
+  validateSecondarySize(modifiedProductDataPoints);
+  validateThirdSize(modifiedProductDataPoints);
+  validatePrimarySizeText(modifiedProductDataPoints);
+  validateOthers(modifiedProductDataPoints);
 };
 
 const sizeMap = {
@@ -33,8 +35,9 @@ const sizeMap = {
   caps: 'COUNT',
 } as any;
 
-const validatePrimarySize = (modifiedHeader: any) => {
-  const { primarySize: rawPrimarySize } = modifiedHeader;
+const validatePrimarySize = (modifiedProductDataPoints: any) => {
+  const { 'primary size': rawPrimarySize } =
+    modifiedProductDataPoints?.['header']?.['product size'];
 
   if (!rawPrimarySize) return;
 
@@ -53,20 +56,24 @@ const validatePrimarySize = (modifiedHeader: any) => {
       fullUnit
     );
 
-    modifiedHeader['primarySizeValue'] = sizeValue;
-    modifiedHeader['primarySizeText'] = primarySizeText;
-    modifiedHeader['primarySizeUOM'] = fullUnit;
+    modifiedProductDataPoints['validated_header']['primarySizeValue'] =
+      sizeValue;
+    modifiedProductDataPoints['validated_header']['primarySizeText'] =
+      primarySizeText;
+    modifiedProductDataPoints['validated_header']['primarySizeUOM'] = fullUnit;
 
     return;
   }
 
-  modifiedHeader['primarySizeValue'] = null;
-  modifiedHeader['primarySizeText'] = rawPrimarySize;
-  modifiedHeader['primarySizeUOM'] = null;
+  modifiedProductDataPoints['validated_header']['primarySizeValue'] = null;
+  modifiedProductDataPoints['validated_header']['primarySizeText'] =
+    rawPrimarySize;
+  modifiedProductDataPoints['validated_header']['primarySizeUOM'] = null;
 };
 
-const validateSecondarySize = (modifiedHeader: any) => {
-  const { secondarySize: rawSecondarySize } = modifiedHeader;
+const validateSecondarySize = (modifiedProductDataPoints: any) => {
+  const { 'secondary size': rawSecondarySize } =
+    modifiedProductDataPoints?.['header']?.['product size'];
 
   if (!rawSecondarySize) return;
 
@@ -85,20 +92,25 @@ const validateSecondarySize = (modifiedHeader: any) => {
       fullUnit
     );
 
-    modifiedHeader['secondarySizeValue'] = sizeValue;
-    modifiedHeader['secondarySizeText'] = primarySizeText;
-    modifiedHeader['secondarySizeUOM'] = fullUnit;
+    modifiedProductDataPoints['validated_header']['secondarySizeValue'] =
+      sizeValue;
+    modifiedProductDataPoints['validated_header']['secondarySizeText'] =
+      primarySizeText;
+    modifiedProductDataPoints['validated_header']['secondarySizeUOM'] =
+      fullUnit;
 
     return;
   }
 
-  modifiedHeader['secondarySizeValue'] = null;
-  modifiedHeader['secondarySizeText'] = rawSecondarySize;
-  modifiedHeader['secondarySizeUOM'] = null;
+  modifiedProductDataPoints['validated_header']['secondarySizeValue'] = null;
+  modifiedProductDataPoints['validated_header']['secondarySizeText'] =
+    rawSecondarySize;
+  modifiedProductDataPoints['validated_header']['secondarySizeUOM'] = null;
 };
 
-const validateThirdSize = (modifiedHeader: any) => {
-  const { thirdSize: rawThirdSize } = modifiedHeader;
+const validateThirdSize = (modifiedProductDataPoints: any) => {
+  const { 'third size': rawThirdSize } =
+    modifiedProductDataPoints?.['header']?.['product size'];
 
   if (!rawThirdSize) return;
 
@@ -117,14 +129,36 @@ const validateThirdSize = (modifiedHeader: any) => {
       fullUnit
     );
 
-    modifiedHeader['thirdSizeValue'] = sizeValue;
-    modifiedHeader['thirdSizeText'] = primarySizeText;
-    modifiedHeader['thirdSizeUOM'] = fullUnit;
+    modifiedProductDataPoints['validated_header']['thirdSizeValue'] = sizeValue;
+    modifiedProductDataPoints['validated_header']['thirdSizeText'] =
+      primarySizeText;
+    modifiedProductDataPoints['validated_header']['thirdSizeUOM'] = fullUnit;
 
     return;
   }
 
-  modifiedHeader['thirdSizeValue'] = null;
-  modifiedHeader['thirdSizeText'] = rawThirdSize;
-  modifiedHeader['thirdSizeUOM'] = null;
+  modifiedProductDataPoints['validated_header']['thirdSizeValue'] = null;
+  modifiedProductDataPoints['validated_header']['thirdSizeText'] = rawThirdSize;
+  modifiedProductDataPoints['validated_header']['thirdSizeUOM'] = null;
+};
+
+const validatePrimarySizeText = (modifiedProductDataPoints: any) => {
+  modifiedProductDataPoints['validated_header']['fullSizeStatement'] =
+    modifiedProductDataPoints?.['header']?.['product size'][
+      'full statement about product size'
+    ];
+};
+
+const validateOthers = (modifiedProductDataPoints: any) => {
+  modifiedProductDataPoints['validated_header']['brandName'] =
+    modifiedProductDataPoints?.['header']?.['product info']?.['brand name'];
+
+  modifiedProductDataPoints['validated_header']['productName'] =
+    modifiedProductDataPoints?.['header']?.['product info']?.['product name'];
+
+  modifiedProductDataPoints['validated_header']['count'] =
+    modifiedProductDataPoints?.['header']?.['product size']?.['count'];
+
+  modifiedProductDataPoints['validated_header']['countUom'] =
+    modifiedProductDataPoints?.['header']?.['product size']?.['count uom'];
 };

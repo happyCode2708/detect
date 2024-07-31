@@ -4,83 +4,87 @@ import { group } from 'console';
 import _ from 'lodash';
 
 export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
-  const lablingInfoSection = markdown
+  const labelingInfoSection = markdown
     .split('LABELING_INFO_TABLE')?.[1]
-    ?.split('END__LABELING__INFO__TABLE')?.[0];
+    ?.split('END_')?.[0];
+
+  const labelingInfoAnalysisSection = markdown
+    .split('LABELING_INFO_ANALYSIS_TABLE')?.[1]
+    ?.split('END_')?.[0];
 
   const sugarClaimSection = markdown
     .split('SUGAR_CLAIM_TABLE')?.[1]
-    ?.split('END__SUGAR__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('sugar');
   // logger.info(sugarClaimSection);
 
   const fatClaimSection = markdown
     .split('FAT_CLAIM_TABLE')?.[1]
-    ?.split('END__FAT__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('fat');
   // logger.info(fatClaimSection);
 
   const processClaimSection = markdown
     .split('PROCESS_CLAIM_TABLE')?.[1]
-    ?.split('END__PROCESS__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('other');
   // logger.info(processClaimSection);
 
   const calorieClaimSection = markdown
     .split('CALORIE_CLAIM_TABLE')?.[1]
-    ?.split('END__CALORIE__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('calorie');
   // logger.info(calorieClaimSection);
 
   const saltClaimSection = markdown
     .split('SALT_CLAIM_TABLE')?.[1]
-    ?.split('END__SALT__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('salt');
   // logger.info(saltClaimSection);
 
   const extraClaimSection_1 = markdown
     .split('FIRST_EXTRA_CLAIM_TABLE')?.[1]
-    ?.split('END__FIRST__EXTRA__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('extra 1');
   // logger.info(extraClaimSection_1);
 
   const extraClaimSection_2 = markdown
     .split('SECOND_EXTRA_CLAIM_TABLE')?.[1]
-    ?.split('END__SECOND__EXTRA__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('extra 2');
   // logger.info(extraClaimSection_2);
 
   const extraClaimSection_3 = markdown
     .split('THIRD_EXTRA_CLAIM_TABLE')?.[1]
-    ?.split('END__THIRD__EXTRA__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('extra 3');
   // logger.info(extraClaimSection_3);
 
   const allergenClaimSection = markdown
-    .split('ALLERGEN_TABLE')?.[1]
-    ?.split('END__ALLERGEN__TABLE')?.[0];
+    .split('ALLERGEN_OBJECT')?.[1]
+    ?.split('END_')?.[0];
 
   // logger.error('allergen');
   // logger.info(allergenClaimSection);
 
   const headerSection = markdown
-    .split('HEADER_TABLE')?.[1]
-    ?.split('END__HEADER__TABLE')?.[0];
+    .split('HEADER_OBJECT')?.[1]
+    ?.split('END_')?.[0];
 
-  logger.error('header');
-  logger.info(headerSection);
+  // logger.error('header');
+  // logger.info(headerSection);
 
   const ingredientSection = markdown
     .split('INGREDIENT_TABLE')?.[1]
-    ?.split('END__INGREDIENT__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('ingredient');
   // logger.info(ingredientSection);
@@ -92,53 +96,80 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   // logger.error('physical');
   // logger.info(physicalSection);
 
-  const marketingSection = markdown
-    .split('MARKETING_TABLE')?.[1]
-    ?.split('END__MARKETING__TABLE')?.[0];
+  // const marketingSection = markdown
+  //   .split('MARKETING_TABLE')?.[1]
+  //   ?.split('END__MARKETING__TABLE')?.[0];
 
   // logger.error('marketing');
   // logger.info(marketingSection);
 
-  const instructionSection = markdown
-    .split('INSTRUCTION_TABLE')?.[1]
-    ?.split('END__INSTRUCTION__TABLE')?.[0];
+  // const instructionSection = markdown
+  //   .split('INSTRUCTION_TABLE')?.[1]
+  //   ?.split('END__INSTRUCTION__TABLE')?.[0];
+
+  const marketingSection = markdown
+    .split('MARKETING_OBJECT')?.[1]
+    ?.split('END_')?.[0];
+
+  const cookingInstructionSection = markdown
+    .split('COOKING_INSTRUCTION_OBJECT')?.[1]
+    ?.split('END_')?.[0];
+
+  const storageInstructionSection = markdown
+    .split('STORAGE_INSTRUCTION')?.[1]
+    ?.split('END_')?.[0];
+
+  const usageInstructionSection = markdown
+    .split('USAGE_INSTRUCTION')?.[1]
+    ?.split('END_')?.[0];
+
+  const informationInstructionSection = markdown
+    .split('INFORMATION_INSTRUCTION')?.[1]
+    ?.split('END_')?.[0];
 
   // logger.error('instruction');
   // logger.info(instructionSection);
 
   const supplyChainSection = markdown
-    .split('SUPPLY_CHAIN_TABLE')?.[1]
-    ?.split('END__SUPPLY__CHAIN__TABLE')?.[0];
+    .split('SUPPLY_CHAIN_OBJECT')?.[1]
+    ?.split('END_')?.[0];
 
   // logger.error('supply chain');
   // logger.info(supplyChainSection);
 
   const baseCertifierClaimSection = markdown
     .split('BASE_CERTIFIER_CLAIM_TABLE')?.[1]
-    ?.split('END__BASE__CERTIFIER__CLAIM__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('base certifier claim');
   // logger.info(baseCertifierClaimSection);
 
   const attributeClaimSection = markdown
     .split('ATTRIBUTE_TABLE')?.[1]
-    ?.split('END__ATTRIBUTE__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('attribute claim');
   // logger.info(attributeClaimSection);
 
   const marketingTextSection = markdown
     ?.split('MARKETING_TEXT_TABLE')?.[1]
-    ?.split('END__MARKETING__TEXT__TABLE')?.[0];
+    ?.split('END_')?.[0];
 
   // logger.error('marketingTextSection');
   // logger.info(marketingTextSection);
 
   //? LABELING INFO
-  const labelingObjList = getObjectDataFromTable(lablingInfoSection, [
-    'free',
-    'contain',
+  const labelingObjList = getObjectDataFromTable(labelingInfoSection, [
+    'label item',
+    'label',
+    'labelText',
   ]);
+
+  //? LABELING ANALYSIS
+  const labelingAnalysisObjList = getObjectDataFromTable(
+    labelingInfoAnalysisSection,
+    ['label', 'isFreeOf', 'free']
+  );
 
   //? EXTRA
   const extraClaimsObjList_1 = getObjectDataFromTable(extraClaimSection_1, [
@@ -228,39 +259,9 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   //   'notContainList',
   // ]);
 
-  const allergenObjList = getObjectDataFromHorizontalTable(
-    allergenClaimSection,
-    {
-      'allergen contain statement': 'containStatement',
-      'allergens contain statement break-down list (split by "/")':
-        'containList',
-      'allergens on equipments statement': 'containOnEquipmentStatement',
-      'allergens on equipments statement break-down list (split by "/")':
-        'containOnEquipmentList',
-      'exact text on images that tell allergen things product does not contain':
-        'notContainStatement',
-      'allergens product does not contain break-down list': 'notContainList',
-    },
-    {
-      groupVertical: true,
-    }
-  );
-  // logger.error('allergen list');
-  // logger.info(JSON.stringify(allergenObjList));
+  const allergenObjList = parseJson(allergenClaimSection);
 
-  //? HEADER
-  const headerObjList = getObjectDataFromTable(headerSection, [
-    'productName',
-    'brandName',
-    'primarySize',
-    'secondarySize',
-    'thirdSize',
-    'fullSizeStatement',
-    'count',
-    'countUom',
-  ]);
-  // logger.error('header list');
-  // logger.info(JSON.stringify(headerObjList));
+  const headerObjList = parseJson(headerSection);
 
   //? INGREDIENT TABLE
   const ingredientObjList = getObjectDataFromTable(ingredientSection, [
@@ -271,8 +272,8 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
     'liveAndActiveCulturesStatement',
     'liveAndActiveCulturesBreakdown',
   ]);
-  logger.error('ingredient list');
-  logger.info(JSON.stringify(ingredientObjList));
+  // logger.error('ingredient list');
+  // logger.info(JSON.stringify(ingredientObjList));
 
   // //? PHYSICAL
   // const physicalObjList = getObjectDataFromTable(physicalSection, [
@@ -284,71 +285,40 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
   // logger.info(JSON.stringify(physicalObjList));
 
   //? MARKETING
-  const marketingObjList = getObjectDataFromTable(marketingSection, [
-    'haveQrCode',
-    'instagram',
-    'pinterest',
-    'youtube',
-    'youtubeType',
-    'facebook',
-    'twitter',
-    'socialMediaList',
-    'website',
-    'socialMediaText',
-    'enlargedToShow',
-  ]);
-  logger.error('marketing');
-  logger.info(JSON.stringify(marketingObjList));
+  // const marketingObjList = getObjectDataFromTable(marketingSection, [
+  //   'haveQrCode',
+  //   'instagram',
+  //   'pinterest',
+  //   'youtube',
+  //   'youtubeType',
+  //   'facebook',
+  //   'twitter',
+  //   'socialMediaList',
+  //   'website',
+  //   'socialMediaText',
+  //   'enlargedToShow',
+  // ]);
+  // logger.error('marketing');
+  // logger.info(JSON.stringify(marketingObjList));
+
+  const marketingObjList = {
+    websites: parseJson(marketingSection)?.websites?.map(
+      (item: any) => item?.['website link']
+    ),
+  };
 
   //? INSTRUCTION
-  const instructionObjList = getObjectDataFromHorizontalTable(
-    instructionSection,
-    {
-      'storage instructions': 'storageInstruction',
-      'cooking instructions': 'cookingInstruction',
-      'usage instructions': 'usageInstruction',
-      'other instructions': 'otherInstruction',
-    }
-  );
-  logger.error('instruction');
-  logger.info(JSON.stringify(instructionObjList));
+
+  const instructionObjList = {
+    cookingInstruction: parseJson(cookingInstructionSection),
+    storageInstruction: parseJson(storageInstructionSection),
+    usageInstruction: parseJson(usageInstructionSection),
+    informationInstruction: parseJson(informationInstructionSection),
+  };
 
   //? SUPPLY CHAIN
-  // const supplyChainObjList = getObjectDataFromTable(supplyChainSection, [
-  //   'countryOfOriginText',
-  //   'countryOfOrigin',
-  //   'distributedBy',
-  //   'manufacturerName',
-  //   'manufacturerDate',
-  //   'manufacturerPhoneNumber',
-  //   'manufacturerStreetAddress',
-  //   'manufacturerCity',
-  //   'manufacturerState',
-  //   'manufactureZipCode',
-  // ]);
-  const supplyChainObjList = getObjectDataFromHorizontalTable(
-    supplyChainSection,
-    {
-      'country of origin text': 'countryOfOriginText',
-      'country of origin': 'countryOfOrigin',
-      'have text "distributed by" ? (answer is yes/no)': 'haveDistributor',
-      'distributor name': 'distributorName',
-      'distributor city': 'distributorCity',
-      'distributor state': 'distributorState',
-      'distributor zipCode': 'distributorZipCode',
-      'distributor phone Number': 'distributorPhoneNumber',
-      'full text about distributor': 'fullTextDistributor',
-      'manufacture name': 'manufacturerName',
-      'manufacture date': 'manufacturerDate',
-      'manufacture phone number': 'manufacturerPhoneNumber',
-      'manufacture street address': 'manufacturerStreetAddress',
-      'manufacture city': 'manufacturerCity',
-      'manufacture state': 'manufacturerState',
-      'manufacture zipCode': 'manufactureZipCode',
-    }
-  );
-  // logger.error('supplyChain');
-  // logger.info(JSON.stringify(supplyChainObjList));
+
+  const supplyChainObjList = parseJson(supplyChainSection);
 
   //? BASE CERTIFIER CLAIM
   const baseCertifierClaimObjList = getObjectDataFromTable(
@@ -376,6 +346,7 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
 
   return {
     labeling: labelingObjList,
+    labelingAnalysis: labelingAnalysisObjList,
     header: headerObjList,
     // physical: physicalObjList,
     attributes: {
@@ -395,14 +366,15 @@ export const mapMarkdownAllToObject = (markdown: string, extraInfo?: any) => {
     ingredients: ingredientObjList,
     allergens: allergenObjList,
     instructions: instructionObjList,
-    marketing: [
-      {
-        ...marketingObjList?.[0],
-        marketingClaims: marketingTextObjList?.map(
-          (item) => item?.marketingContent
-        ),
-      },
-    ],
+    // marketing: [
+    //   {
+    //     ...marketingObjList?.[0],
+    //     marketingClaims: marketingTextObjList?.map(
+    //       (item) => item?.marketingContent
+    //     ),
+    //   },
+    // ],
+    marketing: marketingObjList,
     supplyChain: supplyChainObjList,
     extraInfo,
     physical: {
@@ -465,10 +437,6 @@ const getObjectDataFromHorizontalTable = (
       .map((item) => item.trim());
     const [name, ...multiValues] = values;
 
-    console.log('name --', name);
-
-    // const currentPropertyValue
-
     const foundHeaderName = Object.entries(propertyListMap)?.find(
       ([header, key]) => {
         return name === header;
@@ -507,4 +475,23 @@ const areAllFieldsEmpty = (obj: any) => {
     }
   }
   return true;
+};
+
+const cleanJSON = (jsonString: string) => {
+  // Remove trailing commas before closing braces/brackets
+  return jsonString
+    .replace(/,\s*([}\]])/g, '$1') // Handle trailing commas in objects and arrays
+    .replace(/,\s*$/, ''); // Handle trailing comma at the end of the string
+};
+
+const parseJson = (jsonString: string) => {
+  jsonString = cleanJSON(jsonString);
+
+  try {
+    const jsonObject = JSON.parse(jsonString);
+    return jsonObject;
+  } catch (error) {
+    console.error('Invalid JSON string:', error);
+    return {};
+  }
 };
