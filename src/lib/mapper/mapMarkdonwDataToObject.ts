@@ -1,5 +1,3 @@
-import logger from '../logger/index';
-
 export const mapMarkdownNutToObject = (markdown: string) => {
   const nutritionSections = markdown.split('NUTRITION_FACT_TABLE').slice(1);
   return nutritionSections.map((section: any) => {
