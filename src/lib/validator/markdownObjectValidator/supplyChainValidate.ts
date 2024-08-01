@@ -15,7 +15,9 @@ export const supplyChainValidate = async (modifiedProductDataPoints: any) => {
 
 const validateAddress = async (modifiedProductDataPoints: any) => {
   const addresses =
-    modifiedProductDataPoints?.['supplyChain']?.['address info'];
+    modifiedProductDataPoints?.['supplyChain']?.[
+      'address and phone number info'
+    ];
 
   addresses?.forEach((addressItem: any) => {
     const fullAddressStatement = addressItem?.['full address statement'];
@@ -110,33 +112,35 @@ const validateManufacturerState = async (
 //     modifiedProductDataPoints['validated_supplyChain']['manufacturerState'] =
 //       toUpper(manufacturerState);
 //   }
-// };
+// };suppl
 
 const validateCountryOfOrigin = async (modifiedProductDataPoints: any) => {
-  // const countryOfOrigin = trimPeriodsAndCommas(countryValue);
-  const countryOfOrigin = trimPeriodsAndCommas(
-    modifiedProductDataPoints?.['supplyChain']?.['country info']?.[0]?.[
+  const countryOfOriginList =
+    modifiedProductDataPoints?.['supplyChain']?.['country info']?.[
       'country of origin from made in statement'
-    ]?.trim()
-  );
+    ];
 
-  if (isValueEmpty(countryOfOrigin)) return;
+  const validated_countryOfOriginList = [] as string[];
 
-  const upperName = countryOfOrigin?.toUpperCase() as string;
+  countryOfOriginList?.forEach((countryOfOriginRaw: string) => {
+    const countryOfOrigin = trimPeriodsAndCommas(countryOfOriginRaw);
 
-  if (COUNTRY_SHORT_NAMES?.[upperName]) {
-    // modifiedProductDataPoints['supplyChain'][0]['validated_countryOfOrigin'] = [
-    //   toUpper(COUNTRY_SHORT_NAMES[upperName]),
-    // ];
+    if (isValueEmpty(countryOfOrigin)) return;
 
+    const upperName = countryOfOrigin?.toUpperCase() as string;
+
+    if (COUNTRY_SHORT_NAMES?.[upperName]) {
+      validated_countryOfOriginList.push(
+        toUpper(COUNTRY_SHORT_NAMES[upperName])
+      );
+    } else {
+      validated_countryOfOriginList.push(upperName);
+    }
+  });
+
+  if (validated_countryOfOriginList?.length > 0) {
     modifiedProductDataPoints['validated_supplyChain']['countryOfOrigin'] =
-      toUpper(COUNTRY_SHORT_NAMES[upperName]);
-  } else {
-    // modifiedProductDataPoints['supplyChain'][0]['validated_countryOfOrigin'] = [
-    //   upperName,
-    // ];
-    modifiedProductDataPoints['validated_supplyChain']['countryOfOrigin'] =
-      upperName;
+      validated_countryOfOriginList;
   }
 };
 
@@ -145,7 +149,7 @@ const validateOtherFields = async (modifiedProductDataPoints: any) => {
 
   const otherFields = {
     countryOfOriginText:
-      supplyChainData?.['country info']?.[0]?.[
+      supplyChainData?.['country info']?.[
         'statement indicate from which nation product was made in'
       ],
   };

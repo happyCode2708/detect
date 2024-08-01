@@ -115,7 +115,7 @@ const NON_CERTIFICATE_REASON = {
   'dolphin safe': [['dolphin', 'safe']],
   'dry roasted': [['dry', 'roasted']],
   'eco-friendly': [['eco-friendly']],
-  'farm raised': [['farm', 'raised']],
+  'farm raised': [['farm', 'raised'], ['farm']],
   filtered: [['filtered']],
   'free range': [['free', 'range']],
   'freeze-dried': [['freeze-dried']],

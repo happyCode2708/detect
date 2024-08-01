@@ -18,6 +18,7 @@ const sizeMap = {
   kg: 'KILOGRAM',
   mcg: 'MICROGRAM',
   oz: 'OUNCE',
+  '0z': 'OUNCE',
   lb: 'POUND',
   ml: 'MILLILITER',
   l: 'LITER',

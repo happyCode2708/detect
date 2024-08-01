@@ -243,6 +243,8 @@ Example 2: "NUT FREE" label text
 Example 1: "gluten free" mean product not contain "gluten"
 Example 2: "nuts free" mean product not contain "nuts"
 
++ each "label item" only present once time in only one row in the table.
+
 TABLE FORMAT:
 LABELING_INFO_TABLE
 | label item | label item type on product (answer is "certification label"/ "label text"/ "other") (if type "other" tell me what type you think it belong to) | what label item say ? |
@@ -284,7 +286,7 @@ Example 2: "Manufactured in facility that also processes peanut, milk"
 Example 3: "Made on equipment that process peanut"
 
 + "allergens list from manufacturing equipments or from facility" is the break-down list of all ingredients that is claim to present in facility or manufacturing equipments. Do not include ingredients that say is not present on facility or manufacturing equipment.
-Example 1: "Manufactured in a egg and milk free facility that also processes peanut, wheat products" should be recorded as "peanut/wheat" since text "in a egg and milk free facility" mean the egg and milk is not present in facility.
+Example 1: "Manufactured in a egg and milk free facility that also processes peanut, wheat products" should be recorded as string array ["peanut","wheat"] since text "in a egg and milk free facility" mean the egg and milk is not present in facility.
 
 + "exact text on images about allergens that product does not contain" are the exact contexts that you found on provided images about allergen info, that product claim to not contain or free of or free.
 example 1: "contain no wheat, milk"
@@ -354,7 +356,11 @@ Example 6: for "NET WT 26 OZ (1 LB 10 OZ) 737G" should recorded as
 }
 because "1 LB 10 OZ" = "26 OZ" and "1 LB 10 OZ" have two different size uom so it is invalid to record as size value
 
-
+Example 7: for "8-1 OZ (37G) PACKS NET WT 8OZ (226G)" recorded as
+{
+  "primary size": "8OZ",
+  "secondary size": "226G"
+}
 
 + just collect size in order. If production mention three type of uom it will have third size
 
@@ -491,14 +497,15 @@ END_MARKETING_OBJECT
 IMPORTANT NOTES:
 + "statement indicate from which nation product was made in" is text about the nation where a product was manufactured, produced, or grown.
 Example 1: "manufactured in Canada"
-Example 2: "made in Brazil"
-Example 3: "produced in Brazil"
-Example 4: "product of France"
+Example 2: "made in Brazil or Chile"
+Example 3: "made in Brazil or Chile"
+Example 4: "produced in Brazil"
+Example 5: "product of France"
 
-+ "country of origin from made in statement" is exact country name (found on product images) found on product images where the product was manufactured, produced, or grown.
-Example 1: "Canada"
-Example 2: "Brazil"
-Example 2: "UK"
++ "country of origin from made in statement" are exact countries name (found on product images) found on product images where the product was manufactured, produced, or grown.
+Example 1: ["Canada"]
+Example 2: ["Brazil"]
+Example 2: ["UK", "Brazil"]
 
 + "full address statement" rules:
 Example 1: "distributed by: Coca-cola 53 Cowsansview Road, ON N1R7L2, Canada"
@@ -520,10 +527,13 @@ Example 3: "manufactured by"
 Example 4: "DISTRIBUTED BY:"
 Example 5: "manufacture for"
 
++ "phone number" is the phone number near address info of "distributor" or "manufacturer"
+Example 1: "(500) 867-4780"
+
 INFO FORMAT:
 SUPPLY_CHAIN_OBJECT
 {
-  "address info": [
+  "address and phone number info": [
     {
       "address type": "distributor" | "manufacturer" | "other",
       "prefix address": str,
@@ -537,12 +547,10 @@ SUPPLY_CHAIN_OBJECT
       "phone number": str
     }
   ],
-  "country info": [
-    {
-      "statement indicate from which nation product was made in": str,
-      "country of origin from made in statement": str
-    }
-  ],
+  "country info": {
+    "statement indicate from which nation product was made in": str[],
+    "country of origin from made in statement": str[]
+  }
 }
 END_SUPPLY_CHAIN_OBJECT
 
