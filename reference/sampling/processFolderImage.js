@@ -221,7 +221,11 @@ const run = async () => {
     console.log(`folder group ${main_batch_index} start`);
 
     await processImages({
-      directoryPath: `/Users/duynguyen/Downloads/yolo/data/${main_batch_index}`,
+      directoryPath: `${
+        process.env.SOURCE === 'home'
+          ? process.env.DATASET_PATH_HOME
+          : process.env.DATASET_PATH_COMPANY
+      }/${main_batch_index}`,
     });
   }
 };
