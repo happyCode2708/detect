@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const batch_index = 8;
+const batch_index = 20;
 
 // Paths
 const directoryPath = `/Users/duynguyen/Downloads/yolo/data/${batch_index}`; // Path to your original image folder
