@@ -54,3 +54,5 @@ service_account.json
 /assets-old/*
 /product-import/
 /reference/certifier/*
+
+/studio/mydata/*

@@ -1,7 +1,7 @@
 import { make_gpt4_o_prompt } from '../promp/gpt4-o-mini';
 import { ChatCompletionContentPartImage } from 'openai/resources';
 
-import { encodeImageToBase64 } from '@/lib/utils/image';
+import { encodeImageToBase64 } from '@/lib/image';
 
 export const generateContentWithGpt = async (
   imagesPath: any[],
