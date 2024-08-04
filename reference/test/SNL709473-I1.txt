@@ -1,8 +1,0 @@
-SNL709473-I1
-fatContentClaims - ZERO GRAMS TRANS FAT PER SERVING - 0g tran fat => pass
-consumerStorageInstructions - store in cool => pass
-saltOrSodiumClaims - low sodium => pass
-sugarAndSweetenerClaims - no sugar alcohol => pass
-recyclingAdvice - recycle this carton => pass
-Forest Stewardship Council - boolean => pass
-packaging - Ancillary Information -  42199-00-C0235 (near upc12) => fail

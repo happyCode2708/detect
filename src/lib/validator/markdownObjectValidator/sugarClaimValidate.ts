@@ -163,7 +163,12 @@ const SUGAR_ITEMS_REASON = {
     variants: [['high', 'fructose', 'corn', 'syrup']],
   },
   'no sugar': {
-    variants: [['no sugar'], ['0g', 'sugar'], ['og', 'sugar']],
+    variants: [
+      ['no sugar'],
+      ['0g', 'sugar'],
+      ['og', 'sugar'],
+      ['zero', 'sugar'],
+    ],
     excepts: ['no sugar added'],
   },
 } as any;

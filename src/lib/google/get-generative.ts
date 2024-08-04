@@ -68,9 +68,6 @@ export const getGenerative = () => {
     ...GENERAL_CONFIG,
   });
 
-  // (global as any).generativeModel = generativeModel;
-  // (global as any).generativeModelName = model;
-
   (global as any).generativeModel = {
     region_1: generativeProModel_1,
     region_3: generativeProModel_3,
@@ -86,11 +83,6 @@ export const getGenerative = () => {
     model: flash_model,
     ...GENERAL_CONFIG,
   });
-
-  // const generativeFlashModel_3 = vertex_ai_region_3.preview.getGenerativeModel({
-  //   model: flash_model,
-  //   ...GENERAL_CONFIG,
-  // });
 
   (global as any).generativeFlashModel = {
     region_1: generativeFlashModel_1,

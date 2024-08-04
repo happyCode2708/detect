@@ -10,9 +10,6 @@ import {
 } from '@zxing/library';
 
 export const findUpcFromImages = async (filePaths: string[]) => {
-  // Replace 'path/to/barcode-image.png' with the path to your image file
-  // const imagePath = path.resolve('path/to/barcode-image.png');
-
   const upcFromImageList = await Promise.all(
     filePaths.map((path: string) => decodeUpc(path))
   );

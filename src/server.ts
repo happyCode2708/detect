@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 
 import apiRouter from './router';
-import { getGenerative } from './lib/google/get-generative';
+import { getGenerative } from '@/lib/google/get-generative';
 import { getGoogleApiOcr } from './lib/google/get-gg-api-ocr';
 import nextBuild from 'next/dist/build';
 import { nextMiddleware } from './middleware/nextMiddleware';
@@ -41,7 +41,7 @@ export const baseDir = path.join(__dirname, '..');
 export const uploadsDir =
   process.env.NODE_ENV !== 'production'
     ? path.join(__dirname, '..', 'assets/upload')
-    : (process.env.ASSET_PATH as string);
+    : path.join(process.env.ASSET_PATH as string, 'upload');
 export const resultsDir = path.join(__dirname, '..', 'assets/result');
 export const historyDir = path.join(__dirname, '..', 'assets/history');
 export const pythonPath = path.join(__dirname, 'python');

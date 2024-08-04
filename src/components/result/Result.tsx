@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useEffect, useState } from 'react';
 import { MetaInfo, SectionWrapper } from './common';
 import { ComparisonTabContent } from '../comparison-result/ComparisonTabContent';
-import { mapToTDCformat } from '@/lib/mapper/mapToTDCFormat';
+import { mapToTDCFormat } from '@/lib/mapper/mapToTDCFormat';
 import { compareWithTDC } from '@/lib/comparator/compareWithTDC';
 
 export const Result = ({
@@ -22,18 +22,6 @@ export const Result = ({
   const onValueChange = (tabActive: string) => {
     setTabActive(tabActive);
   };
-
-  // useEffect(() => {
-  //   try {
-  //     if (productInfo && productTdcData) {
-  //       const mappedData = mapToTDCformat(productInfo);
-  //       console.log('obj__1', mappedData);
-  //       console.log('obj__2', productTdcData);
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }, [productInfo, productTdcData]);
 
   if (!productInfo) return null;
 

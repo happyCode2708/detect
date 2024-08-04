@@ -1,148 +1,129 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-import {
-  getOcrTextAllImages,
-  findImagesContainNutFact,
-  addUniqueString,
-} from '../../../lib/server_utils';
+import { findImagesContainNutFact } from '@/lib/yolo';
+import { addUniqueStringToArrayString } from '@/lib/utils/array';
+import { getOcrTextAllImages } from '@/lib/ocr';
 
-import { onProcessNut, onProcessAttribute } from '../../../lib/google/gemini';
-import { make_markdown_attr_1_prompt } from '../../../lib/promp/markdown_attr_1_utils';
-import { make_markdown_attr_2_prompt } from '../../../lib/promp/markdown_attr_2_utils';
+import { onProcessNut, onProcessAttribute } from '@/lib/google/gemini';
+import { make_markdown_attr_1_prompt } from '@/lib/promp/markdown_attr_1_utils';
+import { make_markdown_attr_2_prompt } from '@/lib/promp/markdown_attr_2_utils';
 
-import { prisma } from '../../../server';
-import { checkFilesExist, getFilename } from '../../../lib/utils/checkFile';
+import { prisma, uploadsDir } from '@/server';
+import { checkFilesExist } from '@/lib/utils/checkFile';
 
-import { findUpcFromImages } from '../../../lib/utils/findUpc';
+import { findUpcFromImages } from '@/lib/utils/findUpc';
+import { Status } from '@prisma/client';
+import path from 'path';
 
-export const processProductImage = async (req: Request, res: Response) => {
-  let responseReturned = false;
+export const processProductImage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  let sessionIdReturned = false;
   let sessionId;
+
   try {
     const product = await prisma.product.findUnique({
       where: { id: req.body.productId },
       include: { images: true },
     });
 
+    //* product not found
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }
 
+    //* get image path
     const filePaths = product?.images?.map((imageItem: any) => {
-      const fileName = getFilename(imageItem?.path);
-
-      console.log('filename', fileName);
-
-      if (process.env.SOURCE === 'home') {
-        return `/Users/duynguyen/Desktop/foodocr/foodocr/assets/upload/${fileName}`;
-      }
-
-      if (process.env.SOURCE === 'company') {
-        return 'C:/Users/nnqduy/Desktop/ocr/detect/assets/upload/' + fileName;
-      }
-
-      return imageItem?.path;
+      const imageFilePath = imageItem?.path;
+      return path.join(uploadsDir, '..', imageFilePath);
     });
 
+    //* checking image files
     try {
       const checkFileExistResults = await checkFilesExist(filePaths);
-      const fileExistList = checkFileExistResults.filter(
-        (item: any) => item?.exists === true
+
+      const notEnoughFile = checkFileExistResults?.some(
+        (item) => item?.exists === false
       );
 
-      if (fileExistList?.length < filePaths?.length) {
-        res
-          .status(404)
-          .json({ isSuccess: false, message: 'not enough file path' });
-
-        return;
+      if (notEnoughFile) {
+        throw new Error('not enough file path');
       }
     } catch (err) {
-      res.status(404).json({
-        isSuccess: false,
-        message: 'some thing went wrong when checking for image files',
-      });
+      throw new Error('some thing went wrong when checking for image files');
     }
 
+    const biasForm = JSON.parse(req.body?.biasForm);
+    const outputConfig = JSON.parse(req.body?.outputConfig);
+
+    let invalidatedInput = await findImagesContainNutFact(filePaths);
+
+    let foundUpc12 = await findUpcFromImages(filePaths);
+
+    // Object.entries(biasForm).forEach(([key, value]: any) => {
+    //   if (value?.haveNutFact === true) {
+    //     let newNutIncluded = addUniqueStringToArrayString(
+    //       invalidatedInput.nutIncluded,
+    //       filePaths[key]
+    //     );
+    //     invalidatedInput.nutIncluded = newNutIncluded;
+    //   }
+    // });
+
+    // const nutImagesOCRresult = await getOcrTextAllImages(
+    //   invalidatedInput.nutIncluded
+    // );
+
+    // const nutExcludedImagesOCRresult = await getOcrTextAllImages(
+    //   invalidatedInput.nutExcluded
+    // );
+
+    const orcAllImages = await getOcrTextAllImages(filePaths);
+
+    const mappedOcr = orcAllImages?.map((ocrTextOfImage, idx: number) => {
+      return {
+        imageId: product?.images?.[idx]?.id,
+        ocr: ocrTextOfImage,
+      };
+    });
+
+    // * create new session with status unknown
     const newSession = await prisma.extractSession.create({
       data: {
         productId: product.id,
-        status: 'unknown',
+        status: Status.UNKNOWN,
+        ocr: JSON.stringify(mappedOcr),
       },
     });
 
     sessionId = newSession.sessionId;
 
-    const biasForm = JSON.parse(req.body?.biasForm);
-    const outputConfig = JSON.parse(req.body?.outputConfig);
-
-    const collateImageName = `${sessionId}.jpeg`;
-
-    console.log('run on model ', (global as any).generativeModelName);
-
-    console.log('filePath', JSON.stringify(filePaths));
-
-    let invalidatedInput = await findImagesContainNutFact(filePaths);
-    let foundUpc12 = await findUpcFromImages(filePaths);
-
-    console.log('upc', foundUpc12);
-
-    Object.entries(biasForm).forEach(([key, value]: any) => {
-      if (value?.haveNutFact === true) {
-        let newNutIncluded = addUniqueString(
-          invalidatedInput.nutIncluded,
-          filePaths[key]
-        );
-
-        invalidatedInput.nutIncluded = newNutIncluded;
-      }
-    });
-
-    console.log('result', JSON.stringify(invalidatedInput));
-
-    const nutImagesOCRresult = await getOcrTextAllImages(
-      invalidatedInput.nutIncluded
-    );
-
-    const nutExcludedImagesOCRresult = await getOcrTextAllImages(
-      invalidatedInput.nutExcluded
-    );
-
+    //* return the response to client for pooling result
     res.json({
       sessionId,
       images: [],
       nutIncludedIdx: invalidatedInput?.nutIncludedIdx,
-      messages: [
-        invalidatedInput.nutIncluded?.length === 0
-          ? 'There is no nut/supp facts panel detected by nut/supp fact panel detector module. If nut/supp fact panels are on provided image. Please set up bias of nut/supp for image to extract info. (Nutrition and Supplement Panel detector is on development state)'
-          : null,
-      ],
     });
 
-    responseReturned = true;
+    sessionIdReturned = true;
 
-    // const [finalNut, finalAll] = await Promise.all([
     onProcessNut({
-      req,
-      res,
       invalidatedInput,
-      //* flash version
-      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
-      // ocrList: nutImagesOCRresult,
+      ocrList: orcAllImages,
       sessionId,
-      collateImageName,
       outputConfig,
       config: {
         region: 1,
       },
+      prefix: 'nutrition',
     });
+
     onProcessAttribute({
-      req,
-      res,
       invalidatedInput,
-      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+      ocrList: orcAllImages,
       sessionId,
-      collateImageName,
       outputConfig,
       extraInfo: {
         physical: {
@@ -153,13 +134,11 @@ export const processProductImage = async (req: Request, res: Response) => {
       promptMakerFn: make_markdown_attr_1_prompt,
       config: { flash: true, stream: true },
     });
+
     onProcessAttribute({
-      req,
-      res,
       invalidatedInput,
-      ocrList: [...nutImagesOCRresult, ...nutExcludedImagesOCRresult],
+      ocrList: orcAllImages,
       sessionId,
-      collateImageName,
       outputConfig,
       extraInfo: {
         physical: {
@@ -169,38 +148,18 @@ export const processProductImage = async (req: Request, res: Response) => {
       prefix: 'attr_2',
       promptMakerFn: make_markdown_attr_2_prompt,
       config: {
-        // flash: true,
         region: 1,
       },
     });
-    // ]);
-
-    // await prisma.extractSession.update({
-    //   where: { sessionId },
-    //   data: {
-    //     status: 'fail',
-    //     result_all: JSON.stringify({}),
-    //     result_nut: JSON.stringify({}),
-    //   },
-    // });
-    //* await createFinalResult({ finalAll, finalNut, sessionId, res });
   } catch (e) {
-    console.log('process-image-error', e);
-
-    if (!responseReturned) {
-      res.status(500).json({
-        isSuccess: false,
-        error: JSON.stringify(e),
-        message: 'Failed to create session',
-      });
+    if (!sessionIdReturned) {
+      next(e);
     } else {
+      //* make session failed to stop pooling on client side
       await prisma.extractSession.update({
         where: { sessionId },
         data: {
-          status: 'fail',
-          result_all: null,
-          result_nut: null,
-          result: null,
+          status: Status.FAIL,
         },
       });
     }

@@ -108,3 +108,13 @@ export const useQueryProductDetail = ({ productId }: { productId: string }) => {
     retry: false,
   });
 };
+
+export const useQuerySessionResult = () => {
+  return useMutation({
+    mutationFn: async (sessionId: string) => {
+      const response = await fetch(`/api/info/get-session-result/${sessionId}`);
+
+      return await response.json();
+    },
+  });
+};

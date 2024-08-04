@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://duy:1234@localhost:5432/ocr"
+  url      = "postgresql://postgres:@localhost:5432/ocr"
 }
 
 generator client {
@@ -12,6 +12,12 @@ enum Role {
   ADMIN
 }
 
+enum Status {
+  UNKNOWN
+  FAIL
+  SUCCESS
+}
+
 model User {
   id       String   @id @default(uuid())
   email    String   @unique
@@ -21,27 +27,28 @@ model User {
 }
 
 model Product {
-  id              String    @id @default(uuid())
-  ixoneID         String?   @unique
-  upc12           String?   
-  createdAt       DateTime  @default(now())
-  validationResult String?
-  images          Image[]
-  extractSessions ExtractSession[]
-  compareResult   String?   @default("")
+  id                String    @id @default(uuid())
+  ixoneID           String?   @unique
+  upc12             String?   
+  createdAt         DateTime  @default(now())
+  validationResult  String?
+  images            Image[]
+  extractSessions   ExtractSession[]
+  compareResult     String?   @default("")
 }
 
 model ExtractSession {
-  sessionId  String   @id @default(uuid())
-  productId  String
-  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now())
-  status     String
-  result_nut String?
-  result_all String?
-  result_attr_1 String?
-  result_attr_2 String?
-  result     String?
+  sessionId       String   @id @default(uuid())
+  productId       String
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+  status          Status
+  result          String?
+  nutrition       String?
+  attr_1          String?
+  attr_2          String?
+  ocr             String?
+  estimate_cost   Float?
 }
 
 model Image {

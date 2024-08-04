@@ -1,9 +1,6 @@
 import vision, { ImageAnnotatorClient } from '@google-cloud/vision';
 
 export const getGoogleApiOcr = () => {
-  const model = 'gemini-1.5-pro-preview-0514';
-  // const model = 'gemini-1.5-flash-preview-0514';
-
   const googleCredentialString = Buffer.from(
     process.env.GOOGLE_CREDENTIALS as string,
     'base64'

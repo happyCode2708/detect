@@ -1,12 +1,22 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "CommonJS",
+    "moduleResolution": "node",
     "outDir": "dist",
     "noEmit": false,
     "types": ["express"],
+    "esModuleInterop": true,
     "jsx": "react",
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "sourceMap": true,
+    "rootDir": "./src",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    }
   },
-  "include": ["src/server.ts", "src/types"]
+  "include": ["src/server.ts", "src/types"],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
 }

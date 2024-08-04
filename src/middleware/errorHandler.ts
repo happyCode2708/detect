@@ -1,4 +1,5 @@
 // errorHandler.ts
+import logger from '@/lib/logger';
 import { Request, Response, NextFunction } from 'express';
 
 const errorHandler = (
@@ -7,8 +8,14 @@ const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.error(err.stack);
-  res.status(500).json({ isSuccess: false, message: 'Server Error' });
+  console.log('err', err);
+  const message = err?.message;
+
+  logger.error(JSON.stringify(err));
+
+  res
+    .status(500)
+    .json({ isSuccess: false, message: message || 'Server Error' });
 };
 
 export default errorHandler;

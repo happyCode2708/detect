@@ -1,8 +1,0 @@
-SNL741024-I1
-usdaStatement - INSPECTED FOR WHOLESOMENESS BY U.S. DEPARTMENT OF AGRICULTURE P-46069 => pass
-does not contain - antibiotics => pass 
-ancillaryInfomantion - antibiotic free ** => confused
-marketing - enlarged to show texture - boolean
-packaging - Ancillary Information - PKG-3102.01 => pass
-non-certified claims - BAKED => pass
-packaging - packaging descriptors - paperboard packaging recylable => not full text but okie

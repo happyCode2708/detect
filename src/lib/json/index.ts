@@ -1,9 +1,5 @@
 import path, { resolve } from 'path';
 import fs from 'fs';
-import { historyDir, resultsDir } from '../../server';
-// import { makePrompt, make_nut_prompt } from '../constants';
-// import sharp from 'sharp';
-// import { ImageAnnotatorClient } from '@google-cloud/vision';
 
 export const writeJsonToFile = (
   directory: string,
@@ -30,4 +26,23 @@ export const writeJsonToFile = (
       );
     }
   });
+};
+
+const cleanJSON = (jsonString: string) => {
+  // Remove trailing commas before closing braces/brackets
+  return jsonString
+    .replace(/,\s*([}\]])/g, '$1') // Handle trailing commas in objects and arrays
+    .replace(/,\s*$/, ''); // Handle trailing comma at the end of the string
+};
+
+export const parseJson = (jsonString: string) => {
+  jsonString = cleanJSON(jsonString);
+
+  try {
+    const jsonObject = JSON.parse(jsonString);
+    return jsonObject;
+  } catch (error) {
+    console.error('Invalid JSON string:', error);
+    return {};
+  }
 };

@@ -4,7 +4,6 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader, RefreshCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
-// import ExtractionHistory from '@/components/extract-history/ExtractionHitory';
 import { useMutateUploadFile } from '@/queries/home';
 import { FluidContainer } from '@/components/container/FluidContainer';
 import { Result } from '@/components/result/Result';
@@ -47,8 +46,6 @@ const ProductDetailPage = () => {
   const queryClient = useQueryClient();
 
   const { toast } = useToast();
-
-  console.log('ixoneid', ixoneid);
 
   useEffect(() => {
     if (ixoneid) {
@@ -94,9 +91,13 @@ const ProductDetailPage = () => {
             title: 'Info',
             description: (
               <div>
-                {messages?.map((messageItem: string | null) => {
+                {messages?.map((messageItem: string | null, idx: number) => {
                   if (messageItem) {
-                    return <div className='mb-2'>{messageItem} </div>;
+                    return (
+                      <div key={idx} className='mb-2'>
+                        {messageItem}{' '}
+                      </div>
+                    );
                   }
                   return null;
                 })}

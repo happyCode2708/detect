@@ -1,8 +1,7 @@
-import { AnyARecord } from 'dns';
 import { isEmpty, isEqual, lowerCase, toLower, toUpper } from 'lodash';
-import { removeFieldByPath } from '../server_utils';
+import { removeFieldByPath } from '@/lib/utils/object';
 
-export const mapToTDCformat = (extractData: any) => {
+export const mapToTDCFormat = (extractData: any) => {
   const productData = extractData?.product;
 
   if (!productData) return {};
@@ -94,48 +93,7 @@ export const mapToTDCformat = (extractData: any) => {
       validated_allergens?.processedManufacturedInFacilityStatement,
     InFacilityOnEquipmentIncluding: validated_allergens?.processedOnEquipment,
 
-    // FreeOf: allergens?.[0]?.validated_notContainList,
-    // AllergensAncillary: [
-    //   toUpper(allergens?.[0]?.containStatement),
-    //   toUpper(allergens?.[0]?.notContainStatement),
-    // ], //? in progress
-    // ProcessedOnEquipment: allergens?.[0]?.validated_containOnEquipmentList,
-    // InFacilityOnEquipmentStatement: allergens?.[0]?.containOnEquipmentStatement,
-    // InFacilityOnEquipmentIncluding:
-    //   allergens?.[0]?.validated_containOnEquipmentList,
-
-    //* ingredients
-    // SupplementIngredientStatement:
-    //   productType === 'supplement facts' &&
-    //   ingredients?.[0]?.ingredientStatement
-    //     ? [toUpper(ingredients[0].ingredientStatement)]
-    //     : undefined,
-
     ...mapIngredients(ingredients),
-
-    // IngredientsStatement:
-    //   ingredients?.[0]?.ingredientStatement && ingredients?.length > 0
-    //     ? ingredients?.map((ingredientItem: any) => {
-    //         return toUpper(ingredientItem?.ingredientStatement);
-    //       })
-    //     : undefined,
-    // IngredientBreakout:
-    //   ingredients?.length > 0
-    //     ? ingredients
-    //         ?.map((ingredientItem: any) => {
-    //           return ingredientItem?.ingredientBreakdown
-    //             ?.split('/')
-    //             .filter((item: string) => item !== '')
-    //             .map((item: string) => toUpper(item?.trim()));
-    //         })
-    //         ?.reduce(
-    //           (ingredientList: string[], partialIngredientList: any) => [
-    //             ...ingredientList,
-    //             ...partialIngredientList,
-    //           ],
-    //           []
-    //         )
-    //     : undefined,
 
     //* additional
     HasSupplementPanel:
@@ -165,49 +123,6 @@ export const mapToTDCformat = (extractData: any) => {
       })
       .map((item: string) => toUpper(item?.trim())),
     QRCode: marketing?.[0]?.haveQrCode,
-    // SocialMedia: marketing?.[0]?.socialMediaList
-    //   ?.split(', ')
-    //   .filter((item: string) => item !== '')
-    //   .map((item: string) => {
-    //     if (
-    //       toLower(item)?.includes('youtube') &&
-    //       marketing?.[0]?.youtubeType === 'type_2'
-    //     ) {
-    //       return 'YOUTUBE2 or YOUTUBE3';
-    //     }
-
-    //     if (toLower(item)?.includes('twitter')) {
-    //       return 'X FORMERLY TWITTER';
-    //     }
-
-    //     return toUpper(item?.trim());
-    //   }),
-    // MarketingClaims: marketing?.[0]?.marketingClaims?.map((item: string) =>
-    //   toUpper(item)
-    // ),
-    // SocialMediaAddresses: [
-    //   ...(marketing?.[0]?.website
-    //     ?.split(', ')
-    //     .filter((item: string) => item !== '')
-    //     .filter((item: string) => {
-    //       if (
-    //         toLower(item)?.includes('facebook') ||
-    //         toLower(item)?.includes('youtube') ||
-    //         toLower(item)?.includes('twitter') ||
-    //         toLower(item)?.includes('youtube') ||
-    //         toLower(item)?.includes('pinterest')
-    //       ) {
-    //         return true;
-    //       } else {
-    //         return false;
-    //       }
-    //     })
-    //     .map((item: string) => toUpper(item?.trim())) || []),
-    //   ...(marketing?.[0]?.socialMediaText
-    //     ?.split(', ')
-    //     .map((item: string) => toUpper(item?.trim()))
-    //     .filter((item: string) => item !== '') || []),
-    // ],
 
     // //* attribute
     SugarSweetener:
@@ -354,55 +269,6 @@ const mapToNutritionPanels = (
     })
     ?.reverse();
 };
-
-const mapPrimarySizeAndPrimarySizeUom = (header: any) => {
-  const {
-    primarySizeValue,
-    primarySizeUOM,
-    count,
-    countUom,
-    fullSizeTextDescription,
-  } = header?.[0] || {};
-  // if (primarySizeValue && ) {
-  //   return {
-
-  //   };
-  // }
-
-  // if (!primarySizeValue && count) {
-  //   return {
-  //     PrimarySize: toUpper(count),
-  //     PrimarySizeUOM: 'COUNT',
-  //     PrimarySizeText: toUpper(`${count} ${countUom}`),
-  //   };
-  // }
-
-  return {};
-};
-
-// const mapDistributedBy = (suppychain: any) => {
-//   const {
-//     distributorName,
-//     distributorCity,
-//     distributorState,
-//     distributorZipCode,
-//   } = suppychain?.[0] || {};
-
-//   if (distributorName) {
-//     return {
-//       DistributedBy: toUpper(
-//         [
-//           distributorName,
-//           distributorCity,
-//           distributorState,
-//           distributorZipCode,
-//         ]?.join(', ')
-//       ),
-//     };
-//   }
-
-//   return {};
-// };
 
 const mapIngredients = (ingredients: any) => {
   let IngredientsStatement = [] as any;
