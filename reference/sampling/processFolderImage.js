@@ -6,7 +6,7 @@ const { VertexAI } = require('@google-cloud/vertexai');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { promisify } = require('util');
 
-const BATCH_INDEXES = [29, 30, 31];
+const BATCH_INDEXES = [95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106];
 
 const sleep = promisify(setTimeout);
 
@@ -20,8 +20,10 @@ require('dotenv').config({ path: `.env.${env}` });
 const genAI_1 = new GoogleGenerativeAI(process.env.API_KEY_1);
 const genAI_2 = new GoogleGenerativeAI(process.env.API_KEY_2);
 const genAI_3 = new GoogleGenerativeAI(process.env.API_KEY_3);
+const genAI_4 = new GoogleGenerativeAI(process.env.API_KEY_4);
+
 // const genInstances = [genAI_3, genAI_1, genAI_2];
-const genInstances = [genAI_3, genAI_3];
+const genInstances = [genAI_1, genAI_2, genAI_3, genAI_4];
 
 let INSTANCE_IDX = 0;
 let FAILED = false;

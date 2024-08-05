@@ -1,0 +1,406 @@
+<View>
+  <Image name="image" value="$image"/>
+
+  <Header value="RectangleLabels"/>
+  <RectangleLabels name="label" toName="image">
+    <Label value="ADASealofAcceptance>ClaimandCertifier" background="rgba(218, 1, 238, 1)"/>
+    <Label value="AuthenticMadeProducedByAmericanIndiansCertifier>CMBAI" background="rgba(0, 255, 0, 1)"/>
+    <Label value="BeeBetterCertifier>BeeBetter" background="rgba(1, 146, 243, 1)"/>
+    <Label value="BeeBetterCertifier>BeeFriendly" background="rgba(241, 135, 0, 1)"/>
+    <Label value="BeeBetterCertifier>BeeFriendly1" background="rgba(12, 0, 184, 1)"/>
+    <Label value="BioBasedCertifier>USDABioBased" background="rgba(72, 124, 73, 1)"/>
+    <Label value="BioBasedCertifier>WalkingTheWalk" background="rgba(187, 1, 37, 1)"/>
+    <Label value="BioDynamicCertifier>Demeter" background="rgba(166, 250, 86, 1)"/>
+    <Label value="BioengineeredType>Bioengineered" background="rgba(178, 135, 216, 1)"/>
+    <Label value="BioengineeredType>DerivedFrom" background="rgba(0, 252, 159, 1)"/>
+    <Label value="BusinessOwnerManufacturerCertifier>Disability-Owned Business Enterprise (DOBE)" background="rgba(116, 239, 254, 1)"/>
+    <Label value="BusinessOwnerManufacturerCertifier>Homegrown by Heroes" background="rgba(252, 65, 124, 1)"/>
+    <Label value="BusinessOwnerManufacturerCertifier>Made Produced by American Indians" background="rgba(99, 56, 252, 1)"/>
+    <Label value="BusinessOwnerManufacturerCertifier>Minority Business Enterprise (MBE)" background="rgba(252, 183, 127, 1)"/>
+    <Label value="BusinessOwnerManufacturerCertifier>Service-Disabled Veteran-Owned Small Business (SDV-DOBE)" background="rgba(115, 41, 127, 1)"/>
+    <Label value="BusinessOwnerManufacturerCertifier>Veteran Owned Business (VOB)" background="rgba(255, 255, 0, 1)"/>
+    <Label value="BusinessOwnerManufacturerCertifier>Veteran Owned Small Business (VOSB)" background="rgba(137, 176, 1, 1)"/>
+    <Label value="BusinessOwnerManufacturerCertifier>Veteran-Disability Owned Business Enterprise (V-DOBE)" background="rgba(95, 192, 153, 1)"/>
+    <Label value="BusinessOwnerManufacturerCertifier>Women Business Enterprise (WBE)" background="rgba(1, 53, 87, 1)"/>
+    <Label value="BusinessOwnerManufacturerCertifier>Women Business Enterprise National Council (WBENC)" background="rgba(148, 86, 0, 1)"/>
+    <Label value="BusinessOwnerManufacturerCertifier>Women Owned Small Business (WOSB)" background="rgba(179, 123, 99, 1)"/>
+    <Label value="CarbonFootprintCertifier>CarbonFree" background="rgba(5, 168, 6, 1)"/>
+    <Label value="CarbonFootprintCertifier>Carbonreduction" background="rgba(33, 101, 165, 1)"/>
+    <Label value="CarbonFootprintCertifier>CarbonTrust" background="rgba(3, 232, 254, 1)"/>
+    <Label value="CBDHempCertifier>CertifiedKind" background="rgba(254, 86, 239, 1)"/>
+    <Label value="CBDHempCertifier>USHempAuthority" background="rgba(64, 234, 74, 1)"/>
+    <Label value="CertifiedBCorporation>CertifiedBCorporation" background="rgba(188, 228, 185, 1)"/>
+    <Label value="CradleToCradleCertifier>basic" background="rgba(45, 74, 0, 1)"/>
+    <Label value="CradleToCradleCertifier>bronze" background="rgba(2, 170, 123, 1)"/>
+    <Label value="CradleToCradleCertifier>gold" background="rgba(251, 53, 7, 1)"/>
+    <Label value="CradleToCradleCertifier>Platinum" background="rgba(250, 176, 247, 1)"/>
+    <Label value="CradleToCradleCertifier>silver" background="rgba(176, 61, 197, 1)"/>
+    <Label value="CrueltyFreeCertifier>AnimalWelfareApproved" background="rgba(127, 255, 0, 1)"/>
+    <Label value="CrueltyFreeCertifier>CertifiedHumaneRaisedAndHandled" background="rgba(99, 1, 6, 1)"/>
+    <Label value="CrueltyFreeCertifier>ChooseCrueltyFree" background="rgba(199, 4, 140, 1)"/>
+    <Label value="CrueltyFreeCertifier>CrueltyFree" background="rgba(0, 71, 252, 1)"/>
+    <Label value="CrueltyFreeCertifier>CrueltyFreeAndVeganCruelty" background="rgba(101, 164, 251, 1)"/>
+    <Label value="CrueltyFreeCertifier>CrueltyFreeCertifier" background="rgba(255, 255, 127, 1)"/>
+    <Label value="CrueltyFreeCertifier>peta" background="rgba(215, 197, 46, 1)"/>
+    <Label value="CrueltyFreeCertifier>SPCA Certified" background="rgba(117, 3, 199, 1)"/>
+    <Label value="DiabeticFriendlyCertifier>GlycemicResearchInstituteDiabeticFriendly" background="rgba(70, 0, 82, 1)"/>
+    <Label value="EcoFisheryCertification>ASC Certified" background="rgba(116, 120, 156, 1)"/>
+    <Label value="EcoFisheryCertification>Best Aquaculture Practices Certified" background="rgba(244, 121, 164, 1)"/>
+    <Label value="EcoFisheryCertification>Friend of the Sea" background="rgba(147, 186, 88, 1)"/>
+    <Label value="EcoFisheryCertification>marine stewardship council" background="rgba(183, 55, 82, 1)"/>
+    <Label value="EcoFisheryCertification>Quality Eco Approved Origin Ireland Certification" background="rgba(96, 253, 180, 1)"/>
+    <Label value="FairTradeCertifier>FairForLife" background="rgba(19, 194, 191, 1)"/>
+    <Label value="FairTradeCertifier>FairTradeCertified" background="rgba(0, 0, 255, 1)"/>
+    <Label value="FairTradeCertifier>FairTradeIngredients" background="rgba(254, 7, 79, 1)"/>
+    <Label value="FairTradeCertifier>FairTradeInternational" background="rgba(77, 135, 0, 1)"/>
+    <Label value="FairTradeCertifier>FFL" background="rgba(103, 62, 54, 1)"/>
+    <Label value="FairTradeCertifier>NATURELAND" background="rgba(82, 111, 222, 1)"/>
+    <Label value="FoodGradePlasticsCertifier>FoodGradePlastic" background="rgba(254, 121, 80, 1)"/>
+    <Label value="ForLifeCertifier>ForLife" background="rgba(176, 195, 252, 1)"/>
+    <Label value="GlutenFreeCertifier>CeliacSupportAssociation" background="rgba(60, 215, 6, 1)"/>
+    <Label value="GlutenFreeCertifier>Gluten Free Certification Organization" background="rgba(53, 50, 196, 1)"/>
+    <Label value="GlutenFreeCertifier>GlutenFreeCeliacFriendlyCoeliacFriendly" background="rgba(186, 168, 150, 1)"/>
+    <Label value="GlutenFreeCertifier>GlutenGuard" background="rgba(52, 180, 59, 1)"/>
+    <Label value="GlutenFreeCertifier>ICSGlutenFree" background="rgba(2, 108, 105, 1)"/>
+    <Label value="GlutenFreeCertifier>NationalFoundationForCeliacAwareness" background="rgba(5, 3, 119, 1)"/>
+    <Label value="GlutenFreeCertifier>NSFGlutenFree" background="rgba(1, 117, 28, 1)"/>
+    <Label value="GlycemicIndexCertifier>GILabsTested" background="rgba(248, 34, 189, 1)"/>
+    <Label value="GlyphosateInTransition>GlyphosateInTransition" background="rgba(212, 92, 35, 1)"/>
+    <Label value="GlyphosateResidueFree>GlyphosateResidueFree" background="rgba(252, 216, 188, 1)"/>
+    <Label value="GMPCertifier>NPAGMP" background="rgba(74, 3, 252, 1)"/>
+    <Label value="GrassFedCertifier>AmericanGrassfed" background="rgba(255, 0, 0, 1)"/>
+    <Label value="GrassFedCertifier>PCO" background="rgba(193, 245, 20, 1)"/>
+    <Label value="HalalCertifier>AHF" background="rgba(139, 130, 41, 1)"/>
+    <Label value="HalalCertifier>HFCI" background="rgba(1, 223, 106, 1)"/>
+    <Label value="HalalCertifier>HFCU" background="rgba(72, 85, 115, 1)"/>
+    <Label value="HalalCertifier>HTM" background="rgba(147, 0, 96, 1)"/>
+    <Label value="HalalCertifier>HTO" background="rgba(160, 22, 253, 1)"/>
+    <Label value="HalalCertifier>HTOH" background="rgba(144, 96, 251, 1)"/>
+    <Label value="HalalCertifier>HTP" background="rgba(64, 149, 178, 1)"/>
+    <Label value="HalalCertifier>HTZ" background="rgba(182, 254, 244, 1)"/>
+    <Label value="HalalCertifier>IFANCA" background="rgba(47, 30, 32, 1)"/>
+    <Label value="HalalCertifier>ISA" background="rgba(5, 51, 149, 1)"/>
+    <Label value="HalalCertifier>ISNA" background="rgba(138, 176, 198, 1)"/>
+    <Label value="HalalCertifier>ISWA" background="rgba(71, 5, 144, 1)"/>
+    <Label value="HalalCertifier>MCGH" background="rgba(2, 216, 42, 1)"/>
+    <Label value="HeartHealthyCertifier>AmericanHeartAssociationHeartHealthy" background="rgba(73, 208, 226, 1)"/>
+    <Label value="HighPressureCertifiedCertifier>HighPressureCertified" background="rgba(109, 235, 121, 1)"/>
+    <Label value="InternationalPackagedIceAssociation>InternationalPackagedIceAssociation" background="rgba(161, 87, 139, 1)"/>
+    <Label value="ItalCertifiedSealCertifier>Ital" background="rgba(120, 221, 46, 1)"/>
+    <Label value="ItalConsciousSealCertifier>ItalConsciousSeal" background="rgba(114, 73, 187, 1)"/>
+    <Label value="ItalSacramentSealCertifier>ItalSacramentSeal" background="rgba(149, 33, 8, 1)"/>
+    <Label value="KetoCertifier>Keto Foundation Keto Certified" background="rgba(207, 218, 117, 1)"/>
+    <Label value="KetoCertifier>Ketogenic.com" background="rgba(42, 253, 212, 1)"/>
+    <Label value="KosherCertification>Atlanta Kosher Commission" background="rgba(189, 154, 12, 1)"/>
+    <Label value="KosherCertification>Beis Din Tzedek of the Eidah Hachareidis of Jerusalem" background="rgba(1, 0, 56, 1)"/>
+    <Label value="KosherCertification>Blue Ribbon Kosher" background="rgba(106, 154, 114, 1)"/>
+    <Label value="KosherCertification>BVK Vaad HaKashrut of Buffalo" background="rgba(230, 130, 245, 1)"/>
+    <Label value="KosherCertification>Chabad of Hawaii" background="rgba(3, 149, 73, 1)"/>
+    <Label value="KosherCertification>Chicago Rabbinical Council" background="rgba(210, 52, 252, 1)"/>
+    <Label value="KosherCertification>Contact Manufacturer" background="rgba(254, 234, 63, 1)"/>
+    <Label value="KosherCertification>Diamond K Kashruth Supervision by Beth Din of Congregation Lubavitch" background="rgba(216, 159, 83, 1)"/>
+    <Label value="KosherCertification>EarthKosher" background="rgba(52, 227, 152, 1)"/>
+    <Label value="KosherCertification>Florida Kosher" background="rgba(211, 187, 204, 1)"/>
+    <Label value="KosherCertification>Generic Kosher K" background="rgba(0, 142, 181, 1)"/>
+    <Label value="KosherCertification>Houston Kashruth Association" background="rgba(44, 76, 58, 1)"/>
+    <Label value="KosherCertification>International Kosher Council" background="rgba(127, 98, 89, 1)"/>
+    <Label value="KosherCertification>Jewish Community Council of Montreal Vaad Hair" background="rgba(149, 209, 148, 1)"/>
+    <Label value="KosherCertification>KA Kosher Supervisores en Calidad Kosher Mexico" background="rgba(52, 130, 124, 1)"/>
+    <Label value="KosherCertification>Kashruth Council of Canada" background="rgba(0, 102, 212, 1)"/>
+    <Label value="KosherCertification>Kehilla Kosher OK Kosher West Coast" background="rgba(58, 198, 109, 1)"/>
+    <Label value="KosherCertification>KLBD Kosher Certification (Kashrut Division of London Beth Din)" background="rgba(196, 50, 141, 1)"/>
+    <Label value="KosherCertification>KOA Kosher" background="rgba(252, 163, 185, 1)"/>
+    <Label value="KosherCertification>KOF-K Kosher" background="rgba(254, 207, 3, 1)"/>
+    <Label value="KosherCertification>KOLA Kosher La" background="rgba(177, 15, 195, 1)"/>
+    <Label value="KosherCertification>Kosher Australia" background="rgba(27, 187, 253, 1)"/>
+    <Label value="KosherCertification>Kosher Certification Service" background="rgba(224, 79, 187, 1)"/>
+    <Label value="KosherCertification>Kosher Check (formerly BC Kosher)" background="rgba(130, 221, 204, 1)"/>
+    <Label value="KosherCertification>Kosher Kiwi Licensing Authority New Zealand" background="rgba(225, 216, 252, 1)"/>
+    <Label value="KosherCertification>Kosher Overseers Associates of America" background="rgba(251, 0, 149, 1)"/>
+    <Label value="KosherCertification>Kosher Supervision of America" background="rgba(203, 47, 28, 1)"/>
+    <Label value="KosherCertification>KVH Vaad Harabonim of New England" background="rgba(254, 167, 43, 1)"/>
+    <Label value="KosherCertification>Metropolitan Kashruth Council of Michigan" background="rgba(94, 96, 17, 1)"/>
+    <Label value="KosherCertification>MK Manchester Beth Din" background="rgba(242, 49, 67, 1)"/>
+    <Label value="KosherCertification>MYSTERY" background="rgba(155, 253, 146, 1)"/>
+    <Label value="KosherCertification>Natural Food Certifiers" background="rgba(63, 42, 96, 1)"/>
+    <Label value="KosherCertification>Ner Tamid Kosher" background="rgba(104, 166, 48, 1)"/>
+    <Label value="KosherCertification>Ohio-K Kosher Supervision" background="rgba(189, 122, 160, 1)"/>
+    <Label value="KosherCertification>OK Kosher" background="rgba(35, 36, 247, 1)"/>
+    <Label value="KosherCertification>Oregon Kosher" background="rgba(195, 93, 238, 1)"/>
+    <Label value="KosherCertification>Orthodox Rabbinical Council of San Francisco" background="rgba(1, 253, 68, 1)"/>
+    <Label value="KosherCertification>Orthodox Union Kosher" background="rgba(217, 95, 107, 1)"/>
+    <Label value="KosherCertification>Quality Kosher Supervision" background="rgba(140, 4, 150, 1)"/>
+    <Label value="KosherCertification>Rabbinical Council of California" background="rgba(117, 13, 55, 1)"/>
+    <Label value="KosherCertification>RABINATO DE PERU" background="rgba(93, 45, 0, 1)"/>
+    <Label value="KosherCertification>Scroll K Vaad Hakashrus of Denver" background="rgba(0, 58, 28, 1)"/>
+    <Label value="KosherCertification>Square-K Kosher Services" background="rgba(80, 254, 28, 1)"/>
+    <Label value="KosherCertification>Star-K Kosher" background="rgba(165, 200, 34, 1)"/>
+    <Label value="KosherCertification>Tablet-K Kosher Supervision" background="rgba(123, 134, 205, 1)"/>
+    <Label value="KosherCertification>Triangle K Kosher Supervision" background="rgba(34, 111, 254, 1)"/>
+    <Label value="KosherCertification>UM United Mehadrin Kosher" background="rgba(208, 18, 86, 1)"/>
+    <Label value="KosherCertification>Vaad HaKashrus of Montana" background="rgba(254, 35, 248, 1)"/>
+    <Label value="KosherCertification>Vaad HaKashruth of Kansas City" background="rgba(228, 251, 199, 1)"/>
+    <Label value="KosherCertification>Vaad HaRabanim of Greater Seattle" background="rgba(64, 2, 202, 1)"/>
+    <Label value="KosherCertification>Vaad of Northern California" background="rgba(65, 50, 144, 1)"/>
+    <Label value="KosherCertification>Whole Kosher Services" background="rgba(164, 87, 53, 1)"/>
+    <Label value="LiveAndActiveCultureCertifier>LiveandActiveCulturesCertifiedbytheNationalYogurtAssociation" background="rgba(113, 254, 75, 1)"/>
+    <Label value="LowGlycemicCertifier>Certified" background="rgba(1, 40, 205, 1)"/>
+    <Label value="LowGlycemicCertifier>CertifiedbytheGlycemicResearchInstituteCertifiedNatuarlBeverage" background="rgba(218, 254, 88, 1)"/>
+    <Label value="LowGlycemicCertifier>GlycemicIndexFoundation" background="rgba(154, 98, 193, 1)"/>
+    <Label value="LowGlycemicCertifier>GlycemicResearchinstituteLowGlycemic" background="rgba(58, 147, 230, 1)"/>
+    <Label value="LowGlycemicCertifier>LowGlycenmicIndexG1HealthyOptions" background="rgba(47, 254, 117, 1)"/>
+    <Label value="NaturalPersonalCareCertifier>NaturalPersonalCare" background="rgba(145, 137, 254, 1)"/>
+    <Label value="NewYorkStateGrownCertifier>NewYorkStateGrownandCertified" background="rgba(249, 95, 1, 1)"/>
+    <Label value="NonGMOCertificationByEarthKosher>NonGMOCertificationByEarthKosher" background="rgba(78, 177, 4, 1)"/>
+    <Label value="NonGMOCertifier>GMOGuard" background="rgba(128, 42, 216, 1)"/>
+    <Label value="NonGMOCertifier>GreenStarCertified" background="rgba(207, 253, 146, 1)"/>
+    <Label value="NonGMOCertifier>IGENNONGMOCERTIFIED" background="rgba(150, 143, 134, 1)"/>
+    <Label value="NonGMOCertifier>NonGMOCertificationByEarthKosher" background="rgba(52, 78, 230, 1)"/>
+    <Label value="NonGMOCertifier>NonGMOCertifiedByNSF" background="rgba(153, 41, 162, 1)"/>
+    <Label value="NonGMOCertifier>NonGMOGECertifiedByNSF" background="rgba(137, 42, 83, 1)"/>
+    <Label value="NonGMOCertifier>NonGMOProject" background="rgba(185, 112, 1, 1)"/>
+    <Label value="NonGMOCertifier>Nutrasource IGEN Certified" background="rgba(121, 200, 246, 1)"/>
+    <Label value="NonGMOCertifier>Nutrasource IGEN Tested" background="rgba(173, 158, 61, 1)"/>
+    <Label value="NonGMOGECertifiedByNSF>NonGMOCertifiedByNSF" background="rgba(10, 203, 146, 1)"/>
+    <Label value="NonGMOGECertifiedByNSF>NonGMOGECertifiedByNSF" background="rgba(203, 127, 53, 1)"/>
+    <Label value="NPACertifier>NaturalProductsAssociationCertified" background="rgba(109, 210, 1, 1)"/>
+    <Label value="OnePercentForThePlanetCertifier>1ForThePlanet" background="rgba(43, 143, 38, 1)"/>
+    <Label value="OrganicCertifyingBody>1ForThePlanet" background="rgba(51, 176, 146, 1)"/>
+    <Label value="OrganicCertifyingBody>AB Agriculture Biologique" background="rgba(71, 254, 252, 1)"/>
+    <Label value="OrganicCertifyingBody>ABO A Bee Organic" background="rgba(221, 145, 132, 1)"/>
+    <Label value="OrganicCertifyingBody>ABO" background="rgba(7, 188, 82, 1)"/>
+    <Label value="OrganicCertifyingBody>ACO Australian Certified Organic" background="rgba(100, 198, 82, 1)"/>
+    <Label value="OrganicCertifyingBody>AgricultureBiologique" background="rgba(90, 179, 200, 1)"/>
+    <Label value="OrganicCertifyingBody>AI Americert International" background="rgba(101, 34, 172, 1)"/>
+    <Label value="OrganicCertifyingBody>AI" background="rgba(1, 228, 205, 1)"/>
+    <Label value="OrganicCertifyingBody>AmeriCertFarmgap" background="rgba(205, 163, 245, 1)"/>
+    <Label value="OrganicCertifyingBody>ARG Argencert S.A." background="rgba(200, 210, 0, 1)"/>
+    <Label value="OrganicCertifyingBody>ASCO Agricultural Services Certified Organic" background="rgba(111, 157, 166, 1)"/>
+    <Label value="OrganicCertifyingBody>ASCO" background="rgba(152, 254, 208, 1)"/>
+    <Label value="OrganicCertifyingBody>AUS-QUAL Aus-Qual Pty. Ltd." background="rgba(22, 73, 118, 1)"/>
+    <Label value="OrganicCertifyingBody>BAC BioAgriCert" background="rgba(165, 62, 254, 1)"/>
+    <Label value="OrganicCertifyingBody>BCS Kiwa Oko-Garantie GmbH" background="rgba(254, 84, 59, 1)"/>
+    <Label value="OrganicCertifyingBody>BIOH Bio-Hellas S.A." background="rgba(58, 162, 100, 1)"/>
+    <Label value="OrganicCertifyingBody>BIOI Bio.Inspecta" background="rgba(227, 16, 33, 1)"/>
+    <Label value="OrganicCertifyingBody>BIOL Bio Latina" background="rgba(233, 30, 124, 1)"/>
+    <Label value="OrganicCertifyingBody>BOC Baystate Organic Certifiers" background="rgba(247, 200, 81, 1)"/>
+    <Label value="OrganicCertifyingBody>BOC" background="rgba(167, 29, 114, 1)"/>
+    <Label value="OrganicCertifyingBody>CAAE Certification Service" background="rgba(230, 177, 1, 1)"/>
+    <Label value="OrganicCertifyingBody>CanadaOrganic" background="rgba(212, 149, 187, 1)"/>
+    <Label value="OrganicCertifyingBody>CCOF Certification Services, LLC" background="rgba(224, 5, 188, 1)"/>
+    <Label value="OrganicCertifyingBody>CCOF" background="rgba(153, 248, 40, 1)"/>
+    <Label value="OrganicCertifyingBody>CCPB Srl" background="rgba(181, 210, 79, 1)"/>
+    <Label value="OrganicCertifyingBody>CDA Colorado Department of Agriculture" background="rgba(121, 1, 247, 1)"/>
+    <Label value="OrganicCertifyingBody>CDA" background="rgba(115, 78, 140, 1)"/>
+    <Label value="OrganicCertifyingBody>CERES Certification of Environmental Standards - GmbH" background="rgba(224, 201, 157, 1)"/>
+    <Label value="OrganicCertifyingBody>CMEX Certificadora Mexicana de Productos y Procesos Ecologicos SC" background="rgba(84, 30, 222, 1)"/>
+    <Label value="OrganicCertifyingBody>CSYS Certisys" background="rgba(33, 248, 35, 1)"/>
+    <Label value="OrganicCertifyingBody>CU Clemson University" background="rgba(6, 124, 142, 1)"/>
+    <Label value="OrganicCertifyingBody>CUC Control Union Certifications" background="rgba(80, 97, 157, 1)"/>
+    <Label value="OrganicCertifyingBody>DPI" background="rgba(216, 113, 201, 1)"/>
+    <Label value="OrganicCertifyingBody>ECOCERT-ECO ICO EcoCert" background="rgba(24, 109, 67, 1)"/>
+    <Label value="OrganicCertifyingBody>EcoCert" background="rgba(218, 1, 238, 1)"/>
+    <Label value="OrganicCertifyingBody>EGLO Ecoglobe, LLC" background="rgba(0, 255, 0, 1)"/>
+    <Label value="OrganicCertifyingBody>EKOAGROS Ekoagros" background="rgba(1, 146, 243, 1)"/>
+    <Label value="OrganicCertifyingBody>ETKO Ecological Farming Control Organization" background="rgba(241, 135, 0, 1)"/>
+    <Label value="OrganicCertifyingBody>EUOC European Union Organic Commission" background="rgba(12, 0, 184, 1)"/>
+    <Label value="OrganicCertifyingBody>EUOC" background="rgba(72, 124, 73, 1)"/>
+    <Label value="OrganicCertifyingBody>FarmVerified" background="rgba(187, 1, 37, 1)"/>
+    <Label value="OrganicCertifyingBody>FS Food Safety S.A." background="rgba(166, 250, 86, 1)"/>
+    <Label value="OrganicCertifyingBody>FVO Farm Verified Organic" background="rgba(178, 135, 216, 1)"/>
+    <Label value="OrganicCertifyingBody>GCIA" background="rgba(0, 252, 159, 1)"/>
+    <Label value="OrganicCertifyingBody>GCIANOP Georgia Crop Improvement Association" background="rgba(116, 239, 254, 1)"/>
+    <Label value="OrganicCertifyingBody>GLO Global Culture" background="rgba(252, 65, 124, 1)"/>
+    <Label value="OrganicCertifyingBody>GlobalCultureCertifiedOrganic" background="rgba(99, 56, 252, 1)"/>
+    <Label value="OrganicCertifyingBody>GOA Global Organic Alliance, Inc" background="rgba(252, 183, 127, 1)"/>
+    <Label value="OrganicCertifyingBody>GOTS Global Organic Textile Standard" background="rgba(115, 41, 127, 1)"/>
+    <Label value="OrganicCertifyingBody>GOTS" background="rgba(255, 255, 0, 1)"/>
+    <Label value="OrganicCertifyingBody>IBD Certifications" background="rgba(137, 176, 1, 1)"/>
+    <Label value="OrganicCertifyingBody>ICEA Istituto per la Certificazione Etica e Ambientale" background="rgba(95, 192, 153, 1)"/>
+    <Label value="OrganicCertifyingBody>ICO" background="rgba(1, 53, 87, 1)"/>
+    <Label value="OrganicCertifyingBody>ICS International Certification Services, Inc" background="rgba(148, 86, 0, 1)"/>
+    <Label value="OrganicCertifyingBody>ICS" background="rgba(179, 123, 99, 1)"/>
+    <Label value="OrganicCertifyingBody>IDALS Iowa Department of Agriculture and Land Stewardship" background="rgba(5, 168, 6, 1)"/>
+    <Label value="OrganicCertifyingBody>IDDA" background="rgba(33, 101, 165, 1)"/>
+    <Label value="OrganicCertifyingBody>IDOA" background="rgba(3, 232, 254, 1)"/>
+    <Label value="OrganicCertifyingBody>IDOALS" background="rgba(254, 86, 239, 1)"/>
+    <Label value="OrganicCertifyingBody>IMOC IMOcert Latinoamerica LTDA" background="rgba(64, 234, 74, 1)"/>
+    <Label value="OrganicCertifyingBody>IODA" background="rgba(188, 228, 185, 1)"/>
+    <Label value="OrganicCertifyingBody>ISDA Idaho State Department of Agriculture" background="rgba(45, 74, 0, 1)"/>
+    <Label value="OrganicCertifyingBody>KDA Kentucky Department of Agriculture" background="rgba(2, 170, 123, 1)"/>
+    <Label value="OrganicCertifyingBody>LACON GmbH" background="rgba(251, 53, 7, 1)"/>
+    <Label value="OrganicCertifyingBody>LETIS S.A." background="rgba(250, 176, 247, 1)"/>
+    <Label value="OrganicCertifyingBody>LOGI Eco-LOGICA S.A." background="rgba(176, 61, 197, 1)"/>
+    <Label value="OrganicCertifyingBody>MAYA Mayacert S.A." background="rgba(127, 255, 0, 1)"/>
+    <Label value="OrganicCertifyingBody>MCCO Monterey County Certified Organics" background="rgba(99, 1, 6, 1)"/>
+    <Label value="OrganicCertifyingBody>MCCO" background="rgba(199, 4, 140, 1)"/>
+    <Label value="OrganicCertifyingBody>MCIA Minnesota Crop Improvement Association" background="rgba(0, 71, 252, 1)"/>
+    <Label value="OrganicCertifyingBody>MCS MOFGA Certification Services" background="rgba(101, 164, 251, 1)"/>
+    <Label value="OrganicCertifyingBody>MDA Maryland Department of Agriculture" background="rgba(255, 255, 127, 1)"/>
+    <Label value="OrganicCertifyingBody>MOCA Marin Organic Certified Agriculture" background="rgba(215, 197, 46, 1)"/>
+    <Label value="OrganicCertifyingBody>MOFGA" background="rgba(117, 3, 199, 1)"/>
+    <Label value="OrganicCertifyingBody>MOSA Midwest Organic Services Association, Inc." background="rgba(70, 0, 82, 1)"/>
+    <Label value="OrganicCertifyingBody>MOSA" background="rgba(116, 120, 156, 1)"/>
+    <Label value="OrganicCertifyingBody>MTDA Montana Department of Agriculture" background="rgba(244, 121, 164, 1)"/>
+    <Label value="OrganicCertifyingBody>NCO NASAA Certified Organic" background="rgba(147, 186, 88, 1)"/>
+    <Label value="OrganicCertifyingBody>NFC Natural Food Certifiers" background="rgba(183, 55, 82, 1)"/>
+    <Label value="OrganicCertifyingBody>NFC" background="rgba(96, 253, 180, 1)"/>
+    <Label value="OrganicCertifyingBody>NHDAMF New Hampshire Department of Agriculture" background="rgba(19, 194, 191, 1)"/>
+    <Label value="OrganicCertifyingBody>NICS Nature's International Certification Services" background="rgba(0, 0, 255, 1)"/>
+    <Label value="OrganicCertifyingBody>NJDA New Jersey Department of Agriculture" background="rgba(254, 7, 79, 1)"/>
+    <Label value="OrganicCertifyingBody>NJDA" background="rgba(77, 135, 0, 1)"/>
+    <Label value="OrganicCertifyingBody>NMDA New Mexico Department of Agriculture" background="rgba(103, 62, 54, 1)"/>
+    <Label value="OrganicCertifyingBody>NOFA-NY NOFA-NY Certified Organic" background="rgba(82, 111, 222, 1)"/>
+    <Label value="OrganicCertifyingBody>NOFANY" background="rgba(254, 121, 80, 1)"/>
+    <Label value="OrganicCertifyingBody>NSF International" background="rgba(176, 195, 252, 1)"/>
+    <Label value="OrganicCertifyingBody>NSF" background="rgba(60, 215, 6, 1)"/>
+    <Label value="OrganicCertifyingBody>NSO" background="rgba(53, 50, 196, 1)"/>
+    <Label value="OrganicCertifyingBody>OC Organic Certifiers, Inc." background="rgba(186, 168, 150, 1)"/>
+    <Label value="OrganicCertifyingBody>OCIA Organic Crop Improvement Association" background="rgba(52, 180, 59, 1)"/>
+    <Label value="OrganicCertifyingBody>OCIA" background="rgba(2, 108, 105, 1)"/>
+    <Label value="OrganicCertifyingBody>ODA Oregon Department of Agriculture" background="rgba(5, 3, 119, 1)"/>
+    <Label value="OrganicCertifyingBody>ODAFF Oklahoma Dept of Agriculture Food and Forestry" background="rgba(1, 117, 28, 1)"/>
+    <Label value="OrganicCertifyingBody>OEFFA Ohio Ecological Food and Farm Association" background="rgba(248, 34, 189, 1)"/>
+    <Label value="OrganicCertifyingBody>OFC Organic Federation of Canada" background="rgba(212, 92, 35, 1)"/>
+    <Label value="OrganicCertifyingBody>OFDC Organic Food Development And Certification Centre of China" background="rgba(252, 216, 188, 1)"/>
+    <Label value="OrganicCertifyingBody>OFF Organic Food Federation" background="rgba(74, 3, 252, 1)"/>
+    <Label value="OrganicCertifyingBody>OFF" background="rgba(255, 0, 0, 1)"/>
+    <Label value="OrganicCertifyingBody>OIA Organizacion Internacional Agropecuaria" background="rgba(193, 245, 20, 1)"/>
+    <Label value="OrganicCertifyingBody>OMIC Overseas Merchandise Inspection Co., Ltd." background="rgba(139, 130, 41, 1)"/>
+    <Label value="OrganicCertifyingBody>ONE-OCI OneCert" background="rgba(1, 223, 106, 1)"/>
+    <Label value="OrganicCertifyingBody>ONM OnMark Certification Services" background="rgba(72, 85, 115, 1)"/>
+    <Label value="OrganicCertifyingBody>OrganicCertifiers" background="rgba(147, 0, 96, 1)"/>
+    <Label value="OrganicCertifyingBody>OTCO Oregon Tilth Certified Organic" background="rgba(160, 22, 253, 1)"/>
+    <Label value="OrganicCertifyingBody>OTCO" background="rgba(144, 96, 251, 1)"/>
+    <Label value="OrganicCertifyingBody>PACS PACIFIC AGRICULTURAL CERTIFICATION SOCIETY" background="rgba(64, 149, 178, 1)"/>
+    <Label value="OrganicCertifyingBody>PACS" background="rgba(182, 254, 244, 1)"/>
+    <Label value="OrganicCertifyingBody>PCO Pennsylvania Certified Organic" background="rgba(47, 30, 32, 1)"/>
+    <Label value="OrganicCertifyingBody>PJR Perry Johnson Registrar Food Safety, Inc." background="rgba(5, 51, 149, 1)"/>
+    <Label value="OrganicCertifyingBody>PL Primus Labs" background="rgba(138, 176, 198, 1)"/>
+    <Label value="OrganicCertifyingBody>PRO Pro-Cert Organic Systems, Ltd." background="rgba(71, 5, 144, 1)"/>
+    <Label value="OrganicCertifyingBody>procert" background="rgba(2, 216, 42, 1)"/>
+    <Label value="OrganicCertifyingBody>QAI - Quality Assurance International" background="rgba(73, 208, 226, 1)"/>
+    <Label value="OrganicCertifyingBody>QAI TRANSITIONAL CERTIFIED" background="rgba(109, 235, 121, 1)"/>
+    <Label value="OrganicCertifyingBody>QAI" background="rgba(161, 87, 139, 1)"/>
+    <Label value="OrganicCertifyingBody>QCS Quality Certification Services" background="rgba(120, 221, 46, 1)"/>
+    <Label value="OrganicCertifyingBody>RIDEM Rhode Island Department of Environmental Management" background="rgba(114, 73, 187, 1)"/>
+    <Label value="OrganicCertifyingBody>SAO Soil association" background="rgba(149, 33, 8, 1)"/>
+    <Label value="OrganicCertifyingBody>SAO" background="rgba(207, 218, 117, 1)"/>
+    <Label value="OrganicCertifyingBody>SCS Global Services, Inc." background="rgba(42, 253, 212, 1)"/>
+    <Label value="OrganicCertifyingBody>SPCA" background="rgba(189, 154, 12, 1)"/>
+    <Label value="OrganicCertifyingBody>STEL Stellar Certification Services" background="rgba(1, 0, 56, 1)"/>
+    <Label value="OrganicCertifyingBody>STEL" background="rgba(106, 154, 114, 1)"/>
+    <Label value="OrganicCertifyingBody>TDA Texas Department of Agriculture" background="rgba(230, 130, 245, 1)"/>
+    <Label value="OrganicCertifyingBody>TOC Tse-Xin Organic Certification Corporation" background="rgba(3, 149, 73, 1)"/>
+    <Label value="OrganicCertifyingBody>TransitionalCertifiedClaim" background="rgba(210, 52, 252, 1)"/>
+    <Label value="OrganicCertifyingBody>UDAF Utah Department of Agriculture and Food" background="rgba(254, 234, 63, 1)"/>
+    <Label value="OrganicCertifyingBody>USDA NOP National Organic Program" background="rgba(216, 159, 83, 1)"/>
+    <Label value="OrganicCertifyingBody>USDA" background="rgba(52, 227, 152, 1)"/>
+    <Label value="OrganicCertifyingBody>VOCA Vedic organic certification agency" background="rgba(211, 187, 204, 1)"/>
+    <Label value="OrganicCertifyingBody>VOCA" background="rgba(0, 142, 181, 1)"/>
+    <Label value="OrganicCertifyingBody>VOF - Vermont Organic Farmers, LLC" background="rgba(44, 76, 58, 1)"/>
+    <Label value="OrganicCertifyingBody>VOF" background="rgba(127, 98, 89, 1)"/>
+    <Label value="OrganicCertifyingBody>WSDA - Washington State Department of Agriculture" background="rgba(149, 209, 148, 1)"/>
+    <Label value="OrganicCertifyingBody>WSDA" background="rgba(52, 130, 124, 1)"/>
+    <Label value="OrganicCertifyingBody>YDA Yolo County Department of Agriculture" background="rgba(0, 102, 212, 1)"/>
+    <Label value="OrganicStandardsAgencyLogo>CFIA Canadian Food Inspection Agency" background="rgba(58, 198, 109, 1)"/>
+    <Label value="OrganicStandardsAgencyLogo>COSMOS Standard for Natural and Organic Cosmetics" background="rgba(196, 50, 141, 1)"/>
+    <Label value="OrganicStandardsAgencyLogo>EUOC European Union Organic Commission" background="rgba(252, 163, 185, 1)"/>
+    <Label value="OrganicStandardsAgencyLogo>GOTS Global Organic Textile Standard" background="rgba(254, 207, 3, 1)"/>
+    <Label value="OrganicStandardsAgencyLogo>IFOAM International Federation of Agriculture Movements" background="rgba(177, 15, 195, 1)"/>
+    <Label value="OrganicStandardsAgencyLogo>JAS Japan Agricultural Standards" background="rgba(27, 187, 253, 1)"/>
+    <Label value="OrganicStandardsAgencyLogo>OCS Organic Content Standard" background="rgba(224, 79, 187, 1)"/>
+    <Label value="OrganicStandardsAgencyLogo>USDA United States Department of Agriculture" background="rgba(130, 221, 204, 1)"/>
+    <Label value="PACACertifier>USDA PACA" background="rgba(225, 216, 252, 1)"/>
+    <Label value="PaleoCertifier>CertifiedPaleo" background="rgba(251, 0, 149, 1)"/>
+    <Label value="PaleoCertifier>PaleoApprovedbythePaleoFoundation" background="rgba(203, 47, 28, 1)"/>
+    <Label value="PaleoCertifier>PaleoCertifiedbyEarthKosher" background="rgba(254, 167, 43, 1)"/>
+    <Label value="PaleoCertifier>PaleoFriendlybythePaleoFoundation" background="rgba(94, 96, 17, 1)"/>
+    <Label value="PaleoCertifier>PaleoFriendlyThisProductIsCertifieo" background="rgba(242, 49, 67, 1)"/>
+    <Label value="PaleoCertifier>PaleoVeganCertifiedbyPaleoFoundation" background="rgba(155, 253, 146, 1)"/>
+    <Label value="PASACertifier>Pennsylvania Association for Sustainable Agriculture" background="rgba(63, 42, 96, 1)"/>
+    <Label value="PlantBasedDerivedCertifier>NSF Plant Based" background="rgba(104, 166, 48, 1)"/>
+    <Label value="PlantBasedDerivedCertifier>WFPB" background="rgba(189, 122, 160, 1)"/>
+    <Label value="RainForestAllianceCertifier>RainForestAlliance" background="rgba(35, 36, 247, 1)"/>
+    <Label value="REALCertified>ResponsibleEpicureanandAgriculturalLeadershipCertifier" background="rgba(195, 93, 238, 1)"/>
+    <Label value="RealSealCertifier>REAL" background="rgba(1, 253, 68, 1)"/>
+    <Label value="RecycledMaterialType>1 (PET)" background="rgba(217, 95, 107, 1)"/>
+    <Label value="RecycledMaterialType>1 (PETE)" background="rgba(140, 4, 150, 1)"/>
+    <Label value="RecycledMaterialType>100RecycledPaperboard" background="rgba(117, 13, 55, 1)"/>
+    <Label value="RecycledMaterialType>100RPB" background="rgba(93, 45, 0, 1)"/>
+    <Label value="RecycledMaterialType>2 (HDPE)" background="rgba(0, 58, 28, 1)"/>
+    <Label value="RecycledMaterialType>3 (PVC)" background="rgba(80, 254, 28, 1)"/>
+    <Label value="RecycledMaterialType>4 (LDPE)" background="rgba(165, 200, 34, 1)"/>
+    <Label value="RecycledMaterialType>5 (PP)" background="rgba(123, 134, 205, 1)"/>
+    <Label value="RecycledMaterialType>6 (PS)" background="rgba(34, 111, 254, 1)"/>
+    <Label value="RecycledMaterialType>7 (OTHER)" background="rgba(208, 18, 86, 1)"/>
+    <Label value="RecycledMaterialType>CIRCULAR RECYCLING SYMBOL" background="rgba(254, 35, 248, 1)"/>
+    <Label value="RecycledMaterialType>CorrugatedBoard" background="rgba(228, 251, 199, 1)"/>
+    <Label value="RecycledMaterialType>CorrugatedFiberBoard" background="rgba(64, 2, 202, 1)"/>
+    <Label value="RecycledMaterialType>CorrugatedRecycles" background="rgba(65, 50, 144, 1)"/>
+    <Label value="RecycledMaterialType>RecyclableSteel" background="rgba(164, 87, 53, 1)"/>
+    <Label value="RecycledMaterialType>StandardRecyclingSymbol" background="rgba(113, 254, 75, 1)"/>
+    <Label value="RecycledMaterialType>SteelRecycle" background="rgba(1, 40, 205, 1)"/>
+    <Label value="RecycledMaterialType>TerraCycle" background="rgba(218, 254, 88, 1)"/>
+    <Label value="RegenerativeOrganicCertifier>RegenerativeOrganicCertifier" background="rgba(154, 98, 193, 1)"/>
+    <Label value="RenewableEnergyCertifier>GreenE" background="rgba(58, 147, 230, 1)"/>
+    <Label value="SocialMedia>Facebook" background="rgba(47, 254, 117, 1)"/>
+    <Label value="SocialMedia>Google" background="rgba(145, 137, 254, 1)"/>
+    <Label value="SocialMedia>Instagram" background="rgba(249, 95, 1, 1)"/>
+    <Label value="SocialMedia>Pinterest" background="rgba(78, 177, 4, 1)"/>
+    <Label value="SocialMedia>SnapChat" background="rgba(128, 42, 216, 1)"/>
+    <Label value="SocialMedia>Twitter" background="rgba(207, 253, 146, 1)"/>
+    <Label value="SocialMedia>YouTube" background="rgba(150, 143, 134, 1)"/>
+    <Label value="SocialMedia>YouTube2" background="rgba(52, 78, 230, 1)"/>
+    <Label value="SocialMedia>YouTube3" background="rgba(153, 41, 162, 1)"/>
+    <Label value="SustainabilityCertifier>GreenSeal" background="rgba(137, 42, 83, 1)"/>
+    <Label value="SustainabilityCertifier>RSPO" background="rgba(185, 112, 1, 1)"/>
+    <Label value="SustainabilityCertifier>SIPCertified" background="rgba(121, 200, 246, 1)"/>
+    <Label value="SustainabilityCertifier>UTZCertified" background="rgba(173, 158, 61, 1)"/>
+    <Label value="SustainabilityCertifier>Veriflora" background="rgba(10, 203, 146, 1)"/>
+    <Label value="VeganCertifier>American Vegetarian Association Vegan" background="rgba(203, 127, 53, 1)"/>
+    <Label value="VeganCertifier>BioAgri Cert Vegan" background="rgba(109, 210, 1, 1)"/>
+    <Label value="VeganCertifier>Earth Kosher Vegan Verified" background="rgba(43, 143, 38, 1)"/>
+    <Label value="VeganCertifier>NFC Natural Food Certifiers" background="rgba(51, 176, 146, 1)"/>
+    <Label value="VeganCertifier>Paleo Foundation Paleo Vegan" background="rgba(71, 254, 252, 1)"/>
+    <Label value="VeganCertifier>PETA Approved Vegan" background="rgba(221, 145, 132, 1)"/>
+    <Label value="VeganCertifier>PETA Cruelty Free and Vegan" background="rgba(7, 188, 82, 1)"/>
+    <Label value="VeganCertifier>Vegan OK" background="rgba(100, 198, 82, 1)"/>
+    <Label value="VeganCertifier>Vegan Society" background="rgba(90, 179, 200, 1)"/>
+    <Label value="VeganCertifier>Vegan.org" background="rgba(101, 34, 172, 1)"/>
+    <Label value="VeganCertifier>Vegetarian Society Vegan Approved" background="rgba(1, 228, 205, 1)"/>
+    <Label value="VegetarianCertifier>AmericanVegetarianAssociationVegetarian" background="rgba(205, 163, 245, 1)"/>
+    <Label value="VegetarianCertifier>VegeCert" background="rgba(200, 210, 0, 1)"/>
+    <Label value="VegetarianCertifier>VegetarianSociety" background="rgba(111, 157, 166, 1)"/>
+    <Label value="VeteransCertifier>HomegrownByHeroes" background="rgba(152, 254, 208, 1)"/>
+    <Label value="VeteransCertifier>WOUNDED WARRIOR" background="rgba(22, 73, 118, 1)"/>
+    <Label value="ViticultureCertifier>BIODYVIN - Syndicat International des Vignerons en Culture Bio-Dynamique (SIVCBD)" background="rgba(165, 62, 254, 1)"/>
+    <Label value="ViticultureCertifier>BIODYVIN" background="rgba(254, 84, 59, 1)"/>
+    <Label value="ViticultureCertifier>California Sustainable Winegrowing Alliance" background="rgba(58, 162, 100, 1)"/>
+    <Label value="ViticultureCertifier>Canadian Vintners Association" background="rgba(227, 16, 33, 1)"/>
+    <Label value="ViticultureCertifier>Delinat Bio Garantie" background="rgba(233, 30, 124, 1)"/>
+    <Label value="ViticultureCertifier>Deutsches Gutenband Wein (DLG)" background="rgba(247, 200, 81, 1)"/>
+    <Label value="ViticultureCertifier>IPW - South Africa (South Africa's Integrated Production of Wine Systems)" background="rgba(167, 29, 114, 1)"/>
+    <Label value="ViticultureCertifier>IPW – South Africa (South Africa’s Integrated Production of Wine Systems)" background="rgba(230, 177, 1, 1)"/>
+    <Label value="ViticultureCertifier>IPW" background="rgba(212, 149, 187, 1)"/>
+    <Label value="ViticultureCertifier>LIVE (Low Input Viticulture and Enology) or Oregon LIVE" background="rgba(224, 5, 188, 1)"/>
+    <Label value="ViticultureCertifier>Lodi Rules Sustainable Winegrowing" background="rgba(153, 248, 40, 1)"/>
+    <Label value="ViticultureCertifier>Long Island Sustainable Winegrowing" background="rgba(181, 210, 79, 1)"/>
+    <Label value="ViticultureCertifier>NAPA Green Winery" background="rgba(121, 1, 247, 1)"/>
+    <Label value="ViticultureCertifier>NAPA Green" background="rgba(115, 78, 140, 1)"/>
+    <Label value="ViticultureCertifier>Sustainable Winegrowing New Zealand" background="rgba(224, 201, 157, 1)"/>
+    <Label value="ViticultureCertifier>Vine BALANCE (Sustainable Viticulture in the Northeast)" background="rgba(84, 30, 222, 1)"/>
+    <Label value="ViticultureCertifier>VineWise (Washington Guide to Sustainable Viticulture)" background="rgba(33, 248, 35, 1)"/>
+    <Label value="ViticultureCertifier>VintnersQualityAlliance" background="rgba(6, 124, 142, 1)"/>
+    <Label value="ViticultureCertifier>Wine Council of Ontario" background="rgba(80, 97, 157, 1)"/>
+    <Label value="WaterQualityAssociationCertifier>WQA" background="rgba(216, 113, 201, 1)"/>
+    <Label value="WholeFoodsMarketPremiumBodyCare>WholeFoodsMarketPremiumBodyCare" background="rgba(24, 109, 67, 1)"/>
+    <Label value="WholeFoodsMarketResponsiblyFarmed3rdPartyVerified>WholeFoodsMarketResponsiblyFarmed3rdPartyVerified" background="rgba(218, 1, 238, 1)"/>
+    <Label value="WholeFoodsSourcedForGood>WholeFoodsSourcedForGood" background="rgba(0, 255, 0, 1)"/>
+    <Label value="WholeFoodsWholeTradeGuaranteeCertified>WTG" background="rgba(1, 146, 243, 1)"/>
+    <Label value="WholeFoodsWholeTradeGuaranteeCertifier>WTG" background="rgba(241, 135, 0, 1)"/>
+    <Label value="WholeGrainCertifier>WholeGrainsCouncil" background="rgba(12, 0, 184, 1)"/>
+    <Label value="WomensBusinessEnterpriseNationalCouncilCertifier>WBENC" background="rgba(72, 124, 73, 1)"/>
+    <Label value="WomensBusinessEnterpriseNationalCouncilCertifier>WomenOwned" background="rgba(187, 1, 37, 1)"/>
+  </RectangleLabels>
+</View>

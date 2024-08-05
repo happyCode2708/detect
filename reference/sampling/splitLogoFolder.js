@@ -1,12 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 
-const batch_index = 20;
+const batch_index = 31;
 
 // Paths
-const directoryPath = `/Users/duynguyen/Downloads/yolo/data/${batch_index}`; // Path to your original image folder
+const directoryPath = `D:/yolo/cert/batching_images/${batch_index}`; // Path to your original image folder
 
-const splitPath = `/Users/duynguyen/Downloads/yolo/data/split_${batch_index}`;
+const splitPath = `D:/yolo/cert/batching_images/split_${batch_index}`;
 const withLogoPath = `${splitPath}/with_logo`; // Path to the folder for images with logo
 const withoutLogoPath = `${splitPath}/no_logo`; // Path to the folder for images without logo
 

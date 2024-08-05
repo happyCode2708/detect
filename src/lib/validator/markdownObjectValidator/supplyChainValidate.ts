@@ -41,7 +41,7 @@ const validateAddress = async (modifiedProductDataPoints: any) => {
 
     if (
       (addressType === 'manufacturer' ||
-        addressType === 'other' ||
+        addressType === 'unknown' ||
         isManufacturer) &&
       !isDistributor
     ) {

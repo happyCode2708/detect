@@ -52,6 +52,7 @@ model ExtractSession {
 }
 
 model Image {
+  name      String?
   id        String   @id @default(uuid())
   url       String
   path      String   @default("")

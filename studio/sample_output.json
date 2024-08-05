@@ -1,0 +1,84 @@
+[
+  {
+    "data": {
+      "image": "/data/local-files/?d=images/SNL239687-CASE-BACK-NO%20PLUNGE-00079298169607_C7NA.jpg"
+    },
+    "annotations": [
+      {
+        "result": [
+          {
+            "id": "0d51c5c89d",
+            "type": "rectanglelabels",
+            "value": {
+              "x": -37.5,
+              "y": -47.5,
+              "width": 95.0,
+              "height": 95.0,
+              "rotation": 0,
+              "rectanglelabels": [
+                "RecycledMaterialType>StandardRecyclingSymbol"
+              ]
+            },
+            "to_name": "image",
+            "from_name": "label",
+            "image_rotation": 0,
+            "original_width": 1000,
+            "original_height": 575
+          },
+          {
+            "id": "7b10780b36",
+            "type": "rectanglelabels",
+            "value": {
+              "x": -27.499999999999996,
+              "y": -47.5,
+              "width": 95.0,
+              "height": 95.0,
+              "rotation": 0,
+              "rectanglelabels": ["RecycledMaterialType>1 (PETE)"]
+            },
+            "to_name": "image",
+            "from_name": "label",
+            "image_rotation": 0,
+            "original_width": 1000,
+            "original_height": 575
+          },
+          {
+            "id": "a1e5b3483c",
+            "type": "rectanglelabels",
+            "value": {
+              "x": -17.5,
+              "y": -47.5,
+              "width": 95.0,
+              "height": 95.0,
+              "rotation": 0,
+              "rectanglelabels": ["CarbonFootprintCertifier>CarbonTrust"]
+            },
+            "to_name": "image",
+            "from_name": "label",
+            "image_rotation": 0,
+            "original_width": 1000,
+            "original_height": 575
+          },
+          {
+            "id": "ae3796e4d4",
+            "type": "rectanglelabels",
+            "value": {
+              "x": -7.499999999999996,
+              "y": -47.5,
+              "width": 95.0,
+              "height": 95.0,
+              "rotation": 0,
+              "rectanglelabels": ["KosherCertification>Orthodox Union Kosher"]
+            },
+            "to_name": "image",
+            "from_name": "label",
+            "image_rotation": 0,
+            "original_width": 1000,
+            "original_height": 575
+          }
+        ],
+        "ground_truth": false
+      }
+    ]
+  }
+]
