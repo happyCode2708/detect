@@ -33,34 +33,35 @@ export const instructionValidate = async (modifiedProductDataPoints: any) => {
   let mappedStorageInstruction = [] as any;
   let mappedInformationInstruction = [] as any;
 
-  cookingInstruction?.forEach((cookingInstructionItem: any) => {
+  // cookingInstruction?.forEach((cookingInstructionItem: any) => {
+
+  const {
+    'all other text or paragraph about cooking info': otherInfo,
+    recipes,
+  } = cookingInstruction || {};
+
+  if (otherInfo && otherInfo?.length > 0) {
+    mappedCookingInstruction = [...(otherInfo || [])];
+  }
+
+  recipes?.forEach((recipeItem: any) => {
     const {
-      'all other text or paragraph about cooking info': otherInfo,
-      recipes,
-    } = cookingInstructionItem;
+      'recipe name': recipeName,
+      'recipe ingredient list': recipeIngredients,
+      'cooking steps': cookingSteps,
+    } = recipeItem;
 
-    if (otherInfo && otherInfo?.length > 0) {
-      mappedCookingInstruction = [...(otherInfo || [])];
+    if (recipeName) {
+      mappedCookingInstruction?.push(recipeName);
     }
-
-    recipes?.forEach((recipeItem: any) => {
-      const {
-        'recipe name': recipeName,
-        'recipe ingredient list': recipeIngredients,
-        'cooking steps': cookingSteps,
-      } = recipeItem;
-
-      if (recipeName) {
-        mappedCookingInstruction?.push(recipeName);
-      }
-      if (recipeIngredients) {
-        mappedCookingInstruction?.push(...recipeIngredients);
-      }
-      if (cookingSteps) {
-        mappedCookingInstruction?.push(...cookingSteps);
-      }
-    });
+    if (recipeIngredients) {
+      mappedCookingInstruction?.push(...recipeIngredients);
+    }
+    if (cookingSteps) {
+      mappedCookingInstruction?.push(...cookingSteps);
+    }
   });
+  // });
 
   mappedStorageInstruction = storageInstruction?.['storage instructions'];
   mappedUsageInstruction = usageInstruction?.['usage instructions'];

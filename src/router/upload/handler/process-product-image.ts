@@ -116,6 +116,7 @@ export const processProductImage = async (
       outputConfig,
       config: {
         region: 1,
+        // gpt: true,
       },
       prefix: 'nutrition',
     });
@@ -132,7 +133,11 @@ export const processProductImage = async (
       },
       prefix: 'attr_1',
       promptMakerFn: make_markdown_attr_1_prompt,
-      config: { flash: true, stream: true },
+      config: {
+        // gpt: true,
+        flash: true,
+        // stream: true,
+      },
     });
 
     onProcessAttribute({
@@ -148,6 +153,7 @@ export const processProductImage = async (
       prefix: 'attr_2',
       promptMakerFn: make_markdown_attr_2_prompt,
       config: {
+        // gpt: true,
         region: 1,
       },
     });

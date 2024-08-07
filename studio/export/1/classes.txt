@@ -1,0 +1,399 @@
+ADASealofAcceptance>ClaimandCertifier
+AuthenticMadeProducedByAmericanIndiansCertifier>CMBAI
+BeeBetterCertifier>BeeBetter
+BeeBetterCertifier>BeeFriendly
+BeeBetterCertifier>BeeFriendly1
+BioBasedCertifier>USDABioBased
+BioBasedCertifier>WalkingTheWalk
+BioDynamicCertifier>Demeter
+BioengineeredType>Bioengineered
+BioengineeredType>DerivedFrom
+BusinessOwnerManufacturerCertifier>Disability-Owned Business Enterprise (DOBE)
+BusinessOwnerManufacturerCertifier>Homegrown by Heroes
+BusinessOwnerManufacturerCertifier>Made Produced by American Indians
+BusinessOwnerManufacturerCertifier>Minority Business Enterprise (MBE)
+BusinessOwnerManufacturerCertifier>Service-Disabled Veteran-Owned Small Business (SDV-DOBE)
+BusinessOwnerManufacturerCertifier>Veteran Owned Business (VOB)
+BusinessOwnerManufacturerCertifier>Veteran Owned Small Business (VOSB)
+BusinessOwnerManufacturerCertifier>Veteran-Disability Owned Business Enterprise (V-DOBE)
+BusinessOwnerManufacturerCertifier>Women Business Enterprise (WBE)
+BusinessOwnerManufacturerCertifier>Women Business Enterprise National Council (WBENC)
+BusinessOwnerManufacturerCertifier>Women Owned Small Business (WOSB)
+CarbonFootprintCertifier>CarbonFree
+CarbonFootprintCertifier>Carbonreduction
+CarbonFootprintCertifier>CarbonTrust
+CBDHempCertifier>CertifiedKind
+CBDHempCertifier>USHempAuthority
+CertifiedBCorporation>CertifiedBCorporation
+CradleToCradleCertifier>basic
+CradleToCradleCertifier>bronze
+CradleToCradleCertifier>gold
+CradleToCradleCertifier>Platinum
+CradleToCradleCertifier>silver
+CrueltyFreeCertifier>AnimalWelfareApproved
+CrueltyFreeCertifier>CertifiedHumaneRaisedAndHandled
+CrueltyFreeCertifier>ChooseCrueltyFree
+CrueltyFreeCertifier>CrueltyFree
+CrueltyFreeCertifier>CrueltyFreeAndVeganCruelty
+CrueltyFreeCertifier>CrueltyFreeCertifier
+CrueltyFreeCertifier>peta
+CrueltyFreeCertifier>SPCA Certified
+DiabeticFriendlyCertifier>GlycemicResearchInstituteDiabeticFriendly
+EcoFisheryCertification>ASC Certified
+EcoFisheryCertification>Best Aquaculture Practices Certified
+EcoFisheryCertification>Friend of the Sea
+EcoFisheryCertification>marine stewardship council
+EcoFisheryCertification>Quality Eco Approved Origin Ireland Certification
+FairTradeCertifier>FairForLife
+FairTradeCertifier>FairTradeCertified
+FairTradeCertifier>FairTradeIngredients
+FairTradeCertifier>FairTradeInternational
+FairTradeCertifier>FFL
+FairTradeCertifier>NATURELAND
+FoodGradePlasticsCertifier>FoodGradePlastic
+ForLifeCertifier>ForLife
+GlutenFreeCertifier>CeliacSupportAssociation
+GlutenFreeCertifier>Gluten Free Certification Organization
+GlutenFreeCertifier>GlutenFreeCeliacFriendlyCoeliacFriendly
+GlutenFreeCertifier>GlutenGuard
+GlutenFreeCertifier>ICSGlutenFree
+GlutenFreeCertifier>NationalFoundationForCeliacAwareness
+GlutenFreeCertifier>NSFGlutenFree
+GlycemicIndexCertifier>GILabsTested
+GlyphosateInTransition>GlyphosateInTransition
+GlyphosateResidueFree>GlyphosateResidueFree
+GMPCertifier>NPAGMP
+GrassFedCertifier>AmericanGrassfed
+GrassFedCertifier>PCO
+HalalCertifier>AHF
+HalalCertifier>HFCI
+HalalCertifier>HFCU
+HalalCertifier>HTM
+HalalCertifier>HTO
+HalalCertifier>HTOH
+HalalCertifier>HTP
+HalalCertifier>HTZ
+HalalCertifier>IFANCA
+HalalCertifier>ISA
+HalalCertifier>ISNA
+HalalCertifier>ISWA
+HalalCertifier>MCGH
+HeartHealthyCertifier>AmericanHeartAssociationHeartHealthy
+HighPressureCertifiedCertifier>HighPressureCertified
+InternationalPackagedIceAssociation>InternationalPackagedIceAssociation
+ItalCertifiedSealCertifier>Ital
+ItalConsciousSealCertifier>ItalConsciousSeal
+ItalSacramentSealCertifier>ItalSacramentSeal
+KetoCertifier>Keto Foundation Keto Certified
+KetoCertifier>Ketogenic.com
+KosherCertification>Atlanta Kosher Commission
+KosherCertification>Beis Din Tzedek of the Eidah Hachareidis of Jerusalem
+KosherCertification>Blue Ribbon Kosher
+KosherCertification>BVK Vaad HaKashrut of Buffalo
+KosherCertification>Chabad of Hawaii
+KosherCertification>Chicago Rabbinical Council
+KosherCertification>Contact Manufacturer
+KosherCertification>Diamond K Kashruth Supervision by Beth Din of Congregation Lubavitch
+KosherCertification>EarthKosher
+KosherCertification>Florida Kosher
+KosherCertification>Generic Kosher K
+KosherCertification>Houston Kashruth Association
+KosherCertification>International Kosher Council
+KosherCertification>Jewish Community Council of Montreal Vaad Hair
+KosherCertification>KA Kosher Supervisores en Calidad Kosher Mexico
+KosherCertification>Kashruth Council of Canada
+KosherCertification>Kehilla Kosher OK Kosher West Coast
+KosherCertification>KLBD Kosher Certification (Kashrut Division of London Beth Din)
+KosherCertification>KOA Kosher
+KosherCertification>KOF-K Kosher
+KosherCertification>KOLA Kosher La
+KosherCertification>Kosher Australia
+KosherCertification>Kosher Certification Service
+KosherCertification>Kosher Check (formerly BC Kosher)
+KosherCertification>Kosher Kiwi Licensing Authority New Zealand
+KosherCertification>Kosher Overseers Associates of America
+KosherCertification>Kosher Supervision of America
+KosherCertification>KVH Vaad Harabonim of New England
+KosherCertification>Metropolitan Kashruth Council of Michigan
+KosherCertification>MK Manchester Beth Din
+KosherCertification>MYSTERY
+KosherCertification>Natural Food Certifiers
+KosherCertification>Ner Tamid Kosher
+KosherCertification>Ohio-K Kosher Supervision
+KosherCertification>OK Kosher
+KosherCertification>Oregon Kosher
+KosherCertification>Orthodox Rabbinical Council of San Francisco
+KosherCertification>Orthodox Union Kosher
+KosherCertification>Quality Kosher Supervision
+KosherCertification>Rabbinical Council of California
+KosherCertification>RABINATO DE PERU
+KosherCertification>Scroll K Vaad Hakashrus of Denver
+KosherCertification>Square-K Kosher Services
+KosherCertification>Star-K Kosher
+KosherCertification>Tablet-K Kosher Supervision
+KosherCertification>Triangle K Kosher Supervision
+KosherCertification>UM United Mehadrin Kosher
+KosherCertification>Vaad HaKashrus of Montana
+KosherCertification>Vaad HaKashruth of Kansas City
+KosherCertification>Vaad HaRabanim of Greater Seattle
+KosherCertification>Vaad of Northern California
+KosherCertification>Whole Kosher Services
+LiveAndActiveCultureCertifier>LiveandActiveCulturesCertifiedbytheNationalYogurtAssociation
+LowGlycemicCertifier>Certified
+LowGlycemicCertifier>CertifiedbytheGlycemicResearchInstituteCertifiedNatuarlBeverage
+LowGlycemicCertifier>GlycemicIndexFoundation
+LowGlycemicCertifier>GlycemicResearchinstituteLowGlycemic
+LowGlycemicCertifier>LowGlycenmicIndexG1HealthyOptions
+NaturalPersonalCareCertifier>NaturalPersonalCare
+NewYorkStateGrownCertifier>NewYorkStateGrownandCertified
+NonGMOCertificationByEarthKosher>NonGMOCertificationByEarthKosher
+NonGMOCertifier>GMOGuard
+NonGMOCertifier>GreenStarCertified
+NonGMOCertifier>IGENNONGMOCERTIFIED
+NonGMOCertifier>NonGMOCertificationByEarthKosher
+NonGMOCertifier>NonGMOCertifiedByNSF
+NonGMOCertifier>NonGMOGECertifiedByNSF
+NonGMOCertifier>NonGMOProject
+NonGMOCertifier>Nutrasource IGEN Certified
+NonGMOCertifier>Nutrasource IGEN Tested
+NonGMOGECertifiedByNSF>NonGMOCertifiedByNSF
+NonGMOGECertifiedByNSF>NonGMOGECertifiedByNSF
+NPACertifier>NaturalProductsAssociationCertified
+OnePercentForThePlanetCertifier>1ForThePlanet
+OrganicCertifyingBody>1ForThePlanet
+OrganicCertifyingBody>AB Agriculture Biologique
+OrganicCertifyingBody>ABO A Bee Organic
+OrganicCertifyingBody>ABO
+OrganicCertifyingBody>ACO Australian Certified Organic
+OrganicCertifyingBody>AgricultureBiologique
+OrganicCertifyingBody>AI Americert International
+OrganicCertifyingBody>AI
+OrganicCertifyingBody>AmeriCertFarmgap
+OrganicCertifyingBody>ARG Argencert S.A.
+OrganicCertifyingBody>ASCO Agricultural Services Certified Organic
+OrganicCertifyingBody>ASCO
+OrganicCertifyingBody>AUS-QUAL Aus-Qual Pty. Ltd.
+OrganicCertifyingBody>BAC BioAgriCert
+OrganicCertifyingBody>BCS Kiwa Oko-Garantie GmbH
+OrganicCertifyingBody>BIOH Bio-Hellas S.A.
+OrganicCertifyingBody>BIOI Bio.Inspecta
+OrganicCertifyingBody>BIOL Bio Latina
+OrganicCertifyingBody>BOC Baystate Organic Certifiers
+OrganicCertifyingBody>BOC
+OrganicCertifyingBody>CAAE Certification Service
+OrganicCertifyingBody>CanadaOrganic
+OrganicCertifyingBody>CCOF Certification Services, LLC
+OrganicCertifyingBody>CCOF
+OrganicCertifyingBody>CCPB Srl
+OrganicCertifyingBody>CDA Colorado Department of Agriculture
+OrganicCertifyingBody>CDA
+OrganicCertifyingBody>CERES Certification of Environmental Standards - GmbH
+OrganicCertifyingBody>CMEX Certificadora Mexicana de Productos y Procesos Ecologicos SC 
+OrganicCertifyingBody>CSYS Certisys
+OrganicCertifyingBody>CU Clemson University
+OrganicCertifyingBody>CUC Control Union Certifications
+OrganicCertifyingBody>DPI
+OrganicCertifyingBody>ECOCERT-ECO ICO EcoCert
+OrganicCertifyingBody>EcoCert
+OrganicCertifyingBody>EGLO Ecoglobe, LLC
+OrganicCertifyingBody>EKOAGROS Ekoagros
+OrganicCertifyingBody>ETKO Ecological Farming Control Organization
+OrganicCertifyingBody>EUOC European Union Organic Commission
+OrganicCertifyingBody>EUOC
+OrganicCertifyingBody>FarmVerified
+OrganicCertifyingBody>FS Food Safety S.A.
+OrganicCertifyingBody>FVO Farm Verified Organic
+OrganicCertifyingBody>GCIA
+OrganicCertifyingBody>GCIANOP Georgia Crop Improvement Association
+OrganicCertifyingBody>GLO Global Culture
+OrganicCertifyingBody>GlobalCultureCertifiedOrganic
+OrganicCertifyingBody>GOA Global Organic Alliance, Inc
+OrganicCertifyingBody>GOTS Global Organic Textile Standard
+OrganicCertifyingBody>GOTS
+OrganicCertifyingBody>IBD Certifications
+OrganicCertifyingBody>ICEA Istituto per la Certificazione Etica e Ambientale
+OrganicCertifyingBody>ICO
+OrganicCertifyingBody>ICS International Certification Services, Inc
+OrganicCertifyingBody>ICS
+OrganicCertifyingBody>IDALS Iowa Department of Agriculture and Land Stewardship
+OrganicCertifyingBody>IDDA
+OrganicCertifyingBody>IDOA
+OrganicCertifyingBody>IDOALS
+OrganicCertifyingBody>IMOC IMOcert Latinoamerica LTDA
+OrganicCertifyingBody>IODA
+OrganicCertifyingBody>ISDA Idaho State Department of Agriculture
+OrganicCertifyingBody>KDA Kentucky Department of Agriculture
+OrganicCertifyingBody>LACON GmbH
+OrganicCertifyingBody>LETIS S.A.
+OrganicCertifyingBody>LOGI Eco-LOGICA S.A.
+OrganicCertifyingBody>MAYA Mayacert S.A.
+OrganicCertifyingBody>MCCO Monterey County Certified Organics
+OrganicCertifyingBody>MCCO
+OrganicCertifyingBody>MCIA Minnesota Crop Improvement Association
+OrganicCertifyingBody>MCS MOFGA Certification Services
+OrganicCertifyingBody>MDA Maryland Department of Agriculture
+OrganicCertifyingBody>MOCA Marin Organic Certified Agriculture
+OrganicCertifyingBody>MOFGA
+OrganicCertifyingBody>MOSA Midwest Organic Services Association, Inc.
+OrganicCertifyingBody>MOSA
+OrganicCertifyingBody>MTDA Montana Department of Agriculture
+OrganicCertifyingBody>NCO NASAA Certified Organic
+OrganicCertifyingBody>NFC Natural Food Certifiers
+OrganicCertifyingBody>NFC
+OrganicCertifyingBody>NHDAMF New Hampshire Department of Agriculture
+OrganicCertifyingBody>NICS Nature's International Certification Services
+OrganicCertifyingBody>NJDA New Jersey Department of Agriculture
+OrganicCertifyingBody>NJDA
+OrganicCertifyingBody>NMDA New Mexico Department of Agriculture
+OrganicCertifyingBody>NOFA-NY NOFA-NY Certified Organic
+OrganicCertifyingBody>NOFANY
+OrganicCertifyingBody>NSF International
+OrganicCertifyingBody>NSF
+OrganicCertifyingBody>NSO
+OrganicCertifyingBody>OC Organic Certifiers, Inc.
+OrganicCertifyingBody>OCIA Organic Crop Improvement Association
+OrganicCertifyingBody>OCIA
+OrganicCertifyingBody>ODA Oregon Department of Agriculture
+OrganicCertifyingBody>ODAFF Oklahoma Dept of Agriculture Food and Forestry
+OrganicCertifyingBody>OEFFA Ohio Ecological Food and Farm Association
+OrganicCertifyingBody>OFC Organic Federation of Canada
+OrganicCertifyingBody>OFDC Organic Food Development And Certification Centre of China
+OrganicCertifyingBody>OFF Organic Food Federation
+OrganicCertifyingBody>OFF
+OrganicCertifyingBody>OIA Organizacion Internacional Agropecuaria
+OrganicCertifyingBody>OMIC Overseas Merchandise Inspection Co., Ltd.
+OrganicCertifyingBody>ONE-OCI OneCert
+OrganicCertifyingBody>ONM OnMark Certification Services
+OrganicCertifyingBody>OrganicCertifiers
+OrganicCertifyingBody>OTCO Oregon Tilth Certified Organic
+OrganicCertifyingBody>OTCO
+OrganicCertifyingBody>PACS PACIFIC AGRICULTURAL CERTIFICATION SOCIETY
+OrganicCertifyingBody>PACS
+OrganicCertifyingBody>PCO Pennsylvania Certified Organic
+OrganicCertifyingBody>PJR Perry Johnson Registrar Food Safety, Inc.
+OrganicCertifyingBody>PL Primus Labs
+OrganicCertifyingBody>PRO Pro-Cert Organic Systems, Ltd.
+OrganicCertifyingBody>procert
+OrganicCertifyingBody>QAI - Quality Assurance International
+OrganicCertifyingBody>QAI TRANSITIONAL CERTIFIED
+OrganicCertifyingBody>QAI
+OrganicCertifyingBody>QCS Quality Certification Services
+OrganicCertifyingBody>RIDEM Rhode Island Department of Environmental Management
+OrganicCertifyingBody>SAO Soil association
+OrganicCertifyingBody>SAO
+OrganicCertifyingBody>SCS Global Services, Inc.
+OrganicCertifyingBody>SPCA
+OrganicCertifyingBody>STEL Stellar Certification Services
+OrganicCertifyingBody>STEL
+OrganicCertifyingBody>TDA Texas Department of Agriculture
+OrganicCertifyingBody>TOC Tse-Xin Organic Certification Corporation
+OrganicCertifyingBody>TransitionalCertifiedClaim
+OrganicCertifyingBody>UDAF Utah Department of Agriculture and Food
+OrganicCertifyingBody>USDA NOP National Organic Program
+OrganicCertifyingBody>USDA
+OrganicCertifyingBody>VOCA Vedic organic certification agency
+OrganicCertifyingBody>VOCA
+OrganicCertifyingBody>VOF - Vermont Organic Farmers, LLC
+OrganicCertifyingBody>VOF
+OrganicCertifyingBody>WSDA - Washington State Department of Agriculture
+OrganicCertifyingBody>WSDA
+OrganicCertifyingBody>YDA Yolo County Department of Agriculture
+OrganicStandardsAgencyLogo>CFIA Canadian Food Inspection Agency
+OrganicStandardsAgencyLogo>COSMOS Standard for Natural and Organic Cosmetics
+OrganicStandardsAgencyLogo>EUOC European Union Organic Commission
+OrganicStandardsAgencyLogo>GOTS Global Organic Textile Standard
+OrganicStandardsAgencyLogo>IFOAM International Federation of Agriculture Movements
+OrganicStandardsAgencyLogo>JAS Japan Agricultural Standards
+OrganicStandardsAgencyLogo>OCS Organic Content Standard
+OrganicStandardsAgencyLogo>USDA United States Department of Agriculture
+PACACertifier>USDA PACA
+PaleoCertifier>CertifiedPaleo
+PaleoCertifier>PaleoApprovedbythePaleoFoundation
+PaleoCertifier>PaleoCertifiedbyEarthKosher
+PaleoCertifier>PaleoFriendlybythePaleoFoundation
+PaleoCertifier>PaleoFriendlyThisProductIsCertifieo
+PaleoCertifier>PaleoVeganCertifiedbyPaleoFoundation
+PASACertifier>Pennsylvania Association for Sustainable Agriculture
+PlantBasedDerivedCertifier>NSF Plant Based
+PlantBasedDerivedCertifier>WFPB
+RainForestAllianceCertifier>RainForestAlliance
+REALCertified>ResponsibleEpicureanandAgriculturalLeadershipCertifier
+RealSealCertifier>REAL
+RecycledMaterialType>1 (PET)
+RecycledMaterialType>1 (PETE)
+RecycledMaterialType>100RecycledPaperboard
+RecycledMaterialType>100RPB
+RecycledMaterialType>2 (HDPE)
+RecycledMaterialType>3 (PVC)
+RecycledMaterialType>4 (LDPE)
+RecycledMaterialType>5 (PP)
+RecycledMaterialType>6 (PS)
+RecycledMaterialType>7 (OTHER)
+RecycledMaterialType>CIRCULAR RECYCLING SYMBOL
+RecycledMaterialType>CorrugatedBoard
+RecycledMaterialType>CorrugatedFiberBoard
+RecycledMaterialType>CorrugatedRecycles
+RecycledMaterialType>RecyclableSteel
+RecycledMaterialType>StandardRecyclingSymbol
+RecycledMaterialType>SteelRecycle
+RecycledMaterialType>TerraCycle
+RegenerativeOrganicCertifier>RegenerativeOrganicCertifier
+RenewableEnergyCertifier>GreenE
+SocialMedia>Facebook
+SocialMedia>Google
+SocialMedia>Instagram
+SocialMedia>Pinterest
+SocialMedia>SnapChat
+SocialMedia>Twitter
+SocialMedia>YouTube
+SocialMedia>YouTube2
+SocialMedia>YouTube3
+SustainabilityCertifier>GreenSeal
+SustainabilityCertifier>RSPO
+SustainabilityCertifier>SIPCertified
+SustainabilityCertifier>UTZCertified
+SustainabilityCertifier>Veriflora
+VeganCertifier>American Vegetarian Association Vegan
+VeganCertifier>BioAgri Cert Vegan
+VeganCertifier>Earth Kosher Vegan Verified
+VeganCertifier>NFC Natural Food Certifiers
+VeganCertifier>Paleo Foundation Paleo Vegan
+VeganCertifier>PETA Approved Vegan
+VeganCertifier>PETA Cruelty Free and Vegan
+VeganCertifier>Vegan OK
+VeganCertifier>Vegan Society
+VeganCertifier>Vegan.org
+VeganCertifier>Vegetarian Society Vegan Approved
+VegetarianCertifier>AmericanVegetarianAssociationVegetarian
+VegetarianCertifier>VegeCert
+VegetarianCertifier>VegetarianSociety
+VeteransCertifier>HomegrownByHeroes
+VeteransCertifier>WOUNDED WARRIOR
+ViticultureCertifier>BIODYVIN - Syndicat International des Vignerons en Culture Bio-Dynamique (SIVCBD)
+ViticultureCertifier>BIODYVIN
+ViticultureCertifier>California Sustainable Winegrowing Alliance
+ViticultureCertifier>Canadian Vintners Association
+ViticultureCertifier>Delinat Bio Garantie
+ViticultureCertifier>Deutsches Gutenband Wein (DLG)
+ViticultureCertifier>IPW - South Africa (South Africa's Integrated Production of Wine Systems)
+ViticultureCertifier>IPW – South Africa (South Africa’s Integrated Production of Wine Systems)
+ViticultureCertifier>IPW
+ViticultureCertifier>LIVE (Low Input Viticulture and Enology) or Oregon LIVE
+ViticultureCertifier>Lodi Rules Sustainable Winegrowing
+ViticultureCertifier>Long Island Sustainable Winegrowing
+ViticultureCertifier>NAPA Green Winery
+ViticultureCertifier>NAPA Green
+ViticultureCertifier>Sustainable Winegrowing New Zealand
+ViticultureCertifier>Vine BALANCE (Sustainable Viticulture in the Northeast)
+ViticultureCertifier>VineWise (Washington Guide to Sustainable Viticulture)
+ViticultureCertifier>VintnersQualityAlliance
+ViticultureCertifier>Wine Council of Ontario
+WaterQualityAssociationCertifier>WQA
+WholeFoodsMarketPremiumBodyCare>WholeFoodsMarketPremiumBodyCare
+WholeFoodsMarketResponsiblyFarmed3rdPartyVerified>WholeFoodsMarketResponsiblyFarmed3rdPartyVerified
+WholeFoodsSourcedForGood>WholeFoodsSourcedForGood
+WholeFoodsWholeTradeGuaranteeCertified>WTG
+WholeFoodsWholeTradeGuaranteeCertifier>WTG
+WholeGrainCertifier>WholeGrainsCouncil
+WomensBusinessEnterpriseNationalCouncilCertifier>WBENC
+WomensBusinessEnterpriseNationalCouncilCertifier>WomenOwned

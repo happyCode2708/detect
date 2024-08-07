@@ -67,6 +67,7 @@ export const mapToTDCFormat = (extractData: any) => {
     ),
     // ...mapDistributedBy(supplyChain),
     DistributedBy: toUpper(validated_supplyChain?.distributedByText),
+    ImportedBy: toUpper(validated_supplyChain?.importedByText),
     CountryOfOriginText: toUpper(validated_supplyChain?.countryOfOriginText),
     CountryOfOriginName: toUpper(validated_supplyChain?.countryOfOrigin),
 

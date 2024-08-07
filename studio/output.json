@@ -1,1 +1,166 @@
-[{"data": {"image": "/data/local-files/?d=images/snl3049-case-back-no%20plunge-00609722798518_c7na.jpg"}}, {"data": {"image": "/data/local-files/?d=images/snl3049-case-front-no%20plunge-00609722798518_c1na.jpg"}}, {"data": {"image": "/data/local-files/?d=images/snl3049-case-left-no%20plunge-00609722798518_c2na.jpg"}}, {"data": {"image": "/data/local-files/?d=images/snl3049-unit-front-no%20plunge-00609722798501_c1n1.jpg"}}, {"data": {"image": "/data/local-files/?d=images/snl3049-unit-right-no%20plunge-00609722798501_c8n1.jpg"}}, {"data": {"image": "/data/local-files/?d=images/snl3074-unit-back-no%20plunge-00874492002350_c7n1.jpg"}}, {"data": {"image": "/data/local-files/?d=images/snl3074-unit-front-no%20plunge-00874492002350_c1n1.jpg"}}, {"data": {"image": "/data/local-files/?d=images/snl3110-case-top-no%20plunge-00812907013164_c3na.jpg"}}, {"data": {"image": "/data/local-files/?d=images/snl3110-unit-back-no%20plunge-00812907013164_c7n1.jpg"}}]
+[
+  {
+    "data": {
+      "image": "/data/local-files/?d=images/SNL239687-CASE-BACK-NO%20PLUNGE-00079298169607_C7NA.jpg"
+    },
+    "annotations": [
+      {
+        "result": [
+          {
+            "id": "55c7a2c41d",
+            "type": "rectanglelabels",
+            "value": {
+              "x": -37.5,
+              "y": -47.5,
+              "width": 95.0,
+              "height": 95.0,
+              "rotation": 0,
+              "rectanglelabels": [
+                "RecycledMaterialType>StandardRecyclingSymbol"
+              ]
+            },
+            "to_name": "image",
+            "from_name": "label",
+            "image_rotation": 0,
+            "original_width": 1000,
+            "original_height": 575
+          },
+          {
+            "id": "2b5373c007",
+            "type": "rectanglelabels",
+            "value": {
+              "x": -27.499999999999996,
+              "y": -47.5,
+              "width": 95.0,
+              "height": 95.0,
+              "rotation": 0,
+              "rectanglelabels": ["RecycledMaterialType>1 (PETE)"]
+            },
+            "to_name": "image",
+            "from_name": "label",
+            "image_rotation": 0,
+            "original_width": 1000,
+            "original_height": 575
+          },
+          {
+            "id": "ae913c662e",
+            "type": "rectanglelabels",
+            "value": {
+              "x": -17.5,
+              "y": -47.5,
+              "width": 95.0,
+              "height": 95.0,
+              "rotation": 0,
+              "rectanglelabels": ["CarbonFootprintCertifier>CarbonTrust"]
+            },
+            "to_name": "image",
+            "from_name": "label",
+            "image_rotation": 0,
+            "original_width": 1000,
+            "original_height": 575
+          },
+          {
+            "id": "e1e3b9c979",
+            "type": "rectanglelabels",
+            "value": {
+              "x": -7.499999999999996,
+              "y": -47.5,
+              "width": 95.0,
+              "height": 95.0,
+              "rotation": 0,
+              "rectanglelabels": ["KosherCertification>Orthodox Union Kosher"]
+            },
+            "to_name": "image",
+            "from_name": "label",
+            "image_rotation": 0,
+            "original_width": 1000,
+            "original_height": 575
+          }
+        ],
+        "ground_truth": false
+      }
+    ]
+  },
+  {
+    "data": {
+      "image": "/data/local-files/?d=images/SNL239687-UNIT-BOTTOM-NO%20PLUNGE-00079298000085_C9N1.jpg"
+    },
+    "annotations": [
+      {
+        "result": [
+          {
+            "id": "a6f8f544f6",
+            "type": "rectanglelabels",
+            "value": {
+              "x": -37.5,
+              "y": -47.5,
+              "width": 95.0,
+              "height": 95.0,
+              "rotation": 0,
+              "rectanglelabels": [
+                "RecycledMaterialType>StandardRecyclingSymbol"
+              ]
+            },
+            "to_name": "image",
+            "from_name": "label",
+            "image_rotation": 0,
+            "original_width": 999,
+            "original_height": 967
+          },
+          {
+            "id": "8129b7f411",
+            "type": "rectanglelabels",
+            "value": {
+              "x": -27.499999999999996,
+              "y": -47.5,
+              "width": 95.0,
+              "height": 95.0,
+              "rotation": 0,
+              "rectanglelabels": ["RecycledMaterialType>1 (PETE)"]
+            },
+            "to_name": "image",
+            "from_name": "label",
+            "image_rotation": 0,
+            "original_width": 999,
+            "original_height": 967
+          },
+          {
+            "id": "69bf59b959",
+            "type": "rectanglelabels",
+            "value": {
+              "x": -17.5,
+              "y": -47.5,
+              "width": 95.0,
+              "height": 95.0,
+              "rotation": 0,
+              "rectanglelabels": ["CarbonFootprintCertifier>CarbonTrust"]
+            },
+            "to_name": "image",
+            "from_name": "label",
+            "image_rotation": 0,
+            "original_width": 999,
+            "original_height": 967
+          },
+          {
+            "id": "dbcc952adb",
+            "type": "rectanglelabels",
+            "value": {
+              "x": -7.499999999999996,
+              "y": -47.5,
+              "width": 95.0,
+              "height": 95.0,
+              "rotation": 0,
+              "rectanglelabels": ["KosherCertification>Orthodox Union Kosher"]
+            },
+            "to_name": "image",
+            "from_name": "label",
+            "image_rotation": 0,
+            "original_width": 999,
+            "original_height": 967
+          }
+        ],
+        "ground_truth": false
+      }
+    ]
+  }
+]

@@ -1,6 +1,8 @@
 mac
 label-studio-converter import yolo -i /Users/duynguyen/Desktop/foodocr/foodocr/studio/mydata/yolo -o output.json --image-root-url "/data/local-files/?d=images"
+mac for one batch on mac
+label-studio-converter import yolo -i /Users/duynguyen/Desktop/foodocr/foodocr/studio/export/1 -o output.json --image-root-url "/data/local-files/?d=images"
 window
 label-studio-converter import yolo -i /c/Users/nnqduy/Desktop/ocr/detect/studio/mydata/yolo -o output.json --image-root-url "/data/local-files/?d=images"
-3. for one batch on windowa
+3. for one batch on window
 label-studio-converter import yolo -i /c/Users/nnqduy/Desktop/ocr/detect/studio/export/30 -o output.json --image-root-url "/data/local-files/?d=images"

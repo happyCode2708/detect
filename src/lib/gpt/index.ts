@@ -11,13 +11,6 @@ export const generateContentWithGpt = async (
   let chunkResponse = [] as any;
   let finalResponse = '';
 
-  const model =
-    config?.flash === true
-      ? (global as any)?.generativeFlashModel?.[`region_${config?.region || 1}`]
-      : (global as any)?.generativeModel?.[`region_${config?.region || 1}`];
-
-  if (!model) return;
-
   const images: ChatCompletionContentPartImage[] = imagesPath.map((path) => {
     const base64Image = encodeImageToBase64(path);
 
@@ -39,7 +32,8 @@ export const generateContentWithGpt = async (
         content: [
           {
             type: 'text',
-            text: make_gpt4_o_prompt(),
+            // text: make_gpt4_o_prompt(),
+            text,
           },
           ...images,
         ],

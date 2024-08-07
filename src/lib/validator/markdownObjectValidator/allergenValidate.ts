@@ -352,6 +352,8 @@ const mapToValidatedAllergenObject = async (modifiedProductDataPoints: any) => {
   const labelingFreeList =
     modifiedProductDataPoints?.['validated_labeling']?.['free'];
 
+  console.log('free list ==== ', labelingFreeList);
+
   if (labelingFreeList) {
     labelingFreeList?.forEach((notContainItem: any) => {
       ALLERGEN_LIST.some((allergenItem: any) => {
@@ -363,6 +365,8 @@ const mapToValidatedAllergenObject = async (modifiedProductDataPoints: any) => {
         let validVariant = variants.find((variantItem: any) => {
           return toLower(trimmedNotContainItem)?.includes(variantItem);
         });
+
+        console.log('valid variant', validVariant);
 
         if (statement_not_include) {
           if (

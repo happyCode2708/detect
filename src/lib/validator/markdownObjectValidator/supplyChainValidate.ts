@@ -39,11 +39,14 @@ const validateAddress = async (modifiedProductDataPoints: any) => {
       toLower(fullAddressStatement)?.includes(phrase)
     );
 
+    const isImporter = IMPORTED_BY_PHRASE?.find((phrase: any) =>
+      toLower(fullAddressStatement)?.includes(phrase)
+    );
+
     if (
-      (addressType === 'manufacturer' ||
-        addressType === 'unknown' ||
-        isManufacturer) &&
-      !isDistributor
+      addressType === 'manufacturer' ||
+      (addressType === 'not given' && !prefixAddress) ||
+      isManufacturer
     ) {
       if (state) {
         validateManufacturerState(modifiedProductDataPoints, state);
@@ -60,12 +63,23 @@ const validateAddress = async (modifiedProductDataPoints: any) => {
       };
     }
 
-    if ((addressType === 'distributor' || isDistributor) && !isManufacturer) {
+    if (addressType === 'distributor' || isDistributor) {
       const isFullAddressStatementContainPrefix = toLower(
         fullAddressStatement
       )?.includes(toLower(prefixAddress));
 
       modifiedProductDataPoints['validated_supplyChain']['distributedByText'] =
+        isFullAddressStatementContainPrefix
+          ? fullAddressStatement
+          : `${prefixAddress} ${fullAddressStatement}`;
+    }
+
+    if (addressType === 'importer' || isImporter) {
+      const isFullAddressStatementContainPrefix = toLower(
+        fullAddressStatement
+      )?.includes(toLower(prefixAddress));
+
+      modifiedProductDataPoints['validated_supplyChain']['importedByText'] =
         isFullAddressStatementContainPrefix
           ? fullAddressStatement
           : `${prefixAddress} ${fullAddressStatement}`;
@@ -174,6 +188,8 @@ const MANUFACTURED_BY_PHRASE = [
   'manufacturer',
   'manufacturing by',
 ];
+
+const IMPORTED_BY_PHRASE = ['imported by', 'imported'];
 
 const states = {
   AL: 'Alabama',

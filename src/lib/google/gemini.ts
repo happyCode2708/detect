@@ -3,6 +3,7 @@ import { encodeImageToBase64 } from '@/lib/image';
 import { prisma } from '@/server';
 import { make_markdown_nut_prompt } from '@/lib/promp/markdown_nut_utils';
 import { Status } from '@prisma/client';
+import { generateContentWithGpt } from '../gpt';
 
 export const generateContent = async (
   imagesPath: any[],
@@ -79,12 +80,13 @@ export const onProcessImage = async ({
 }) => {
   const imagesPath = inputImages;
 
-  const { chunkResponse, finalResponse: gemini_result } =
-    (await generateContent(imagesPath, prompt, config)) || {};
+  const { chunkResponse, finalResponse: gemini_result } = config?.gpt
+    ? (await generateContentWithGpt(imagesPath, prompt, config)) || {}
+    : (await generateContent(imagesPath, prompt, config)) || {};
 
   if (!gemini_result) return;
 
-  return Promise.resolve(gemini_result);
+  return Promise.resolve({ chunk: chunkResponse, text: gemini_result });
 };
 
 export const onProcessAttribute = async ({
@@ -129,29 +131,48 @@ export const onProcessAttribute = async ({
     {}
   );
 
-  const markdownResult = await onProcessImage({
-    inputImages: [
-      ...invalidatedInput.nutIncluded,
-      ...invalidatedInput.nutExcluded,
-    ],
-
-    prompt: promptMakerFn({
-      ocrText: JSON.stringify(new_allText),
-      imageCount: [
+  const { text: markdownResult, chunk } =
+    (await onProcessImage({
+      inputImages: [
         ...invalidatedInput.nutIncluded,
         ...invalidatedInput.nutExcluded,
-      ]?.length,
-    }),
-    extraInfo,
-    config,
-  });
+      ],
+
+      prompt: promptMakerFn({
+        ocrText: JSON.stringify(new_allText),
+        imageCount: [
+          ...invalidatedInput.nutIncluded,
+          ...invalidatedInput.nutExcluded,
+        ]?.length,
+      }),
+      extraInfo,
+      config,
+    })) || {};
 
   if (!markdownResult) return;
+
+  const { promptTokenCount, candidatesTokenCount, totalTokenCount } =
+    chunk?.response?.usageMetadata || {};
+
+  const { prompt_tokens, completion_tokens, total_tokens } = chunk?.usage || {};
 
   await prisma.extractSession.update({
     where: { sessionId },
     data: {
       [prefix]: markdownResult,
+      [`${prefix}_cost`]: config?.gpt
+        ? costCompute({
+            type: 'gpt',
+            images: ocrList?.length,
+            textInput: prompt_tokens,
+            textOutput: completion_tokens,
+          })
+        : costCompute({
+            type: config?.flash ? 'flash' : config?.gpt ? 'gpt' : '',
+            images: ocrList?.length,
+            textInput: promptTokenCount,
+            textOutput: candidatesTokenCount,
+          }),
     },
   });
 };
@@ -163,6 +184,7 @@ export const onProcessNut = async ({
   outputConfig,
   config,
   prefix,
+  config: any,
 }: {
   invalidatedInput: any;
   ocrList: any[];
@@ -193,27 +215,92 @@ export const onProcessNut = async ({
     {}
   );
 
-  const markdownResult = await onProcessImage({
-    inputImages: [
-      ...invalidatedInput.nutIncluded,
-      ...invalidatedInput.nutExcluded,
-    ],
-    prompt: make_markdown_nut_prompt({
-      ocrText: JSON.stringify(new_nutText),
-      imageCount: [
+  const { text: markdownResult, chunk } =
+    (await onProcessImage({
+      inputImages: [
         ...invalidatedInput.nutIncluded,
         ...invalidatedInput.nutExcluded,
-      ]?.length,
-    }),
-    config,
-  });
+      ],
+      prompt: make_markdown_nut_prompt({
+        ocrText: JSON.stringify(new_nutText),
+        imageCount: [
+          ...invalidatedInput.nutIncluded,
+          ...invalidatedInput.nutExcluded,
+        ]?.length,
+      }),
+      config,
+    })) || {};
 
   if (!markdownResult) return;
+
+  const { promptTokenCount, candidatesTokenCount, totalTokenCount } =
+    chunk?.response?.usageMetadata || {};
+
+  const { prompt_tokens, completion_tokens, total_tokens } = chunk?.usage || {};
 
   await prisma.extractSession.update({
     where: { sessionId },
     data: {
       [prefix]: markdownResult,
+      [`${prefix}_cost`]: config?.gpt
+        ? costCompute({
+            type: 'gpt',
+            images: ocrList?.length,
+            textInput: prompt_tokens,
+            textOutput: completion_tokens,
+          })
+        : costCompute({
+            type: config?.flash ? 'flash' : config?.gpt ? 'gpt' : '',
+            images: ocrList?.length,
+            textInput: promptTokenCount,
+            textOutput: candidatesTokenCount,
+          }),
     },
   });
+};
+
+const costCompute = ({
+  type,
+  images,
+  textInput,
+  textOutput,
+}: {
+  type: 'flash' | any;
+  images: number;
+  textInput: number;
+  textOutput: number;
+}) => {
+  const basePrice =
+    type === 'flash' ? PRICES.FLASH : type === 'gpt' ? PRICES.GPT : PRICES.PRO;
+
+  if (type === 'gpt') {
+    return (
+      (basePrice.textInput * textInput) / 1000000 +
+      (basePrice.textOutput * textOutput) / 1000000
+    );
+  }
+
+  return (
+    basePrice.image * images +
+    (basePrice.textInput * textInput * 4) / 1000 +
+    (basePrice.textOutput * textOutput * 4) / 1000
+  );
+};
+
+const PRICES = {
+  FLASH: {
+    image: 0.00002,
+    textInput: 0.00001875, //per 1000
+    textOutput: 0.000075, //per 1000
+  },
+  PRO: {
+    image: 0.001315,
+    textInput: 0.00125,
+    textOutput: 0.00375,
+  },
+  GPT: {
+    image: 0,
+    textInput: 0.15, //per 1M tokens
+    textOutput: 0.6, //per 1M tokens
+  },
 };

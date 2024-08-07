@@ -22,13 +22,9 @@ IMPORTANT NOTES:
 4) do not provide me the info not seen on provided images
 5) only provide me the info that visibly seen from provided images 
 7) There are some cases to recognized an dual-column nutrition fact panel format:
-+ case 1 - see a nutrition fact panel with two or more thn two "percent daily value columns" and "amount per serving" columns for different "serving sizes".
-+ cas2 2 - see a nutrition fact panel with two or more thn two "percent daily value columns" and "amount per serving" columns for different "amount per serving name"
-Example 2: two columns of nutrition data for "mixed" and "prepared".
-+ case 3 - see a nutrition fact panel with two or more than two percent daily value columns for different "age groups"
-Example 1: two columns of nutrition data for "adult" and "children under 6 year olds"
-+ case 4 - see a nutrition fact panel with two "percent daily value columns" for "per serving" and "per container".
-
++ case 1 - see a nutrition fact panel with two or more than two "percent daily value columns" and quantity columns for different serving sizes or different amount per serving name 
++ case 2 - see nutrition fact panel with two or more than two percent daily value columns for different age groups
++ case 3 - see nutrition fact panel with two daily value columns for "per serving" and "per container".
 
 8) A dual-column nutrition fact panel must be separated into two nutrition fact markdown tables with their own HEADER and FOOTNOTE (with their own index number as well). THIS IS COMPULSORY. And combining into single table is prohibited for dual-column nutrition fact panel.
 

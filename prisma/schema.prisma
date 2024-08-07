@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:@localhost:5432/ocr"
+  url      = "postgresql://postgres:@localhost:5432/ocrfood"
 }
 
 generator client {
@@ -45,8 +45,11 @@ model ExtractSession {
   status          Status
   result          String?
   nutrition       String?
+  nutrition_cost  Float?
   attr_1          String?
+  attr_1_cost     Float?
   attr_2          String?
+  attr_2_cost     Float?
   ocr             String?
   estimate_cost   Float?
 }

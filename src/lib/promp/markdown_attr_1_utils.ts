@@ -178,8 +178,7 @@ IMPORTANT NOTE:
 
 INFO FORMAT:
 COOKING_INSTRUCTION_OBJECT
-[
-{
+{m
   "recipes": [{
     "recipe name": str,
     "recipe ingredient list": str[] | null,
@@ -187,7 +186,6 @@ COOKING_INSTRUCTION_OBJECT
     }],
   "all other text or paragraph about cooking info": str[]
 }
-]
 END_COOKING_INSTRUCTION_OBJECT
 
 2) storage  instruction info recorded with format below:
@@ -362,6 +360,12 @@ Example 7: for "8-1 OZ (37G) PACKS NET WT 8OZ (226G)" recorded as
   "secondary size": "226G"
 }
 
+Example 8: for "2 pints (20g)" recorded as
+{
+  "primary size": "2 pints",
+  "secondary size": "20g"
+}
+
 + just collect size in order. If production mention three type of uom it will have third size
 
 + "primary size" must content quantity value number and its oum (same for primary size, and third size)
@@ -527,6 +531,8 @@ Example 3: "manufactured by"
 Example 4: "DISTRIBUTED BY:"
 Example 5: "manufacture for"
 
++ "address type" is values such as "distributor", "manufacturer", "importer" , "other" , "not given". That could be deducted from "prefix address".
+
 + "phone number" is the phone number near address info of "distributor" or "manufacturer"
 Example 1: "(500) 867-4780"
 
@@ -535,8 +541,8 @@ SUPPLY_CHAIN_OBJECT
 {
   "address and phone number info": [
     {
-      "address type": "distributor" | "manufacturer" | "unknown",
       "prefix address": str,
+      "address type": str, ,
       "full address statement": str,
       "company name": str,
       "street number": str,
