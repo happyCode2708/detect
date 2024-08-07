@@ -2,10 +2,14 @@ const fs = require('fs');
 const path = require('path');
 
 // Define the source folder and destination base folder
-const sourceFolder = '/Users/duynguyen/Downloads/yolo/dataset';
-const destinationBaseFolder =
-  '/Users/duynguyen/Downloads/yolo/batching_dataset'; // Base folder for batches
-const batchSize = 2; // Number of images per batch
+// const sourceFolder = '/Users/duynguyen/Downloads/yolo/dataset';
+// const destinationBaseFolder =
+//   '/Users/duynguyen/Downloads/yolo/batching_dataset'; // Base folder for batches
+
+const sourceFolder = 'D:/yolo/filtered_20_sample_images';
+const destinationBaseFolder = 'D:/yolo/batching_dataset';
+
+const batchSize = 800; // Number of images per batch
 
 // Function to create folders and copy files
 async function splitImages() {
