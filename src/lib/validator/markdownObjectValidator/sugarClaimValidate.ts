@@ -275,6 +275,7 @@ const SUGAR_CLAIMS_MAP = {
     sugar: 'no sugar',
   },
   sweetened: {
+    sugar: false,
     xylitol: 'xylitol',
   },
   reduced: {

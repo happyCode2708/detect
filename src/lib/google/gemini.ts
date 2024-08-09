@@ -5,6 +5,18 @@ import { make_markdown_nut_prompt } from '@/lib/promp/markdown_nut_utils';
 import { Status } from '@prisma/client';
 import { generateContentWithGpt } from '../gpt';
 
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+
+const env = process.env.NODE_ENV || 'development';
+
+require('dotenv').config({ path: `.env.${env}` });
+
+const genAI_4 = new GoogleGenerativeAI(process.env.API_KEY_4);
+
+const key_model = genAI_4.getGenerativeModel({
+  model: 'gemini-1.5-flash',
+});
+
 export const generateContent = async (
   imagesPath: any[],
   text: any,
@@ -37,6 +49,17 @@ export const generateContent = async (
   const req = {
     contents: [{ role: 'user', parts: [...images, geminiText] }],
   };
+
+  //? use gemini key
+  if (true) {
+    const key_req = [...images, geminiText?.text];
+
+    const result = await key_model.generateContent(key_req);
+    const response = await result.response;
+    const text = response.text();
+
+    return { chunkResponse, finalResponse: text };
+  }
 
   if (config?.stream) {
     const streamingResp = await model.generateContentStream(req);

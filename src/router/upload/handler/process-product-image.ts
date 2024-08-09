@@ -116,6 +116,7 @@ export const processProductImage = async (
       outputConfig,
       config: {
         region: 1,
+        flash: true,
         // gpt: true,
       },
       prefix: 'nutrition',
@@ -154,7 +155,8 @@ export const processProductImage = async (
       promptMakerFn: make_markdown_attr_2_prompt,
       config: {
         // gpt: true,
-        region: 1,
+        flash: true,
+        // region: 1,
       },
     });
   } catch (e) {
